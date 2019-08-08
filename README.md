@@ -59,8 +59,9 @@ While Brave is agnostic with regards to the technologies used, the DevOps Toolch
 - Example(s) : 
 
     - Quorum Cloud: https://github.com/jpmorganchase/quorum-cloud
-
     - Ether Cluster: https://github.com/ethereum-classic-cooperative/ethercluster
+    - Pantheon Kubernetes Deployment: https://github.com/PegaSysEng/pantheon-k8s
+
          
 
 ###  Clock Skew:
@@ -128,6 +129,7 @@ While Brave is agnostic with regards to the technologies used, the DevOps Toolch
     - SmartMeter.io : https://www.smartmeter.io/
 ### Failure Modes
 - These tests are to understand our installations behaviour during system failures and network attacks. 
+
 #### Node Failure
 - This category refers to failures due to either partial or full node failure.
 
