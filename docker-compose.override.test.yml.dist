@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  cli-test:
+    build: .
+    image: brave-experiments/apollo-go:latest
+    volumes:
+      - ./:/usr/local/go/src/github.com/brave-experiments/apollo-devops
+    env_file:
+      - .env.test
+    command: >
+      sh -c "govendor sync &&
+             CompileDaemon -log-prefix=false -build=\"go build -a -installsuffix cgo -o apollo\" -command=\"go test ./...\" "
+
+    networks:
+      apollo:
+        aliases:
+          - test.apollo.local
+
+networks:
+  apollo:
+    driver: bridge

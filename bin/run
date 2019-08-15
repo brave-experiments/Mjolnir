@@ -9,11 +9,23 @@ function deploy_dev() {
     cp docker-compose.override.yml.dist docker-compose.override.yml
     cp .env.dist .env
     restart_containers
+    docker-compose exec -T cli govendor sync
     docker-compose exec cli sh
+}
+
+function run_tests() {
+    cp docker-compose.override.test.yml.dist docker-compose.override.yml
+    docker-compose up --no-deps cli-test
 }
 
 if [[ "$#" -eq  "0" ]]
     then
         deploy_dev
+        exit
+fi
+
+if [[ "$1" == "test" ]]
+    then
+        run_tests
         exit
 fi
