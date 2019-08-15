@@ -100,11 +100,6 @@ func realMain() int {
 	return wrappedMain()
 }
 
-const (
-	ErrorPrefix  = "e:"
-	OutputPrefix = "o:"
-)
-
 func init() {
 	Ui = &cli.PrefixedUi{
 		AskPrefix:    OutputPrefix,
