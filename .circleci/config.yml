@@ -14,6 +14,19 @@ jobs:
       - store_artifacts:
           path: coverage.out
 
+  build:
+    machine:
+      image: circleci/classic:201808-01
+      working_directory: /home/circleci/.go_workspace/src/github.com/brave-experiments/apollo-devops
+      steps:
+        - checkout
+        - run: mkdir /home/circleci/.go_workspace/bin
+        - run: go get github.com/kardianos/govendor
+        - run: export GOPATH=/home/circleci/.go_workspace
+        - run: bin/run build
+        - store_artifacts:
+            path: dist
+
 workflows:
   workflow:
     jobs:
