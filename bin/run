@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+function restart_containers() {
+    docker-compose down
+    docker-compose up -d
+}
+
+function deploy_dev() {
+    cp docker-compose.override.yml.dist docker-compose.override.yml
+    cp .env.dist .env
+    restart_containers
+    docker-compose exec cli sh
+}
+
+if [[ "$#" -eq  "0" ]]
+    then
+        deploy_dev
+        exit
+fi
