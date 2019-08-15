@@ -3,10 +3,704 @@
 	"ignore": "test",
 	"package": [
 		{
+			"path": "cloud.google.com/go/storage",
+			"revision": ""
+		},
+		{
+			"path": "github.com/agext/levenshtein",
+			"revision": ""
+		},
+		{
+			"path": "github.com/apparentlymart/go-textseg/textseg",
+			"revision": ""
+		},
+		{
+			"path": "github.com/armon/circbuf",
+			"revision": ""
+		},
+		{
+			"path": "github.com/armon/go-radix",
+			"revision": ""
+		},
+		{
+			"path": "github.com/aws/aws-sdk-go/aws",
+			"revision": ""
+		},
+		{
+			"path": "github.com/aws/aws-sdk-go/aws/credentials",
+			"revision": ""
+		},
+		{
+			"path": "github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds",
+			"revision": ""
+		},
+		{
+			"path": "github.com/aws/aws-sdk-go/aws/ec2metadata",
+			"revision": ""
+		},
+		{
+			"path": "github.com/aws/aws-sdk-go/aws/session",
+			"revision": ""
+		},
+		{
+			"path": "github.com/aws/aws-sdk-go/service/s3",
+			"revision": ""
+		},
+		{
+			"path": "github.com/bgentry/go-netrc/netrc",
+			"revision": ""
+		},
+		{
+			"path": "github.com/bgentry/speakeasy",
+			"revision": ""
+		},
+		{
+			"path": "github.com/chzyer/readline",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "CSPbwbyzqA6sfORicn4HFtIhF/c=",
 			"path": "github.com/davecgh/go-spew/spew",
 			"revision": "d8f796af33cc11cb798c1aaeb27a4ebc5099927d",
 			"revisionTime": "2018-08-30T19:11:22Z"
+		},
+		{
+			"path": "github.com/fatih/color",
+			"revision": ""
+		},
+		{
+			"path": "github.com/golang/protobuf/proto",
+			"revision": ""
+		},
+		{
+			"path": "github.com/google/go-cmp/cmp",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/errwrap",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "QWFrR7HC3NlbeDmJGuAeLs0d9SE=",
+			"path": "github.com/hashicorp/go-checkpoint",
+			"revision": "bbe6c410aa4be4194cb490a2bde8c3c33f295541",
+			"revisionTime": "2019-01-24T19:13:39Z"
+		},
+		{
+			"path": "github.com/hashicorp/go-cleanhttp",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "Vfww8zS0xCWj9ybwHjP2juL08KQ=",
+			"path": "github.com/hashicorp/go-getter",
+			"revision": "30a49e438715626318447d8ac7166bb425b695dc",
+			"revisionTime": "2019-07-15T16:59:53Z"
+		},
+		{
+			"checksumSHA1": "RPBfCNScCTZ2ov7PsGjeKrEkk3Q=",
+			"path": "github.com/hashicorp/go-getter/helper/url",
+			"revision": "30a49e438715626318447d8ac7166bb425b695dc"
+		},
+		{
+			"path": "github.com/hashicorp/go-hclog",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/go-multierror",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "dDDyK4HkCYyTfw1F23Jh2zhJU6A=",
+			"path": "github.com/hashicorp/go-plugin",
+			"revision": "9e3e1c37db188a1acb66561ee0ed4bf4d5e77554",
+			"revisionTime": "2019-06-18T14:51:23Z"
+		},
+		{
+			"checksumSHA1": "uTvnRQ5UWn/bhRxbW/UCfYFseSc=",
+			"path": "github.com/hashicorp/go-plugin/internal/plugin",
+			"revision": "9e3e1c37db188a1acb66561ee0ed4bf4d5e77554"
+		},
+		{
+			"path": "github.com/hashicorp/go-safetemp",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/go-uuid",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "6uSa9NOLvvTOG5vjMHLRoW5I+lU=",
+			"path": "github.com/hashicorp/go-version",
+			"revision": "192140e6f3e645d971b134d4e35b5191adb9dfd3",
+			"revisionTime": "2019-04-24T08:35:14Z"
+		},
+		{
+			"path": "github.com/hashicorp/hcl",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hcl/hcl/ast",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hcl/hcl/parser",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hcl/hcl/printer",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hcl/hcl/token",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hcl2/ext/typeexpr",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hcl2/gohcl",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "E+ZnZeQNRc4fICL9Y56cVQisQBU=",
+			"path": "github.com/hashicorp/hcl2/hcl",
+			"revision": "72d32879a5c5db881136f801b9efedf19813c081",
+			"revisionTime": "2019-08-09T21:00:04Z"
+		},
+		{
+			"checksumSHA1": "9QoMizrKV4QRS++PgT7ahfExVjQ=",
+			"path": "github.com/hashicorp/hcl2/hcl/hclsyntax",
+			"revision": "72d32879a5c5db881136f801b9efedf19813c081",
+			"revisionTime": "2019-08-09T21:00:04Z"
+		},
+		{
+			"checksumSHA1": "l5KBeDDM1gf7yFth7WGhckpF+oc=",
+			"path": "github.com/hashicorp/hcl2/hcl/json",
+			"revision": "72d32879a5c5db881136f801b9efedf19813c081",
+			"revisionTime": "2019-08-09T21:00:04Z"
+		},
+		{
+			"path": "github.com/hashicorp/hcl2/hcldec",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "9BAwEjl8xesG7nG/gN362TPrEgI=",
+			"path": "github.com/hashicorp/hcl2/hcled",
+			"revision": "72d32879a5c5db881136f801b9efedf19813c081",
+			"revisionTime": "2019-08-09T21:00:04Z"
+		},
+		{
+			"checksumSHA1": "IzmftuG99BqNhbFGhxZaGwtiMtM=",
+			"path": "github.com/hashicorp/hcl2/hclparse",
+			"revision": "72d32879a5c5db881136f801b9efedf19813c081",
+			"revisionTime": "2019-08-09T21:00:04Z"
+		},
+		{
+			"checksumSHA1": "nw95mV0v43Fh9hNCnO6UF2j9uZE=",
+			"path": "github.com/hashicorp/hcl2/hclwrite",
+			"revision": "72d32879a5c5db881136f801b9efedf19813c081",
+			"revisionTime": "2019-08-09T21:00:04Z"
+		},
+		{
+			"path": "github.com/hashicorp/hil",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/hil/ast",
+			"revision": ""
+		},
+		{
+			"path": "github.com/hashicorp/logutils",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "BOnEG5aUy8Yo1BaCDVH4D0a0YDo=",
+			"path": "github.com/hashicorp/terraform",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "V58rJqTSscHrkK8MUx4+BOiUQOE=",
+			"path": "github.com/hashicorp/terraform-config-inspect/tfconfig",
+			"revision": "9c24e68f3f10238d324bea9c06692fa6cf2e0b8b",
+			"revisionTime": "2019-06-28T15:35:18Z"
+		},
+		{
+			"checksumSHA1": "jXF5LfTIb7ZocoKFcHTP7bpyGUw=",
+			"path": "github.com/hashicorp/terraform/addrs",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "WFCvTXtBDqRzUZVqPHhzbM+fOv4=",
+			"path": "github.com/hashicorp/terraform/backend",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "2hjK4jwcyTnEmb0mjKaMBl8KB5U=",
+			"path": "github.com/hashicorp/terraform/backend/atlas",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "4rGyTcixAMKFIOzbWb83Yb98Kzw=",
+			"path": "github.com/hashicorp/terraform/backend/init",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "vOGH/O+A/KCdt53ib7t9TPfFq0A=",
+			"path": "github.com/hashicorp/terraform/backend/local",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "Ra/nSIKNUCDJZLZAuVhtoTgDNuU=",
+			"path": "github.com/hashicorp/terraform/backend/remote",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "qQQwItNyIyj96tPv0XCsExe8frQ=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/artifactory",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "8VOvqk59dp2pIb4O14+ZZjLlaRg=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/azure",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "Ljmzummp8FoEOZzvDCXlUX9dGmE=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/consul",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "9ebqgM4ekEd2/fseNMti0LUXf9g=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/etcdv2",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "jCCHJ+nDwMN+elHL4PrPlbuFPUc=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/etcdv3",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "MFdlMLaKM8nPeBB+2bCthIC/5BE=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/gcs",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "y0C1JNooi5zNJ7HakiqNltzDPHc=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/http",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "omi7Iz70L6uF3s++3/Qqip/SUSg=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/inmem",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "FQz7/DYPNCUJKOMFDkZFlV4HV6Y=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/manta",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "Gn1RL/5QyPge+j3QKAf9yJJmgTY=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/oss",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "p5aFFN/CwM6peLtCe4S/CqX3f6c=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/pg",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "Cnyz1qy37Uqjz7Ra8MhtinycHRg=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/s3",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "ZT2JdfMEnUdH6KC8kE3kU++MoVQ=",
+			"path": "github.com/hashicorp/terraform/backend/remote-state/swift",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "VlDDvXSnvzCOE3BEqDp+aji3d1M=",
+			"path": "github.com/hashicorp/terraform/builtin/providers/terraform",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "Efdum/R69c/a/RHbmgznQaTYT4E=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/chef",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "2V0x7sQtbEq1nu6bGQoZwr+ww3M=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/file",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "CCDITX4DvlFJvdDtM12LBg73apo=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/habitat",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "8m/sScEUxakxgPqYsEp+RNW5P1s=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/local-exec",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "PDJTS5Sw0+Fhea2tVqKop3fdOTQ=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/puppet",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "/7pml/ZO2vshcUVBBfgi8AozCQ0=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/puppet/bolt",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "BZ4Udw4IzpqJz4yLaxypCmydOXg=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/remote-exec",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "0P1w1JqB4vRciyW/t1MHa4XZ8HA=",
+			"path": "github.com/hashicorp/terraform/builtin/provisioners/salt-masterless",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "Jm3NlhwPho+2HXPtoyOXBIe/PhY=",
+			"path": "github.com/hashicorp/terraform/command",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "V0W8ZV/CI4xmWQx0Xs2yt2z9t2g=",
+			"path": "github.com/hashicorp/terraform/command/cliconfig",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "Cb1em/5FLyY4cZg8fDETVhTMB2k=",
+			"path": "github.com/hashicorp/terraform/command/clistate",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "6zed4bH2x6Pau+kcb+zjLrl1+uQ=",
+			"path": "github.com/hashicorp/terraform/command/format",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "0E1w1okgyarhLV/+rROAoP7OqeU=",
+			"path": "github.com/hashicorp/terraform/command/jsonconfig",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "X+s+y47bZkHY0MDmRKmzHF6spoQ=",
+			"path": "github.com/hashicorp/terraform/command/jsonplan",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "tYCNRwCbtlARf3BISNScysgjyic=",
+			"path": "github.com/hashicorp/terraform/command/jsonprovider",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "5elriszy0bsxGJci7+H3EToGjyI=",
+			"path": "github.com/hashicorp/terraform/command/jsonstate",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "bHn9SyTugVxwuSelU5lmgVIas+0=",
+			"path": "github.com/hashicorp/terraform/communicator",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "WCz6R77k00CQgnBzqj1HTMXPx2s=",
+			"path": "github.com/hashicorp/terraform/communicator/remote",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "aqRbUJSsOQ15K8sLRI8xq7wnoxQ=",
+			"path": "github.com/hashicorp/terraform/config",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "kjIuxi7dtXV05T8Sx3+gRovwytA=",
+			"path": "github.com/hashicorp/terraform/configs",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "1zYoUhzPZtv4RwyALkDF1bOvWNk=",
+			"path": "github.com/hashicorp/terraform/configs/configload",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "WyGFXNHSmmc5T6HYJSDogfSJccI=",
+			"path": "github.com/hashicorp/terraform/configs/configschema",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "6RhAM3mL3EhdnV1RH/RKc1DSt3U=",
+			"path": "github.com/hashicorp/terraform/configs/configupgrade",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "Z+71fAc80rqiLJafpMxAtncnwto=",
+			"path": "github.com/hashicorp/terraform/configs/hcl2shim",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "0mO6y2CADEnIk/fjVfTDPD0VJUc=",
+			"path": "github.com/hashicorp/terraform/dag",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "/Ou7Zz0r/zS9HqLJPNP1zJXadSw=",
+			"path": "github.com/hashicorp/terraform/helper/didyoumean",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "Vbo55GDzPgG/L/+W2pcvDhxrPZc=",
+			"path": "github.com/hashicorp/terraform/helper/experiment",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "j8XqkwLh2W3r3i6wnCRmve07BgI=",
+			"path": "github.com/hashicorp/terraform/helper/logging",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "IAxQeH92ZOCqdH/PF1Zy+e9MO4g=",
+			"path": "github.com/hashicorp/terraform/helper/plugin",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "kixmRBz/zR52m4O3MPOrYafR92g=",
+			"path": "github.com/hashicorp/terraform/helper/schema",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "eQ6F8nDi/R+F/SX51xCEY8iPZOE=",
+			"path": "github.com/hashicorp/terraform/helper/slowmessage",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "0fWQ1n5SZzqQYQlF+4jDKr6i7p4=",
+			"path": "github.com/hashicorp/terraform/helper/validation",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "ExvF2RbMeCfxuq2eASmOChEcRgQ=",
+			"path": "github.com/hashicorp/terraform/helper/wrappedreadline",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "q96i9foHLGSZ+9dFOV7jUseq7zs=",
+			"path": "github.com/hashicorp/terraform/helper/wrappedstreams",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "D4iPJoAprXLBjLgesojL1MIC/4U=",
+			"path": "github.com/hashicorp/terraform/httpclient",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "XAxXKe8KkJZEg4EXufcm5/J4ClI=",
+			"path": "github.com/hashicorp/terraform/internal/earlyconfig",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "HfJFVMEKW9ed6nFDoet+SeW3cOk=",
+			"path": "github.com/hashicorp/terraform/internal/initwd",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "CxTB66/rTnez99e0vB2t8er3y2w=",
+			"path": "github.com/hashicorp/terraform/internal/modsdir",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "dwCnjMGOdha2ty/NuvyA47XDNOM=",
+			"path": "github.com/hashicorp/terraform/internal/tfplugin5",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "x9JxnOi7uZKwZyEa0mQJbA8r/TQ=",
+			"path": "github.com/hashicorp/terraform/lang",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "SxVluwuUsSZpohEH/PNcfP1rNr4=",
+			"path": "github.com/hashicorp/terraform/lang/blocktoattr",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "yFWmdS6yEJZpRJzUqd/mULqCYGk=",
+			"path": "github.com/hashicorp/terraform/moduledeps",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "NPSBl0+6xOHIfEFaH4iM2A/dv9I=",
+			"path": "github.com/hashicorp/terraform/plans",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "hyLcexdgWtc/lEdxm3vVAlhbjso=",
+			"path": "github.com/hashicorp/terraform/plans/internal/planproto",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "VQ8LxG9oOb9hrp412lbvkUoWfL8=",
+			"path": "github.com/hashicorp/terraform/plans/objchange",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "TGRDmNaqV6Vwu5HJALCY20bUYyE=",
+			"path": "github.com/hashicorp/terraform/plans/planfile",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "ASDLpLVNX5BGCZI2JJH1HxuSPPE=",
+			"path": "github.com/hashicorp/terraform/plugin",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "87mnQDs+bqRv9h9PsoUn/HK5dF8=",
+			"path": "github.com/hashicorp/terraform/plugin/convert",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "OVB7j6lPrq6R5J+Uth5D1cjOlFI=",
+			"path": "github.com/hashicorp/terraform/plugin/discovery",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "XWt5i9J35+RR18JbC6ypQIOxOqk=",
+			"path": "github.com/hashicorp/terraform/providers",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "UyNkfEaCyRzM/9ZetRX2QbAryrU=",
+			"path": "github.com/hashicorp/terraform/provisioners",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "tXCSEnEZzxxohaKJ/fWVVHowyLE=",
+			"path": "github.com/hashicorp/terraform/registry",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "rn/2hLtZs7ko8DjNl/uN2/cU6+E=",
+			"path": "github.com/hashicorp/terraform/registry/regsrc",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "hJZnua0tE7eB+IsWVSfrf+3fgos=",
+			"path": "github.com/hashicorp/terraform/registry/response",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "e88p18kJT/R4ZDLzCVmzypd1+1A=",
+			"path": "github.com/hashicorp/terraform/repl",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "rwJi/BepC5eslcNoaug55EiN5Lw=",
+			"path": "github.com/hashicorp/terraform/state",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "3iu736Xg85yMFImU2Rv4jLn48eU=",
+			"path": "github.com/hashicorp/terraform/states",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "SFzFYi/WJLQnQxQYnXV16X7lKc0=",
+			"path": "github.com/hashicorp/terraform/states/statefile",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a"
+		},
+		{
+			"checksumSHA1": "GXJ4nsn6/yr5xQ1wRmiTxJHajxc=",
+			"path": "github.com/hashicorp/terraform/states/statemgr",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "Bmz5YN7Cmye6lnzwGw0s683uf6I=",
+			"path": "github.com/hashicorp/terraform/svchost",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "o6CMncmy6Q2F+r13sEOeT6R9GF8=",
+			"path": "github.com/hashicorp/terraform/svchost/auth",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "aYNEjI1hrEC3wKqftpAxfk7S/Wg=",
+			"path": "github.com/hashicorp/terraform/svchost/disco",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "pCOdNsSoTDr3N+ZIlgdrF43xZkI=",
+			"path": "github.com/hashicorp/terraform/terraform",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "s2/scgxURiX6/JqDbushLbHbgQ0=",
+			"path": "github.com/hashicorp/terraform/tfdiags",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"checksumSHA1": "FAICs5gg2YPFSHvv5EbAUuBkRxI=",
+			"path": "github.com/hashicorp/terraform/version",
+			"revision": "a66e293232e477dd4528460327f341c60009d49a",
+			"revisionTime": "2019-08-13T22:28:08Z"
+		},
+		{
+			"path": "github.com/hashicorp/yamux",
+			"revision": ""
+		},
+		{
+			"path": "github.com/kardianos/osext",
+			"revision": ""
 		},
 		{
 			"checksumSHA1": "cxWudRxSgBo2pjN0xpRKCKlYxa4=",
@@ -15,16 +709,190 @@
 			"revisionTime": "2019-05-10T14:34:07Z"
 		},
 		{
+			"checksumSHA1": "TZ1sJQ03juGU53DFxbI1g7RgU50=",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "c52ace132bf44798a21f16fdafaaafbf329519e2",
+			"revisionTime": "2019-07-08T05:42:20Z"
+		},
+		{
+			"path": "github.com/mattn/go-isatty",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "/NPUAKtdlsYRVijk8ls0PQAnCjY=",
+			"path": "github.com/mattn/go-shellwords",
+			"revision": "51d68c780a0237241b0f3e9329e32e64cc1d01bd",
+			"revisionTime": "2019-08-14T06:55:02Z"
+		},
+		{
+			"checksumSHA1": "fgd40uACm+f6nmSUC+R9A9NtwGY=",
+			"path": "github.com/mitchellh/cli",
+			"revision": "3d22a244be8aa6fb16ac24af0e195c08b7d973aa",
+			"revisionTime": "2018-08-24T00:41:14Z"
+		},
+		{
+			"checksumSHA1": "T8ZqoYpAeehnFMDOmQ2yNqS3scY=",
+			"path": "github.com/mitchellh/colorstring",
+			"revision": "d06e56a500db4d08c33db0b79461e7c9beafca2d",
+			"revisionTime": "2019-02-13T21:29:51Z"
+		},
+		{
+			"path": "github.com/mitchellh/copystructure",
+			"revision": ""
+		},
+		{
+			"path": "github.com/mitchellh/go-homedir",
+			"revision": ""
+		},
+		{
+			"path": "github.com/mitchellh/go-linereader",
+			"revision": ""
+		},
+		{
+			"path": "github.com/mitchellh/go-testing-interface",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "2gW/SeTAbHsmAdoDes4DksvqTj4=",
+			"path": "github.com/mitchellh/go-wordwrap",
+			"revision": "9e67c67572bc5dd02aef930e2b0ae3c02a4b5a5c",
+			"revisionTime": "2018-08-28T14:53:44Z"
+		},
+		{
+			"checksumSHA1": "Suj98RdkBVkbA08aSawl4gkPiKA=",
+			"path": "github.com/mitchellh/panicwrap",
+			"revision": "f67bf3f3d291520d92b87846f7c9f4e27caaa7db",
+			"revisionTime": "2019-02-28T16:43:58Z"
+		},
+		{
+			"checksumSHA1": "/+Dp5wAG15EVG48k08QzEnvQUb0=",
+			"path": "github.com/mitchellh/prefixedio",
+			"revision": "5733675afd5162de652b410d2244d82b00a38a79",
+			"revisionTime": "2019-02-13T21:39:02Z"
+		},
+		{
+			"path": "github.com/mitchellh/reflectwalk",
+			"revision": ""
+		},
+		{
+			"path": "github.com/oklog/run",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "LuFv4/jlrmFNnDb/5SCSEPAM9vU=",
 			"path": "github.com/pmezard/go-difflib/difflib",
 			"revision": "5d4384ee4fb2527b0a1256a821ebfc92f91efefc",
 			"revisionTime": "2018-12-26T10:54:42Z"
 		},
 		{
+			"checksumSHA1": "0OcWbAHq8mYFqq8gtGfnlSLpP8Y=",
+			"path": "github.com/posener/complete",
+			"revision": "2f2ff270a9f6adcef8351b1bdf5319b5d612b53f",
+			"revisionTime": "2019-07-05T14:33:47Z"
+		},
+		{
+			"checksumSHA1": "tTZdbCXe+5kV35vEhVIJVD4kh8Q=",
+			"path": "github.com/posener/complete/cmd",
+			"revision": "2f2ff270a9f6adcef8351b1bdf5319b5d612b53f"
+		},
+		{
+			"path": "github.com/posener/complete/cmd/install",
+			"revision": ""
+		},
+		{
+			"path": "github.com/spf13/afero",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "/7bZ0f2fM9AAsLf3nMca6Gtlm6E=",
 			"path": "github.com/stretchr/testify/assert",
 			"revision": "221dbe5ed46703ee255b1da0dec05086f5035f62",
 			"revisionTime": "2019-05-17T17:51:56Z"
+		},
+		{
+			"path": "github.com/ulikunitz/xz",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "+i1KuW4SNZUNBwAg199pcsyr53M=",
+			"path": "github.com/xlab/treeprint",
+			"revision": "a009c3971eca89777614839eb7f69abed3ea3959",
+			"revisionTime": "2018-11-12T08:48:07Z"
+		},
+		{
+			"checksumSHA1": "1U/jnVhPl16yMxiAsMzzavxYBXA=",
+			"path": "github.com/zclconf/go-cty/cty",
+			"revision": "01e2a242a65eb6f8ee372ddcea68c111fd4da15e",
+			"revisionTime": "2019-07-25T15:58:18Z"
+		},
+		{
+			"path": "github.com/zclconf/go-cty/cty/convert",
+			"revision": ""
+		},
+		{
+			"path": "github.com/zclconf/go-cty/cty/function",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "4XJpY7Dl+9w7dVmicarXCM1NRq0=",
+			"path": "github.com/zclconf/go-cty/cty/function/stdlib",
+			"revision": "01e2a242a65eb6f8ee372ddcea68c111fd4da15e"
+		},
+		{
+			"path": "github.com/zclconf/go-cty/cty/gocty",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "Y9Qv0ewA5LJmCLU7DMlr5pikMtE=",
+			"path": "github.com/zclconf/go-cty/cty/json",
+			"revision": "01e2a242a65eb6f8ee372ddcea68c111fd4da15e",
+			"revisionTime": "2019-07-25T15:58:18Z"
+		},
+		{
+			"checksumSHA1": "dzfYpWPghm6atrS46ALkJIatalQ=",
+			"path": "github.com/zclconf/go-cty/cty/msgpack",
+			"revision": "01e2a242a65eb6f8ee372ddcea68c111fd4da15e"
+		},
+		{
+			"checksumSHA1": "+njPih4yAI1Q7k5ZMgdVSNo3RFQ=",
+			"path": "github.com/zclconf/go-cty/cty/set",
+			"revision": "01e2a242a65eb6f8ee372ddcea68c111fd4da15e"
+		},
+		{
+			"path": "golang.org/x/crypto/openpgp",
+			"revision": ""
+		},
+		{
+			"path": "golang.org/x/net/context",
+			"revision": ""
+		},
+		{
+			"path": "golang.org/x/net/idna",
+			"revision": ""
+		},
+		{
+			"path": "golang.org/x/text/unicode/norm",
+			"revision": ""
+		},
+		{
+			"path": "google.golang.org/api/iterator",
+			"revision": ""
+		},
+		{
+			"path": "google.golang.org/grpc",
+			"revision": ""
+		},
+		{
+			"path": "google.golang.org/grpc/credentials",
+			"revision": ""
+		},
+		{
+			"path": "google.golang.org/grpc/health",
+			"revision": ""
+		},
+		{
+			"path": "google.golang.org/grpc/health/grpc_health_v1",
+			"revision": ""
 		},
 		{
 			"checksumSHA1": "sHE+uNte2l9cfywJxSJ9MxUoNxE=",
@@ -37,6 +905,10 @@
 			"path": "gopkg.in/yaml.v2",
 			"revision": "51d6538a90f86fe93ac480b35f37b2be17fef232",
 			"revisionTime": "2018-11-15T11:05:04Z"
+		},
+		{
+			"path": "https://github.com/hashicorp/terraform",
+			"revision": ""
 		}
 	],
 	"rootPath": "/github.com/brave-experiments/apollo-devops"
