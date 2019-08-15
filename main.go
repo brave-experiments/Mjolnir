@@ -9,7 +9,7 @@ import (
 var (
 	app         = cli.NewApp()
 	helpCommand = cli.Command{
-		Action:      mainCommand, // keep track of migration progress
+		Action:      mainCommand,
 		Name:        "help",
 		Usage:       "type help to show help",
 		ArgsUsage:   " ",
@@ -18,11 +18,16 @@ var (
 	}
 )
 
+func NewApp() *cli.App {
+	return app
+}
+
 func init() {
 	app.Name = os.Getenv("CLI_NAME")
 	app.Version = os.Getenv("CLI_VERSION")
 	app.Description = os.Getenv("CLI_DESCRIPTION")
 	app.Commands = append(app.Commands, helpCommand)
+
 }
 
 func main() {
