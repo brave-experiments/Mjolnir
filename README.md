@@ -1,3 +1,11 @@
+## Getting started
+
+To run project locally type:
+
+`bin/run`
+
+> Also see CONTRIBUTING.md
+
 ## Aim: 
 
 - To create DevOps tooling to enable the Brave team rapidly deploy Ethereum Proof of Authority (PoA) clusters across different Ethereum Clients for the purpose of performance testing. 

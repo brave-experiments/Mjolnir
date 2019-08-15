@@ -1,0 +1,15 @@
+### GIT FLOW
+
+Approach is simple, create branch with issue you are working with, 4eg:
+
+`feature/01/CLI-initialize-project`
+
+If it is `fix` for current code that already on master:
+
+`fix/01/CLI-initialize-project-output`
+
+Do pull request to branch `master`
+
+Master is the developer branch
+
+Releases will lay on certain locked branches, it will occur here after we will be ready with CI/CD pattern.

@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "sHE+uNte2l9cfywJxSJ9MxUoNxE=",
+			"path": "gopkg.in/urfave/cli.v1",
+			"revision": "e6cf83ec39f6e1158ced1927d4ed14578fda8edb",
+			"revisionTime": "2019-08-04T02:37:52Z"
+		}
+	],
+	"rootPath": "/github.com/brave-experiments/apollo-devops"
+}
