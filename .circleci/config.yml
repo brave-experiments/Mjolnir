@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  unit-test:
+    machine:
+      image: circleci/classic:201808-01
+    working_directory: /home/circleci/.go_workspace/src/github.com/brave-experiments/apollo-devops
+    steps:
+      - checkout
+      - run: mkdir /home/circleci/.go_workspace/bin
+      - run: go get github.com/kardianos/govendor
+      - run: export GOPATH=/home/circleci/.go_workspace
+      - run: bin/run test-ci
+      - store_artifacts:
+          path: coverage.out
+
+workflows:
+  workflow:
+    jobs:
+      # test every commit
+      - unit-test
