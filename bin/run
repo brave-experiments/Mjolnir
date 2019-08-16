@@ -9,7 +9,7 @@ function deploy_dev() {
     cp docker-compose.override.yml.dist docker-compose.override.yml
     cp .env.dist .env
     restart_containers
-    docker-compose exec -T cli govendor sync
+    docker-compose exec -T cli go mod tidy
     docker-compose exec cli sh
 }
 
