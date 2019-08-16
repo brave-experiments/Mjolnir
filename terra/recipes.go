@@ -1,6 +1,9 @@
 package terra
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+)
 
 var (
 	DefaultRecipes = map[string]Recipe{
@@ -9,6 +12,11 @@ var (
 		},
 	}
 )
+
+type Recipe struct {
+	Location string
+	Body     string
+}
 
 type Recipes struct {
 	Elements map[string]Recipe
@@ -36,6 +44,18 @@ func (recipes *Recipes) AddRecipe(keyName string, recipe Recipe) error {
 	}
 
 	recipes.Elements[keyName] = recipe
+
+	return nil
+}
+
+func (recipe *Recipe) Create() error {
+	fileBodyBytes, err := ioutil.ReadFile(recipe.Location)
+
+	if nil != err {
+		return err
+	}
+
+	recipe.Body = string(fileBodyBytes)
 
 	return nil
 }
