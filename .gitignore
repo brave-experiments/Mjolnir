@@ -2,5 +2,3 @@
 docker-compose.override.yml
 .env
 apollo
-src
-vendor
