@@ -1,5 +1,8 @@
 package terra
 
+import "github.com/johandry/terranova"
+
 type Client struct {
-	Recipes Recipes
+	Recipes  Recipes
+	platform terranova.Platform
 }
