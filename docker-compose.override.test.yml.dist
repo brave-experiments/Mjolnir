@@ -5,11 +5,11 @@ services:
     build: .
     image: brave-experiments/apollo-go:latest
     volumes:
-      - ./:/usr/local/go/src/github.com/brave-experiments/apollo-devops
+      - ./:/go/src/github.com/brave-experiments/apollo-devops
     env_file:
       - .env.test
     command: >
-      sh -c "govendor sync &&
+      sh -c "go mod tidy &&
              CompileDaemon -log-prefix=false -build=\"go build -a -installsuffix cgo -o apollo\" -command=\"go test ./...\" "
 
     networks:
