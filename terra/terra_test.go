@@ -16,7 +16,7 @@ func TestRecipe_CreateFailure(t *testing.T) {
 
 func TestRecipe_Create(t *testing.T) {
 	fileBody := []byte("dummy content")
-	fileName := "dummy.tf"
+	fileName := "dummyFileUniqueName.tf"
 
 	err := ioutil.WriteFile(fileName, fileBody, 0644)
 	assert.Nil(t, err)
