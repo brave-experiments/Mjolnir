@@ -24,6 +24,13 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 
 	err = client.WriteStateToFile()
 
+	if nil != err {
+		return err
+	}
+
+	// Synchronize state from platform and state object
+	err = client.state.ReadFile()
+
 	return err
 }
 
@@ -35,6 +42,12 @@ func (client *Client) PreparePlatform(file File) (err error) {
 	}
 
 	err = client.assignVariables(file)
+
+	if nil != err {
+		return err
+	}
+
+	client.platform.Code = file.Body
 
 	return err
 }
