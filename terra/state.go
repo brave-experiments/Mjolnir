@@ -39,7 +39,10 @@ func DefaultStateFile() (stateFile *StateFile, err error) {
 		return stateFile, err
 	}
 
-	_, err = fileBody.Write([]byte(DefaultStateFileBody))
+	// Write default state file if current is empty
+	if len(defaultStateFile.Body) == 0 {
+		_, err = fileBody.Write([]byte(DefaultStateFileBody))
+	}
 
 	if nil != err {
 		return defaultStateFile, err

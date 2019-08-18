@@ -16,8 +16,8 @@ func TestClient_DefaultClientCreateStateFile(t *testing.T) {
 	assert.Greater(t, len(client.Recipes.Elements), 0)
 	assert.Nil(t, err)
 
-	StateFileName = DefaulStateFileName
 	RemoveDummyFile(t, StateFileName)
+	StateFileName = DefaulStateFileName
 }
 
 func TestDefaultProvider(t *testing.T) {
