@@ -13,7 +13,6 @@ func TestClient_DefaultClientCreateStateFile(t *testing.T) {
 	StateFileName = "dummy.tfstate"
 	client := Client{}
 	err := client.DefaultClient()
-	assert.Greater(t, len(client.Recipes.Elements), 0)
 	assert.Nil(t, err)
 
 	RemoveDummyFile(t, StateFileName)
@@ -58,13 +57,13 @@ func TestClient_DumpVariables(t *testing.T) {
 	assert.Equal(t, vars, variables)
 }
 
-func TestClient_RunPlatformFailure_RecipeDoesNotExist(t *testing.T) {
+func TestClient_PreparePlatformFailure_RecipeDoesNotExist(t *testing.T) {
 	fileName := "dummy.tf"
 	client := Client{}
 	file := File{
 		Location: fileName,
 	}
-	err := client.RunPlatform(file)
+	err := client.PreparePlatform(file)
 	assert.Error(t, err)
 	assert.IsType(t, &os.PathError{}, err)
 	assert.Equal(
@@ -74,7 +73,7 @@ func TestClient_RunPlatformFailure_RecipeDoesNotExist(t *testing.T) {
 	)
 }
 
-func TestClient_RunPlatformFailure_PlatformIsNotInitialized(t *testing.T) {
+func TestClient_PreparePlatformFailure_PlatformIsNotInitialized(t *testing.T) {
 	fileName := "dummyRecipe.tf"
 	fileBody := "dummy file body"
 	PrepareDummyFile(t, fileName, fileBody)
@@ -82,14 +81,14 @@ func TestClient_RunPlatformFailure_PlatformIsNotInitialized(t *testing.T) {
 	file := File{
 		Location: fileName,
 	}
-	err := client.RunPlatform(file)
+	err := client.PreparePlatform(file)
 	assert.Error(t, err)
 	assert.IsType(t, ClientError{}, err)
 	assert.Equal(t, "Platform is not initialized", err.Error())
 	RemoveDummyFile(t, fileName)
 }
 
-func TestClient_RunPlatformWithVariables(t *testing.T) {
+func TestClient_PreparePlatformWithVariables(t *testing.T) {
 	fileName := "dummyRecipe.tf"
 	fileBody := "dummy file body"
 	PrepareDummyFile(t, fileName, fileBody)
@@ -122,7 +121,7 @@ func TestClient_RunPlatformWithVariables(t *testing.T) {
 		Variables: newVars,
 	}
 
-	err := client.RunPlatform(file)
+	err := client.PreparePlatform(file)
 	assert.Nil(t, err)
 
 	dumpedVariables, err := client.DumpVariables()
@@ -131,25 +130,3 @@ func TestClient_RunPlatformWithVariables(t *testing.T) {
 
 	RemoveDummyFile(t, fileName)
 }
-
-//func TestClient_RunPlatform(t *testing.T) {
-//	fileName := "dummyRecipe.tf"
-//	fileBody := "dummy file body"
-//	PrepareDummyFile(t, fileName, fileBody)
-//
-//	vars := make(map[string]interface{})
-//	vars["dummyKey"] = "dummyVar"
-//	vars["dummyKey1"] = "dummyVar1"
-//
-//	platform := &terranova.Platform{
-//		Vars: vars,
-//	}
-//
-//	client := Client{
-//		platform: platform,
-//	}
-//
-//	file := File{
-//		Location: fileName,
-//	}
-//}

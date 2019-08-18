@@ -7,12 +7,10 @@ import (
 )
 
 type Client struct {
-	Recipes  Recipes
-	Provider terraform.ResourceProvider
 	platform *terranova.Platform
 }
 
-func (client *Client) RunPlatform(file File) (err error) {
+func (client *Client) PreparePlatform(file File) (err error) {
 	err = file.ReadFile()
 
 	if nil != err {
@@ -35,9 +33,6 @@ func (client *Client) DumpVariables() (vars map[string]interface{}, err error) {
 }
 
 func (client *Client) DefaultClient() (err error) {
-	// Maybe recipes should not be registered within client, but CLI ?
-	client.Recipes = Recipes{}
-	client.Recipes.CreateWithDefaults()
 	client.platform = &terranova.Platform{
 		Providers: make(map[string]terraform.ResourceProvider),
 	}
