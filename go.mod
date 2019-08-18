@@ -3,25 +3,15 @@ module github.com/brave-experiments/apollo-devops
 go 1.12
 
 require (
-	github.com/chzyer/logex v1.1.11-0.20160617073814-96a4d311aa9b // indirect
-	github.com/coreos/bbolt v1.3.1-coreos.1 // indirect
-	github.com/davecgh/go-spew v1.1.1
-	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
-	github.com/hashicorp/go-immutable-radix v1.0.0 // indirect
-	github.com/hashicorp/go-sockaddr v1.0.0 // indirect
-	github.com/hashicorp/serf v0.8.2-0.20171022020050-c20a0b1b1ea9 // indirect
-	github.com/hashicorp/terraform v0.12.6
+	github.com/armon/go-radix v1.0.0 // indirect
+	github.com/hashicorp/terraform v0.11.13
 	github.com/johandry/terranova v0.0.0-20190422213246-704ed6ce88e7
-	github.com/miekg/dns v1.0.14 // indirect
+	github.com/kr/pretty v0.1.0 // indirect
+	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mitchellh/cli v1.0.0
-	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275 // indirect
-	github.com/prometheus/procfs v0.0.0-20181204211112-1dc9a6cbc91a // indirect
-	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
-	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
+	github.com/posener/complete v1.2.1 // indirect
 	github.com/stretchr/testify v1.4.0
-	github.com/terraform-providers/terraform-provider-aws v1.60.0
-	github.com/terraform-providers/terraform-provider-template v1.0.0 // indirect
-	github.com/terraform-providers/terraform-provider-tls v1.2.0 // indirect
-	gopkg.in/yaml.v2 v2.2.2
+	github.com/terraform-providers/terraform-provider-aws v1.29.0
+	golang.org/x/sys v0.0.0-20190502175342-a43fa875dd82 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )

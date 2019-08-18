@@ -1,7 +1,7 @@
 package terra
 
 import (
-	"github.com/brave-experiments/apollo-devops/src/github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
