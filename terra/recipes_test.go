@@ -16,7 +16,7 @@ func TestRecipes_CreateWithDefaults(t *testing.T) {
 
 func TestRecipes_AddRecipe(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := Recipe{Location: keyName}
+	dummyRecipe := File{Location: keyName}
 	recipes := Recipes{}
 	err := recipes.AddRecipe(keyName, dummyRecipe)
 	assert.Nil(t, err)
@@ -25,7 +25,7 @@ func TestRecipes_AddRecipe(t *testing.T) {
 
 func TestRecipes_AddRecipeToDefaults(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := Recipe{Location: keyName}
+	dummyRecipe := File{Location: keyName}
 	recipes := Recipes{}
 	recipes.CreateWithDefaults()
 	err := recipes.AddRecipe(keyName, dummyRecipe)
@@ -35,7 +35,7 @@ func TestRecipes_AddRecipeToDefaults(t *testing.T) {
 
 func TestRecipes_AddRecipeFailure(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := Recipe{Location: keyName}
+	dummyRecipe := File{Location: keyName}
 	recipes := Recipes{}
 	err := recipes.AddRecipe(keyName, dummyRecipe)
 	assert.Nil(t, err)
@@ -56,25 +56,25 @@ func TestRecipesError_Error(t *testing.T) {
 	assert.Equal(t, err.Error(), errorMsg)
 }
 
-func TestRecipe_CreateFailure(t *testing.T) {
-	recipe := Recipe{}
-	err := recipe.Create()
+func TestFile_ReadFileFailure(t *testing.T) {
+	recipe := File{}
+	err := recipe.ReadFile()
 	assert.Error(t, err)
 	assert.Equal(t, err.Error(), "open : no such file or directory")
 }
 
-func TestRecipe_Create(t *testing.T) {
+func TestFile_ReadFile(t *testing.T) {
 	fileBody := []byte("dummy content")
 	fileName := "dummyFileUniqueName.tf"
 
 	err := ioutil.WriteFile(fileName, fileBody, 0644)
 	assert.Nil(t, err)
 
-	recipe := Recipe{
+	recipe := File{
 		Location: fileName,
 	}
 
-	err = recipe.Create()
+	err = recipe.ReadFile()
 	assert.Nil(t, err)
 
 	assert.Equal(t, string(fileBody), recipe.Body)

@@ -16,7 +16,10 @@ type Client struct {
 func (client *Client) DefaultClient() {
 	client.Recipes = Recipes{}
 	client.Recipes.CreateWithDefaults()
-	client.platform = terranova.Platform{}
+	client.platform = terranova.Platform{
+		Providers: make(map[string]terraform.ResourceProvider),
+	}
+	client.platform.AddProvider(DefaultProvider("aws"))
 }
 
 func DefaultProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
