@@ -16,11 +16,11 @@ type Client struct {
 func (client *Client) DefaultClient() {
 	client.Recipes = Recipes{}
 	client.Recipes.CreateWithDefaults()
+	client.platform = terranova.Platform{}
 }
 
-func defaultProvider() terraform.ResourceProvider {
-	provider := aws.Provider()
+func DefaultProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
+	provider = aws.Provider()
 
-	return provider
-	//https://github.com/johandry/terranova
+	return key, provider
 }
