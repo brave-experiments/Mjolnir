@@ -40,6 +40,10 @@ func TestClient_DumpVariables_NilVariables(t *testing.T) {
 }
 
 func TestClient_DumpVariables(t *testing.T) {
+	StateFileName = "dummy.tfstate"
+	stateFile, err := DefaultStateFile()
+	assert.Nil(t, err)
+
 	vars := make(map[string]interface{})
 	vars["dummyKey"] = "dummyVar"
 	vars["dummyKey1"] = "dummyVar1"
@@ -50,11 +54,15 @@ func TestClient_DumpVariables(t *testing.T) {
 
 	client := Client{
 		platform: platform,
+		state:    stateFile,
 	}
 
 	variables, err := client.DumpVariables()
 	assert.Empty(t, err)
 	assert.Equal(t, vars, variables)
+
+	RemoveDummyFile(t, StateFileName)
+	StateFileName = DefaulStateFileName
 }
 
 func TestClient_PreparePlatformFailure_RecipeDoesNotExist(t *testing.T) {
@@ -89,6 +97,10 @@ func TestClient_PreparePlatformFailure_PlatformIsNotInitialized(t *testing.T) {
 }
 
 func TestClient_PreparePlatformWithVariables(t *testing.T) {
+	StateFileName = "dummy.tfstate"
+	stateFile, err := DefaultStateFile()
+	assert.Nil(t, err)
+
 	fileName := "dummyRecipe.tf"
 	fileBody := "dummy file body"
 	PrepareDummyFile(t, fileName, fileBody)
@@ -114,6 +126,7 @@ func TestClient_PreparePlatformWithVariables(t *testing.T) {
 
 	client := Client{
 		platform: platform,
+		state:    stateFile,
 	}
 
 	file := File{
@@ -121,7 +134,7 @@ func TestClient_PreparePlatformWithVariables(t *testing.T) {
 		Variables: newVars,
 	}
 
-	err := client.PreparePlatform(file)
+	err = client.PreparePlatform(file)
 	assert.Nil(t, err)
 
 	dumpedVariables, err := client.DumpVariables()
@@ -129,4 +142,17 @@ func TestClient_PreparePlatformWithVariables(t *testing.T) {
 	assert.Equal(t, dumpedVariables, joinedVars)
 
 	RemoveDummyFile(t, fileName)
+
+	RemoveDummyFile(t, StateFileName)
+	StateFileName = DefaulStateFileName
+}
+
+func TestClient_WriteStateToFileFailure(t *testing.T) {
+	client := Client{
+		platform: &terranova.Platform{},
+	}
+	err := client.WriteStateToFile()
+	assert.Error(t, err)
+	assert.IsType(t, ClientError{}, err)
+	assert.Equal(t, "No state file found", err.Error())
 }

@@ -8,6 +8,23 @@ import (
 
 type Client struct {
 	platform *terranova.Platform
+	state    *StateFile
+}
+
+func (client *Client) Apply(file File, destroy bool) (err error) {
+	if nil != client.PreparePlatform(file) {
+		return err
+	}
+
+	err = client.platform.Apply(destroy)
+
+	if nil != err {
+		return err
+	}
+
+	err = client.WriteStateToFile()
+
+	return err
 }
 
 func (client *Client) PreparePlatform(file File) (err error) {
@@ -18,6 +35,18 @@ func (client *Client) PreparePlatform(file File) (err error) {
 	}
 
 	err = client.assignVariables(file)
+
+	return err
+}
+
+func (client *Client) WriteStateToFile() (err error) {
+	err = client.guard()
+
+	if nil != err {
+		return err
+	}
+
+	client.platform, err = client.platform.WriteStateToFile(client.state.Location)
 
 	return err
 }
@@ -38,13 +67,13 @@ func (client *Client) DefaultClient() (err error) {
 	}
 	client.platform.AddProvider(DefaultProvider("aws"))
 
-	state, err := DefaultStateFile()
+	client.state, err = DefaultStateFile()
 
 	if nil != err {
 		return err
 	}
 
-	err = client.assignStateFile(state)
+	err = client.assignStateFile()
 
 	return err
 }
@@ -58,6 +87,10 @@ func DefaultProvider(key string) (returnKey string, provider terraform.ResourceP
 func (client *Client) guard() (err error) {
 	if nil == client.platform {
 		return ClientError{"Platform is not initialized"}
+	}
+
+	if nil == client.state {
+		return ClientError{"No state file found"}
 	}
 
 	return nil
@@ -77,14 +110,14 @@ func (client *Client) assignVariables(file File) (err error) {
 	return nil
 }
 
-func (client *Client) assignStateFile(stateFile *StateFile) (err error) {
+func (client *Client) assignStateFile() (err error) {
 	err = client.guard()
 
 	if nil != err {
 		return err
 	}
 
-	client.platform, err = client.platform.ReadStateFromFile(stateFile.Location)
+	client.platform, err = client.platform.ReadStateFromFile(client.state.Location)
 
 	return err
 }
