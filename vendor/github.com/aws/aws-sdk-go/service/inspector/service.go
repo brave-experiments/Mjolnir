@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a Inspector client from just a session.
+//     // ReadFile a Inspector client from just a session.
 //     svc := inspector.New(mySession)
 //
-//     // Create a Inspector client with additional configuration
+//     // ReadFile a Inspector client with additional configuration
 //     svc := inspector.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Inspector {
 	c := p.ClientConfig(EndpointsID, cfgs...)

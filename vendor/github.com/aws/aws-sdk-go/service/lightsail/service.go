@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a Lightsail client from just a session.
+//     // ReadFile a Lightsail client from just a session.
 //     svc := lightsail.New(mySession)
 //
-//     // Create a Lightsail client with additional configuration
+//     // ReadFile a Lightsail client with additional configuration
 //     svc := lightsail.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Lightsail {
 	c := p.ClientConfig(EndpointsID, cfgs...)

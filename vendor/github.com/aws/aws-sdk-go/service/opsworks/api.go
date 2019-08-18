@@ -785,7 +785,7 @@ func (c *OpsWorks) CreateLayerRequest(input *CreateLayerInput) (req *request.Req
 
 // CreateLayer API operation for AWS OpsWorks.
 //
-// Creates a layer. For more information, see How to Create a Layer (http://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-create.html).
+// Creates a layer. For more information, see How to ReadFile a Layer (http://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-create.html).
 //
 // You should use CreateLayer for noncustom layer types such as PHP App Server
 // only if the stack does not have an existing layer of that type. A stack can
@@ -879,7 +879,7 @@ func (c *OpsWorks) CreateStackRequest(input *CreateStackInput) (req *request.Req
 
 // CreateStack API operation for AWS OpsWorks.
 //
-// Creates a new stack. For more information, see Create a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-edit.html).
+// Creates a new stack. For more information, see ReadFile a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-edit.html).
 //
 // Required Permissions: To use this action, an IAM user must have an attached
 // policy that explicitly grants permissions. For more information about user
@@ -7316,7 +7316,7 @@ type CloneStackInput struct {
 	Attributes map[string]*string `type:"map"`
 
 	// A ChefConfiguration object that specifies whether to enable Berkshelf and
-	// the Berkshelf version on Chef 11.10 stacks. For more information, see Create
+	// the Berkshelf version on Chef 11.10 stacks. For more information, see ReadFile
 	// a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	ChefConfiguration *ChefConfiguration `type:"structure"`
 
@@ -7490,7 +7490,7 @@ type CloneStackInput struct {
 	//    security group with a layer on creation; custom security groups are required
 	//    only for those layers that need custom settings.
 	//
-	// For more information, see Create a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
+	// For more information, see ReadFile a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	UseOpsworksSecurityGroups *bool `type:"boolean"`
 
 	// The ID of the VPC that the cloned stack is to be launched into. It must be
@@ -8955,7 +8955,7 @@ type CreateStackInput struct {
 	Attributes map[string]*string `type:"map"`
 
 	// A ChefConfiguration object that specifies whether to enable Berkshelf and
-	// the Berkshelf version on Chef 11.10 stacks. For more information, see Create
+	// the Berkshelf version on Chef 11.10 stacks. For more information, see ReadFile
 	// a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	ChefConfiguration *ChefConfiguration `type:"structure"`
 
@@ -9133,7 +9133,7 @@ type CreateStackInput struct {
 	//    custom security groups are required only for those layers that need custom
 	//    settings.
 	//
-	// For more information, see Create a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
+	// For more information, see ReadFile a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	UseOpsworksSecurityGroups *bool `type:"boolean"`
 
 	// The ID of the VPC that the stack is to be launched into. The VPC must be
@@ -14943,7 +14943,7 @@ type Stack struct {
 	Attributes map[string]*string `type:"map"`
 
 	// A ChefConfiguration object that specifies whether to enable Berkshelf and
-	// the Berkshelf version. For more information, see Create a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
+	// the Berkshelf version. For more information, see ReadFile a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	ChefConfiguration *ChefConfiguration `type:"structure"`
 
 	// The configuration manager.
@@ -16627,7 +16627,7 @@ type UpdateStackInput struct {
 	Attributes map[string]*string `type:"map"`
 
 	// A ChefConfiguration object that specifies whether to enable Berkshelf and
-	// the Berkshelf version on Chef 11.10 stacks. For more information, see Create
+	// the Berkshelf version on Chef 11.10 stacks. For more information, see ReadFile
 	// a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	ChefConfiguration *ChefConfiguration `type:"structure"`
 
@@ -16776,7 +16776,7 @@ type UpdateStackInput struct {
 	//    manually associate a built-in security group with a layer on. Custom security
 	//    groups are required only for those layers that need custom settings.
 	//
-	// For more information, see Create a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
+	// For more information, see ReadFile a New Stack (http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-creating.html).
 	UseOpsworksSecurityGroups *bool `type:"boolean"`
 }
 

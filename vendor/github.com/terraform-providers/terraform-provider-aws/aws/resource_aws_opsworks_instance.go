@@ -560,7 +560,7 @@ func resourceAwsOpsworksInstanceRead(d *schema.ResourceData, meta interface{}) e
 	d.Set("tenancy", instance.Tenancy)
 	d.Set("virtualization_type", instance.VirtualizationType)
 
-	// Read BlockDeviceMapping
+	// ReadFile BlockDeviceMapping
 	ibds, err := readOpsworksBlockDevices(d, instance, meta)
 	if err != nil {
 		return err
@@ -580,7 +580,7 @@ func resourceAwsOpsworksInstanceRead(d *schema.ResourceData, meta interface{}) e
 		d.Set("root_block_device", []interface{}{})
 	}
 
-	// Read Security Groups
+	// ReadFile Security Groups
 	sgs := make([]string, 0, len(instance.SecurityGroupIds))
 	for _, sg := range instance.SecurityGroupIds {
 		sgs = append(sgs, *sg)

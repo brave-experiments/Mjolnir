@@ -6084,9 +6084,9 @@ type DirectoryConnectSettings struct {
 	// The username of an account in the on-premises directory that is used to connect
 	// to the directory. This account must have the following privileges:
 	//
-	//    * Read users and groups
+	//    * ReadFile users and groups
 	//
-	//    * Create computer objects
+	//    * ReadFile computer objects
 	//
 	//    * Join computers to the domain
 	//

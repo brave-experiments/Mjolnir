@@ -298,7 +298,7 @@ func (c *ElasticBeanstalk) ComposeEnvironmentsRequest(input *ComposeEnvironments
 
 // ComposeEnvironments API operation for AWS Elastic Beanstalk.
 //
-// Create or update a group of environments that each run a separate component
+// ReadFile or update a group of environments that each run a separate component
 // of a single application. Takes a list of version labels that specify application
 // source bundles for each of the environments to create or update. The name
 // of each environment and other required information must be included in the
@@ -762,7 +762,7 @@ func (c *ElasticBeanstalk) CreatePlatformVersionRequest(input *CreatePlatformVer
 
 // CreatePlatformVersion API operation for AWS Elastic Beanstalk.
 //
-// Create a new version of your custom platform.
+// ReadFile a new version of your custom platform.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about

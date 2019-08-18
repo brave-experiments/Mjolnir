@@ -149,7 +149,7 @@ func Decompress(data []byte) ([]byte, bool, error) {
 	// Close the io.ReadCloser
 	defer reader.Close()
 
-	// Read all the compressed data into a buffer
+	// ReadFile all the compressed data into a buffer
 	var buf bytes.Buffer
 	if _, err = io.Copy(&buf, reader); err != nil {
 		return nil, false, err

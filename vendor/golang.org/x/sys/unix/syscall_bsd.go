@@ -507,7 +507,7 @@ func SysctlRaw(name string, args ...int) ([]byte, error) {
 		return nil, nil
 	}
 
-	// Read into buffer of that size.
+	// ReadFile into buffer of that size.
 	buf := make([]byte, n)
 	if err := sysctl(mib, &buf[0], &n, nil, 0); err != nil {
 		return nil, err

@@ -75,14 +75,14 @@ func resourceAwsKmsGrant() *schema.Resource {
 							Optional: true,
 							ForceNew: true,
 							Elem:     schema.TypeString,
-							// ConflictsWith encryption_context_subset handled in Create, see kmsGrantConstraintsIsValid
+							// ConflictsWith encryption_context_subset handled in ReadFile, see kmsGrantConstraintsIsValid
 						},
 						"encryption_context_subset": {
 							Type:     schema.TypeMap,
 							Optional: true,
 							ForceNew: true,
 							Elem:     schema.TypeString,
-							// ConflictsWith encryption_context_equals handled in Create, see kmsGrantConstraintsIsValid
+							// ConflictsWith encryption_context_equals handled in ReadFile, see kmsGrantConstraintsIsValid
 						},
 					},
 				},

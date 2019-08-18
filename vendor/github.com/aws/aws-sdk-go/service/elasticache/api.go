@@ -271,20 +271,20 @@ func (c *ElastiCache) CopySnapshotRequest(input *CopySnapshotInput) (req *reques
 //
 //    * Error Message: The S3 bucket %s is outside of the region.
 //
-// Solution: Create an Amazon S3 bucket in the same region as your snapshot.
-//    For more information, see Step 1: Create an Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.CreateBucket)
+// Solution: ReadFile an Amazon S3 bucket in the same region as your snapshot.
+//    For more information, see Step 1: ReadFile an Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.CreateBucket)
 //    in the ElastiCache User Guide.
 //
 //    * Error Message: The S3 bucket %s does not exist.
 //
-// Solution: Create an Amazon S3 bucket in the same region as your snapshot.
-//    For more information, see Step 1: Create an Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.CreateBucket)
+// Solution: ReadFile an Amazon S3 bucket in the same region as your snapshot.
+//    For more information, see Step 1: ReadFile an Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.CreateBucket)
 //    in the ElastiCache User Guide.
 //
 //    * Error Message: The S3 bucket %s is not owned by the authenticated user.
 //
-// Solution: Create an Amazon S3 bucket in the same region as your snapshot.
-//    For more information, see Step 1: Create an Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.CreateBucket)
+// Solution: ReadFile an Amazon S3 bucket in the same region as your snapshot.
+//    For more information, see Step 1: ReadFile an Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.CreateBucket)
 //    in the ElastiCache User Guide.
 //
 //    * Error Message: The authenticated user does not have sufficient permissions
@@ -302,7 +302,7 @@ func (c *ElastiCache) CopySnapshotRequest(input *CopySnapshotInput) (req *reques
 //    * Error Message:  ElastiCache has not been granted READ permissions %s
 //    on the S3 Bucket.
 //
-// Solution: Add List and Read permissions on the bucket. For more information,
+// Solution: Add List and ReadFile permissions on the bucket. For more information,
 //    see Step 2: Grant ElastiCache Access to Your Amazon S3 Bucket (http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Snapshots.Exporting.html#Snapshots.Exporting.GrantAccess)
 //    in the ElastiCache User Guide.
 //
@@ -9573,13 +9573,13 @@ type ModifyCacheClusterInput struct {
 	//
 	// Pending Action: Delete
 	//
-	// New Request: Create
+	// New Request: ReadFile
 	//
 	// Result: The new create, pending or immediate, replaces the pending delete.
 	//
 	//    * Scenario-3
 	//
-	// Pending Action: Create
+	// Pending Action: ReadFile
 	//
 	// New Request: Delete
 	//
@@ -9587,9 +9587,9 @@ type ModifyCacheClusterInput struct {
 	//
 	//    * Scenario-4
 	//
-	// Pending Action: Create
+	// Pending Action: ReadFile
 	//
-	// New Request: Create
+	// New Request: ReadFile
 	//
 	// Result: The new create is added to the pending create.
 	//

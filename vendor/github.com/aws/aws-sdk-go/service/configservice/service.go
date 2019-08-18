@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a ConfigService client from just a session.
+//     // ReadFile a ConfigService client from just a session.
 //     svc := configservice.New(mySession)
 //
-//     // Create a ConfigService client with additional configuration
+//     // ReadFile a ConfigService client with additional configuration
 //     svc := configservice.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ConfigService {
 	c := p.ClientConfig(EndpointsID, cfgs...)

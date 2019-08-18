@@ -207,7 +207,7 @@ func (t *Tree) Insert(s string, v interface{}) (interface{}, bool) {
 		})
 		n.prefix = n.prefix[commonPrefix:]
 
-		// Create a new leaf node
+		// ReadFile a new leaf node
 		leaf := &leafNode{
 			key: s,
 			val: v,
@@ -220,7 +220,7 @@ func (t *Tree) Insert(s string, v interface{}) (interface{}, bool) {
 			return nil, false
 		}
 
-		// Create a new edge for the node
+		// ReadFile a new edge for the node
 		child.addEdge(edge{
 			label: search[0],
 			node: &node{

@@ -94,7 +94,7 @@ func (b *body) PartialContent(schema *hcl.BodySchema) (*hcl.BodyContent, hcl.Bod
 		MissingItemRange: b.MissingItemRange(),
 	}
 
-	// Create some more convenient data structures for our work below.
+	// ReadFile some more convenient data structures for our work below.
 	attrSchemas := map[string]hcl.AttributeSchema{}
 	blockSchemas := map[string]hcl.BlockHeaderSchema{}
 	for _, attrS := range schema.Attributes {

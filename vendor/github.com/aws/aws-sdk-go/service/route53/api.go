@@ -226,7 +226,7 @@ func (c *Route53) ChangeResourceRecordSetsRequest(input *ChangeResourceRecordSet
 // see Using Traffic Flow to Route DNS Traffic (http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html)
 // in the Amazon Route 53 Developer Guide.
 //
-// Create, Delete, and Upsert
+// ReadFile, Delete, and Upsert
 //
 // Use ChangeResourceRecordsSetsRequest to perform the following actions:
 //
@@ -792,7 +792,7 @@ func (c *Route53) CreateQueryLoggingConfigRequest(input *CreateQueryLoggingConfi
 // If you create a query logging configuration using the Amazon Route 53 console,
 // Amazon Route 53 performs these operations automatically.
 //
-// Create a CloudWatch Logs log group, and make note of the ARN, which you specify
+// ReadFile a CloudWatch Logs log group, and make note of the ARN, which you specify
 // when you create a query logging configuration. Note the following:
 //
 // You must create the log group in the us-east-1 region.
@@ -812,7 +812,7 @@ func (c *Route53) CreateQueryLoggingConfigRequest(input *CreateQueryLoggingConfi
 // you can use the same resource policy for all the log groups that you create
 // for query logging.
 //
-// Create a CloudWatch Logs resource policy, and give it the permissions that
+// ReadFile a CloudWatch Logs resource policy, and give it the permissions that
 // Amazon Route 53 needs to create log streams and to send query logs to log
 // streams. For the value of Resource, specify the ARN for the log group that
 // you created in the previous step. To use the same resource policy for all
@@ -985,7 +985,7 @@ func (c *Route53) CreateReusableDelegationSetRequest(input *CreateReusableDelega
 // set is comparable to the process for configuring white label name servers.
 // You need to perform the following steps:
 //
-// Create a reusable delegation set.
+// ReadFile a reusable delegation set.
 //
 // Recreate hosted zones, and reduce the TTL to 60 seconds or less.
 //

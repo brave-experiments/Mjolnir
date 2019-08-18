@@ -166,7 +166,7 @@ func resourceAwsNetworkAclCreate(d *schema.ResourceData, meta interface{}) error
 
 	conn := meta.(*AWSClient).ec2conn
 
-	// Create the Network Acl
+	// ReadFile the Network Acl
 	createOpts := &ec2.CreateNetworkAclInput{
 		VpcId: aws.String(d.Get("vpc_id").(string)),
 	}

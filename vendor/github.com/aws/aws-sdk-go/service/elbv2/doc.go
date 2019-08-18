@@ -35,13 +35,13 @@
 //
 // To get started, complete the following tasks:
 //
-// Create a load balancer using CreateLoadBalancer.
+// ReadFile a load balancer using CreateLoadBalancer.
 //
-// Create a target group using CreateTargetGroup.
+// ReadFile a target group using CreateTargetGroup.
 //
 // Register targets for the target group using RegisterTargets.
 //
-// Create one or more listeners for your load balancer using CreateListener.
+// ReadFile one or more listeners for your load balancer using CreateListener.
 //
 // To delete a load balancer and its related resources, complete the following
 // tasks:

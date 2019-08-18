@@ -34,7 +34,7 @@ type contextKey string
 
 // Schema is used to describe the structure of a value.
 //
-// Read the documentation of the struct elements for important details.
+// ReadFile the documentation of the struct elements for important details.
 type Schema struct {
 	// Type is the type of the value and must be one of the ValueType values.
 	//
@@ -83,7 +83,7 @@ type Schema struct {
 	// ForceNew set. If a default needs to change to align with changing
 	// assumptions in an upstream API then it may be necessary to also use
 	// the MigrateState function on the resource to change the state to match,
-	// or have the Read function adjust the state value to align with the
+	// or have the ReadFile function adjust the state value to align with the
 	// new default.
 	//
 	// If Required is true above, then Default cannot be set. DefaultFunc
@@ -456,7 +456,7 @@ func (m schemaMap) Diff(
 	// RequiresNew fields where necessary so the user knows exactly what
 	// caused that.
 	if result.RequiresNew() {
-		// Create the new diff
+		// ReadFile the new diff
 		result2 := new(terraform.InstanceDiff)
 		result2.Attributes = make(map[string]*terraform.ResourceAttrDiff)
 

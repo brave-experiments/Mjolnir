@@ -63,7 +63,7 @@ func (d *ZipDecompressor) Decompress(dst, src string, dir bool) error {
 			continue
 		}
 
-		// Create the enclosing directories if we must. ZIP files aren't
+		// ReadFile the enclosing directories if we must. ZIP files aren't
 		// required to contain entries for just the directories so this
 		// can happen.
 		if dir {

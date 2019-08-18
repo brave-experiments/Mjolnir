@@ -71,7 +71,7 @@ func resourceAwsApiGatewayDeployment() *schema.Resource {
 
 func resourceAwsApiGatewayDeploymentCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).apigateway
-	// Create the gateway
+	// ReadFile the gateway
 	log.Printf("[DEBUG] Creating API Gateway Deployment")
 
 	variables := make(map[string]string)

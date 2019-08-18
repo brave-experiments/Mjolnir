@@ -507,7 +507,7 @@ func resourceAwsElbUpdate(d *schema.ResourceData, meta interface{}) error {
 			// Occasionally AWS will error with a 'duplicate listener', without any
 			// other listeners on the ELB. Retry here to eliminate that.
 			err := resource.Retry(5*time.Minute, func() *resource.RetryError {
-				log.Printf("[DEBUG] ELB Create Listeners opts: %s", createListenersOpts)
+				log.Printf("[DEBUG] ELB ReadFile Listeners opts: %s", createListenersOpts)
 				if _, err := elbconn.CreateLoadBalancerListeners(createListenersOpts); err != nil {
 					if awsErr, ok := err.(awserr.Error); ok {
 						if awsErr.Code() == "DuplicateListener" {

@@ -69,7 +69,7 @@ func resourceAwsVpcPeeringConnection() *schema.Resource {
 func resourceAwsVPCPeeringCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).ec2conn
 
-	// Create the vpc peering connection
+	// ReadFile the vpc peering connection
 	createOpts := &ec2.CreateVpcPeeringConnectionInput{
 		PeerVpcId: aws.String(d.Get("peer_vpc_id").(string)),
 		VpcId:     aws.String(d.Get("vpc_id").(string)),
@@ -86,7 +86,7 @@ func resourceAwsVPCPeeringCreate(d *schema.ResourceData, meta interface{}) error
 		createOpts.PeerRegion = aws.String(v.(string))
 	}
 
-	log.Printf("[DEBUG] VPC Peering Create options: %#v", createOpts)
+	log.Printf("[DEBUG] VPC Peering ReadFile options: %#v", createOpts)
 
 	resp, err := conn.CreateVpcPeeringConnection(createOpts)
 	if err != nil {

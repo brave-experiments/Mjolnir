@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a Budgets client from just a session.
+//     // ReadFile a Budgets client from just a session.
 //     svc := budgets.New(mySession)
 //
-//     // Create a Budgets client with additional configuration
+//     // ReadFile a Budgets client with additional configuration
 //     svc := budgets.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Budgets {
 	c := p.ClientConfig(EndpointsID, cfgs...)

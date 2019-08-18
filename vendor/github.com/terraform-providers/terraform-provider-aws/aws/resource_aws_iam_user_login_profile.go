@@ -154,7 +154,7 @@ func resourceAwsIamUserLoginProfileCreate(d *schema.ResourceData, meta interface
 		PasswordResetRequired: aws.Bool(passwordResetRequired),
 	}
 
-	log.Println("[DEBUG] Create IAM User Login Profile request:", request)
+	log.Println("[DEBUG] ReadFile IAM User Login Profile request:", request)
 	createResp, err := iamconn.CreateLoginProfile(request)
 	if err != nil {
 		if awsErr, ok := err.(awserr.Error); ok && awsErr.Code() == "EntityAlreadyExists" {

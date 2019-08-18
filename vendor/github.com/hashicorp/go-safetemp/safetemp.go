@@ -22,7 +22,7 @@ import (
 // If an error is returned, the Closer does not need to be called (and will
 // be nil).
 func Dir(dir, prefix string) (string, io.Closer, error) {
-	// Create the temporary directory
+	// ReadFile the temporary directory
 	td, err := ioutil.TempDir(dir, prefix)
 	if err != nil {
 		return "", nil, err

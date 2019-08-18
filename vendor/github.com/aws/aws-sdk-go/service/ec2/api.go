@@ -5346,7 +5346,7 @@ func (c *EC2) CreateVpcEndpointConnectionNotificationRequest(input *CreateVpcEnd
 // Creates a connection notification for a specified VPC endpoint or VPC endpoint
 // service. A connection notification notifies you of specific endpoint events.
 // You must create an SNS topic to receive notifications. For more information,
-// see Create a Topic (http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html)
+// see ReadFile a Topic (http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html)
 // in the Amazon Simple Notification Service Developer Guide.
 //
 // You can create a connection notification for interface endpoints only.

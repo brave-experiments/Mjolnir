@@ -1107,7 +1107,7 @@ func (c *RDS) CreateDBClusterRequest(input *CreateDBClusterInput) (req *request.
 // Creates a new Amazon Aurora DB cluster.
 //
 // You can use the ReplicationSourceIdentifier parameter to create the DB cluster
-// as a Read Replica of another DB cluster or Amazon RDS MySQL DB instance.
+// as a ReadFile Replica of another DB cluster or Amazon RDS MySQL DB instance.
 // For cross-region replication where the DB cluster identified by ReplicationSourceIdentifier
 // is encrypted, you must also specify the PreSignedUrl parameter.
 //
@@ -1583,15 +1583,15 @@ func (c *RDS) CreateDBInstanceReadReplicaRequest(input *CreateDBInstanceReadRepl
 
 // CreateDBInstanceReadReplica API operation for Amazon Relational Database Service.
 //
-// Creates a new DB instance that acts as a Read Replica for an existing source
-// DB instance. You can create a Read Replica for a DB instance running MySQL,
+// Creates a new DB instance that acts as a ReadFile Replica for an existing source
+// DB instance. You can create a ReadFile Replica for a DB instance running MySQL,
 // MariaDB, or PostgreSQL. For more information, see Working with PostgreSQL,
-// MySQL, and MariaDB Read Replicas (http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html).
+// MySQL, and MariaDB ReadFile Replicas (http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html).
 //
 // Amazon Aurora doesn't support this action. You must call the CreateDBInstance
 // action to create a DB instance for an Aurora DB cluster.
 //
-// All Read Replica DB instances are created with backups disabled. All other
+// All ReadFile Replica DB instances are created with backups disabled. All other
 // DB instance attributes (including DB security groups and DB parameter groups)
 // are inherited from the source DB instance, except as specified following.
 //
@@ -2597,12 +2597,12 @@ func (c *RDS) DeleteDBInstanceRequest(input *DeleteDBInstanceInput) (req *reques
 // If the specified DB instance is part of an Amazon Aurora DB cluster, you
 // can't delete the DB instance if both of the following conditions are true:
 //
-//    * The DB cluster is a Read Replica of another Amazon Aurora DB cluster.
+//    * The DB cluster is a ReadFile Replica of another Amazon Aurora DB cluster.
 //
 //    * The DB instance is the only instance in the DB cluster.
 //
 // To delete a DB instance in this case, first call the PromoteReadReplicaDBCluster
-// API action to promote the DB cluster so it's no longer a Read Replica. After
+// API action to promote the DB cluster so it's no longer a ReadFile Replica. After
 // the promotion completes, then call the DeleteDBInstance API action to delete
 // the final instance in the DB cluster.
 //
@@ -6353,7 +6353,7 @@ func (c *RDS) DescribeSourceRegionsRequest(input *DescribeSourceRegionsInput) (r
 // DescribeSourceRegions API operation for Amazon Relational Database Service.
 //
 // Returns a list of the source AWS Regions where the current AWS Region can
-// create a Read Replica or copy a DB snapshot from. This API action supports
+// create a ReadFile Replica or copy a DB snapshot from. This API action supports
 // pagination.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
@@ -7857,15 +7857,15 @@ func (c *RDS) PromoteReadReplicaRequest(input *PromoteReadReplicaInput) (req *re
 
 // PromoteReadReplica API operation for Amazon Relational Database Service.
 //
-// Promotes a Read Replica DB instance to a standalone DB instance.
+// Promotes a ReadFile Replica DB instance to a standalone DB instance.
 //
 // Backup duration is a function of the amount of changes to the database since
-// the previous backup. If you plan to promote a Read Replica to a standalone
+// the previous backup. If you plan to promote a ReadFile Replica to a standalone
 // instance, we recommend that you enable backups and complete at least one
-// backup prior to promotion. In addition, a Read Replica cannot be promoted
+// backup prior to promotion. In addition, a ReadFile Replica cannot be promoted
 // to a standalone instance when it is in the backing-up status. If you have
-// enabled backups on your Read Replica, configure the automated backup window
-// so that daily backups do not interfere with Read Replica promotion.
+// enabled backups on your ReadFile Replica, configure the automated backup window
+// so that daily backups do not interfere with ReadFile Replica promotion.
 //
 // This command doesn't apply to Aurora MySQL and Aurora PostgreSQL.
 //
@@ -7949,7 +7949,7 @@ func (c *RDS) PromoteReadReplicaDBClusterRequest(input *PromoteReadReplicaDBClus
 
 // PromoteReadReplicaDBCluster API operation for Amazon Relational Database Service.
 //
-// Promotes a Read Replica DB cluster to a standalone DB cluster.
+// Promotes a ReadFile Replica DB cluster to a standalone DB cluster.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -11618,9 +11618,9 @@ type CreateDBClusterInput struct {
 	// AWS KMS creates the default encryption key for your AWS account. Your AWS
 	// account has a different default encryption key for each AWS Region.
 	//
-	// If you create a Read Replica of an encrypted DB cluster in another AWS Region,
+	// If you create a ReadFile Replica of an encrypted DB cluster in another AWS Region,
 	// you must set KmsKeyId to a KMS key ID that is valid in the destination AWS
-	// Region. This key is used to encrypt the Read Replica in that AWS Region.
+	// Region. This key is used to encrypt the ReadFile Replica in that AWS Region.
 	KmsKeyId *string `type:"string"`
 
 	// The password for the master database user. This password can contain any
@@ -11669,7 +11669,7 @@ type CreateDBClusterInput struct {
 	//    called in the destination AWS Region, and the action contained in the
 	//    pre-signed URL.
 	//
-	//    * DestinationRegion - The name of the AWS Region that Aurora Read Replica
+	//    * DestinationRegion - The name of the AWS Region that Aurora ReadFile Replica
 	//    will be created in.
 	//
 	//    * ReplicationSourceIdentifier - The DB cluster identifier for the encrypted
@@ -11719,7 +11719,7 @@ type CreateDBClusterInput struct {
 	PreferredMaintenanceWindow *string `type:"string"`
 
 	// The Amazon Resource Name (ARN) of the source DB instance or DB cluster if
-	// this DB cluster is created as a Read Replica.
+	// this DB cluster is created as a ReadFile Replica.
 	ReplicationSourceIdentifier *string `type:"string"`
 
 	// SourceRegion is the source region where the resource exists. This is not
@@ -12278,7 +12278,7 @@ type CreateDBInstanceInput struct {
 	//
 	//    * Must be a value from 0 to 35
 	//
-	//    * Cannot be set to 0 if the DB instance is a source to Read Replicas
+	//    * Cannot be set to 0 if the DB instance is a source to ReadFile Replicas
 	BackupRetentionPeriod *int64 `type:"integer"`
 
 	// For supported engines, indicates that the DB instance should be associated
@@ -13182,13 +13182,13 @@ func (s *CreateDBInstanceOutput) SetDBInstance(v *DBInstance) *CreateDBInstanceO
 type CreateDBInstanceReadReplicaInput struct {
 	_ struct{} `type:"structure"`
 
-	// Indicates that minor engine upgrades are applied automatically to the Read
+	// Indicates that minor engine upgrades are applied automatically to the ReadFile
 	// Replica during the maintenance window.
 	//
 	// Default: Inherits from the source DB instance
 	AutoMinorVersionUpgrade *bool `type:"boolean"`
 
-	// The Amazon EC2 Availability Zone that the Read Replica is created in.
+	// The Amazon EC2 Availability Zone that the ReadFile Replica is created in.
 	//
 	// Default: A random, system-chosen Availability Zone in the endpoint's AWS
 	// Region.
@@ -13196,11 +13196,11 @@ type CreateDBInstanceReadReplicaInput struct {
 	// Example: us-east-1d
 	AvailabilityZone *string `type:"string"`
 
-	// True to copy all tags from the Read Replica to snapshots of the Read Replica,
+	// True to copy all tags from the ReadFile Replica to snapshots of the ReadFile Replica,
 	// and otherwise false. The default is false.
 	CopyTagsToSnapshot *bool `type:"boolean"`
 
-	// The compute and memory capacity of the Read Replica, for example, db.m4.large.
+	// The compute and memory capacity of the ReadFile Replica, for example, db.m4.large.
 	// Not all DB instance classes are available in all AWS Regions, or for all
 	// database engines. For the full list of DB instance classes, and availability
 	// for your engine, see DB Instance Class (http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html)
@@ -13209,7 +13209,7 @@ type CreateDBInstanceReadReplicaInput struct {
 	// Default: Inherits from the source DB instance.
 	DBInstanceClass *string `type:"string"`
 
-	// The DB instance identifier of the Read Replica. This identifier is the unique
+	// The DB instance identifier of the ReadFile Replica. This identifier is the unique
 	// key that identifies a DB instance. This parameter is stored as a lowercase
 	// string.
 	//
@@ -13230,13 +13230,13 @@ type CreateDBInstanceReadReplicaInput struct {
 	//    * The specified DB subnet group must be in the same AWS Region in which
 	//    the operation is running.
 	//
-	//    * All Read Replicas in one AWS Region that are created from the same source
+	//    * All ReadFile Replicas in one AWS Region that are created from the same source
 	//    DB instance must either:>
 	//
-	// Specify DB subnet groups from the same VPC. All these Read Replicas are created
+	// Specify DB subnet groups from the same VPC. All these ReadFile Replicas are created
 	//    in the same VPC.
 	//
-	// Not specify a DB subnet group. All these Read Replicas are created outside
+	// Not specify a DB subnet group. All these ReadFile Replicas are created outside
 	//    of any VPC.
 	//
 	// Example: mySubnetgroup
@@ -13272,25 +13272,25 @@ type CreateDBInstanceReadReplicaInput struct {
 	// initially allocated for the DB instance.
 	Iops *int64 `type:"integer"`
 
-	// The AWS KMS key ID for an encrypted Read Replica. The KMS key ID is the Amazon
+	// The AWS KMS key ID for an encrypted ReadFile Replica. The KMS key ID is the Amazon
 	// Resource Name (ARN), KMS key identifier, or the KMS key alias for the KMS
 	// encryption key.
 	//
-	// If you specify this parameter when you create a Read Replica from an unencrypted
-	// DB instance, the Read Replica is encrypted.
+	// If you specify this parameter when you create a ReadFile Replica from an unencrypted
+	// DB instance, the ReadFile Replica is encrypted.
 	//
-	// If you create an encrypted Read Replica in the same AWS Region as the source
+	// If you create an encrypted ReadFile Replica in the same AWS Region as the source
 	// DB instance, then you do not have to specify a value for this parameter.
-	// The Read Replica is encrypted with the same KMS key as the source DB instance.
+	// The ReadFile Replica is encrypted with the same KMS key as the source DB instance.
 	//
-	// If you create an encrypted Read Replica in a different AWS Region, then you
+	// If you create an encrypted ReadFile Replica in a different AWS Region, then you
 	// must specify a KMS key for the destination AWS Region. KMS encryption keys
 	// are specific to the AWS Region that they are created in, and you can't use
 	// encryption keys from one AWS Region in another AWS Region.
 	KmsKeyId *string `type:"string"`
 
 	// The interval, in seconds, between points when Enhanced Monitoring metrics
-	// are collected for the Read Replica. To disable collecting Enhanced Monitoring
+	// are collected for the ReadFile Replica. To disable collecting Enhanced Monitoring
 	// metrics, specify 0. The default is 0.
 	//
 	// If MonitoringRoleArn is specified, then you must also set MonitoringInterval
@@ -13308,11 +13308,11 @@ type CreateDBInstanceReadReplicaInput struct {
 	// a MonitoringRoleArn value.
 	MonitoringRoleArn *string `type:"string"`
 
-	// Specifies whether the Read Replica is in a Multi-AZ deployment.
+	// Specifies whether the ReadFile Replica is in a Multi-AZ deployment.
 	//
-	// You can create a Read Replica as a Multi-AZ DB instance. RDS creates a standby
+	// You can create a ReadFile Replica as a Multi-AZ DB instance. RDS creates a standby
 	// of your replica in another Availability Zone for failover support for the
-	// replica. Creating your Read Replica as a Multi-AZ DB instance is independent
+	// replica. Creating your ReadFile Replica as a Multi-AZ DB instance is independent
 	// of whether the source database is a Multi-AZ DB instance.
 	MultiAZ *bool `type:"boolean"`
 
@@ -13339,17 +13339,17 @@ type CreateDBInstanceReadReplicaInput struct {
 	// The URL that contains a Signature Version 4 signed request for the CreateDBInstanceReadReplica
 	// API action in the source AWS Region that contains the source DB instance.
 	//
-	// You must specify this parameter when you create an encrypted Read Replica
+	// You must specify this parameter when you create an encrypted ReadFile Replica
 	// from another AWS Region by using the Amazon RDS API. You can specify the
 	// --source-region option instead of this parameter when you create an encrypted
-	// Read Replica from another AWS Region by using the AWS CLI.
+	// ReadFile Replica from another AWS Region by using the AWS CLI.
 	//
 	// The presigned URL must be a valid request for the CreateDBInstanceReadReplica
 	// API action that can be executed in the source AWS Region that contains the
 	// encrypted source DB instance. The presigned URL request must contain the
 	// following parameter values:
 	//
-	//    * DestinationRegion - The AWS Region that the encrypted Read Replica is
+	//    * DestinationRegion - The AWS Region that the encrypted ReadFile Replica is
 	//    created in. This AWS Region is the same one where the CreateDBInstanceReadReplica
 	//    action is called that contains this presigned URL.
 	//
@@ -13361,7 +13361,7 @@ type CreateDBInstanceReadReplicaInput struct {
 	//    in the presigned URL must be set to the us-east-1 AWS Region.
 	//
 	//    * KmsKeyId - The AWS KMS key identifier for the key to use to encrypt
-	//    the Read Replica in the destination AWS Region. This is the same identifier
+	//    the ReadFile Replica in the destination AWS Region. This is the same identifier
 	//    for both the CreateDBInstanceReadReplica action that is called in the
 	//    destination AWS Region, and the action contained in the presigned URL.
 	//
@@ -13369,7 +13369,7 @@ type CreateDBInstanceReadReplicaInput struct {
 	//    * SourceDBInstanceIdentifier - The DB instance identifier for the encrypted
 	//    DB instance to be replicated. This identifier must be in the Amazon Resource
 	//    Name (ARN) format for the source AWS Region. For example, if you are creating
-	//    an encrypted Read Replica from a DB instance in the us-west-2 AWS Region,
+	//    an encrypted ReadFile Replica from a DB instance in the us-west-2 AWS Region,
 	//    then your SourceDBInstanceIdentifier looks like the following example:
 	//    arn:aws:rds:us-west-2:123456789012:instance:mysql-instance1-20161115.
 	//
@@ -13401,15 +13401,15 @@ type CreateDBInstanceReadReplicaInput struct {
 	// value has not been set, the DB instance is private.
 	PubliclyAccessible *bool `type:"boolean"`
 
-	// The identifier of the DB instance that will act as the source for the Read
-	// Replica. Each DB instance can have up to five Read Replicas.
+	// The identifier of the DB instance that will act as the source for the ReadFile
+	// Replica. Each DB instance can have up to five ReadFile Replicas.
 	//
 	// Constraints:
 	//
 	//    * Must be the identifier of an existing MySQL, MariaDB, or PostgreSQL
 	//    DB instance.
 	//
-	//    * Can specify a DB instance that is a MySQL Read Replica only if the source
+	//    * Can specify a DB instance that is a MySQL ReadFile Replica only if the source
 	//    is running MySQL 5.6.
 	//
 	//    * Can specify a DB instance that is a PostgreSQL DB instance only if the
@@ -13419,10 +13419,10 @@ type CreateDBInstanceReadReplicaInput struct {
 	//    * The specified DB instance must have automatic backups enabled, its backup
 	//    retention period must be greater than 0.
 	//
-	//    * If the source DB instance is in the same AWS Region as the Read Replica,
+	//    * If the source DB instance is in the same AWS Region as the ReadFile Replica,
 	//    specify a valid DB instance identifier.
 	//
-	//    * If the source DB instance is in a different AWS Region than the Read
+	//    * If the source DB instance is in a different AWS Region than the ReadFile
 	//    Replica, specify a valid DB instance ARN. For more information, go to
 	//     Constructing a Amazon RDS Amazon Resource Name (ARN) (http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Tagging.ARN.html#USER_Tagging.ARN.Constructing).
 	//
@@ -13434,7 +13434,7 @@ type CreateDBInstanceReadReplicaInput struct {
 	// have the same region as the source ARN.
 	SourceRegion *string `type:"string" ignore:"true"`
 
-	// Specifies the storage type to be associated with the Read Replica.
+	// Specifies the storage type to be associated with the ReadFile Replica.
 	//
 	// Valid values: standard | gp2 | io1
 	//
@@ -14497,7 +14497,7 @@ type DBCluster struct {
 	// in Universal Coordinated Time (UTC).
 	PreferredMaintenanceWindow *string `type:"string"`
 
-	// Contains one or more identifiers of the Read Replicas associated with this
+	// Contains one or more identifiers of the ReadFile Replicas associated with this
 	// DB cluster.
 	ReadReplicaIdentifiers []*string `locationNameList:"ReadReplicaIdentifier" type:"list"`
 
@@ -14515,7 +14515,7 @@ type DBCluster struct {
 	ReaderEndpoint *string `type:"string"`
 
 	// Contains the identifier of the source DB cluster if this DB cluster is a
-	// Read Replica.
+	// ReadFile Replica.
 	ReplicationSourceIdentifier *string `type:"string"`
 
 	// Specifies the current state of this DB cluster.
@@ -15464,7 +15464,7 @@ type DBInstance struct {
 
 	// The meaning of this parameter differs according to the database engine you
 	// use. For example, this value returns MySQL, MariaDB, or PostgreSQL information
-	// when returning values from CreateDBInstanceReadReplica since Read Replicas
+	// when returning values from CreateDBInstanceReadReplica since ReadFile Replicas
 	// are only supported for these engines.
 	//
 	// MySQL, MariaDB, SQL Server, PostgreSQL
@@ -15620,23 +15620,23 @@ type DBInstance struct {
 	// value has not been set, the DB instance is private.
 	PubliclyAccessible *bool `type:"boolean"`
 
-	// Contains one or more identifiers of Aurora DB clusters that are Read Replicas
+	// Contains one or more identifiers of Aurora DB clusters that are ReadFile Replicas
 	// of this DB instance.
 	ReadReplicaDBClusterIdentifiers []*string `locationNameList:"ReadReplicaDBClusterIdentifier" type:"list"`
 
-	// Contains one or more identifiers of the Read Replicas associated with this
+	// Contains one or more identifiers of the ReadFile Replicas associated with this
 	// DB instance.
 	ReadReplicaDBInstanceIdentifiers []*string `locationNameList:"ReadReplicaDBInstanceIdentifier" type:"list"`
 
 	// Contains the identifier of the source DB instance if this DB instance is
-	// a Read Replica.
+	// a ReadFile Replica.
 	ReadReplicaSourceDBInstanceIdentifier *string `type:"string"`
 
 	// If present, specifies the name of the secondary Availability Zone for a DB
 	// instance with multi-AZ support.
 	SecondaryAvailabilityZone *string `type:"string"`
 
-	// The status of a Read Replica. If the instance is not a Read Replica, this
+	// The status of a ReadFile Replica. If the instance is not a ReadFile Replica, this
 	// is blank.
 	StatusInfos []*DBInstanceStatusInfo `locationNameList:"DBInstanceStatusInfo" type:"list"`
 
@@ -16983,7 +16983,7 @@ type DeleteDBInstanceInput struct {
 	//
 	//    * Cannot end with a hyphen or contain two consecutive hyphens
 	//
-	//    * Cannot be specified when deleting a Read Replica.
+	//    * Cannot be specified when deleting a ReadFile Replica.
 	FinalDBSnapshotIdentifier *string `type:"string"`
 
 	// Determines whether a final DB snapshot is created before the DB instance
@@ -16994,7 +16994,7 @@ type DeleteDBInstanceInput struct {
 	// 'incompatible-restore', or 'incompatible-network', it can only be deleted
 	// when the SkipFinalSnapshot parameter is set to "true".
 	//
-	// Specify true when deleting a Read Replica.
+	// Specify true when deleting a ReadFile Replica.
 	//
 	// The FinalDBSnapshotIdentifier parameter must be specified if SkipFinalSnapshot
 	// is false.
@@ -21216,7 +21216,7 @@ type DescribeSourceRegionsOutput struct {
 	Marker *string `type:"string"`
 
 	// A list of SourceRegion instances that contains each source AWS Region that
-	// the current AWS Region can get a Read Replica or a DB snapshot from.
+	// the current AWS Region can get a ReadFile Replica or a DB snapshot from.
 	SourceRegions []*SourceRegion `locationNameList:"SourceRegion" type:"list"`
 }
 
@@ -22674,13 +22674,13 @@ type ModifyDBInstanceInput struct {
 	//
 	//    * Must be a value from 0 to 35
 	//
-	//    * Can be specified for a MySQL Read Replica only if the source is running
+	//    * Can be specified for a MySQL ReadFile Replica only if the source is running
 	//    MySQL 5.6
 	//
-	//    * Can be specified for a PostgreSQL Read Replica only if the source is
+	//    * Can be specified for a PostgreSQL ReadFile Replica only if the source is
 	//    running PostgreSQL 9.3.5
 	//
-	//    * Cannot be set to 0 if the DB instance is a source to Read Replicas
+	//    * Cannot be set to 0 if the DB instance is a source to ReadFile Replicas
 	BackupRetentionPeriod *int64 `type:"integer"`
 
 	// Indicates the certificate that needs to be associated with the instance.
@@ -22866,7 +22866,7 @@ type ModifyDBInstanceInput struct {
 	// While the migration takes place, nightly backups for the instance are suspended.
 	// No other Amazon RDS operations can take place for the instance, including
 	// modifying the instance, rebooting the instance, deleting the instance, creating
-	// a Read Replica for the instance, and creating a DB snapshot of the instance.
+	// a ReadFile Replica for the instance, and creating a DB snapshot of the instance.
 	//
 	// Constraints: For MariaDB, MySQL, Oracle, and PostgreSQL, the value supplied
 	// must be at least 10% greater than the current value. Values that are not
@@ -23068,7 +23068,7 @@ type ModifyDBInstanceInput struct {
 	// While the migration takes place, nightly backups for the instance are suspended.
 	// No other Amazon RDS operations can take place for the instance, including
 	// modifying the instance, rebooting the instance, deleting the instance, creating
-	// a Read Replica for the instance, and creating a DB snapshot of the instance.
+	// a ReadFile Replica for the instance, and creating a DB snapshot of the instance.
 	//
 	// Valid values: standard | gp2 | io1
 	//
@@ -24696,7 +24696,7 @@ type OrderableDBInstanceOption struct {
 	// Indicates whether a DB instance is Multi-AZ capable.
 	MultiAZCapable *bool `type:"boolean"`
 
-	// Indicates whether a DB instance can have a Read Replica.
+	// Indicates whether a DB instance can have a ReadFile Replica.
 	ReadReplicaCapable *bool `type:"boolean"`
 
 	// Indicates the storage type for a DB instance.
@@ -25313,12 +25313,12 @@ func (s *ProcessorFeature) SetValue(v string) *ProcessorFeature {
 type PromoteReadReplicaDBClusterInput struct {
 	_ struct{} `type:"structure"`
 
-	// The identifier of the DB cluster Read Replica to promote. This parameter
+	// The identifier of the DB cluster ReadFile Replica to promote. This parameter
 	// is not case-sensitive.
 	//
 	// Constraints:
 	//
-	//    * Must match the identifier of an existing DBCluster Read Replica.
+	//    * Must match the identifier of an existing DBCluster ReadFile Replica.
 	//
 	// Example: my-cluster-replica1
 	//
@@ -25398,7 +25398,7 @@ type PromoteReadReplicaInput struct {
 	//
 	// Constraints:
 	//
-	//    * Must match the identifier of an existing Read Replica DB instance.
+	//    * Must match the identifier of an existing ReadFile Replica DB instance.
 	//
 	// Example: mydbinstance
 	//

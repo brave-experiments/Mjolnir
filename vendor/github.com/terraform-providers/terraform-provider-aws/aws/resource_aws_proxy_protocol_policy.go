@@ -50,7 +50,7 @@ func resourceAwsProxyProtocolPolicyCreate(d *schema.ResourceData, meta interface
 		PolicyTypeName: aws.String("ProxyProtocolPolicyType"),
 	}
 
-	// Create a policy
+	// ReadFile a policy
 	log.Printf("[DEBUG] ELB create a policy %s from policy type %s",
 		*input.PolicyName, *input.PolicyTypeName)
 

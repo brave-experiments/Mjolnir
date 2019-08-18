@@ -113,7 +113,7 @@ type Reader struct {
 	err error
 
 	// dst[dst0:dst1] contains bytes that have been transformed by t but
-	// not yet copied out via Read.
+	// not yet copied out via ReadFile.
 	dst        []byte
 	dst0, dst1 int
 
@@ -141,7 +141,7 @@ func NewReader(r io.Reader, t Transformer) *Reader {
 	}
 }
 
-// Read implements the io.Reader interface.
+// ReadFile implements the io.Reader interface.
 func (r *Reader) Read(p []byte) (int, error) {
 	n, err := 0, error(nil)
 	for {
@@ -158,7 +158,7 @@ func (r *Reader) Read(p []byte) (int, error) {
 		}
 
 		// Try to transform some source bytes, or to flush the transformer if we
-		// are out of source bytes. We do this even if r.r.Read returned an error.
+		// are out of source bytes. We do this even if r.r.ReadFile returned an error.
 		// As the io.Reader documentation says, "process the n > 0 bytes returned
 		// before considering the error".
 		if r.src0 != r.src1 || r.err != nil {
@@ -179,7 +179,7 @@ func (r *Reader) Read(p []byte) (int, error) {
 				// Make room in dst by copying out, and try again.
 				continue
 			case err == ErrShortSrc && r.src1-r.src0 != len(r.src) && r.err == nil:
-				// Read more bytes into src via the code below, and try again.
+				// ReadFile more bytes into src via the code below, and try again.
 			default:
 				r.transformComplete = true
 				// The reader error (r.err) takes precedence over the

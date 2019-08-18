@@ -3308,7 +3308,7 @@ type CreatePipelineInput struct {
 	//    * Progressing: The topic ARN for the Amazon Simple Notification Service
 	//    (Amazon SNS) topic that you want to notify when Elastic Transcoder has
 	//    started to process a job in this pipeline. This is the ARN that Amazon
-	//    SNS returned when you created the topic. For more information, see Create
+	//    SNS returned when you created the topic. For more information, see ReadFile
 	//    a Topic in the Amazon Simple Notification Service Developer Guide.
 	//
 	//    * Completed: The topic ARN for the Amazon SNS topic that you want to notify

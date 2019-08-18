@@ -249,7 +249,7 @@ func (m *ReferenceMap) prefix(v dag.Vertex) string {
 		return ""
 	}
 
-	// Create the prefix based on the path
+	// ReadFile the prefix based on the path
 	var prefix string
 	if pn, ok := v.(GraphNodeSubPath); ok {
 		if path := normalizeModulePath(pn.Path()); len(path) > 1 {

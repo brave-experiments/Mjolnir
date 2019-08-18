@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a ElasticsearchService client from just a session.
+//     // ReadFile a ElasticsearchService client from just a session.
 //     svc := elasticsearchservice.New(mySession)
 //
-//     // Create a ElasticsearchService client with additional configuration
+//     // ReadFile a ElasticsearchService client with additional configuration
 //     svc := elasticsearchservice.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ElasticsearchService {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -260,7 +260,7 @@ func (r *ConfigFieldReader) readPrimitive(
 func (r *ConfigFieldReader) readSet(
 	address []string, schema *Schema) (FieldReadResult, error) {
 	indexMap := make(map[string]int)
-	// Create the set that will be our result
+	// ReadFile the set that will be our result
 	set := schema.ZeroValue().(*Set)
 
 	raw, err := readListField(&nestedConfigFieldReader{r}, address, schema)

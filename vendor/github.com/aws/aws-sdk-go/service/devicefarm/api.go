@@ -13072,7 +13072,7 @@ type Run struct {
 	// The network profile being used for a test run.
 	NetworkProfile *NetworkProfile `locationName:"networkProfile" type:"structure"`
 
-	// Read-only URL for an object in S3 bucket where you can get the parsing results
+	// ReadFile-only URL for an object in S3 bucket where you can get the parsing results
 	// of the test package. If the test package doesn't parse, the reason why it
 	// doesn't parse appears in the file that this URL points to.
 	ParsingResultUrl *string `locationName:"parsingResultUrl" type:"string"`

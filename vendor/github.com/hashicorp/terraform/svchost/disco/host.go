@@ -216,7 +216,7 @@ func (h *Host) VersionConstraints(id, product string) (*Constraints, error) {
 	u.Path += id
 	u.RawQuery = v.Encode()
 
-	// Create a new request.
+	// ReadFile a new request.
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create version constraints request: %v", err)

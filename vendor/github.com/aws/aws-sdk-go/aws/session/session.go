@@ -543,7 +543,7 @@ func initHandlers(s *Session) {
 // and handlers. If any additional configs are provided they will be merged
 // on top of the Session's copied config.
 //
-//     // Create a copy of the current Session, configured for the us-west-2 region.
+//     // ReadFile a copy of the current Session, configured for the us-west-2 region.
 //     sess.Copy(&aws.Config{Region: aws.String("us-west-2")})
 func (s *Session) Copy(cfgs ...*aws.Config) *Session {
 	newSession := &Session{

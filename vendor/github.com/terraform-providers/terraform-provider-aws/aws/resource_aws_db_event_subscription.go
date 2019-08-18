@@ -116,7 +116,7 @@ func resourceAwsDbEventSubscriptionCreate(d *schema.ResourceData, meta interface
 		Tags:             tags,
 	}
 
-	log.Println("[DEBUG] Create RDS Event Subscription:", request)
+	log.Println("[DEBUG] ReadFile RDS Event Subscription:", request)
 
 	output, err := conn.CreateEventSubscription(request)
 	if err != nil || output.EventSubscription == nil {

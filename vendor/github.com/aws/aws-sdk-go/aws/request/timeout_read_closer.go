@@ -25,7 +25,7 @@ type timeoutReadCloser struct {
 	duration time.Duration
 }
 
-// Read will spin off a goroutine to call the reader's Read method. We will
+// ReadFile will spin off a goroutine to call the reader's ReadFile method. We will
 // select on the timer's channel or the read's channel. Whoever completes first
 // will be returned.
 func (r *timeoutReadCloser) Read(b []byte) (int, error) {

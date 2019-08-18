@@ -62,13 +62,13 @@ func resourceAwsNatGateway() *schema.Resource {
 func resourceAwsNatGatewayCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).ec2conn
 
-	// Create the NAT Gateway
+	// ReadFile the NAT Gateway
 	createOpts := &ec2.CreateNatGatewayInput{
 		AllocationId: aws.String(d.Get("allocation_id").(string)),
 		SubnetId:     aws.String(d.Get("subnet_id").(string)),
 	}
 
-	log.Printf("[DEBUG] Create NAT Gateway: %s", *createOpts)
+	log.Printf("[DEBUG] ReadFile NAT Gateway: %s", *createOpts)
 	natResp, err := conn.CreateNatGateway(createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating NAT Gateway: %s", err)

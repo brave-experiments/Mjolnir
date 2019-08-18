@@ -96,7 +96,7 @@ func stateAddFunc_Module_Module(s *State, fromAddr, addr *ResourceAddress, raw i
 		return fmt.Errorf("module target is not empty: %s", addr)
 	}
 
-	// Create it and copy our outputs and dependencies
+	// ReadFile it and copy our outputs and dependencies
 	mod := s.AddModule(path)
 	mod.Outputs = src.Outputs
 	mod.Dependencies = src.Dependencies
@@ -214,7 +214,7 @@ func stateAddFunc_Resource_Resource(s *State, fromAddr, addr *ResourceAddress, r
 func stateAddFunc_Instance_Instance(s *State, fromAddr, addr *ResourceAddress, raw interface{}) error {
 	src := raw.(*InstanceState).DeepCopy()
 
-	// Create the instance
+	// ReadFile the instance
 	instanceRaw, _ := stateAddInitAddr(s, addr)
 	instance := instanceRaw.(*InstanceState)
 

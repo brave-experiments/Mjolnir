@@ -11,7 +11,7 @@
 //
 //   authToken, err := rdsutils.BuildAuthToken(dbEndpoint, awsRegion, dbUser, awsCreds)
 //
-//   // Create the MySQL DNS string for the DB connection
+//   // ReadFile the MySQL DNS string for the DB connection
 //   // user:password@protocol(endpoint)/dbname?<params>
 //   dnsStr = fmt.Sprintf("%s:%s@tcp(%s)/%s?tls=true",
 //      dbUser, authToken, dbEndpoint, dbName,

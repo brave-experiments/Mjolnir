@@ -46,7 +46,7 @@ func (m *Message) rawMessage() (rawMessage, error) {
 		hash.Write(raw.Headers)
 	}
 
-	// Read payload bytes and update hash for it as well.
+	// ReadFile payload bytes and update hash for it as well.
 	if len(m.Payload) > 0 {
 		raw.Payload = m.Payload
 		hash.Write(raw.Payload)

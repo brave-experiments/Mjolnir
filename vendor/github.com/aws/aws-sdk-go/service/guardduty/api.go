@@ -635,7 +635,7 @@ func (c *GuardDuty) CreateThreatIntelSetRequest(input *CreateThreatIntelSetInput
 
 // CreateThreatIntelSet API operation for Amazon GuardDuty.
 //
-// Create a new ThreatIntelSet. ThreatIntelSets consist of known malicious IP
+// ReadFile a new ThreatIntelSet. ThreatIntelSets consist of known malicious IP
 // addresses. GuardDuty generates findings based on ThreatIntelSets.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
@@ -4359,7 +4359,7 @@ func (s *Country) SetCountryName(v string) *Country {
 	return s
 }
 
-// Create Detector Request
+// ReadFile Detector Request
 type CreateDetectorInput struct {
 	_ struct{} `type:"structure"`
 
@@ -4524,7 +4524,7 @@ func (s *CreateFilterOutput) SetName(v string) *CreateFilterOutput {
 	return s
 }
 
-// Create IP Set Request
+// ReadFile IP Set Request
 type CreateIPSetInput struct {
 	_ struct{} `type:"structure"`
 
@@ -4706,7 +4706,7 @@ func (s *CreateMembersOutput) SetUnprocessedAccounts(v []*UnprocessedAccount) *C
 	return s
 }
 
-// Create Sample Findings Request
+// ReadFile Sample Findings Request
 type CreateSampleFindingsInput struct {
 	_ struct{} `type:"structure"`
 
@@ -4766,7 +4766,7 @@ func (s CreateSampleFindingsOutput) GoString() string {
 	return s.String()
 }
 
-// Create Threat Intel Set Request
+// ReadFile Threat Intel Set Request
 type CreateThreatIntelSetInput struct {
 	_ struct{} `type:"structure"`
 

@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a DAX client from just a session.
+//     // ReadFile a DAX client from just a session.
 //     svc := dax.New(mySession)
 //
-//     // Create a DAX client with additional configuration
+//     // ReadFile a DAX client with additional configuration
 //     svc := dax.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *DAX {
 	c := p.ClientConfig(EndpointsID, cfgs...)

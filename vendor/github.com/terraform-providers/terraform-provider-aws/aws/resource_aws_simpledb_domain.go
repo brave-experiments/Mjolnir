@@ -39,7 +39,7 @@ func resourceAwsSimpleDBDomainCreate(d *schema.ResourceData, meta interface{}) e
 	}
 	_, err := conn.CreateDomain(input)
 	if err != nil {
-		return fmt.Errorf("Create SimpleDB Domain failed: %s", err)
+		return fmt.Errorf("ReadFile SimpleDB Domain failed: %s", err)
 	}
 
 	d.SetId(name)

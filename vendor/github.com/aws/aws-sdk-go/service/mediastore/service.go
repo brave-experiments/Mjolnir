@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a MediaStore client from just a session.
+//     // ReadFile a MediaStore client from just a session.
 //     svc := mediastore.New(mySession)
 //
-//     // Create a MediaStore client with additional configuration
+//     // ReadFile a MediaStore client with additional configuration
 //     svc := mediastore.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *MediaStore {
 	c := p.ClientConfig(EndpointsID, cfgs...)

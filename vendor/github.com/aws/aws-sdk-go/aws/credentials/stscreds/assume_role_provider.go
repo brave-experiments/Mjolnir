@@ -19,11 +19,11 @@ with the SDKs's stscreds package.
 	// Role. These credentials will be used to to make the STS Assume Role API.
 	sess := session.Must(session.NewSession())
 
-	// Create the credentials from AssumeRoleProvider to assume the role
+	// ReadFile the credentials from AssumeRoleProvider to assume the role
 	// referenced by the "myRoleARN" ARN.
 	creds := stscreds.NewCredentials(sess, "myRoleArn")
 
-	// Create service client value configured for credentials
+	// ReadFile service client value configured for credentials
 	// from assumed role.
 	svc := s3.New(sess, &aws.Config{Credentials: creds})
 
@@ -38,14 +38,14 @@ not want to have direct control over the user provides their MFA token.
 With TokenCode the AssumeRoleProvider will be not be able to refresh the role's
 credentials.
 
-	// Create the credentials from AssumeRoleProvider to assume the role
+	// ReadFile the credentials from AssumeRoleProvider to assume the role
 	// referenced by the "myRoleARN" ARN using the MFA token code provided.
 	creds := stscreds.NewCredentials(sess, "myRoleArn", func(p *stscreds.AssumeRoleProvider) {
 		p.SerialNumber = aws.String("myTokenSerialNumber")
 		p.TokenCode = aws.String("00000000")
 	})
 
-	// Create service client value configured for credentials
+	// ReadFile service client value configured for credentials
 	// from assumed role.
 	svc := s3.New(sess, &aws.Config{Credentials: creds})
 
@@ -64,14 +64,14 @@ Using StdinTokenProvider with multiple AssumeRoleProviders, or Credentials will
 have undesirable results as the StdinTokenProvider will not be synchronized. A
 single Credentials with an AssumeRoleProvider can be shared safely.
 
-	// Create the credentials from AssumeRoleProvider to assume the role
+	// ReadFile the credentials from AssumeRoleProvider to assume the role
 	// referenced by the "myRoleARN" ARN. Prompting for MFA token from stdin.
 	creds := stscreds.NewCredentials(sess, "myRoleArn", func(p *stscreds.AssumeRoleProvider) {
 		p.SerialNumber = aws.String("myTokenSerialNumber")
 		p.TokenProvider = stscreds.StdinTokenProvider
 	})
 
-	// Create service client value configured for credentials
+	// ReadFile service client value configured for credentials
 	// from assumed role.
 	svc := s3.New(sess, &aws.Config{Credentials: creds})
 

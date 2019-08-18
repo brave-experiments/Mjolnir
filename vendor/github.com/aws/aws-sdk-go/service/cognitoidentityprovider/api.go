@@ -10633,7 +10633,7 @@ type AdminCreateUserInput struct {
 	// The user's temporary password. This password must conform to the password
 	// policy that you specified when you created the user pool.
 	//
-	// The temporary password is valid only once. To complete the Admin Create User
+	// The temporary password is valid only once. To complete the Admin ReadFile User
 	// flow, the user must enter the temporary password in the sign-in page along
 	// with a new password to be used in all future sign-ins.
 	//
@@ -23191,7 +23191,7 @@ type UserPoolClientType struct {
 	// A list of allowed logout URLs for the identity providers.
 	LogoutURLs []*string `type:"list"`
 
-	// The Read-only attributes.
+	// The ReadFile-only attributes.
 	ReadAttributes []*string `type:"list"`
 
 	// The time limit, in days, after which the refresh token is no longer valid

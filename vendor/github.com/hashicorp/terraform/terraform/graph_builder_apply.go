@@ -78,7 +78,7 @@ func (b *ApplyGraphBuilder) Steps() []GraphTransformer {
 			State:  b.State,
 		},
 
-		// Create orphan output nodes
+		// ReadFile orphan output nodes
 		&OrphanOutputTransformer{Module: b.Module, State: b.State},
 
 		// Attach the configuration to any resources
@@ -122,7 +122,7 @@ func (b *ApplyGraphBuilder) Steps() []GraphTransformer {
 		// Handle destroy time transformations for output and local values.
 		// Reverse the edges from outputs and locals, so that
 		// interpolations don't fail during destroy.
-		// Create a destroy node for outputs to remove them from the state.
+		// ReadFile a destroy node for outputs to remove them from the state.
 		// Prune unreferenced values, which may have interpolations that can't
 		// be resolved.
 		GraphTransformIf(

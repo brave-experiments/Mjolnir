@@ -70,7 +70,7 @@ func resourceAwsCustomerGatewayCreate(d *schema.ResourceData, meta interface{}) 
 		Type:     aws.String(vpnType),
 	}
 
-	// Create the Customer Gateway.
+	// ReadFile the Customer Gateway.
 	log.Printf("[DEBUG] Creating customer gateway")
 	resp, err := conn.CreateCustomerGateway(createOpts)
 	if err != nil {
@@ -99,7 +99,7 @@ func resourceAwsCustomerGatewayCreate(d *schema.ResourceData, meta interface{}) 
 			*customerGateway.CustomerGatewayId, err)
 	}
 
-	// Create tags.
+	// ReadFile tags.
 	if err := setTags(conn, d); err != nil {
 		return err
 	}

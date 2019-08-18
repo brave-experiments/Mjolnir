@@ -368,7 +368,7 @@ func resourceAwsS3BucketNotificationRead(d *schema.ResourceData, meta interface{
 		}
 	}
 
-	// Read the notification configuration
+	// ReadFile the notification configuration
 	notificationConfigs, err := s3conn.GetBucketNotificationConfiguration(&s3.GetBucketNotificationConfigurationRequest{
 		Bucket: aws.String(d.Id()),
 	})

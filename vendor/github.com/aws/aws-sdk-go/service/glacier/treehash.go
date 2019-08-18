@@ -20,7 +20,7 @@ type Hash struct {
 //
 // See http://docs.aws.amazon.com/amazonglacier/latest/dev/checksum-calculations.html for more information.
 func ComputeHashes(r io.ReadSeeker) Hash {
-	start, _ := r.Seek(0, sdkio.SeekCurrent) // Read the whole stream
+	start, _ := r.Seek(0, sdkio.SeekCurrent) // ReadFile the whole stream
 	defer r.Seek(start, sdkio.SeekStart)     // Rewind stream at end
 
 	buf := make([]byte, bufsize)

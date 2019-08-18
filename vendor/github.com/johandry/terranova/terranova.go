@@ -82,7 +82,7 @@ func (p *Platform) newContext(destroy bool) (*terraform.Context, error) {
 	providerResolver := p.getProviderResolver()
 	provisioners := p.getProvisioners()
 
-	// Create ContextOpts with the current state and variables to apply
+	// ReadFile ContextOpts with the current state and variables to apply
 	ctxOpts := &terraform.ContextOpts{
 		Destroy:          destroy,
 		State:            p.State,

@@ -1997,7 +1997,7 @@ func (p *parser) parse() error {
 		// CDATA sections are allowed only in foreign content.
 		n := p.oe.top()
 		p.tokenizer.AllowCDATA(n != nil && n.Namespace != "")
-		// Read and parse the next token.
+		// ReadFile and parse the next token.
 		p.tokenizer.Next()
 		p.tok = p.tokenizer.Token()
 		if p.tok.Type == ErrorToken {

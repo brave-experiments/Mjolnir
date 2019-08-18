@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a ServiceDiscovery client from just a session.
+//     // ReadFile a ServiceDiscovery client from just a session.
 //     svc := servicediscovery.New(mySession)
 //
-//     // Create a ServiceDiscovery client with additional configuration
+//     // ReadFile a ServiceDiscovery client with additional configuration
 //     svc := servicediscovery.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ServiceDiscovery {
 	c := p.ClientConfig(EndpointsID, cfgs...)

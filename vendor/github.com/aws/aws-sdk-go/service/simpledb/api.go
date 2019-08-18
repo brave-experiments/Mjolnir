@@ -1020,7 +1020,7 @@ func (c *SimpleDB) SelectRequest(input *SelectInput) (req *request.Request, outp
 // so the client can access the next page of results.
 //
 // For information on how to construct select expressions, see Using Select
-// to Create Amazon SimpleDB Queries in the Developer Guide.
+// to ReadFile Amazon SimpleDB Queries in the Developer Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about

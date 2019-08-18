@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a DirectoryService client from just a session.
+//     // ReadFile a DirectoryService client from just a session.
 //     svc := directoryservice.New(mySession)
 //
-//     // Create a DirectoryService client with additional configuration
+//     // ReadFile a DirectoryService client with additional configuration
 //     svc := directoryservice.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *DirectoryService {
 	c := p.ClientConfig(EndpointsID, cfgs...)

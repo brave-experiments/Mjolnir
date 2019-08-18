@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a CloudTrail client from just a session.
+//     // ReadFile a CloudTrail client from just a session.
 //     svc := cloudtrail.New(mySession)
 //
-//     // Create a CloudTrail client with additional configuration
+//     // ReadFile a CloudTrail client with additional configuration
 //     svc := cloudtrail.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CloudTrail {
 	c := p.ClientConfig(EndpointsID, cfgs...)

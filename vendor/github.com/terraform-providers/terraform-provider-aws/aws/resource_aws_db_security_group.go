@@ -151,7 +151,7 @@ func resourceAwsDbSecurityGroupRead(d *schema.ResourceData, meta interface{}) er
 	d.Set("name", *sg.DBSecurityGroupName)
 	d.Set("description", *sg.DBSecurityGroupDescription)
 
-	// Create an empty schema.Set to hold all ingress rules
+	// ReadFile an empty schema.Set to hold all ingress rules
 	rules := &schema.Set{
 		F: resourceAwsDbSecurityGroupIngressHash,
 	}

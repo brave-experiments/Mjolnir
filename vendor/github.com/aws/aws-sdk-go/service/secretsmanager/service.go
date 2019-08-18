@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a SecretsManager client from just a session.
+//     // ReadFile a SecretsManager client from just a session.
 //     svc := secretsmanager.New(mySession)
 //
-//     // Create a SecretsManager client with additional configuration
+//     // ReadFile a SecretsManager client with additional configuration
 //     svc := secretsmanager.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *SecretsManager {
 	c := p.ClientConfig(EndpointsID, cfgs...)

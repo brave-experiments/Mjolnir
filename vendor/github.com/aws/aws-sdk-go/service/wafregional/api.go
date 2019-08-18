@@ -655,7 +655,7 @@ func (c *WAFRegional) CreateRateBasedRuleRequest(input *waf.CreateRateBasedRuleI
 //
 // To create and configure a RateBasedRule, perform the following steps:
 //
-// Create and update the predicates that you want to include in the rule. For
+// ReadFile and update the predicates that you want to include in the rule. For
 // more information, see CreateByteMatchSet, CreateIPSet, and CreateSqlInjectionMatchSet.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
@@ -669,7 +669,7 @@ func (c *WAFRegional) CreateRateBasedRuleRequest(input *waf.CreateRateBasedRuleI
 // Submit an UpdateRateBasedRule request to specify the predicates that you
 // want to include in the rule.
 //
-// Create and update a WebACL that contains the RateBasedRule. For more information,
+// ReadFile and update a WebACL that contains the RateBasedRule. For more information,
 // see CreateWebACL.
 //
 // For more information about how to use the AWS WAF API to allow or block HTTP
@@ -1038,7 +1038,7 @@ func (c *WAFRegional) CreateRuleRequest(input *waf.CreateRuleInput) (req *reques
 //
 // To create and configure a Rule, perform the following steps:
 //
-// Create and update the predicates that you want to include in the Rule. For
+// ReadFile and update the predicates that you want to include in the Rule. For
 // more information, see CreateByteMatchSet, CreateIPSet, and CreateSqlInjectionMatchSet.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
@@ -1052,7 +1052,7 @@ func (c *WAFRegional) CreateRuleRequest(input *waf.CreateRuleInput) (req *reques
 // Submit an UpdateRule request to specify the predicates that you want to include
 // in the Rule.
 //
-// Create and update a WebACL that contains the Rule. For more information,
+// ReadFile and update a WebACL that contains the Rule. For more information,
 // see CreateWebACL.
 //
 // For more information about how to use the AWS WAF API to allow or block HTTP
@@ -1586,11 +1586,11 @@ func (c *WAFRegional) CreateWebACLRequest(input *waf.CreateWebACLInput) (req *re
 //
 // To create and configure a WebACL, perform the following steps:
 //
-// Create and update the ByteMatchSet objects and other predicates that you
+// ReadFile and update the ByteMatchSet objects and other predicates that you
 // want to include in Rules. For more information, see CreateByteMatchSet, UpdateByteMatchSet,
 // CreateIPSet, UpdateIPSet, CreateSqlInjectionMatchSet, and UpdateSqlInjectionMatchSet.
 //
-// Create and update the Rules that you want to include in the WebACL. For more
+// ReadFile and update the Rules that you want to include in the WebACL. For more
 // information, see CreateRule and UpdateRule.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
@@ -6677,7 +6677,7 @@ func (c *WAFRegional) UpdateByteMatchSetRequest(input *waf.UpdateByteMatchSetInp
 //
 // To create and configure a ByteMatchSet, perform the following steps:
 //
-// Create a ByteMatchSet. For more information, see CreateByteMatchSet.
+// ReadFile a ByteMatchSet. For more information, see CreateByteMatchSet.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
 // parameter of an UpdateByteMatchSet request.
@@ -7497,7 +7497,7 @@ func (c *WAFRegional) UpdateRegexMatchSetRequest(input *waf.UpdateRegexMatchSetI
 //
 // To create and configure a RegexMatchSet, perform the following steps:
 //
-// Create a RegexMatchSet. For more information, see CreateRegexMatchSet.
+// ReadFile a RegexMatchSet. For more information, see CreateRegexMatchSet.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
 // parameter of an UpdateRegexMatchSet request.
@@ -7666,7 +7666,7 @@ func (c *WAFRegional) UpdateRegexPatternSetRequest(input *waf.UpdateRegexPattern
 //
 // To create and configure a RegexPatternSet, perform the following steps:
 //
-// Create a RegexPatternSet. For more information, see CreateRegexPatternSet.
+// ReadFile a RegexPatternSet. For more information, see CreateRegexPatternSet.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
 // parameter of an UpdateRegexPatternSet request.
@@ -7829,16 +7829,16 @@ func (c *WAFRegional) UpdateRuleRequest(input *waf.UpdateRuleInput) (req *reques
 //
 // To create and configure a Rule, perform the following steps:
 //
-// Create and update the predicates that you want to include in the Rule.
+// ReadFile and update the predicates that you want to include in the Rule.
 //
-// Create the Rule. See CreateRule.
+// ReadFile the Rule. See CreateRule.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
 // parameter of an UpdateRule request.
 //
 // Submit an UpdateRule request to add predicates to the Rule.
 //
-// Create and update a WebACL that contains the Rule. See CreateWebACL.
+// ReadFile and update a WebACL that contains the Rule. See CreateWebACL.
 //
 // If you want to replace one ByteMatchSet or IPSet with another, you delete
 // the existing one and add the new one.
@@ -8023,7 +8023,7 @@ func (c *WAFRegional) UpdateRuleGroupRequest(input *waf.UpdateRuleGroupInput) (r
 //
 // To create and configure a RuleGroup, perform the following steps:
 //
-// Create and update the Rules that you want to include in the RuleGroup. See
+// ReadFile and update the Rules that you want to include in the RuleGroup. See
 // CreateRule.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
@@ -8031,7 +8031,7 @@ func (c *WAFRegional) UpdateRuleGroupRequest(input *waf.UpdateRuleGroupInput) (r
 //
 // Submit an UpdateRuleGroup request to add Rules to the RuleGroup.
 //
-// Create and update a WebACL that contains the RuleGroup. See CreateWebACL.
+// ReadFile and update a WebACL that contains the RuleGroup. See CreateWebACL.
 //
 // If you want to replace one Rule with another, you delete the existing one
 // and add the new one.
@@ -8224,7 +8224,7 @@ func (c *WAFRegional) UpdateSizeConstraintSetRequest(input *waf.UpdateSizeConstr
 //
 // To create and configure a SizeConstraintSet, perform the following steps:
 //
-// Create a SizeConstraintSet. For more information, see CreateSizeConstraintSet.
+// ReadFile a SizeConstraintSet. For more information, see CreateSizeConstraintSet.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
 // parameter of an UpdateSizeConstraintSet request.
@@ -8624,14 +8624,14 @@ func (c *WAFRegional) UpdateWebACLRequest(input *waf.UpdateWebACLInput) (req *re
 //
 // To create and configure a WebACL, perform the following steps:
 //
-// Create and update the predicates that you want to include in Rules. For more
+// ReadFile and update the predicates that you want to include in Rules. For more
 // information, see CreateByteMatchSet, UpdateByteMatchSet, CreateIPSet, UpdateIPSet,
 // CreateSqlInjectionMatchSet, and UpdateSqlInjectionMatchSet.
 //
-// Create and update the Rules that you want to include in the WebACL. For more
+// ReadFile and update the Rules that you want to include in the WebACL. For more
 // information, see CreateRule and UpdateRule.
 //
-// Create a WebACL. See CreateWebACL.
+// ReadFile a WebACL. See CreateWebACL.
 //
 // Use GetChangeToken to get the change token that you provide in the ChangeToken
 // parameter of an UpdateWebACL request.

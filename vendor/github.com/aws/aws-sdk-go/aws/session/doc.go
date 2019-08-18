@@ -40,24 +40,24 @@ values from the shared config (~/.aws/config) and shared credentials
 (~/.aws/credentials) files. See the section Sessions from Shared Config for
 more information.
 
-Create a Session with the default config and request handlers. With credentials
+ReadFile a Session with the default config and request handlers. With credentials
 region, and profile loaded from the environment and shared config automatically.
 Requires the AWS_PROFILE to be set, or "default" is used.
 
-	// Create Session
+	// ReadFile Session
 	sess := session.Must(session.NewSession())
 
-	// Create a Session with a custom region
+	// ReadFile a Session with a custom region
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region: aws.String("us-east-1"),
 	}))
 
-	// Create a S3 client instance from a session
+	// ReadFile a S3 client instance from a session
 	sess := session.Must(session.NewSession())
 
 	svc := s3.New(sess)
 
-Create Session With Option Overrides
+ReadFile Session With Option Overrides
 
 In addition to NewSession, Sessions can be created using NewSessionWithOptions.
 This func allows you to control and override how the Session will be created
@@ -93,7 +93,7 @@ You can add handlers to a session for processing HTTP requests. All service
 clients that use the session inherit the handlers. For example, the following
 handler logs every request and its payload made by a service client:
 
-	// Create a session, and add additional handlers for all service
+	// ReadFile a session, and add additional handlers for all service
 	// clients created with the Session to inherit. Adds logging handler.
 	sess := session.Must(session.NewSession())
 
@@ -179,7 +179,7 @@ be returned when creating the session.
         AssumeRoleTokenProvider: stscreds.StdinTokenProvider,
     }))
 
-    // Create service client value configured for credentials
+    // ReadFile service client value configured for credentials
     // from assumed role.
     svc := s3.New(sess)
 

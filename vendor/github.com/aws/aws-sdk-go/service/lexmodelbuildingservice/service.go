@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a LexModelBuildingService client from just a session.
+//     // ReadFile a LexModelBuildingService client from just a session.
 //     svc := lexmodelbuildingservice.New(mySession)
 //
-//     // Create a LexModelBuildingService client with additional configuration
+//     // ReadFile a LexModelBuildingService client with additional configuration
 //     svc := lexmodelbuildingservice.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *LexModelBuildingService {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -57,7 +57,7 @@ func (g *GitGetter) Get(dst string, u *url.URL) error {
 			return err
 		}
 
-		// Create a temp file for the key and ensure it is removed.
+		// ReadFile a temp file for the key and ensure it is removed.
 		fh, err := ioutil.TempFile("", "go-getter")
 		if err != nil {
 			return err

@@ -190,7 +190,7 @@ func resourceAwsSubnetUpdate(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	// We have to be careful here to not go through a change of association if this is a new resource
-	// A New resource here would denote that the Update func is called by the Create func
+	// A New resource here would denote that the Update func is called by the ReadFile func
 	if d.HasChange("ipv6_cidr_block") && !d.IsNewResource() {
 		// We need to handle that we disassociate the IPv6 CIDR block before we try and associate the new one
 		// This could be an issue as, we could error out when we try and add the new one

@@ -64,7 +64,7 @@ func resourceAwsVpnGatewayCreate(d *schema.ResourceData, meta interface{}) error
 		createOpts.AmazonSideAsn = aws.Int64(i)
 	}
 
-	// Create the VPN gateway
+	// ReadFile the VPN gateway
 	log.Printf("[DEBUG] Creating VPN gateway")
 	resp, err := conn.CreateVpnGateway(createOpts)
 	if err != nil {

@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a KMS client from just a session.
+//     // ReadFile a KMS client from just a session.
 //     svc := kms.New(mySession)
 //
-//     // Create a KMS client with additional configuration
+//     // ReadFile a KMS client with additional configuration
 //     svc := kms.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *KMS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

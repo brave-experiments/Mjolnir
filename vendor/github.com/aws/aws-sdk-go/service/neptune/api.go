@@ -723,7 +723,7 @@ func (c *Neptune) CreateDBClusterRequest(input *CreateDBClusterInput) (req *requ
 // Creates a new Amazon Neptune DB cluster.
 //
 // You can use the ReplicationSourceIdentifier parameter to create the DB cluster
-// as a Read Replica of another DB cluster or Amazon Neptune DB instance. For
+// as a ReadFile Replica of another DB cluster or Amazon Neptune DB instance. For
 // cross-region replication where the DB cluster identified by ReplicationSourceIdentifier
 // is encrypted, you must also specify the PreSignedUrl parameter.
 //
@@ -1780,12 +1780,12 @@ func (c *Neptune) DeleteDBInstanceRequest(input *DeleteDBInstanceInput) (req *re
 // If the specified DB instance is part of a DB cluster, you can't delete the
 // DB instance if both of the following conditions are true:
 //
-//    * The DB cluster is a Read Replica of another DB cluster.
+//    * The DB cluster is a ReadFile Replica of another DB cluster.
 //
 //    * The DB instance is the only instance in the DB cluster.
 //
 // To delete a DB instance in this case, first call the PromoteReadReplicaDBCluster
-// API action to promote the DB cluster so it's no longer a Read Replica. After
+// API action to promote the DB cluster so it's no longer a ReadFile Replica. After
 // the promotion completes, then call the DeleteDBInstance API action to delete
 // the final instance in the DB cluster.
 //
@@ -4068,10 +4068,10 @@ func (c *Neptune) FailoverDBClusterRequest(input *FailoverDBClusterInput) (req *
 //
 // Forces a failover for a DB cluster.
 //
-// A failover for a DB cluster promotes one of the Read Replicas (read-only
+// A failover for a DB cluster promotes one of the ReadFile Replicas (read-only
 // instances) in the DB cluster to be the primary instance (the cluster writer).
 //
-// Amazon Neptune will automatically fail over to a Read Replica, if one exists,
+// Amazon Neptune will automatically fail over to a ReadFile Replica, if one exists,
 // when the primary instance fails. You can force a failover when you want to
 // simulate a failure of a primary instance for testing. Because each instance
 // in a DB cluster has its own endpoint address, you will need to clean up and
@@ -4986,7 +4986,7 @@ func (c *Neptune) PromoteReadReplicaDBClusterRequest(input *PromoteReadReplicaDB
 
 // PromoteReadReplicaDBCluster API operation for Amazon Neptune.
 //
-// Promotes a Read Replica DB cluster to a standalone DB cluster.
+// Promotes a ReadFile Replica DB cluster to a standalone DB cluster.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -6791,9 +6791,9 @@ type CreateDBClusterInput struct {
 	// AWS KMS creates the default encryption key for your AWS account. Your AWS
 	// account has a different default encryption key for each AWS Region.
 	//
-	// If you create a Read Replica of an encrypted DB cluster in another AWS Region,
+	// If you create a ReadFile Replica of an encrypted DB cluster in another AWS Region,
 	// you must set KmsKeyId to a KMS key ID that is valid in the destination AWS
-	// Region. This key is used to encrypt the Read Replica in that AWS Region.
+	// Region. This key is used to encrypt the ReadFile Replica in that AWS Region.
 	KmsKeyId *string `type:"string"`
 
 	// The password for the master database user. This password can contain any
@@ -6842,7 +6842,7 @@ type CreateDBClusterInput struct {
 	//    called in the destination AWS Region, and the action contained in the
 	//    pre-signed URL.
 	//
-	//    * DestinationRegion - The name of the AWS Region that Read Replica will
+	//    * DestinationRegion - The name of the AWS Region that ReadFile Replica will
 	//    be created in.
 	//
 	//    * ReplicationSourceIdentifier - The DB cluster identifier for the encrypted
@@ -6892,7 +6892,7 @@ type CreateDBClusterInput struct {
 	PreferredMaintenanceWindow *string `type:"string"`
 
 	// The Amazon Resource Name (ARN) of the source DB instance or DB cluster if
-	// this DB cluster is created as a Read Replica.
+	// this DB cluster is created as a ReadFile Replica.
 	ReplicationSourceIdentifier *string `type:"string"`
 
 	// Specifies whether the DB cluster is encrypted.
@@ -7346,7 +7346,7 @@ type CreateDBInstanceInput struct {
 	//
 	//    * Must be a value from 0 to 35
 	//
-	//    * Cannot be set to 0 if the DB instance is a source to Read Replicas
+	//    * Cannot be set to 0 if the DB instance is a source to ReadFile Replicas
 	BackupRetentionPeriod *int64 `type:"integer"`
 
 	// Indicates that the DB instance should be associated with the specified CharacterSet.
@@ -7542,7 +7542,7 @@ type CreateDBInstanceInput struct {
 	// Constraints: Minimum 30-minute window.
 	PreferredMaintenanceWindow *string `type:"string"`
 
-	// A value that specifies the order in which an Read Replica is promoted to
+	// A value that specifies the order in which an ReadFile Replica is promoted to
 	// the primary instance after a failure of the existing primary instance.
 	//
 	// Default: 1
@@ -8382,25 +8382,25 @@ type DBCluster struct {
 	// in Universal Coordinated Time (UTC).
 	PreferredMaintenanceWindow *string `type:"string"`
 
-	// Contains one or more identifiers of the Read Replicas associated with this
+	// Contains one or more identifiers of the ReadFile Replicas associated with this
 	// DB cluster.
 	ReadReplicaIdentifiers []*string `locationNameList:"ReadReplicaIdentifier" type:"list"`
 
 	// The reader endpoint for the DB cluster. The reader endpoint for a DB cluster
-	// load-balances connections across the Read Replicas that are available in
+	// load-balances connections across the ReadFile Replicas that are available in
 	// a DB cluster. As clients request new connections to the reader endpoint,
-	// Neptune distributes the connection requests among the Read Replicas in the
+	// Neptune distributes the connection requests among the ReadFile Replicas in the
 	// DB cluster. This functionality can help balance your read workload across
-	// multiple Read Replicas in your DB cluster.
+	// multiple ReadFile Replicas in your DB cluster.
 	//
-	// If a failover occurs, and the Read Replica that you are connected to is promoted
+	// If a failover occurs, and the ReadFile Replica that you are connected to is promoted
 	// to be the primary instance, your connection is dropped. To continue sending
-	// your read workload to other Read Replicas in the cluster, you can then reconnect
+	// your read workload to other ReadFile Replicas in the cluster, you can then reconnect
 	// to the reader endpoint.
 	ReaderEndpoint *string `type:"string"`
 
 	// Contains the identifier of the source DB cluster if this DB cluster is a
-	// Read Replica.
+	// ReadFile Replica.
 	ReplicationSourceIdentifier *string `type:"string"`
 
 	// Specifies the current state of this DB cluster.
@@ -8648,7 +8648,7 @@ type DBClusterMember struct {
 	// DB cluster and false otherwise.
 	IsClusterWriter *bool `type:"boolean"`
 
-	// A value that specifies the order in which a Read Replica is promoted to the
+	// A value that specifies the order in which a ReadFile Replica is promoted to the
 	// primary instance after a failure of the existing primary instance.
 	PromotionTier *int64 `type:"integer"`
 }
@@ -9391,30 +9391,30 @@ type DBInstance struct {
 	// in Universal Coordinated Time (UTC).
 	PreferredMaintenanceWindow *string `type:"string"`
 
-	// A value that specifies the order in which a Read Replica is promoted to the
+	// A value that specifies the order in which a ReadFile Replica is promoted to the
 	// primary instance after a failure of the existing primary instance.
 	PromotionTier *int64 `type:"integer"`
 
 	// This parameter is not supported.
 	PubliclyAccessible *bool `deprecated:"true" type:"boolean"`
 
-	// Contains one or more identifiers of DB clusters that are Read Replicas of
+	// Contains one or more identifiers of DB clusters that are ReadFile Replicas of
 	// this DB instance.
 	ReadReplicaDBClusterIdentifiers []*string `locationNameList:"ReadReplicaDBClusterIdentifier" type:"list"`
 
-	// Contains one or more identifiers of the Read Replicas associated with this
+	// Contains one or more identifiers of the ReadFile Replicas associated with this
 	// DB instance.
 	ReadReplicaDBInstanceIdentifiers []*string `locationNameList:"ReadReplicaDBInstanceIdentifier" type:"list"`
 
 	// Contains the identifier of the source DB instance if this DB instance is
-	// a Read Replica.
+	// a ReadFile Replica.
 	ReadReplicaSourceDBInstanceIdentifier *string `type:"string"`
 
 	// If present, specifies the name of the secondary Availability Zone for a DB
 	// instance with multi-AZ support.
 	SecondaryAvailabilityZone *string `type:"string"`
 
-	// The status of a Read Replica. If the instance is not a Read Replica, this
+	// The status of a ReadFile Replica. If the instance is not a ReadFile Replica, this
 	// is blank.
 	StatusInfos []*DBInstanceStatusInfo `locationNameList:"DBInstanceStatusInfo" type:"list"`
 
@@ -10278,7 +10278,7 @@ type DeleteDBInstanceInput struct {
 	//
 	//    * Cannot end with a hyphen or contain two consecutive hyphens
 	//
-	//    * Cannot be specified when deleting a Read Replica.
+	//    * Cannot be specified when deleting a ReadFile Replica.
 	FinalDBSnapshotIdentifier *string `type:"string"`
 
 	// Determines whether a final DB snapshot is created before the DB instance
@@ -10289,7 +10289,7 @@ type DeleteDBInstanceInput struct {
 	// 'incompatible-restore', or 'incompatible-network', it can only be deleted
 	// when the SkipFinalSnapshot parameter is set to "true".
 	//
-	// Specify true when deleting a Read Replica.
+	// Specify true when deleting a ReadFile Replica.
 	//
 	// The FinalDBSnapshotIdentifier parameter must be specified if SkipFinalSnapshot
 	// is false.
@@ -13205,7 +13205,7 @@ type FailoverDBClusterInput struct {
 
 	// The name of the instance to promote to the primary instance.
 	//
-	// You must specify the instance identifier for an Read Replica in the DB cluster.
+	// You must specify the instance identifier for an ReadFile Replica in the DB cluster.
 	// For example, mydbcluster-replica1.
 	TargetDBInstanceIdentifier *string `type:"string"`
 }
@@ -14080,7 +14080,7 @@ type ModifyDBInstanceInput struct {
 	// Constraints: Must be at least 30 minutes
 	PreferredMaintenanceWindow *string `type:"string"`
 
-	// A value that specifies the order in which a Read Replica is promoted to the
+	// A value that specifies the order in which a ReadFile Replica is promoted to the
 	// primary instance after a failure of the existing primary instance.
 	//
 	// Default: 1
@@ -14107,7 +14107,7 @@ type ModifyDBInstanceInput struct {
 	// While the migration takes place, nightly backups for the instance are suspended.
 	// No other Amazon Neptune operations can take place for the instance, including
 	// modifying the instance, rebooting the instance, deleting the instance, creating
-	// a Read Replica for the instance, and creating a DB snapshot of the instance.
+	// a ReadFile Replica for the instance, and creating a DB snapshot of the instance.
 	//
 	// Valid values: standard | gp2 | io1
 	//
@@ -14739,7 +14739,7 @@ type OrderableDBInstanceOption struct {
 	// Indicates whether a DB instance is Multi-AZ capable.
 	MultiAZCapable *bool `type:"boolean"`
 
-	// Indicates whether a DB instance can have a Read Replica.
+	// Indicates whether a DB instance can have a ReadFile Replica.
 	ReadReplicaCapable *bool `type:"boolean"`
 
 	// Indicates the storage type for a DB instance.
@@ -15273,12 +15273,12 @@ func (s *PendingModifiedValues) SetStorageType(v string) *PendingModifiedValues 
 type PromoteReadReplicaDBClusterInput struct {
 	_ struct{} `type:"structure"`
 
-	// The identifier of the DB cluster Read Replica to promote. This parameter
+	// The identifier of the DB cluster ReadFile Replica to promote. This parameter
 	// is not case-sensitive.
 	//
 	// Constraints:
 	//
-	//    * Must match the identifier of an existing DBCluster Read Replica.
+	//    * Must match the identifier of an existing DBCluster ReadFile Replica.
 	//
 	// Example: my-cluster-replica1
 	//

@@ -71,7 +71,7 @@ func (n *NodeApplyableModuleVariable) References() []string {
 
 	// Otherwise, we depend on anything that is in our value, but
 	// specifically in the namespace of the parent path.
-	// Create the prefix based on the path
+	// ReadFile the prefix based on the path
 	var prefix string
 	if p := n.Path(); len(p) > 0 {
 		prefix = modulePrefixStr(p)

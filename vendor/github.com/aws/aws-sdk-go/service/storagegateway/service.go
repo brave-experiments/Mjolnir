@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a StorageGateway client from just a session.
+//     // ReadFile a StorageGateway client from just a session.
 //     svc := storagegateway.New(mySession)
 //
-//     // Create a StorageGateway client with additional configuration
+//     // ReadFile a StorageGateway client with additional configuration
 //     svc := storagegateway.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *StorageGateway {
 	c := p.ClientConfig(EndpointsID, cfgs...)

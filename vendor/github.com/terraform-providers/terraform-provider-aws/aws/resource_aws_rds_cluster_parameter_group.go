@@ -115,7 +115,7 @@ func resourceAwsRDSClusterParameterGroupCreate(d *schema.ResourceData, meta inte
 		Tags:                        tags,
 	}
 
-	log.Printf("[DEBUG] Create DB Cluster Parameter Group: %#v", createOpts)
+	log.Printf("[DEBUG] ReadFile DB Cluster Parameter Group: %#v", createOpts)
 	_, err := rdsconn.CreateDBClusterParameterGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating DB Cluster Parameter Group: %s", err)

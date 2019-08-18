@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a APIGateway client from just a session.
+//     // ReadFile a APIGateway client from just a session.
 //     svc := apigateway.New(mySession)
 //
-//     // Create a APIGateway client with additional configuration
+//     // ReadFile a APIGateway client with additional configuration
 //     svc := apigateway.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *APIGateway {
 	c := p.ClientConfig(EndpointsID, cfgs...)

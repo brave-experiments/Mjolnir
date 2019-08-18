@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a MQ client from just a session.
+//     // ReadFile a MQ client from just a session.
 //     svc := mq.New(mySession)
 //
-//     // Create a MQ client with additional configuration
+//     // ReadFile a MQ client with additional configuration
 //     svc := mq.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *MQ {
 	c := p.ClientConfig(EndpointsID, cfgs...)

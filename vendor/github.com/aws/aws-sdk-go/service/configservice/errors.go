@@ -137,7 +137,7 @@ const (
 	// "NoAvailableConfigurationRecorderException".
 	//
 	// There are no configuration recorders available to provide the role needed
-	// to describe your resources. Create a configuration recorder.
+	// to describe your resources. ReadFile a configuration recorder.
 	ErrCodeNoAvailableConfigurationRecorderException = "NoAvailableConfigurationRecorderException"
 
 	// ErrCodeNoAvailableDeliveryChannelException for service response error code

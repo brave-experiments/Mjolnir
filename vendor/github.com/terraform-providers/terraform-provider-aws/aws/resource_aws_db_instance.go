@@ -1032,7 +1032,7 @@ func resourceAwsDbInstanceRead(d *schema.ResourceData, meta interface{}) error {
 	}
 	d.Set("tags", tagsToMapRDS(dt))
 
-	// Create an empty schema.Set to hold all vpc security group ids
+	// ReadFile an empty schema.Set to hold all vpc security group ids
 	ids := &schema.Set{
 		F: schema.HashString,
 	}
@@ -1041,7 +1041,7 @@ func resourceAwsDbInstanceRead(d *schema.ResourceData, meta interface{}) error {
 	}
 	d.Set("vpc_security_group_ids", ids)
 
-	// Create an empty schema.Set to hold all security group names
+	// ReadFile an empty schema.Set to hold all security group names
 	sgn := &schema.Set{
 		F: schema.HashString,
 	}

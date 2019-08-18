@@ -95,7 +95,7 @@ func impliedObjectType(dec *json.Decoder) (cty.Type, error) {
 	var atys map[string]cty.Type
 
 	for {
-		// Read the object key first
+		// ReadFile the object key first
 		tok, err := dec.Token()
 		if err != nil {
 			return cty.NilType, err

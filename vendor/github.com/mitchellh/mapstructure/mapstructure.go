@@ -547,7 +547,7 @@ func (d *Decoder) decodeMap(name string, data interface{}, val reflect.Value) er
 }
 
 func (d *Decoder) decodePtr(name string, data interface{}, val reflect.Value) error {
-	// Create an element of the concrete (non pointer) type and decode
+	// ReadFile an element of the concrete (non pointer) type and decode
 	// into that. Then set the value of the pointer to this type.
 	valType := val.Type()
 	valElemType := valType.Elem()
@@ -566,7 +566,7 @@ func (d *Decoder) decodePtr(name string, data interface{}, val reflect.Value) er
 }
 
 func (d *Decoder) decodeFunc(name string, data interface{}, val reflect.Value) error {
-	// Create an element of the concrete (non pointer) type and decode
+	// ReadFile an element of the concrete (non pointer) type and decode
 	// into that. Then set the value of the pointer to this type.
 	dataVal := reflect.Indirect(reflect.ValueOf(data))
 	if val.Type() != dataVal.Type() {

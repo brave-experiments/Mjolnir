@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a SQS client from just a session.
+//     // ReadFile a SQS client from just a session.
 //     svc := sqs.New(mySession)
 //
-//     // Create a SQS client with additional configuration
+//     // ReadFile a SQS client with additional configuration
 //     svc := sqs.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *SQS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

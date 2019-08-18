@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a CloudFront client from just a session.
+//     // ReadFile a CloudFront client from just a session.
 //     svc := cloudfront.New(mySession)
 //
-//     // Create a CloudFront client with additional configuration
+//     // ReadFile a CloudFront client with additional configuration
 //     svc := cloudfront.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CloudFront {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -6,20 +6,20 @@ import (
 )
 
 var (
-	DefaultRecipes = map[string]Recipe{
+	DefaultRecipes = map[string]File{
 		"bastion": {
 			Location: "bastion.tf",
 		},
 	}
 )
 
-type Recipe struct {
+type File struct {
 	Location string
 	Body     string
 }
 
 type Recipes struct {
-	Elements map[string]Recipe
+	Elements map[string]File
 }
 
 type RecipesError struct {
@@ -34,28 +34,28 @@ func (recipes *Recipes) CreateWithDefaults() {
 	recipes.Elements = DefaultRecipes
 }
 
-func (recipes *Recipes) AddRecipe(keyName string, recipe Recipe) error {
+func (recipes *Recipes) AddRecipe(keyName string, file File) error {
 	if nil == recipes.Elements {
-		recipes.Elements = make(map[string]Recipe, 0)
+		recipes.Elements = make(map[string]File, 0)
 	}
 
 	if _, ok := recipes.Elements[keyName]; ok {
 		return RecipesError{fmt.Sprintf("%s  already exists in recipes list", keyName)}
 	}
 
-	recipes.Elements[keyName] = recipe
+	recipes.Elements[keyName] = file
 
 	return nil
 }
 
-func (recipe *Recipe) Create() error {
-	fileBodyBytes, err := ioutil.ReadFile(recipe.Location)
+func (file *File) ReadFile() error {
+	fileBodyBytes, err := ioutil.ReadFile(file.Location)
 
 	if nil != err {
 		return err
 	}
 
-	recipe.Body = string(fileBodyBytes)
+	file.Body = string(fileBodyBytes)
 
 	return nil
 }

@@ -46,7 +46,7 @@ func (b *ImportGraphBuilder) Steps() []GraphTransformer {
 	}
 
 	steps := []GraphTransformer{
-		// Create all our resources from the configuration and state
+		// ReadFile all our resources from the configuration and state
 		&ConfigTransformer{Module: mod},
 
 		// Add the import steps

@@ -79,7 +79,7 @@ type normReader struct {
 	err          error
 }
 
-// Read implements the standard read interface.
+// ReadFile implements the standard read interface.
 func (r *normReader) Read(p []byte) (int, error) {
 	for {
 		if r.lastBoundary-r.bufStart > 0 {
@@ -114,7 +114,7 @@ func (r *normReader) Read(p []byte) (int, error) {
 	}
 }
 
-// Reader returns a new reader that implements Read
+// Reader returns a new reader that implements ReadFile
 // by reading data from r and returning f(data).
 func (f Form) Reader(r io.Reader) io.Reader {
 	const chunk = 4000

@@ -33,7 +33,7 @@ const (
 // This copy will omit and dot-prefixed files (such as .git/, .hg/) and
 // can't be updated on its own.
 func GetCopy(dst, src string) error {
-	// Create the temporary directory to do the real Get to
+	// ReadFile the temporary directory to do the real Get to
 	tmpDir, err := ioutil.TempDir("", "tf")
 	if err != nil {
 		return err

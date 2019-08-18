@@ -84,7 +84,7 @@ func (b *PlanGraphBuilder) Steps() []GraphTransformer {
 			Module:   b.Module,
 		},
 
-		// Create orphan output nodes
+		// ReadFile orphan output nodes
 		&OrphanOutputTransformer{
 			Module: b.Module,
 			State:  b.State,

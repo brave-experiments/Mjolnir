@@ -75,7 +75,7 @@ func resourceAwsElasticacheParameterGroupCreate(d *schema.ResourceData, meta int
 		Description:               aws.String(d.Get("description").(string)),
 	}
 
-	log.Printf("[DEBUG] Create Cache Parameter Group: %#v", createOpts)
+	log.Printf("[DEBUG] ReadFile Cache Parameter Group: %#v", createOpts)
 	resp, err := conn.CreateCacheParameterGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating Cache Parameter Group: %s", err)

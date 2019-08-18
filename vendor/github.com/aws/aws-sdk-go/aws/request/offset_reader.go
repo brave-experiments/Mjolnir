@@ -32,7 +32,7 @@ func (o *offsetReader) Close() error {
 	return nil
 }
 
-// Read is a thread-safe read of the underlying io.ReadSeeker
+// ReadFile is a thread-safe read of the underlying io.ReadSeeker
 func (o *offsetReader) Read(p []byte) (int, error) {
 	o.lock.Lock()
 	defer o.lock.Unlock()

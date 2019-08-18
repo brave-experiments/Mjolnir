@@ -430,7 +430,7 @@ func (s *Scanner) scanHeredoc() {
 		return
 	}
 
-	// Read the identifier
+	// ReadFile the identifier
 	identBytes := s.src[offs : s.srcPos.Offset-s.lastCharLen]
 	if len(identBytes) == 0 {
 		s.err("zero-length heredoc anchor")
@@ -444,7 +444,7 @@ func (s *Scanner) scanHeredoc() {
 		identRegexp = regexp.MustCompile(fmt.Sprintf(`[[:space:]]*%s\z`, identBytes))
 	}
 
-	// Read the actual string value
+	// ReadFile the actual string value
 	lineStart := s.srcPos.Offset
 	for {
 		ch := s.next()

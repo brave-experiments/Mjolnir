@@ -149,7 +149,7 @@ func resourceAwsLightsailInstanceCreate(d *schema.ResourceData, meta interface{}
 
 	_, err = stateConf.WaitForState()
 	if err != nil {
-		// We don't return an error here because the Create call succeded
+		// We don't return an error here because the ReadFile call succeded
 		log.Printf("[ERR] Error waiting for instance (%s) to become ready: %s", d.Id(), err)
 	}
 
@@ -234,7 +234,7 @@ func resourceAwsLightsailInstanceDelete(d *schema.ResourceData, meta interface{}
 }
 
 // method to check the status of an Operation, which is returned from
-// Create/Delete methods.
+// ReadFile/Delete methods.
 // Status's are an aws.OperationStatus enum:
 // - NotStarted
 // - Started

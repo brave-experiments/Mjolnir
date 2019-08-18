@@ -145,7 +145,7 @@ func resourceAwsDbOptionGroupCreate(d *schema.ResourceData, meta interface{}) er
 		Tags:                   tags,
 	}
 
-	log.Printf("[DEBUG] Create DB Option Group: %#v", createOpts)
+	log.Printf("[DEBUG] ReadFile DB Option Group: %#v", createOpts)
 	_, err := rdsconn.CreateOptionGroup(createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating DB Option Group: %s", err)

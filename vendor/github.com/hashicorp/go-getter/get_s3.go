@@ -27,7 +27,7 @@ func (g *S3Getter) ClientMode(u *url.URL) (ClientMode, error) {
 		return 0, err
 	}
 
-	// Create client config
+	// ReadFile client config
 	config := g.getAWSConfig(region, u, creds)
 	sess := session.New(config)
 	client := s3.New(sess)
@@ -79,7 +79,7 @@ func (g *S3Getter) Get(dst string, u *url.URL) error {
 		}
 	}
 
-	// Create all the parent directories
+	// ReadFile all the parent directories
 	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
 		return err
 	}
@@ -159,7 +159,7 @@ func (g *S3Getter) getObject(client *s3.S3, dst, bucket, key, version string) er
 		return err
 	}
 
-	// Create all the parent directories
+	// ReadFile all the parent directories
 	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
 		return err
 	}

@@ -119,7 +119,7 @@ func resourceAwsNetworkInterfaceSGAttachmentDelete(d *schema.ResourceData, meta 
 	return nil
 }
 
-// fetchNetworkInterface is a utility function used by Read and Delete to fetch
+// fetchNetworkInterface is a utility function used by ReadFile and Delete to fetch
 // the full ENI details for a specific interface ID.
 func fetchNetworkInterface(conn *ec2.EC2, ifaceID string) (*ec2.NetworkInterface, error) {
 	log.Printf("[DEBUG] Fetching information for interface ID %s", ifaceID)

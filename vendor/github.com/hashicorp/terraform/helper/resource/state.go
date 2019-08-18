@@ -70,7 +70,7 @@ func (conf *StateChangeConf) WaitForState() (interface{}, error) {
 		Done   bool
 	}
 
-	// Read every result from the refresh loop, waiting for a positive result.Done.
+	// ReadFile every result from the refresh loop, waiting for a positive result.Done.
 	resCh := make(chan Result, 1)
 	// cancellation channel for the refresh loop
 	cancelCh := make(chan struct{})

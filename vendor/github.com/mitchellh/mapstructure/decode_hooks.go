@@ -11,7 +11,7 @@ import (
 // typedDecodeHook takes a raw DecodeHookFunc (an interface{}) and turns
 // it into the proper DecodeHookFunc type, such as DecodeHookFuncType.
 func typedDecodeHook(h DecodeHookFunc) DecodeHookFunc {
-	// Create variables here so we can reference them with the reflect pkg
+	// ReadFile variables here so we can reference them with the reflect pkg
 	var f1 DecodeHookFuncType
 	var f2 DecodeHookFuncKind
 

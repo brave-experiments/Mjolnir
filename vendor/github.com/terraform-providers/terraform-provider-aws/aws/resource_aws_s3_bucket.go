@@ -663,7 +663,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 
 	d.Set("bucket_domain_name", bucketDomainName(d.Get("bucket").(string)))
 
-	// Read the policy
+	// ReadFile the policy
 	if _, ok := d.GetOk("policy"); ok {
 
 		pol, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
@@ -691,7 +691,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
-	// Read the CORS
+	// ReadFile the CORS
 	corsResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketCors(&s3.GetBucketCorsInput{
 			Bucket: aws.String(d.Id()),
@@ -736,7 +736,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
-	// Read the website configuration
+	// ReadFile the website configuration
 	wsResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketWebsite(&s3.GetBucketWebsiteInput{
 			Bucket: aws.String(d.Id()),
@@ -795,7 +795,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	// Read the versioning configuration
+	// ReadFile the versioning configuration
 
 	versioningResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketVersioning(&s3.GetBucketVersioningInput{
@@ -827,7 +827,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
-	// Read the acceleration status
+	// ReadFile the acceleration status
 
 	accelerateResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketAccelerateConfiguration(&s3.GetBucketAccelerateConfigurationInput{
@@ -856,7 +856,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		d.Set("acceleration_status", accelerate.Status)
 	}
 
-	// Read the request payer configuration.
+	// ReadFile the request payer configuration.
 
 	payerResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketRequestPayment(&s3.GetBucketRequestPaymentInput{
@@ -874,7 +874,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
-	// Read the logging configuration
+	// ReadFile the logging configuration
 	loggingResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketLogging(&s3.GetBucketLoggingInput{
 			Bucket: aws.String(d.Id()),
@@ -901,7 +901,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	// Read the lifecycle configuration
+	// ReadFile the lifecycle configuration
 
 	lifecycleResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketLifecycleConfiguration(&s3.GetBucketLifecycleConfigurationInput{
@@ -1027,7 +1027,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
-	// Read the bucket replication configuration
+	// ReadFile the bucket replication configuration
 
 	replicationResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketReplication(&s3.GetBucketReplicationInput{
@@ -1047,7 +1047,7 @@ func resourceAwsS3BucketRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	// Read the bucket server side encryption configuration
+	// ReadFile the bucket server side encryption configuration
 
 	encryptionResponse, err := retryOnAwsCode("NoSuchBucket", func() (interface{}, error) {
 		return s3conn.GetBucketEncryption(&s3.GetBucketEncryptionInput{

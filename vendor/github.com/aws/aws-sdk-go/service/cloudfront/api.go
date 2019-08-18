@@ -364,7 +364,7 @@ func (c *CloudFront) CreateDistributionWithTagsRequest(input *CreateDistribution
 
 // CreateDistributionWithTags API operation for Amazon CloudFront.
 //
-// Create a new distribution with tags.
+// ReadFile a new distribution with tags.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -571,7 +571,7 @@ func (c *CloudFront) CreateFieldLevelEncryptionConfigRequest(input *CreateFieldL
 
 // CreateFieldLevelEncryptionConfig API operation for Amazon CloudFront.
 //
-// Create a new field-level encryption configuration.
+// ReadFile a new field-level encryption configuration.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -674,7 +674,7 @@ func (c *CloudFront) CreateFieldLevelEncryptionProfileRequest(input *CreateField
 
 // CreateFieldLevelEncryptionProfile API operation for Amazon CloudFront.
 //
-// Create a field-level encryption profile.
+// ReadFile a field-level encryption profile.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -776,7 +776,7 @@ func (c *CloudFront) CreateInvalidationRequest(input *CreateInvalidationInput) (
 
 // CreateInvalidation API operation for Amazon CloudFront.
 //
-// Create a new invalidation.
+// ReadFile a new invalidation.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1100,7 +1100,7 @@ func (c *CloudFront) CreateStreamingDistributionWithTagsRequest(input *CreateStr
 
 // CreateStreamingDistributionWithTags API operation for Amazon CloudFront.
 //
-// Create a new streaming distribution with tags.
+// ReadFile a new streaming distribution with tags.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about

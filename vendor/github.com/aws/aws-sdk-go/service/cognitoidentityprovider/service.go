@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a CognitoIdentityProvider client from just a session.
+//     // ReadFile a CognitoIdentityProvider client from just a session.
 //     svc := cognitoidentityprovider.New(mySession)
 //
-//     // Create a CognitoIdentityProvider client with additional configuration
+//     // ReadFile a CognitoIdentityProvider client with additional configuration
 //     svc := cognitoidentityprovider.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CognitoIdentityProvider {
 	c := p.ClientConfig(EndpointsID, cfgs...)

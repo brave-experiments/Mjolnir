@@ -16,7 +16,7 @@ func NewPeeker(ch <-chan *Token) *Peeker {
 }
 
 // Peek returns the next token in the stream without consuming it. A
-// subsequent call to Read will return the same token.
+// subsequent call to ReadFile will return the same token.
 func (p *Peeker) Peek() *Token {
 	if p.peeked == nil {
 		p.peeked = <-p.ch
@@ -24,7 +24,7 @@ func (p *Peeker) Peek() *Token {
 	return p.peeked
 }
 
-// Read consumes the next token in the stream and returns it.
+// ReadFile consumes the next token in the stream and returns it.
 func (p *Peeker) Read() *Token {
 	token := p.Peek()
 
@@ -47,7 +47,7 @@ func (p *Peeker) Close() {
 		// discard
 	}
 	// Install a synthetic EOF token in 'peeked' in case someone
-	// erroneously calls Peek() or Read() after we've closed.
+	// erroneously calls Peek() or ReadFile() after we've closed.
 	p.peeked = &Token{
 		Type:    EOF,
 		Content: "",

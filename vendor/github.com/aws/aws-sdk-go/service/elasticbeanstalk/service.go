@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a ElasticBeanstalk client from just a session.
+//     // ReadFile a ElasticBeanstalk client from just a session.
 //     svc := elasticbeanstalk.New(mySession)
 //
-//     // Create a ElasticBeanstalk client with additional configuration
+//     // ReadFile a ElasticBeanstalk client with additional configuration
 //     svc := elasticbeanstalk.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ElasticBeanstalk {
 	c := p.ClientConfig(EndpointsID, cfgs...)

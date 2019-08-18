@@ -283,7 +283,7 @@ func (c *EKS) DescribeClusterRequest(input *DescribeClusterInput) (req *request.
 //
 // The API server endpoint and certificate authority data returned by this operation
 // are required for kubelet and kubectl to communicate with your Kubernetes
-// API server. For more information, see Create a kubeconfig for Amazon EKS
+// API server. For more information, see ReadFile a kubeconfig for Amazon EKS
 // (http://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html).
 //
 // The API server endpoint and certificate authority data are not available

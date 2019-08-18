@@ -276,7 +276,7 @@ func resourceAwsElasticSearchDomainCreate(d *schema.ResourceData, meta interface
 	conn := meta.(*AWSClient).esconn
 
 	// The API doesn't check for duplicate names
-	// so w/out this check Create would act as upsert
+	// so w/out this check ReadFile would act as upsert
 	// and might cause duplicate domain to appear in state
 	resp, err := conn.DescribeElasticsearchDomain(&elasticsearch.DescribeElasticsearchDomainInput{
 		DomainName: aws.String(d.Get("domain_name").(string)),

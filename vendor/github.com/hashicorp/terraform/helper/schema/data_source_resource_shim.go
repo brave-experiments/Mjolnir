@@ -5,15 +5,15 @@ import (
 )
 
 // DataSourceResourceShim takes a Resource instance describing a data source
-// (with a Read implementation and a Schema, at least) and returns a new
-// Resource instance with additional Create and Delete implementations that
+// (with a ReadFile implementation and a Schema, at least) and returns a new
+// Resource instance with additional ReadFile and Delete implementations that
 // allow the data source to be used as a resource.
 //
 // This is a backward-compatibility layer for data sources that were formerly
 // read-only resources before the data source concept was added. It should not
 // be used for any *new* data sources.
 //
-// The Read function for the data source *must* call d.SetId with a non-empty
+// The ReadFile function for the data source *must* call d.SetId with a non-empty
 // id in order for this shim to function as expected.
 //
 // The provided Resource instance, and its schema, will be modified in-place

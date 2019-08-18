@@ -292,7 +292,7 @@ func (z *Tokenizer) Buffered() []byte {
 }
 
 // readAtLeastOneByte wraps an io.Reader so that reading cannot return (0, nil).
-// It returns io.ErrNoProgress if the underlying r.Read method returns (0, nil)
+// It returns io.ErrNoProgress if the underlying r.ReadFile method returns (0, nil)
 // too many times in succession.
 func readAtLeastOneByte(r io.Reader, b []byte) (int, error) {
 	for i := 0; i < 100; i++ {
@@ -816,7 +816,7 @@ func (z *Tokenizer) readStartTag() TokenType {
 func (z *Tokenizer) readTag(saveAttr bool) {
 	z.attr = z.attr[:0]
 	z.nAttrReturned = 0
-	// Read the tag name and attribute key/value pairs.
+	// ReadFile the tag name and attribute key/value pairs.
 	z.readTagName()
 	if z.skipWhiteSpace(); z.err != nil {
 		return
@@ -957,7 +957,7 @@ func (z *Tokenizer) Next() TokenType {
 	}
 	if z.rawTag != "" {
 		if z.rawTag == "plaintext" {
-			// Read everything up to EOF.
+			// ReadFile everything up to EOF.
 			for z.err == nil {
 				z.readByte()
 			}

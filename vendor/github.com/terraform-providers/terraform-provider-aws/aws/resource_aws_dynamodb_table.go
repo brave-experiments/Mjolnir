@@ -694,7 +694,7 @@ func readDynamoDbTableTags(arn string, conn *dynamodb.DynamoDB) (map[string]stri
 
 	result := tagsToMapDynamoDb(output.Tags)
 
-	// TODO Read NextToken if available
+	// TODO ReadFile NextToken if available
 
 	return result, nil
 }

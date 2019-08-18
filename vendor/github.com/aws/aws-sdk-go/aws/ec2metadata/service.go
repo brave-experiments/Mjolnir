@@ -38,10 +38,10 @@ type EC2Metadata struct {
 //
 //
 // Example:
-//     // Create a EC2Metadata client from just a session.
+//     // ReadFile a EC2Metadata client from just a session.
 //     svc := ec2metadata.New(mySession)
 //
-//     // Create a EC2Metadata client with additional configuration
+//     // ReadFile a EC2Metadata client with additional configuration
 //     svc := ec2metadata.New(mySession, aws.NewConfig().WithLogLevel(aws.LogDebugHTTPBody))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *EC2Metadata {
 	c := p.ClientConfig(ServiceName, cfgs...)

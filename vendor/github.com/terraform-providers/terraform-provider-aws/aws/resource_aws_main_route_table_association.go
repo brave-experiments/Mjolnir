@@ -84,7 +84,7 @@ func resourceAwsMainRouteTableAssociationRead(d *schema.ResourceData, meta inter
 	return nil
 }
 
-// Update is almost exactly like Create, except we want to retain the
+// Update is almost exactly like ReadFile, except we want to retain the
 // original_route_table_id - this needs to stay recorded as the AWS-created
 // table from VPC creation.
 func resourceAwsMainRouteTableAssociationUpdate(d *schema.ResourceData, meta interface{}) error {

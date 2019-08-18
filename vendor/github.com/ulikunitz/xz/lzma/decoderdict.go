@@ -124,7 +124,7 @@ func (d *decoderDict) Write(p []byte) (n int, err error) {
 // decoder dictionary.
 func (d *decoderDict) Available() int { return d.buf.Available() }
 
-// Read reads data from the buffer contained in the decoder dictionary.
+// ReadFile reads data from the buffer contained in the decoder dictionary.
 func (d *decoderDict) Read(p []byte) (n int, err error) { return d.buf.Read(p) }
 
 // Buffered returns the number of bytes currently buffered in the

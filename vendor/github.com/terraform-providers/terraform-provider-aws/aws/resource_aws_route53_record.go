@@ -408,7 +408,7 @@ func resourceAwsRoute53RecordCreate(d *schema.ResourceData, meta interface{}) er
 		action = "CREATE"
 	}
 
-	// Create the new records. We abuse StateChangeConf for this to
+	// ReadFile the new records. We abuse StateChangeConf for this to
 	// retry for us since Route53 sometimes returns errors about another
 	// operation happening at the same time.
 	changeBatch := &route53.ChangeBatch{
@@ -780,7 +780,7 @@ func resourceAwsRoute53RecordBuildSet(d *schema.ResourceData, zoneName string) (
 	// get expanded name
 	en := expandRecordName(d.Get("name").(string), zoneName)
 
-	// Create the RecordSet request with the fully expanded name, e.g.
+	// ReadFile the RecordSet request with the fully expanded name, e.g.
 	// sub.domain.com. Route 53 requires a fully qualified domain name, but does
 	// not require the trailing ".", which it will itself, so we don't call FQDN
 	// here.

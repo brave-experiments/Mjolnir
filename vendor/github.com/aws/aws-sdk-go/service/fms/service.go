@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // Create a FMS client from just a session.
+//     // ReadFile a FMS client from just a session.
 //     svc := fms.New(mySession)
 //
-//     // Create a FMS client with additional configuration
+//     // ReadFile a FMS client with additional configuration
 //     svc := fms.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *FMS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

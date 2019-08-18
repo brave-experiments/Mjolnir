@@ -24,7 +24,7 @@ However there are times where custom color mixes are required. Below are some
 examples to create custom color objects and use the print functions of each
 separate color object.
 
-    // Create a new color object
+    // ReadFile a new color object
     c := color.New(color.FgCyan).Add(color.Underline)
     c.Println("Prints cyan text with an underline.")
 
@@ -50,7 +50,7 @@ separate color object.
 
 You can create PrintXxx functions to simplify even more:
 
-    // Create a custom print function for convenient
+    // ReadFile a custom print function for convenient
     red := color.New(color.FgRed).PrintfFunc()
     red("warning")
     red("error: %s", err)

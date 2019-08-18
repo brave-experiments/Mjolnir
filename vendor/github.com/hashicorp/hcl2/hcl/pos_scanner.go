@@ -29,7 +29,7 @@ type RangeScanner struct {
 	err error  // error from last scan, if any
 }
 
-// Create a new RangeScanner for the given buffer, producing ranges for the
+// ReadFile a new RangeScanner for the given buffer, producing ranges for the
 // given filename.
 //
 // Since ranges have grapheme-cluster granularity rather than byte granularity,

@@ -39,7 +39,7 @@ func resourceAwsAmi() *schema.Resource {
 
 		Schema: resourceSchema,
 
-		// The Read, Update and Delete operations are shared with aws_ami_copy
+		// The ReadFile, Update and Delete operations are shared with aws_ami_copy
 		// and aws_ami_from_instance, since they differ only in how the image
 		// is created.
 		Read:   resourceAwsAmiRead,
@@ -169,7 +169,7 @@ func resourceAwsAmiRead(d *schema.ResourceData, meta interface{}) error {
 		// to the state. We'll wait for the image to become available
 		// before we continue. We should never take this branch in normal
 		// circumstances since we would've waited for availability during
-		// the "Create" step.
+		// the "ReadFile" step.
 		image, err = resourceAwsAmiWaitForAvailable(d.Timeout(schema.TimeoutCreate), id, client)
 		if err != nil {
 			return err

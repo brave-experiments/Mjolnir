@@ -173,7 +173,7 @@ func parseGNUExtensions(r io.Reader) (f func(out, in []byte), err error) {
 	case 1:
 		return nil, nil
 	case 2:
-		// Read a serial number, which is prefixed by a 1-byte length.
+		// ReadFile a serial number, which is prefixed by a 1-byte length.
 		// The maximum length is 16.
 		var lenBuf [1]byte
 		_, err = io.ReadFull(r, lenBuf[:])
