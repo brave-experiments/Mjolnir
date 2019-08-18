@@ -4,15 +4,13 @@ import "os"
 
 const (
 	DefaulStateFileName  = "default.tfstate"
-	DefaultStateFileBody = `
-{
+	DefaultStateFileBody = `{
     "version": 3,
     "terraform_version": "0.11.13",
     "serial": 1,
     "outputs": {},
     "resources": []
-}
-`
+}`
 )
 
 var (
