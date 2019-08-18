@@ -56,29 +56,58 @@ func TestRecipesError_Error(t *testing.T) {
 	assert.Equal(t, err.Error(), errorMsg)
 }
 
+func TestClientError_Error(t *testing.T) {
+	errorMsg := "Dummy Msg"
+	err := RecipesError{errorMsg}
+	assert.IsType(t, RecipesError{}, err)
+	assert.Equal(t, err.Error(), errorMsg)
+}
+
 func TestFile_ReadFileFailure(t *testing.T) {
-	recipe := File{}
-	err := recipe.ReadFile()
+	file := File{}
+	err := file.ReadFile()
 	assert.Error(t, err)
 	assert.Equal(t, err.Error(), "open : no such file or directory")
 }
 
 func TestFile_ReadFile(t *testing.T) {
-	fileBody := []byte("dummy content")
+	fileBody := "dummy content"
 	fileName := "dummyFileUniqueName.tf"
+	PrepareDummyFile(t, fileName, fileBody)
 
-	err := ioutil.WriteFile(fileName, fileBody, 0644)
-	assert.Nil(t, err)
-
-	recipe := File{
+	file := File{
 		Location: fileName,
 	}
 
-	err = recipe.ReadFile()
+	err := file.ReadFile()
 	assert.Nil(t, err)
 
-	assert.Equal(t, string(fileBody), recipe.Body)
+	assert.Equal(t, string(fileBody), file.Body)
 
-	err = os.Remove(fileName)
+	RemoveDummyFile(t, fileName)
+}
+
+func TestFile_ReadFileWithVariables(t *testing.T) {
+	// This test is done to concrete variables design
+	variables := map[string]interface{}{
+		"dummyKey": "dummyVal",
+	}
+
+	file := File{
+		Variables: variables,
+	}
+
+	assert.IsType(t, file, File{})
+}
+
+func PrepareDummyFile(t *testing.T, fileName string, content string) {
+	fileBody := []byte(content)
+
+	err := ioutil.WriteFile(fileName, fileBody, 0644)
+	assert.Nil(t, err)
+}
+
+func RemoveDummyFile(t *testing.T, fileName string) {
+	err := os.Remove(fileName)
 	assert.Nil(t, err)
 }

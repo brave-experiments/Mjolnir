@@ -1,6 +1,7 @@
 package terra
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -35,6 +36,19 @@ func TestDefaultStateFileWithoutCreationOfFile(t *testing.T) {
 	assert.Equal(t, fileBodyToTest, defaultStateFile.Body)
 
 	restoreFilesAndState(t)
+}
+
+func TestDefaultStateFileFailure(t *testing.T) {
+	StateFileName = "/some/dir/that/does/not/exists/dummy.tfstate"
+	defaultStateFile, err := DefaultStateFile()
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		err.Error(),
+		fmt.Sprintf("open %s: no such file or directory", StateFileName),
+	)
+	assert.IsType(t, &StateFile{}, defaultStateFile)
+	StateFileName = DefaulStateFileName
 }
 
 func restoreFilesAndState(t *testing.T) {

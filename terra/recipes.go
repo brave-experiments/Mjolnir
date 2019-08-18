@@ -14,8 +14,9 @@ var (
 )
 
 type File struct {
-	Location string
-	Body     string
+	Location  string
+	Body      string
+	Variables map[string]interface{}
 }
 
 type Recipes struct {
@@ -26,8 +27,16 @@ type RecipesError struct {
 	Message string
 }
 
+type ClientError struct {
+	Message string
+}
+
 func (recipesError RecipesError) Error() string {
 	return recipesError.Message
+}
+
+func (client ClientError) Error() string {
+	return client.Message
 }
 
 func (recipes *Recipes) CreateWithDefaults() {
