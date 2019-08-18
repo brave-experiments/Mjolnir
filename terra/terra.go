@@ -1,7 +1,7 @@
 package terra
 
 import (
-	"github.com/brave-experiments/apollo-devops/src/github.com/hashicorp/terraform/terraform"
+	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
 )
