@@ -9,11 +9,15 @@ import (
 	"testing"
 )
 
-func TestClient_DefaultClient(t *testing.T) {
+func TestClient_DefaultClientCreateStateFile(t *testing.T) {
+	StateFileName = "dummy.tfstate"
 	client := Client{}
 	err := client.DefaultClient()
 	assert.Greater(t, len(client.Recipes.Elements), 0)
 	assert.Nil(t, err)
+
+	StateFileName = DefaulStateFileName
+	RemoveDummyFile(t, StateFileName)
 }
 
 func TestDefaultProvider(t *testing.T) {

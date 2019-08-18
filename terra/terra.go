@@ -9,7 +9,6 @@ import (
 type Client struct {
 	Recipes  Recipes
 	Provider terraform.ResourceProvider
-	state    *StateFile
 	platform *terranova.Platform
 }
 
@@ -45,7 +44,12 @@ func (client *Client) DefaultClient() (err error) {
 	client.platform.AddProvider(DefaultProvider("aws"))
 
 	state, err := DefaultStateFile()
-	client.state = state
+
+	if nil != err {
+		return err
+	}
+
+	err = client.assignStateFile(state)
 
 	return err
 }
@@ -76,4 +80,16 @@ func (client *Client) assignVariables(file File) (err error) {
 	}
 
 	return nil
+}
+
+func (client *Client) assignStateFile(stateFile *StateFile) (err error) {
+	err = client.guard()
+
+	if nil != err {
+		return err
+	}
+
+	client.platform, err = client.platform.ReadStateFromFile(stateFile.Location)
+
+	return err
 }

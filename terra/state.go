@@ -3,7 +3,16 @@ package terra
 import "os"
 
 const (
-	DefaulStateFileName = "default.tfstate"
+	DefaulStateFileName  = "default.tfstate"
+	DefaultStateFileBody = `
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 1,
+    "outputs": {},
+    "resources": []
+}
+`
 )
 
 var (
@@ -20,10 +29,23 @@ func DefaultStateFile() (stateFile *StateFile, err error) {
 
 	err = defaultStateFile.ReadFile()
 
-	if nil != err {
-		_, err = os.Create(StateFileName)
-		err = defaultStateFile.ReadFile()
+	if nil == err && len(defaultStateFile.Body) > 0 {
+		return defaultStateFile, err
 	}
+
+	fileBody, err := os.Create(StateFileName)
+
+	if nil != err {
+		return stateFile, err
+	}
+
+	_, err = fileBody.Write([]byte(DefaultStateFileBody))
+
+	if nil != err {
+		return defaultStateFile, err
+	}
+
+	err = defaultStateFile.ReadFile()
 
 	return defaultStateFile, err
 }

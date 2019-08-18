@@ -13,6 +13,7 @@ func TestDefaultStateFileWithCreationOfFile(t *testing.T) {
 	defaultStateFile, err := DefaultStateFile()
 	assert.Nil(t, err)
 	assert.IsType(t, &StateFile{}, defaultStateFile)
+	assert.Equal(t, len(defaultStateFile.Body), len(DefaultStateFileBody))
 
 	restoreFilesAndState(t)
 }
