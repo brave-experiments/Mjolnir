@@ -81,31 +81,65 @@ func TestClient_RunPlatformFailure_PlatformIsNotInitialized(t *testing.T) {
 	RemoveDummyFile(t, fileName)
 }
 
-//func TestClient_RunPlatformWithVariables(t *testing.T) {
-//	client := Client{}
-//	err := client.DefaultClient()
-//	assert.Nil(t, err)
-//}
+func TestClient_RunPlatformWithVariables(t *testing.T) {
+	fileName := "dummyRecipe.tf"
+	fileBody := "dummy file body"
+	PrepareDummyFile(t, fileName, fileBody)
 
-//func TestClient_InitializePlatform(t *testing.T) {
-//	fileBody := `
-//		variable "count"    { default = 2 }
-//  		variable "key_name" {}
-//        provider "aws" {
-//            region        = "us-west-2"
-//        }
-//        resource "aws_instance" "server" {
-//            instance_type = "t2.micro"
-//            ami           = "ami-6e1a0117"
-//            count         = "${var.count}"
-//            key_name      = "${var.key_name}"
-//        }
-//    `
+	vars := make(map[string]interface{})
+	vars["dummyKey"] = "dummyVar"
+	vars["dummyKey1"] = "dummyVar1"
+
+	newVars := make(map[string]interface{})
+	vars["dummyKey"] = []string{"some", "values"}
+	vars["dummyKey1"] = map[string]string{"dummySubKey1": "newValue"}
+
+	// Join two maps
+	joinedVars := newVars
+
+	for key, value := range vars {
+		joinedVars[key] = value
+	}
+
+	platform := &terranova.Platform{
+		Vars: vars,
+	}
+
+	client := Client{
+		platform: platform,
+	}
+
+	file := File{
+		Location:  fileName,
+		Variables: newVars,
+	}
+
+	err := client.RunPlatform(file)
+	assert.Nil(t, err)
+
+	dumpedVariables, err := client.DumpVariables()
+	assert.Nil(t, err)
+	assert.Equal(t, dumpedVariables, joinedVars)
+
+	RemoveDummyFile(t, fileName)
+}
+
+//func TestClient_RunPlatform(t *testing.T) {
+//	fileName := "dummyRecipe.tf"
+//	fileBody := "dummy file body"
+//	PrepareDummyFile(t, fileName, fileBody)
 //
-//	fileName := "dummyFileUniqueName.tf"
+//	vars := make(map[string]interface{})
+//	vars["dummyKey"] = "dummyVar"
+//	vars["dummyKey1"] = "dummyVar1"
 //
-//	err := ioutil.WriteFile(fileName, []byte(fileBody), 0644)
-//	assert.Nil(t, err)
+//	platform := &terranova.Platform{
+//		Vars: vars,
+//	}
+//
+//	client := Client{
+//		platform: platform,
+//	}
 //
 //	file := File{
 //		Location: fileName,
