@@ -28,12 +28,16 @@ func TestDefaultProvider(t *testing.T) {
 }
 
 func TestClient_DumpVariables_NilVariables(t *testing.T) {
+	StateFileName = "dummy.tfstate"
 	client := Client{}
 	err := client.DefaultClient()
 	assert.Nil(t, err)
 	variables, err := client.DumpVariables()
 	assert.Nil(t, err)
 	assert.Empty(t, variables)
+
+	RemoveDummyFile(t, StateFileName)
+	StateFileName = DefaulStateFileName
 }
 
 func TestClient_DumpVariables(t *testing.T) {
