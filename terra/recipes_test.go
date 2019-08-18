@@ -67,6 +67,7 @@ func TestFile_ReadFileFailure(t *testing.T) {
 	file := File{}
 	err := file.ReadFile()
 	assert.Error(t, err)
+	assert.IsType(t, &os.PathError{}, err)
 	assert.Equal(t, err.Error(), "open : no such file or directory")
 }
 

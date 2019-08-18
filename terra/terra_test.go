@@ -2,6 +2,7 @@ package terra
 
 import (
 	"fmt"
+	"github.com/johandry/terranova"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
 	"os"
@@ -20,6 +21,33 @@ func TestDefaultProvider(t *testing.T) {
 	key, provider := DefaultProvider(keyToTest)
 	assert.Equal(t, keyToTest, key)
 	assert.IsType(t, aws.Provider(), provider)
+}
+
+func TestClient_DumpVariables_NilVariables(t *testing.T) {
+	client := Client{}
+	err := client.DefaultClient()
+	assert.Nil(t, err)
+	variables, err := client.DumpVariables()
+	assert.Nil(t, err)
+	assert.Empty(t, variables)
+}
+
+func TestClient_DumpVariables(t *testing.T) {
+	vars := make(map[string]interface{})
+	vars["dummyKey"] = "dummyVar"
+	vars["dummyKey1"] = "dummyVar1"
+
+	platform := &terranova.Platform{
+		Vars: vars,
+	}
+
+	client := Client{
+		platform: platform,
+	}
+
+	variables, err := client.DumpVariables()
+	assert.Empty(t, err)
+	assert.Equal(t, vars, variables)
 }
 
 func TestClient_RunPlatformFailure_RecipeDoesNotExist(t *testing.T) {
