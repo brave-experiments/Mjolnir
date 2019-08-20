@@ -1,12 +1,19 @@
 dist: trusty
 language: go
+
 env:
-  global:
-  - DOCKER_COMPOSE_VERSION=1.24.1
+  COMPOSE_VERSION: 1.24.1
+
+before_install:
+  # Docker Compose Install 
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - mv docker-compose /usr/local/bin
+
 script:
 - docker-compose build cli
 - docker cp apollo-devops_cli_1:/usr/local/go/src/github.com/brave-experiments/apollo-devops/apollo
-  .
+
 before_deploy:
 - git config --local user.name "TravisCI"
 - git config --local user.email "devnull@brave.com"
