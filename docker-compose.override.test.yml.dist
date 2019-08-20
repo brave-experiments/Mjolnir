@@ -9,8 +9,7 @@ services:
     env_file:
       - .env.test
     command: >
-      sh -c "govendor sync &&
-             CompileDaemon -log-prefix=false -build=\"go build -a -installsuffix cgo -o apollo\" -command=\"make test\" "
+      sh -c "CompileDaemon -log-prefix=false -build=\"go build -a -installsuffix cgo -o apollo\" -command=\"go test ./...\" "
 
     networks:
       apollo:
