@@ -2,9 +2,7 @@ dist: trusty
 language: go
 env:
   global:
-  - DOCKER_COMPOSE_VERSION=18.02.0
-
-  
+  - DOCKER_COMPOSE_VERSION=1.24.1
 script:
 - docker-compose build cli
 - docker cp apollo-devops_cli_1:/usr/local/go/src/github.com/brave-experiments/apollo-devops/apollo
@@ -21,3 +19,4 @@ deploy:
   file: apollo
   on:
     repo: brave-experiments/apollo-devops
+
