@@ -22,7 +22,6 @@ before_deploy:
 - git config --local user.email "devnull@brave.com"
 - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
 - git tag $TRAVIS_TAG
-- ls -l 
 deploy:
   provider: releases
   skip_cleanup: true
