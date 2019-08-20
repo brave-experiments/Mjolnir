@@ -2,7 +2,16 @@ version: '3.6'
 
 services:
   cli:
+    build: .
     image: brave-experiments/apollo-go:latest
+    volumes:
+      - ./:/usr/local/go/src/github.com/brave-experiments/apollo-devops
+    env_file:
+      - .env
+    networks:
+      apollo:
+        aliases:
+          - apollo.local
 
 networks:
   apollo:
