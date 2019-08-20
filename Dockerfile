@@ -8,13 +8,12 @@ RUN apk add --no-cache make \
     git \
     curl
 
-RUN go get github.com/githubnemo/CompileDaemon \
-    github.com/kardianos/govendor
+RUN go get github.com/githubnemo/CompileDaemon
 
 VOLUME /usr/local/go/src/github.com/brave-experiments/apollo-devops
 WORKDIR /usr/local/go/src/github.com/brave-experiments/apollo-devops
 
 ADD . .
-RUN govendor sync
+RUN go get -v
 
 CMD CompileDaemon -log-prefix=false -build="go build -a -installsuffix cgo -o apollo" -command="./apollo"

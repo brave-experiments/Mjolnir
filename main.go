@@ -1,42 +1,33 @@
 package main
 
 import (
-	"fmt"
-	"gopkg.in/urfave/cli.v1"
+	"github.com/mitchellh/cli"
+	"log"
 	"os"
 )
 
 var (
-	app         = cli.NewApp()
-	helpCommand = cli.Command{
-		Action:      mainCommand,
-		Name:        "help",
-		Usage:       "type help to show help",
-		ArgsUsage:   " ",
-		Category:    "APOLLO COMMANDS",
-		Description: `type help to show help`,
-	}
+	Cli *cli.CLI
 )
 
-func NewApp() *cli.App {
-	return app
-}
+func New() *cli.CLI {
+	Cli = cli.NewCLI(
+		os.Getenv("CLI_NAME"),
+		os.Getenv("CLI_VERSION"),
+	)
+	Cli.Args = os.Args[1:]
 
-func init() {
-	app.Name = os.Getenv("CLI_NAME")
-	app.Version = os.Getenv("CLI_VERSION")
-	app.Description = os.Getenv("CLI_DESCRIPTION")
-	app.Commands = append(app.Commands, helpCommand)
-
+	return Cli
 }
 
 func main() {
-	if err := app.Run(os.Args); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-}
+	New()
 
-func mainCommand(ctx *cli.Context) {
-	fmt.Println("Hello, there are no commands yet")
+	exitStatus, err := Cli.Run()
+
+	if nil != err {
+		log.Println(err)
+	}
+
+	os.Exit(exitStatus)
 }
