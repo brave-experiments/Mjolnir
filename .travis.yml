@@ -11,7 +11,7 @@ before_install:
   - sudo mv --force docker-compose /usr/local/bin
 
 script:
-- docker-compose build cli
+- docker-compose build cli --no-cache
 - docker cp apollo-devops_cli_1:/usr/local/go/src/github.com/brave-experiments/apollo-devops/apollo apollo-cli
 
 before_deploy:
