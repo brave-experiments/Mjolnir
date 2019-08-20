@@ -25,4 +25,5 @@ deploy:
   file: apollo
   on:
     repo: brave-experiments/apollo-devops
+    all_branches: true
 
