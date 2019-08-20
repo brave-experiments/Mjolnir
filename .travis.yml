@@ -12,7 +12,7 @@ before_install:
   - sudo mv --force docker-compose /usr/local/bin
 
 script:
-- ./bin/run
+- ./bin/run ci
 
 after_script:
   - docker-compose down
