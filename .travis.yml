@@ -12,7 +12,9 @@ before_install:
 
 script:
 - ./bin/run test
-- ./bin/run
+
+after_script:
+  - docker-compose down
 
 before_deploy:
 - git config --local user.name "TravisCI"
