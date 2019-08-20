@@ -12,11 +12,18 @@ function deploy_dev() {
     docker-compose exec cli sh
 }
 
+function run_ci() {
+    cp docker-compose.override.yml.dist docker-compose.override.yml
+    cp .env.dist .env
+    restart_containers
+    docker cp apollo-devops_cli_1:/usr/local/go/src/github.com/brave-experiments/apollo-devops/dist .
+}
+
 function run_tests() {
     cp docker-compose.override.test.yml.dist docker-compose.override.yml
     docker-compose up -d --no-deps cli-test
     sleep 2
-    docker-compose exec -T cli-test make test
+    docker-compose exec -T cli-test make test-and-build
 }
 
 function run_tests_watch() {
@@ -33,6 +40,12 @@ fi
 if [[ "$1" == "test" ]]
     then
         run_tests
+        exit
+fi
+
+if [[ "$1" == "ci" ]]
+    then
+        run_ci
         exit
 fi
 
