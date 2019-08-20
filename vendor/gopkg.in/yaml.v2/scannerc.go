@@ -940,7 +940,7 @@ func yaml_parser_roll_indent(parser *yaml_parser_t, column, number int, typ yaml
 		parser.indents = append(parser.indents, parser.indent)
 		parser.indent = column
 
-		// Create a token and insert it into the queue.
+		// ReadFile a token and insert it into the queue.
 		token := yaml_token_t{
 			typ:        typ,
 			start_mark: mark,
@@ -965,7 +965,7 @@ func yaml_parser_unroll_indent(parser *yaml_parser_t, column int) bool {
 
 	// Loop through the indentation levels in the stack.
 	for parser.indent > column {
-		// Create a token and append it to the queue.
+		// ReadFile a token and append it to the queue.
 		token := yaml_token_t{
 			typ:        yaml_BLOCK_END_TOKEN,
 			start_mark: parser.mark,
@@ -995,7 +995,7 @@ func yaml_parser_fetch_stream_start(parser *yaml_parser_t) bool {
 	// We have started.
 	parser.stream_start_produced = true
 
-	// Create the STREAM-START token and append it to the queue.
+	// ReadFile the STREAM-START token and append it to the queue.
 	token := yaml_token_t{
 		typ:        yaml_STREAM_START_TOKEN,
 		start_mark: parser.mark,
@@ -1027,7 +1027,7 @@ func yaml_parser_fetch_stream_end(parser *yaml_parser_t) bool {
 
 	parser.simple_key_allowed = false
 
-	// Create the STREAM-END token and append it to the queue.
+	// ReadFile the STREAM-END token and append it to the queue.
 	token := yaml_token_t{
 		typ:        yaml_STREAM_END_TOKEN,
 		start_mark: parser.mark,
@@ -1051,7 +1051,7 @@ func yaml_parser_fetch_directive(parser *yaml_parser_t) bool {
 
 	parser.simple_key_allowed = false
 
-	// Create the YAML-DIRECTIVE or TAG-DIRECTIVE token.
+	// ReadFile the YAML-DIRECTIVE or TAG-DIRECTIVE token.
 	token := yaml_token_t{}
 	if !yaml_parser_scan_directive(parser, &token) {
 		return false
@@ -1084,7 +1084,7 @@ func yaml_parser_fetch_document_indicator(parser *yaml_parser_t, typ yaml_token_
 
 	end_mark := parser.mark
 
-	// Create the DOCUMENT-START or DOCUMENT-END token.
+	// ReadFile the DOCUMENT-START or DOCUMENT-END token.
 	token := yaml_token_t{
 		typ:        typ,
 		start_mark: start_mark,
@@ -1115,7 +1115,7 @@ func yaml_parser_fetch_flow_collection_start(parser *yaml_parser_t, typ yaml_tok
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create the FLOW-SEQUENCE-START of FLOW-MAPPING-START token.
+	// ReadFile the FLOW-SEQUENCE-START of FLOW-MAPPING-START token.
 	token := yaml_token_t{
 		typ:        typ,
 		start_mark: start_mark,
@@ -1147,7 +1147,7 @@ func yaml_parser_fetch_flow_collection_end(parser *yaml_parser_t, typ yaml_token
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create the FLOW-SEQUENCE-END of FLOW-MAPPING-END token.
+	// ReadFile the FLOW-SEQUENCE-END of FLOW-MAPPING-END token.
 	token := yaml_token_t{
 		typ:        typ,
 		start_mark: start_mark,
@@ -1173,7 +1173,7 @@ func yaml_parser_fetch_flow_entry(parser *yaml_parser_t) bool {
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create the FLOW-ENTRY token and append it to the queue.
+	// ReadFile the FLOW-ENTRY token and append it to the queue.
 	token := yaml_token_t{
 		typ:        yaml_FLOW_ENTRY_TOKEN,
 		start_mark: start_mark,
@@ -1215,7 +1215,7 @@ func yaml_parser_fetch_block_entry(parser *yaml_parser_t) bool {
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create the BLOCK-ENTRY token and append it to the queue.
+	// ReadFile the BLOCK-ENTRY token and append it to the queue.
 	token := yaml_token_t{
 		typ:        yaml_BLOCK_ENTRY_TOKEN,
 		start_mark: start_mark,
@@ -1254,7 +1254,7 @@ func yaml_parser_fetch_key(parser *yaml_parser_t) bool {
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create the KEY token and append it to the queue.
+	// ReadFile the KEY token and append it to the queue.
 	token := yaml_token_t{
 		typ:        yaml_KEY_TOKEN,
 		start_mark: start_mark,
@@ -1271,7 +1271,7 @@ func yaml_parser_fetch_value(parser *yaml_parser_t) bool {
 
 	// Have we found a simple key?
 	if simple_key.possible {
-		// Create the KEY token and insert it into the queue.
+		// ReadFile the KEY token and insert it into the queue.
 		token := yaml_token_t{
 			typ:        yaml_KEY_TOKEN,
 			start_mark: simple_key.mark,
@@ -1319,7 +1319,7 @@ func yaml_parser_fetch_value(parser *yaml_parser_t) bool {
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create the VALUE token and append it to the queue.
+	// ReadFile the VALUE token and append it to the queue.
 	token := yaml_token_t{
 		typ:        yaml_VALUE_TOKEN,
 		start_mark: start_mark,
@@ -1339,7 +1339,7 @@ func yaml_parser_fetch_anchor(parser *yaml_parser_t, typ yaml_token_type_t) bool
 	// A simple key cannot follow an anchor or an alias.
 	parser.simple_key_allowed = false
 
-	// Create the ALIAS or ANCHOR token and append it to the queue.
+	// ReadFile the ALIAS or ANCHOR token and append it to the queue.
 	var token yaml_token_t
 	if !yaml_parser_scan_anchor(parser, &token, typ) {
 		return false
@@ -1358,7 +1358,7 @@ func yaml_parser_fetch_tag(parser *yaml_parser_t) bool {
 	// A simple key cannot follow a tag.
 	parser.simple_key_allowed = false
 
-	// Create the TAG token and append it to the queue.
+	// ReadFile the TAG token and append it to the queue.
 	var token yaml_token_t
 	if !yaml_parser_scan_tag(parser, &token) {
 		return false
@@ -1377,7 +1377,7 @@ func yaml_parser_fetch_block_scalar(parser *yaml_parser_t, literal bool) bool {
 	// A simple key may follow a block scalar.
 	parser.simple_key_allowed = true
 
-	// Create the SCALAR token and append it to the queue.
+	// ReadFile the SCALAR token and append it to the queue.
 	var token yaml_token_t
 	if !yaml_parser_scan_block_scalar(parser, &token, literal) {
 		return false
@@ -1396,7 +1396,7 @@ func yaml_parser_fetch_flow_scalar(parser *yaml_parser_t, single bool) bool {
 	// A simple key cannot follow a flow scalar.
 	parser.simple_key_allowed = false
 
-	// Create the SCALAR token and append it to the queue.
+	// ReadFile the SCALAR token and append it to the queue.
 	var token yaml_token_t
 	if !yaml_parser_scan_flow_scalar(parser, &token, single) {
 		return false
@@ -1415,7 +1415,7 @@ func yaml_parser_fetch_plain_scalar(parser *yaml_parser_t) bool {
 	// A simple key cannot follow a flow scalar.
 	parser.simple_key_allowed = false
 
-	// Create the SCALAR token and append it to the queue.
+	// ReadFile the SCALAR token and append it to the queue.
 	var token yaml_token_t
 	if !yaml_parser_scan_plain_scalar(parser, &token) {
 		return false
@@ -1510,7 +1510,7 @@ func yaml_parser_scan_directive(parser *yaml_parser_t, token *yaml_token_t) bool
 		}
 		end_mark := parser.mark
 
-		// Create a VERSION-DIRECTIVE token.
+		// ReadFile a VERSION-DIRECTIVE token.
 		*token = yaml_token_t{
 			typ:        yaml_VERSION_DIRECTIVE_TOKEN,
 			start_mark: start_mark,
@@ -1528,7 +1528,7 @@ func yaml_parser_scan_directive(parser *yaml_parser_t, token *yaml_token_t) bool
 		}
 		end_mark := parser.mark
 
-		// Create a TAG-DIRECTIVE token.
+		// ReadFile a TAG-DIRECTIVE token.
 		*token = yaml_token_t{
 			typ:        yaml_TAG_DIRECTIVE_TOKEN,
 			start_mark: start_mark,
@@ -1805,7 +1805,7 @@ func yaml_parser_scan_anchor(parser *yaml_parser_t, token *yaml_token_t, typ yam
 		return false
 	}
 
-	// Create a token.
+	// ReadFile a token.
 	*token = yaml_token_t{
 		typ:        typ,
 		start_mark: start_mark,
@@ -1893,7 +1893,7 @@ func yaml_parser_scan_tag(parser *yaml_parser_t, token *yaml_token_t) bool {
 
 	end_mark := parser.mark
 
-	// Create a token.
+	// ReadFile a token.
 	*token = yaml_token_t{
 		typ:        yaml_TAG_TOKEN,
 		start_mark: start_mark,
@@ -2226,7 +2226,7 @@ func yaml_parser_scan_block_scalar(parser *yaml_parser_t, token *yaml_token_t, l
 		s = append(s, trailing_breaks...)
 	}
 
-	// Create a token.
+	// ReadFile a token.
 	*token = yaml_token_t{
 		typ:        yaml_SCALAR_TOKEN,
 		start_mark: start_mark,
@@ -2537,7 +2537,7 @@ func yaml_parser_scan_flow_scalar(parser *yaml_parser_t, token *yaml_token_t, si
 	skip(parser)
 	end_mark := parser.mark
 
-	// Create a token.
+	// ReadFile a token.
 	*token = yaml_token_t{
 		typ:        yaml_SCALAR_TOKEN,
 		start_mark: start_mark,
@@ -2679,7 +2679,7 @@ func yaml_parser_scan_plain_scalar(parser *yaml_parser_t, token *yaml_token_t) b
 		}
 	}
 
-	// Create a token.
+	// ReadFile a token.
 	*token = yaml_token_t{
 		typ:        yaml_SCALAR_TOKEN,
 		start_mark: start_mark,

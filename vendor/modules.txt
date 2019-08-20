@@ -1,0 +1,299 @@
+# github.com/agext/levenshtein v1.2.1
+github.com/agext/levenshtein
+# github.com/agl/ed25519 v0.0.0-20150830182803-278e1ec8e8a6
+github.com/agl/ed25519
+github.com/agl/ed25519/edwards25519
+# github.com/apparentlymart/go-cidr v0.0.0-20170616213631-2bd8b58cf427
+github.com/apparentlymart/go-cidr/cidr
+# github.com/apparentlymart/go-textseg v0.0.0-20170531203952-b836f5c4d331
+github.com/apparentlymart/go-textseg/textseg
+# github.com/armon/go-radix v1.0.0
+github.com/armon/go-radix
+# github.com/aws/aws-sdk-go v1.14.31
+github.com/aws/aws-sdk-go/aws
+github.com/aws/aws-sdk-go/aws/arn
+github.com/aws/aws-sdk-go/aws/awserr
+github.com/aws/aws-sdk-go/aws/credentials
+github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds
+github.com/aws/aws-sdk-go/aws/credentials/stscreds
+github.com/aws/aws-sdk-go/aws/defaults
+github.com/aws/aws-sdk-go/aws/ec2metadata
+github.com/aws/aws-sdk-go/aws/endpoints
+github.com/aws/aws-sdk-go/aws/request
+github.com/aws/aws-sdk-go/aws/session
+github.com/aws/aws-sdk-go/private/protocol/json/jsonutil
+github.com/aws/aws-sdk-go/service/acm
+github.com/aws/aws-sdk-go/service/acmpca
+github.com/aws/aws-sdk-go/service/apigateway
+github.com/aws/aws-sdk-go/service/applicationautoscaling
+github.com/aws/aws-sdk-go/service/appsync
+github.com/aws/aws-sdk-go/service/athena
+github.com/aws/aws-sdk-go/service/autoscaling
+github.com/aws/aws-sdk-go/service/batch
+github.com/aws/aws-sdk-go/service/budgets
+github.com/aws/aws-sdk-go/service/cloud9
+github.com/aws/aws-sdk-go/service/cloudformation
+github.com/aws/aws-sdk-go/service/cloudfront
+github.com/aws/aws-sdk-go/service/cloudtrail
+github.com/aws/aws-sdk-go/service/cloudwatch
+github.com/aws/aws-sdk-go/service/cloudwatchevents
+github.com/aws/aws-sdk-go/service/cloudwatchlogs
+github.com/aws/aws-sdk-go/service/codebuild
+github.com/aws/aws-sdk-go/service/codecommit
+github.com/aws/aws-sdk-go/service/codedeploy
+github.com/aws/aws-sdk-go/service/codepipeline
+github.com/aws/aws-sdk-go/service/cognitoidentity
+github.com/aws/aws-sdk-go/service/cognitoidentityprovider
+github.com/aws/aws-sdk-go/service/configservice
+github.com/aws/aws-sdk-go/service/databasemigrationservice
+github.com/aws/aws-sdk-go/service/dax
+github.com/aws/aws-sdk-go/service/devicefarm
+github.com/aws/aws-sdk-go/service/directconnect
+github.com/aws/aws-sdk-go/service/directoryservice
+github.com/aws/aws-sdk-go/service/dynamodb
+github.com/aws/aws-sdk-go/service/ec2
+github.com/aws/aws-sdk-go/service/ecr
+github.com/aws/aws-sdk-go/service/ecs
+github.com/aws/aws-sdk-go/service/efs
+github.com/aws/aws-sdk-go/service/eks
+github.com/aws/aws-sdk-go/service/elasticache
+github.com/aws/aws-sdk-go/service/elasticbeanstalk
+github.com/aws/aws-sdk-go/service/elasticsearchservice
+github.com/aws/aws-sdk-go/service/elastictranscoder
+github.com/aws/aws-sdk-go/service/elb
+github.com/aws/aws-sdk-go/service/elbv2
+github.com/aws/aws-sdk-go/service/emr
+github.com/aws/aws-sdk-go/service/firehose
+github.com/aws/aws-sdk-go/service/fms
+github.com/aws/aws-sdk-go/service/gamelift
+github.com/aws/aws-sdk-go/service/glacier
+github.com/aws/aws-sdk-go/service/glue
+github.com/aws/aws-sdk-go/service/guardduty
+github.com/aws/aws-sdk-go/service/iam
+github.com/aws/aws-sdk-go/service/inspector
+github.com/aws/aws-sdk-go/service/iot
+github.com/aws/aws-sdk-go/service/kinesis
+github.com/aws/aws-sdk-go/service/kms
+github.com/aws/aws-sdk-go/service/lambda
+github.com/aws/aws-sdk-go/service/lexmodelbuildingservice
+github.com/aws/aws-sdk-go/service/lightsail
+github.com/aws/aws-sdk-go/service/macie
+github.com/aws/aws-sdk-go/service/mediastore
+github.com/aws/aws-sdk-go/service/mq
+github.com/aws/aws-sdk-go/service/neptune
+github.com/aws/aws-sdk-go/service/opsworks
+github.com/aws/aws-sdk-go/service/organizations
+github.com/aws/aws-sdk-go/service/pricing
+github.com/aws/aws-sdk-go/service/rds
+github.com/aws/aws-sdk-go/service/redshift
+github.com/aws/aws-sdk-go/service/route53
+github.com/aws/aws-sdk-go/service/s3
+github.com/aws/aws-sdk-go/service/secretsmanager
+github.com/aws/aws-sdk-go/service/servicecatalog
+github.com/aws/aws-sdk-go/service/servicediscovery
+github.com/aws/aws-sdk-go/service/ses
+github.com/aws/aws-sdk-go/service/sfn
+github.com/aws/aws-sdk-go/service/simpledb
+github.com/aws/aws-sdk-go/service/sns
+github.com/aws/aws-sdk-go/service/sqs
+github.com/aws/aws-sdk-go/service/ssm
+github.com/aws/aws-sdk-go/service/storagegateway
+github.com/aws/aws-sdk-go/service/sts
+github.com/aws/aws-sdk-go/service/swf
+github.com/aws/aws-sdk-go/service/waf
+github.com/aws/aws-sdk-go/service/wafregional
+github.com/aws/aws-sdk-go/internal/sdkio
+github.com/aws/aws-sdk-go/internal/shareddefaults
+github.com/aws/aws-sdk-go/aws/client
+github.com/aws/aws-sdk-go/internal/sdkuri
+github.com/aws/aws-sdk-go/aws/corehandlers
+github.com/aws/aws-sdk-go/aws/credentials/endpointcreds
+github.com/aws/aws-sdk-go/aws/client/metadata
+github.com/aws/aws-sdk-go/aws/awsutil
+github.com/aws/aws-sdk-go/aws/csm
+github.com/aws/aws-sdk-go/private/protocol
+github.com/aws/aws-sdk-go/aws/signer/v4
+github.com/aws/aws-sdk-go/private/protocol/jsonrpc
+github.com/aws/aws-sdk-go/private/protocol/restjson
+github.com/aws/aws-sdk-go/private/protocol/query
+github.com/aws/aws-sdk-go/private/protocol/restxml
+github.com/aws/aws-sdk-go/internal/sdkrand
+github.com/aws/aws-sdk-go/private/protocol/ec2query
+github.com/aws/aws-sdk-go/private/protocol/eventstream
+github.com/aws/aws-sdk-go/private/protocol/eventstream/eventstreamapi
+github.com/aws/aws-sdk-go/private/protocol/rest
+github.com/aws/aws-sdk-go/private/signer/v2
+github.com/aws/aws-sdk-go/private/protocol/query/queryutil
+github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil
+# github.com/beevik/etree v0.0.0-20171015221209-af219c0c7ea1
+github.com/beevik/etree
+# github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d
+github.com/bgentry/go-netrc/netrc
+# github.com/bgentry/speakeasy v0.1.0
+github.com/bgentry/speakeasy
+# github.com/blang/semver v0.0.0-20170202183821-4a1e882c79dc
+github.com/blang/semver
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
+# github.com/fatih/color v1.7.0
+github.com/fatih/color
+# github.com/go-ini/ini v1.25.4
+github.com/go-ini/ini
+# github.com/hashicorp/errwrap v1.0.0
+github.com/hashicorp/errwrap
+# github.com/hashicorp/go-cleanhttp v0.5.0
+github.com/hashicorp/go-cleanhttp
+# github.com/hashicorp/go-getter v0.0.0-20180327010114-90bb99a48d86
+github.com/hashicorp/go-getter
+github.com/hashicorp/go-getter/helper/url
+# github.com/hashicorp/go-multierror v1.0.0
+github.com/hashicorp/go-multierror
+# github.com/hashicorp/go-safetemp v0.0.0-20180326211150-b1a1dbde6fdc
+github.com/hashicorp/go-safetemp
+# github.com/hashicorp/go-uuid v1.0.0
+github.com/hashicorp/go-uuid
+# github.com/hashicorp/go-version v1.0.0
+github.com/hashicorp/go-version
+# github.com/hashicorp/hcl v0.0.0-20170504190234-a4b07c25de5f
+github.com/hashicorp/hcl
+github.com/hashicorp/hcl/hcl/ast
+github.com/hashicorp/hcl/hcl/parser
+github.com/hashicorp/hcl/hcl/token
+github.com/hashicorp/hcl/json/parser
+github.com/hashicorp/hcl/hcl/scanner
+github.com/hashicorp/hcl/hcl/strconv
+github.com/hashicorp/hcl/json/scanner
+github.com/hashicorp/hcl/json/token
+# github.com/hashicorp/hcl2 v0.0.0-20180308163058-5f8ed954abd8
+github.com/hashicorp/hcl2/gohcl
+github.com/hashicorp/hcl2/hcl
+github.com/hashicorp/hcl2/hclparse
+github.com/hashicorp/hcl2/hcldec
+github.com/hashicorp/hcl2/hcl/hclsyntax
+github.com/hashicorp/hcl2/hcl/json
+# github.com/hashicorp/hil v0.0.0-20170627220502-fa9f258a9250
+github.com/hashicorp/hil
+github.com/hashicorp/hil/ast
+github.com/hashicorp/hil/parser
+github.com/hashicorp/hil/scanner
+# github.com/hashicorp/logutils v0.0.0-20150609070431-0dc08b1671f3
+github.com/hashicorp/logutils
+# github.com/hashicorp/terraform v0.11.13
+github.com/hashicorp/terraform/terraform
+github.com/hashicorp/terraform/config
+github.com/hashicorp/terraform/config/configschema
+github.com/hashicorp/terraform/config/module
+github.com/hashicorp/terraform/dag
+github.com/hashicorp/terraform/flatmap
+github.com/hashicorp/terraform/helper/hilmapstructure
+github.com/hashicorp/terraform/httpclient
+github.com/hashicorp/terraform/moduledeps
+github.com/hashicorp/terraform/plugin/discovery
+github.com/hashicorp/terraform/tfdiags
+github.com/hashicorp/terraform/version
+github.com/hashicorp/terraform/helper/customdiff
+github.com/hashicorp/terraform/helper/encryption
+github.com/hashicorp/terraform/helper/hashcode
+github.com/hashicorp/terraform/helper/logging
+github.com/hashicorp/terraform/helper/mutexkv
+github.com/hashicorp/terraform/helper/resource
+github.com/hashicorp/terraform/helper/schema
+github.com/hashicorp/terraform/helper/structure
+github.com/hashicorp/terraform/helper/validation
+github.com/hashicorp/terraform/config/hcl2shim
+github.com/hashicorp/terraform/registry
+github.com/hashicorp/terraform/registry/regsrc
+github.com/hashicorp/terraform/registry/response
+github.com/hashicorp/terraform/svchost/disco
+github.com/hashicorp/terraform/helper/config
+github.com/hashicorp/terraform/svchost
+github.com/hashicorp/terraform/svchost/auth
+# github.com/hashicorp/vault v0.0.0-20161029210149-9a60bf2a50e4
+github.com/hashicorp/vault/helper/pgpkeys
+github.com/hashicorp/vault/helper/jsonutil
+github.com/hashicorp/vault/helper/compressutil
+# github.com/jen20/awspolicyequivalence v0.0.0-20170831201602-3d48364a137a
+github.com/jen20/awspolicyequivalence
+# github.com/jmespath/go-jmespath v0.0.0-20160803190731-bd40a432e4c7
+github.com/jmespath/go-jmespath
+# github.com/johandry/terranova v0.0.0-20190422213246-704ed6ce88e7
+github.com/johandry/terranova
+# github.com/keybase/go-crypto v0.0.0-20161004153544-93f5b35093ba
+github.com/keybase/go-crypto/openpgp
+github.com/keybase/go-crypto/openpgp/packet
+github.com/keybase/go-crypto/openpgp/armor
+github.com/keybase/go-crypto/openpgp/errors
+github.com/keybase/go-crypto/openpgp/s2k
+github.com/keybase/go-crypto/rsa
+github.com/keybase/go-crypto/brainpool
+github.com/keybase/go-crypto/cast5
+github.com/keybase/go-crypto/openpgp/elgamal
+# github.com/mattn/go-colorable v0.1.1
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.5
+github.com/mattn/go-isatty
+# github.com/mitchellh/cli v1.0.0
+github.com/mitchellh/cli
+# github.com/mitchellh/copystructure v0.0.0-20170525013902-d23ffcb85de3
+github.com/mitchellh/copystructure
+# github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747
+github.com/mitchellh/go-homedir
+# github.com/mitchellh/go-testing-interface v0.0.0-20170730050907-9a441910b168
+github.com/mitchellh/go-testing-interface
+# github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7
+github.com/mitchellh/go-wordwrap
+# github.com/mitchellh/hashstructure v0.0.0-20160209213820-6b17d669fac5
+github.com/mitchellh/hashstructure
+# github.com/mitchellh/mapstructure v0.0.0-20170307201123-53818660ed49
+github.com/mitchellh/mapstructure
+# github.com/mitchellh/reflectwalk v0.0.0-20170726202117-63d60e9d0dbc
+github.com/mitchellh/reflectwalk
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/posener/complete v1.2.1
+github.com/posener/complete
+github.com/posener/complete/cmd/install
+github.com/posener/complete/cmd
+github.com/posener/complete/match
+# github.com/stretchr/testify v1.4.0
+github.com/stretchr/testify/assert
+# github.com/terraform-providers/terraform-provider-aws v1.29.0
+github.com/terraform-providers/terraform-provider-aws/aws
+# github.com/terraform-providers/terraform-provider-null v1.0.0
+github.com/terraform-providers/terraform-provider-null/null
+# github.com/ulikunitz/xz v0.5.4
+github.com/ulikunitz/xz
+github.com/ulikunitz/xz/internal/xlog
+github.com/ulikunitz/xz/lzma
+github.com/ulikunitz/xz/internal/hash
+# github.com/zclconf/go-cty v0.0.0-20180302160414-49fa5e03c418
+github.com/zclconf/go-cty/cty
+github.com/zclconf/go-cty/cty/convert
+github.com/zclconf/go-cty/cty/function
+github.com/zclconf/go-cty/cty/function/stdlib
+github.com/zclconf/go-cty/cty/gocty
+github.com/zclconf/go-cty/cty/set
+github.com/zclconf/go-cty/cty/json
+# golang.org/x/crypto v0.0.0-20180211211603-9de5f2eaf759
+golang.org/x/crypto/bcrypt
+golang.org/x/crypto/openpgp
+golang.org/x/crypto/blowfish
+golang.org/x/crypto/openpgp/armor
+golang.org/x/crypto/openpgp/errors
+golang.org/x/crypto/openpgp/packet
+golang.org/x/crypto/openpgp/s2k
+golang.org/x/crypto/cast5
+golang.org/x/crypto/openpgp/elgamal
+# golang.org/x/net v0.0.0-20171004034648-a04bdaca5b32
+golang.org/x/net/html
+golang.org/x/net/html/atom
+golang.org/x/net/idna
+# golang.org/x/sys v0.0.0-20190502175342-a43fa875dd82
+golang.org/x/sys/unix
+# golang.org/x/text v0.0.0-20171013141220-c01e4764d870
+golang.org/x/text/unicode/norm
+golang.org/x/text/transform
+golang.org/x/text/secure/bidirule
+golang.org/x/text/unicode/bidi
+# gopkg.in/yaml.v2 v2.2.2
+gopkg.in/yaml.v2
