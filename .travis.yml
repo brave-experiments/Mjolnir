@@ -11,7 +11,7 @@ before_install:
   - sudo mv --force docker-compose /usr/local/bin
 
 script:
-- docker-compose build --no-cache cli
+- docker-compose build --no-cache
 
 before_deploy:
 - git config --local user.name "TravisCI"
