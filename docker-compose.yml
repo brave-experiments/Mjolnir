@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/usr/local/go/src/github.com/brave-experiments/apollo-devops
     env_file:
-      - .env
+      - .env.dist
     networks:
       apollo:
         aliases:
