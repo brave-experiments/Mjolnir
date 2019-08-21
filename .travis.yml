@@ -10,7 +10,6 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv --force docker-compose /usr/local/bin
-  - sudo apt install tree -y
 
 script:
 - ./bin/run ci
@@ -23,7 +22,7 @@ before_deploy:
 - git config --local user.email "devnull@brave.com"
 - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
 - git tag $TRAVIS_TAG
-- tree dist/
+- ls -lR dist/
 deploy:
   provider: releases
   skip_cleanup: true
