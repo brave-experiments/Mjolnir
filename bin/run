@@ -16,6 +16,7 @@ function run_ci() {
     cp docker-compose.override.yml.dist docker-compose.override.yml
     cp .env.dist .env
     restart_containers
+    docker cp apollo-devops_cli_1:/usr/local/go/src/github.com/brave-experiments/apollo-devops/apollo apollo-cli
 }
 
 function run_tests() {
