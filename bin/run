@@ -24,7 +24,7 @@ function run_tests() {
     cp docker-compose.override.test.yml.dist docker-compose.override.yml
     docker-compose up -d --no-deps cli-test
     sleep 2
-    docker-compose exec -T cli-test make test-and-build
+    docker-compose exec -T cli-test make test
 }
 
 function run_tests_watch() {
