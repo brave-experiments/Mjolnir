@@ -21,10 +21,9 @@ after_script:
 before_deploy:
 - git config --local user.name "TravisCI"
 - git config --local user.email "devnull@brave.com"
-- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-- git tag $TRAVIS_TAG
 - source ./.env.dist
-- ls -la $TRAVIS_BUILD_DIR
+- export TRAVIS_TAG=${TRAVIS_TAG:-${CLI_VERSION}-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+- git tag $TRAVIS_TAG
 deploy:
   provider: releases
   skip_cleanup: true

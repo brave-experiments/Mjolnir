@@ -20,7 +20,3 @@ Releases will lay on certain locked branches, it will occur here after we will b
 - All commands/scripts that are run from host to set up environment are run via `bin/run`
 
 This logic should be sustained to clearify where code should be executed
-
-### Relase
-to trigger release type: `source ./.env && git tag -a ${CLI_VERSION} -f`
-and then simply `git push origin --tags`
