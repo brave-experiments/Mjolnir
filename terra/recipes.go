@@ -19,6 +19,11 @@ type File struct {
 	Variables map[string]interface{}
 }
 
+type CombinedRecipe struct {
+	File
+	FilePaths []string
+}
+
 type Recipes struct {
 	Elements map[string]File
 }
@@ -49,10 +54,36 @@ func (recipes *Recipes) AddRecipe(keyName string, file File) error {
 	}
 
 	if _, ok := recipes.Elements[keyName]; ok {
-		return RecipesError{fmt.Sprintf("%s  already exists in recipes list", keyName)}
+		return RecipesError{fmt.Sprintf("%s already exists in recipes list", keyName)}
 	}
 
 	recipes.Elements[keyName] = file
+
+	return nil
+}
+
+func (combinedRecipe *CombinedRecipe) ParseBody() (err error) {
+	filePaths := combinedRecipe.FilePaths
+
+	if nil == filePaths || len(filePaths) < 1 {
+		return RecipesError{"There are no recipes within this combined recipe"}
+	}
+
+	combinedRecipe.Body = ""
+
+	for _, filePath := range filePaths {
+		file := File{
+			Location:  filePath,
+			Variables: combinedRecipe.Variables,
+		}
+		err = file.ReadFile()
+
+		if nil != err {
+			return err
+		}
+
+		combinedRecipe.Body = combinedRecipe.Body + "\n" + file.Body
+	}
 
 	return nil
 }
