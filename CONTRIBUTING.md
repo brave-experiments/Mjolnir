@@ -13,3 +13,10 @@ Do pull request to branch `master`
 Master is the developer branch
 
 Releases will lay on certain locked branches, it will occur here after we will be ready with CI/CD pattern.
+
+### Build, deploy, run
+
+- All commands that must be run to fill CI/CD process are described in `Makefile`
+- All commands/scripts that are run from host to set up environment are run via `bin/run`
+
+This logic should be sustained to clearify where code should be executed
