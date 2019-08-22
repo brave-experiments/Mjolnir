@@ -6,9 +6,11 @@ import (
 )
 
 var (
-	DefaultRecipes = map[string]File{
+	DefaultRecipes = map[string]CombinedRecipe{
 		"bastion": {
-			Location: "bastion.tf",
+			FilePaths: []string{
+				"bastion.tf",
+			},
 		},
 	}
 )
@@ -19,8 +21,13 @@ type File struct {
 	Variables map[string]interface{}
 }
 
+type CombinedRecipe struct {
+	File
+	FilePaths []string
+}
+
 type Recipes struct {
-	Elements map[string]File
+	Elements map[string]CombinedRecipe
 }
 
 type RecipesError struct {
@@ -43,16 +50,42 @@ func (recipes *Recipes) CreateWithDefaults() {
 	recipes.Elements = DefaultRecipes
 }
 
-func (recipes *Recipes) AddRecipe(keyName string, file File) error {
+func (recipes *Recipes) AddRecipe(keyName string, combinedRecipe CombinedRecipe) error {
 	if nil == recipes.Elements {
-		recipes.Elements = make(map[string]File, 0)
+		recipes.Elements = make(map[string]CombinedRecipe, 0)
 	}
 
 	if _, ok := recipes.Elements[keyName]; ok {
-		return RecipesError{fmt.Sprintf("%s  already exists in recipes list", keyName)}
+		return RecipesError{fmt.Sprintf("%s already exists in recipes list", keyName)}
 	}
 
-	recipes.Elements[keyName] = file
+	recipes.Elements[keyName] = combinedRecipe
+
+	return nil
+}
+
+func (combinedRecipe *CombinedRecipe) ParseBody() (err error) {
+	filePaths := combinedRecipe.FilePaths
+
+	if nil == filePaths || len(filePaths) < 1 {
+		return RecipesError{"There are no recipes within this combined recipe"}
+	}
+
+	combinedRecipe.Body = ""
+
+	for _, filePath := range filePaths {
+		file := File{
+			Location:  filePath,
+			Variables: combinedRecipe.Variables,
+		}
+		err = file.ReadFile()
+
+		if nil != err {
+			return err
+		}
+
+		combinedRecipe.Body = combinedRecipe.Body + "\n" + file.Body
+	}
 
 	return nil
 }
