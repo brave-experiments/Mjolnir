@@ -79,7 +79,18 @@ func TestClient_ApplyCombinedFailure(t *testing.T) {
 }
 
 func TestClient_ApplyCombined(t *testing.T) {
-	// TODO: write test
+	client := createTestedDefaultClient(t)
+	assert.IsType(t, Client{}, client)
+	filePath := "dummy.tf"
+	PrepareDummyFile(t, filePath, "")
+	combinedRecipe := CombinedRecipe{
+		FilePaths: []string{filePath},
+	}
+	err := client.ApplyCombined(combinedRecipe, false)
+	assert.Nil(t, err)
+
+	RemoveDummyFile(t, filePath)
+	removeStateFileAndRestore(t)
 }
 
 func TestClient_ApplyFailure(t *testing.T) {

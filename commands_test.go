@@ -80,9 +80,7 @@ func TestApplyCmd_Run(t *testing.T) {
 		Recipes: recipes,
 	}
 	assert.IsType(t, ApplyCmd{}, command)
-	terra.DefaultRecipes = recipes.Elements
-	exitCode := command.Run([]string{"dummy"})
-	// Since it is not mocked we want to end our testing process here
+	exitCode := command.Run([]string{keyName})
 	assert.Equal(t, ExitCodeSuccess, exitCode)
 	RemoveDummyFile(t, filePath)
 }
