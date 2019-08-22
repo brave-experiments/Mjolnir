@@ -1,0 +1,9 @@
+# This file is auto generated. Please do not edit
+# This is the backend configuration for `terraform init` in the main deployment
+region="us-east-2"
+bucket="us-east-2-quorum-deployment-state-051582052996"
+encrypt="true"
+kms_key_id="arn:aws:kms:us-east-2:051582052996:key/6b957713-73ed-4795-9fc5-a77844af8407"
+key="sidechain-sandbox"
+profile="binarapps-brave-sidechain-sandbox"
+
