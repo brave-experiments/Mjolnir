@@ -1,3 +1,15 @@
+terraform {
+  backend "s3" {
+    # backend configuration is auto discovered by running Terraform inside _terraform_init folder
+  }
+}
+
+provider "aws" {
+  region  = "${var.region}"
+  version = "~> 1.36"
+  profile = "${var.profile}"
+}
+
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${module.vpc.vpc_id}"
