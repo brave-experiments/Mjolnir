@@ -11,6 +11,29 @@ type Client struct {
 	state    *StateFile
 }
 
+func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
+	err = recipe.ParseBody()
+	defaultFileName := "temp.tf"
+
+	if nil != err {
+		return err
+	}
+
+	if nil != &recipe.Location {
+		recipe.Location = defaultFileName
+	}
+
+	file := File{
+		Location:  recipe.Location,
+		Body:      recipe.Body,
+		Variables: recipe.Variables,
+	}
+
+	err = client.Apply(file, destroy)
+
+	return err
+}
+
 func (client *Client) Apply(file File, destroy bool) (err error) {
 	if nil != client.PreparePlatform(file) {
 		return err

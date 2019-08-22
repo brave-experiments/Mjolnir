@@ -55,7 +55,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 
     recipes := applyCmd.Recipes.Elements
     recipeKey := args[0]
-    _, contains := recipes[recipeKey]
+    recipe, contains := recipes[recipeKey]
 
     if false == contains {
         fmt.Printf(
@@ -71,6 +71,12 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
         "Executing %s \n",
         recipeKey,
     )
+
+    err := applyCmd.executeTerra(recipe)
+
+    if nil != err {
+        fmt.Println(err)
+    }
 
     return ExitCodeSuccess
 }
@@ -104,20 +110,19 @@ func (applyCmd ApplyCmd) printRecipesKeys() {
     }
 }
 
-//func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) {
-//    terraClient := terra.Client{}
-//    err = terraClient.DefaultClient()
-//
-//    if nil != err {
-//        return err
-//    }
-//
-//    err = terraClient.Apply(recipe, false)
-//
-//    if nil != err {
-//        return err
-//    }
-//
-//    return nil
-//}
+func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) {
+   terraClient := terra.Client{}
+   err = terraClient.DefaultClient()
 
+   if nil != err {
+       return err
+   }
+
+   err = terraClient.ApplyCombined(recipe, false)
+
+   if nil != err {
+       return err
+   }
+
+   return nil
+}

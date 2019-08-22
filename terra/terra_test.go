@@ -24,6 +24,14 @@ const (
   }`
 )
 
+func TestClient_ApplyCombinedFailure(t *testing.T) {
+	// TODO: write test
+}
+
+func TestClient_ApplyCombined(t *testing.T) {
+	// TODO: write test
+}
+
 func TestClient_ApplyFailure(t *testing.T) {
 	dummyRecipeFileName := "dummyRecipe.tf"
 	file, err := os.Create(dummyRecipeFileName)
