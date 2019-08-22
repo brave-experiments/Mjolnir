@@ -16,6 +16,7 @@ func New() *cli.CLI {
 		os.Getenv("CLI_VERSION"),
 	)
 	Cli.Args = os.Args[1:]
+	Cli.Commands = RegisteredCommands
 
 	return Cli
 }
