@@ -15,6 +15,7 @@ clean:
 
 build: clean-build
 	go build -a -installsuffix cgo -o dist/${CLI_VERSION}/alpine/apollo
+	ls -la dist/${CLI_VERSION}/alpine/apollo
 
 test-and-build: clean clean-build
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
