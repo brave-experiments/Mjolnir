@@ -16,7 +16,7 @@ func TestRecipes_CreateWithDefaults(t *testing.T) {
 
 func TestRecipes_AddRecipe(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := File{Location: keyName}
+	dummyRecipe := CombinedRecipe{File: File{Location: keyName}}
 	recipes := Recipes{}
 	err := recipes.AddRecipe(keyName, dummyRecipe)
 	assert.Nil(t, err)
@@ -25,7 +25,7 @@ func TestRecipes_AddRecipe(t *testing.T) {
 
 func TestRecipes_AddRecipeToDefaults(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := File{Location: keyName}
+	dummyRecipe := CombinedRecipe{File: File{Location: keyName}}
 	recipes := Recipes{}
 	recipes.CreateWithDefaults()
 	err := recipes.AddRecipe(keyName, dummyRecipe)
@@ -35,7 +35,7 @@ func TestRecipes_AddRecipeToDefaults(t *testing.T) {
 
 func TestRecipes_AddRecipeFailure(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := File{Location: keyName}
+	dummyRecipe := CombinedRecipe{File: File{Location: keyName}}
 	recipes := Recipes{}
 	err := recipes.AddRecipe(keyName, dummyRecipe)
 	assert.Nil(t, err)
@@ -44,7 +44,7 @@ func TestRecipes_AddRecipeFailure(t *testing.T) {
 	err = recipes.AddRecipe(keyName, dummyRecipe)
 	// Test that list returned error caused by existing key
 	assert.IsType(t, RecipesError{}, err)
-	assert.Equal(t, err.Error(), fmt.Sprintf("%s  already exists in recipes list", keyName))
+	assert.Equal(t, err.Error(), fmt.Sprintf("%s already exists in recipes list", keyName))
 	// Test that list is immutable to error
 	assert.Equal(t, recipes.Elements[keyName], dummyRecipe)
 }
@@ -99,6 +99,92 @@ func TestFile_ReadFileWithVariables(t *testing.T) {
 	}
 
 	assert.IsType(t, file, File{})
+}
+
+func TestCombinedRecipe_ParseBodyFailure(t *testing.T) {
+	combinedRecipe := CombinedRecipe{}
+	err := combinedRecipe.ParseBody()
+	assert.IsType(t, RecipesError{}, err)
+	assert.Equal(
+		t,
+		"There are no recipes within this combined recipe",
+		err.Error(),
+	)
+
+	combinedRecipe = CombinedRecipe{
+		FilePaths: []string{},
+	}
+	err = combinedRecipe.ParseBody()
+	assert.IsType(t, RecipesError{}, err)
+	assert.Equal(
+		t,
+		"There are no recipes within this combined recipe",
+		err.Error(),
+	)
+
+	combinedRecipe = CombinedRecipe{
+		FilePaths: []string{
+			"dummy_file.tf",
+			"dummy_seccond_file.tf",
+		},
+	}
+	err = combinedRecipe.ParseBody()
+	assert.IsType(t, &os.PathError{}, err)
+	//assert.Equal(
+	//	t,
+	//	"There are no recipes within this combined recipe",
+	//	err.Error(),
+	//)
+}
+
+func TestCombinedRecipe_ParseBody(t *testing.T) {
+	dummyFile := File{
+		Location: "dummy_file.tf",
+		Body:     "dummy body line 1",
+	}
+	dummyFile1 := File{
+		Location: "dummy_file2.tf",
+		Body:     "dummy body line 2",
+	}
+
+	PrepareDummyFile(t, dummyFile.Location, dummyFile.Body)
+	PrepareDummyFile(t, dummyFile1.Location, dummyFile1.Body)
+
+	combinedRecipe := CombinedRecipe{
+		FilePaths: []string{
+			dummyFile.Location,
+			dummyFile1.Location,
+		},
+	}
+
+	err := combinedRecipe.ParseBody()
+	assert.Nil(t, err)
+
+	expectedFileBody := dummyFile.Body + "\n" + dummyFile1.Body
+	assert.Equal(t, expectedFileBody, expectedFileBody)
+
+	// Check that body does not occur n times
+	err = combinedRecipe.ParseBody()
+	assert.Nil(t, err)
+	expectedFileBody = dummyFile.Body + "\n" + dummyFile1.Body
+	assert.Equal(t, expectedFileBody, expectedFileBody)
+
+	// Check that body is in expected order
+	combinedRecipe = CombinedRecipe{
+		FilePaths: []string{
+			dummyFile1.Location,
+			dummyFile.Location,
+		},
+	}
+
+	err = combinedRecipe.ParseBody()
+	assert.Nil(t, err)
+
+	expectedFileBody = dummyFile1.Body + "\n" + dummyFile.Body
+	assert.Equal(t, expectedFileBody, expectedFileBody)
+
+	RemoveDummyFile(t, dummyFile.Location)
+	RemoveDummyFile(t, dummyFile1.Location)
 }
 
 func PrepareDummyFile(t *testing.T, fileName string, content string) {
