@@ -23,3 +23,4 @@ This logic should be sustained to clearify where code should be executed
 
 ### Relase
 to trigger release type: `source ./.env && git tag -a ${CLI_VERSION} -f`
+and then simply `git push origin --tags`
