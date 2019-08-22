@@ -11,6 +11,7 @@ const (
     ExitCodeInvalidNumOfArgs = 1
     ExitCodeInvalidSetup = 2
     ExitCodeInvalidArgument = 3
+    ExitCodeTerraformError = 4
 )
 
 var (
@@ -76,6 +77,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 
     if nil != err {
         fmt.Println(err)
+        return ExitCodeTerraformError
     }
 
     return ExitCodeSuccess
@@ -120,9 +122,5 @@ func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) 
 
    err = terraClient.ApplyCombined(recipe, false)
 
-   if nil != err {
-       return err
-   }
-
-   return nil
+   return err
 }

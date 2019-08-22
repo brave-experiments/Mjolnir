@@ -25,7 +25,46 @@ const (
 )
 
 func TestClient_ApplyCombinedFailure(t *testing.T) {
-	// TODO: write test
+	client := createTestedDefaultClient(t)
+	assert.IsType(t, Client{}, client)
+
+	variables := make(map[string]interface{})
+	// Here lays type'o to stop apply on parsing tf code
+	variables["key_name1"] = "dummyKey"
+
+	combinedRecipe := CombinedRecipe{
+		File: File{
+			Variables: variables,
+		},
+	}
+
+	err := client.ApplyCombined(combinedRecipe, false)
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		"There are no recipes within this combined recipe",
+		err.Error(),
+	)
+
+	// Test that one or more of the filepaths does not exist
+	filePath := "dummy.tf"
+	combinedRecipe = CombinedRecipe{
+		File: File{
+			Variables: variables,
+		},
+		FilePaths: []string{
+			filePath,
+		},
+	}
+	err = client.ApplyCombined(combinedRecipe, false)
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		fmt.Sprintf("open %s: no such file or directory", filePath),
+		err.Error(),
+	)
+
+	removeStateFileAndRestore(t)
 }
 
 func TestClient_ApplyCombined(t *testing.T) {
