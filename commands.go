@@ -76,11 +76,21 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 }
 
 func (applyCmd ApplyCmd) Help() (helpMessage string) {
-    return "This Command is not finished yet"
+    helpMessage = "\nThis is apply command. Usage: apollo apply [recipe]\n"
+
+    if nil != &applyCmd.Recipes {
+        helpMessage = helpMessage + "\nAvailable Recipes: \n"
+
+        for recipeKey := range applyCmd.Recipes.Elements {
+            helpMessage = helpMessage + "\n \t" + recipeKey + "\n"
+        }
+    }
+
+    return helpMessage
 }
 
 func (applyCmd ApplyCmd) Synopsis() (synopsis string) {
-    synopsis = "apply [recipe] [optional]"
+    synopsis = "apply [recipe]"
     return synopsis
 }
 
@@ -93,4 +103,21 @@ func (applyCmd ApplyCmd) printRecipesKeys() {
         fmt.Println(key)
     }
 }
+
+//func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) {
+//    terraClient := terra.Client{}
+//    err = terraClient.DefaultClient()
+//
+//    if nil != err {
+//        return err
+//    }
+//
+//    err = terraClient.Apply(recipe, false)
+//
+//    if nil != err {
+//        return err
+//    }
+//
+//    return nil
+//}
 
