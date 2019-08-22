@@ -64,6 +64,17 @@ func TestClient_ApplyCombinedFailure(t *testing.T) {
 		err.Error(),
 	)
 
+	//Test that file body is not valid
+	PrepareDummyFile(t, filePath, DummyRecipeBodyFail)
+	err = client.ApplyCombined(combinedRecipe, false)
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		"1 error occurred:\n\t* provider.aws: 1:3: unknown variable accessed: var.region in:\n\n${var.region}\n\n",
+		err.Error(),
+	)
+
+	RemoveDummyFile(t, filePath)
 	removeStateFileAndRestore(t)
 }
 

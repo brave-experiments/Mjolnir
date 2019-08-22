@@ -90,7 +90,7 @@ func (combinedRecipe *CombinedRecipe) ParseBody() (err error) {
 	return nil
 }
 
-func (file *File) ReadFile() error {
+func (file *File) ReadFile() (err error) {
 	fileBodyBytes, err := ioutil.ReadFile(file.Location)
 
 	if nil != err {
@@ -100,4 +100,8 @@ func (file *File) ReadFile() error {
 	file.Body = string(fileBodyBytes)
 
 	return nil
+}
+
+func (file *File) WriteFile() (err error) {
+	return ioutil.WriteFile(file.Location, []byte(file.Body), 0644)
 }

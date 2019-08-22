@@ -6,6 +6,10 @@ import (
 	"github.com/terraform-providers/terraform-provider-aws/aws"
 )
 
+const (
+	CombinedRecipeDefaultFileName = "temp.tf"
+)
+
 type Client struct {
 	platform *terranova.Platform
 	state    *StateFile
@@ -13,14 +17,19 @@ type Client struct {
 
 func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
 	err = recipe.ParseBody()
-	defaultFileName := "temp.tf"
 
 	if nil != err {
 		return err
 	}
 
 	if nil != &recipe.Location {
-		recipe.Location = defaultFileName
+		recipe.Location = CombinedRecipeDefaultFileName
+	}
+
+	err = recipe.WriteFile()
+
+	if nil != err {
+		return err
 	}
 
 	file := File{

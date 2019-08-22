@@ -1,16 +1,16 @@
 package main
 
 import (
-    "github.com/brave-experiments/apollo-devops/terra"
-    "github.com/mitchellh/cli"
-    "github.com/stretchr/testify/assert"
-    "io/ioutil"
-    "os"
-    "testing"
+	"github.com/brave-experiments/apollo-devops/terra"
+	"github.com/mitchellh/cli"
+	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"os"
+	"testing"
 )
 
 const (
-    DummyFileTfBody = `variable "count"    { default = 2 }
+	DummyFileTfBody = `variable "count"    { default = 2 }
   variable "key_name" {}
   variable "region" {}
   provider "aws" {
@@ -25,100 +25,117 @@ const (
 )
 
 func TestApplyCmdFactory(t *testing.T) {
-    command, err := ApplyCmdFactory()
-    assert.Nil(t, err)
-    assert.IsType(t, ApplyCmd{}, command)
-    testThatCommandHasWholeInterface(t, command)
+	command, err := ApplyCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, ApplyCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
 }
 
 func TestApplyCmd_RunInvalid(t *testing.T) {
-    command, err := ApplyCmdFactory()
-    assert.Nil(t, err)
-    assert.IsType(t, ApplyCmd{}, command)
+	command, err := ApplyCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, ApplyCmd{}, command)
 
-    // ApplyCmd has no arguments
-    exitCode := command.Run([]string{})
-    assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
+	// ApplyCmd has no arguments
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
 
-    // ApplyCmd has no Recipes
-    invalidCmd := ApplyCmd{}
-    exitCode = invalidCmd.Run([]string{"dummy"})
-    assert.Equal(t, ExitCodeInvalidSetup, exitCode)
+	// ApplyCmd has no Recipes
+	invalidCmd := ApplyCmd{}
+	exitCode = invalidCmd.Run([]string{"dummy"})
+	assert.Equal(t, ExitCodeInvalidSetup, exitCode)
 
-    // ApplyCmd has no Elements in Recipes
-    recipes := terra.Recipes{}
-    invalidCmd = ApplyCmd{
-        Recipes: recipes,
-    }
-    exitCode = invalidCmd.Run([]string{"dummy"})
-    assert.Equal(t, ExitCodeInvalidSetup, exitCode)
+	// ApplyCmd has no Elements in Recipes
+	recipes := terra.Recipes{}
+	invalidCmd = ApplyCmd{
+		Recipes: recipes,
+	}
+	exitCode = invalidCmd.Run([]string{"dummy"})
+	assert.Equal(t, ExitCodeInvalidSetup, exitCode)
 
-    // ApplyCmd has no matching key
-    exitCode = command.Run([]string{"dummy"})
-    assert.Equal(t, ExitCodeInvalidArgument, exitCode)
-    recipes = terra.Recipes{}
-    recipes.CreateWithDefaults()
+	// ApplyCmd has no matching key
+	exitCode = command.Run([]string{"dummy"})
+	assert.Equal(t, ExitCodeInvalidArgument, exitCode)
+
+	keyName := "dummy"
+	filePath := "dummy.tf"
+	recipes = GetMockedRecipes(t, keyName, filePath, DummyFileTfBody)
+	command = ApplyCmd{
+		Recipes: recipes,
+	}
+	assert.IsType(t, ApplyCmd{}, command)
+	terra.DefaultRecipes = recipes.Elements
+	exitCode = command.Run([]string{"dummy"})
+	// Since it is not mocked we want to end our testing process here
+	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	RemoveDummyFile(t, filePath)
 }
 
 func TestApplyCmd_Run(t *testing.T) {
-    keyName := "dummy"
-    filePath := "dummy.tf"
-    recipes := GetMockedRecipes(t, keyName, filePath)
-    command := ApplyCmd{
-       Recipes: recipes,
-    }
-    assert.IsType(t, ApplyCmd{}, command)
-    terra.DefaultRecipes = recipes.Elements
-    exitCode := command.Run([]string{"dummy"})
-    // Since it is not mocked we want to end our testing process here
-    assert.Equal(t, ExitCodeSuccess, exitCode)
-    RemoveDummyFile(t, filePath)
+	// If body of file is empty it wont fail with errors
+	keyName := "dummy"
+	filePath := "dummy.tf"
+	recipes := GetMockedRecipes(t, keyName, filePath, "")
+	command := ApplyCmd{
+		Recipes: recipes,
+	}
+	assert.IsType(t, ApplyCmd{}, command)
+	terra.DefaultRecipes = recipes.Elements
+	exitCode := command.Run([]string{"dummy"})
+	// Since it is not mocked we want to end our testing process here
+	assert.Equal(t, ExitCodeSuccess, exitCode)
+	RemoveDummyFile(t, filePath)
 }
 
 func TestApplyCmd_Help(t *testing.T) {
-    command, err := ApplyCmdFactory()
-    assert.Nil(t, err)
-    assert.IsType(t, ApplyCmd{}, command)
-    helpMsg := command.Help()
-    assert.Greater(t, len(helpMsg), 0)
+	command, err := ApplyCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, ApplyCmd{}, command)
+	helpMsg := command.Help()
+	assert.Greater(t, len(helpMsg), 0)
 }
 
 func testThatCommandHasWholeInterface(t *testing.T, command cli.Command) {
-    helpMsg := command.Help()
-    assert.Greater(t, len(helpMsg), 0)
+	helpMsg := command.Help()
+	assert.Greater(t, len(helpMsg), 0)
 
-    exitCode := command.Run([]string{})
-    assert.IsType(t, 0, exitCode)
+	exitCode := command.Run([]string{})
+	assert.IsType(t, 0, exitCode)
 
-    synopsis := command.Synopsis()
-    assert.Greater(t, len(synopsis), 0)
+	synopsis := command.Synopsis()
+	assert.Greater(t, len(synopsis), 0)
 }
 
-func GetMockedRecipes(t *testing.T, keyName string, fileName string) (recipes terra.Recipes) {
-    recipes = terra.Recipes{}
-    PrepareDummyFile(t, fileName, DummyFileTfBody)
-    err := recipes.AddRecipe(
-        keyName,
-        terra.CombinedRecipe{
-          File: terra.File{
-              Location: fileName,
-          },
-          FilePaths: []string{fileName},
-        },
-    )
-    assert.Nil(t, err)
+func GetMockedRecipes(
+	t *testing.T,
+	keyName string,
+	fileName string,
+	fileBody string,
+) (recipes terra.Recipes) {
+	recipes = terra.Recipes{}
+	PrepareDummyFile(t, fileName, fileBody)
+	err := recipes.AddRecipe(
+		keyName,
+		terra.CombinedRecipe{
+			File: terra.File{
+				Location: fileName,
+			},
+			FilePaths: []string{fileName},
+		},
+	)
+	assert.Nil(t, err)
 
-    return recipes
+	return recipes
 }
 
 func PrepareDummyFile(t *testing.T, fileName string, content string) {
-    fileBody := []byte(content)
+	fileBody := []byte(content)
 
-    err := ioutil.WriteFile(fileName, fileBody, 0644)
-    assert.Nil(t, err)
+	err := ioutil.WriteFile(fileName, fileBody, 0644)
+	assert.Nil(t, err)
 }
 
 func RemoveDummyFile(t *testing.T, fileName string) {
-    err := os.Remove(fileName)
-    assert.Nil(t, err)
+	err := os.Remove(fileName)
+	assert.Nil(t, err)
 }

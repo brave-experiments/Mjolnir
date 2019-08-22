@@ -101,6 +101,33 @@ func TestFile_ReadFileWithVariables(t *testing.T) {
 	assert.IsType(t, file, File{})
 }
 
+func TestFile_WriteFile(t *testing.T) {
+	filePath := "dummy.file"
+	fileBody := "abcd"
+
+	file := File{
+		Location: filePath,
+		Body:     fileBody,
+	}
+
+	err := file.WriteFile()
+	assert.Nil(t, err)
+	RemoveDummyFile(t, filePath)
+}
+
+func TestFile_WriteFileFailure(t *testing.T) {
+	filePath := "not/existing/dir/dummy.file"
+	fileBody := "abcd"
+
+	file := File{
+		Location: filePath,
+		Body:     fileBody,
+	}
+
+	err := file.WriteFile()
+	assert.Error(t, err)
+}
+
 func TestCombinedRecipe_ParseBodyFailure(t *testing.T) {
 	combinedRecipe := CombinedRecipe{}
 	err := combinedRecipe.ParseBody()
