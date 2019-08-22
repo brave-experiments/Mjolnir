@@ -16,7 +16,7 @@ func TestRecipes_CreateWithDefaults(t *testing.T) {
 
 func TestRecipes_AddRecipe(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := File{Location: keyName}
+	dummyRecipe := CombinedRecipe{File: File{Location: keyName}}
 	recipes := Recipes{}
 	err := recipes.AddRecipe(keyName, dummyRecipe)
 	assert.Nil(t, err)
@@ -25,7 +25,7 @@ func TestRecipes_AddRecipe(t *testing.T) {
 
 func TestRecipes_AddRecipeToDefaults(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := File{Location: keyName}
+	dummyRecipe := CombinedRecipe{File: File{Location: keyName}}
 	recipes := Recipes{}
 	recipes.CreateWithDefaults()
 	err := recipes.AddRecipe(keyName, dummyRecipe)
@@ -35,7 +35,7 @@ func TestRecipes_AddRecipeToDefaults(t *testing.T) {
 
 func TestRecipes_AddRecipeFailure(t *testing.T) {
 	keyName := "dummy"
-	dummyRecipe := File{Location: keyName}
+	dummyRecipe := CombinedRecipe{File: File{Location: keyName}}
 	recipes := Recipes{}
 	err := recipes.AddRecipe(keyName, dummyRecipe)
 	assert.Nil(t, err)
