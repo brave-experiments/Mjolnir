@@ -13,6 +13,7 @@ before_install:
 
 script:
 - ./bin/run test
+- ./bin/run ci
 
 after_script:
   - docker-compose down
@@ -22,6 +23,7 @@ before_deploy:
 - git config --local user.email "devnull@brave.com"
 - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
 - git tag $TRAVIS_TAG
+- source ./.env.dist
 - ls -lR dist/
 deploy:
   provider: releases
