@@ -9,7 +9,20 @@ var (
 	DefaultRecipes = map[string]CombinedRecipe{
 		"bastion": {
 			FilePaths: []string{
-				"bastion.tf",
+				"terra/bastion/main.tf",
+			},
+		},
+		"state-init": {
+			FilePaths: []string{
+				"terra/state_init/variables.tf",
+				"terra/state_init/outputs.tf",
+				"terra/state_init/main.tf",
+			},
+			File: File{
+				Variables: map[string]interface{}{
+					"network_name": "sidechain-sandbox",
+					"region":       "us-east-2",
+				},
 			},
 		},
 	}
