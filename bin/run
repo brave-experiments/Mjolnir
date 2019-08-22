@@ -17,7 +17,6 @@ function run_ci() {
     cp .env.dist .env
     restart_containers
     docker-compose exec -T cli make build
-#    docker cp apollo-devops_cli_1:/usr/local/go/src/github.com/brave-experiments/apollo-devops/dist .
 }
 
 function run_tests() {
