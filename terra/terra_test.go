@@ -5,6 +5,7 @@ import (
 	"github.com/johandry/terranova"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
+	"github.com/terraform-providers/terraform-provider-random/random"
 	"os"
 	"testing"
 )
@@ -139,6 +140,13 @@ func TestClient_DefaultClientCreateStateFile(t *testing.T) {
 func TestDefaultProvider(t *testing.T) {
 	keyToTest := "dummy"
 	key, provider := DefaultProvider(keyToTest)
+	assert.Equal(t, keyToTest, key)
+	assert.IsType(t, aws.Provider(), provider)
+}
+
+func TestProviderRandom(t *testing.T) {
+	keyToTest := "dummy"
+	key, provider := ProviderRandom(keyToTest)
 	assert.Equal(t, keyToTest, key)
 	assert.IsType(t, aws.Provider(), provider)
 }
@@ -284,6 +292,22 @@ func TestClient_WriteStateToFile(t *testing.T) {
 	assert.Nil(t, err)
 
 	removeStateFileAndRestore(t)
+}
+
+func TestClient_DefaultClient(t *testing.T) {
+	client := Client{}
+	err := client.DefaultClient()
+	assert.Nil(t, err)
+	providers := client.platform.Providers
+	assert.NotNil(t, providers)
+
+	provider, ok := providers["random"]
+	assert.True(t, ok)
+	assert.IsType(t, random.Provider(), provider)
+
+	provider, ok = providers["aws"]
+	assert.True(t, ok)
+	assert.IsType(t, aws.Provider(), provider)
 }
 
 func createTestedDefaultClient(t *testing.T) Client {
