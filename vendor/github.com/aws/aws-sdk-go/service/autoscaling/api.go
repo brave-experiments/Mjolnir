@@ -345,14 +345,14 @@ func (c *AutoScaling) CompleteLifecycleActionRequest(input *CompleteLifecycleAct
 // This step is a part of the procedure for adding a lifecycle hook to an Auto
 // Scaling group:
 //
-// (Optional) ReadFile a Lambda function and a rule that allows CloudWatch Events
+// (Optional) Create a Lambda function and a rule that allows CloudWatch Events
 // to invoke your Lambda function when Auto Scaling launches or terminates instances.
 //
-// (Optional) ReadFile a notification target and an IAM role. The target can be
+// (Optional) Create a notification target and an IAM role. The target can be
 // either an Amazon SQS queue or an Amazon SNS topic. The role allows Auto Scaling
 // to publish lifecycle notifications to the target.
 //
-// ReadFile the lifecycle hook. Specify whether the hook is used when the instances
+// Create the lifecycle hook. Specify whether the hook is used when the instances
 // launch or terminate.
 //
 // If you need more time, record the lifecycle action heartbeat to keep the
@@ -3983,14 +3983,14 @@ func (c *AutoScaling) PutLifecycleHookRequest(input *PutLifecycleHookInput) (req
 // This step is a part of the procedure for adding a lifecycle hook to an Auto
 // Scaling group:
 //
-// (Optional) ReadFile a Lambda function and a rule that allows CloudWatch Events
+// (Optional) Create a Lambda function and a rule that allows CloudWatch Events
 // to invoke your Lambda function when Auto Scaling launches or terminates instances.
 //
-// (Optional) ReadFile a notification target and an IAM role. The target can be
+// (Optional) Create a notification target and an IAM role. The target can be
 // either an Amazon SQS queue or an Amazon SNS topic. The role allows Auto Scaling
 // to publish lifecycle notifications to the target.
 //
-// ReadFile the lifecycle hook. Specify whether the hook is used when the instances
+// Create the lifecycle hook. Specify whether the hook is used when the instances
 // launch or terminate.
 //
 // If you need more time, record the lifecycle action heartbeat to keep the
@@ -4386,14 +4386,14 @@ func (c *AutoScaling) RecordLifecycleActionHeartbeatRequest(input *RecordLifecyc
 // This step is a part of the procedure for adding a lifecycle hook to an Auto
 // Scaling group:
 //
-// (Optional) ReadFile a Lambda function and a rule that allows CloudWatch Events
+// (Optional) Create a Lambda function and a rule that allows CloudWatch Events
 // to invoke your Lambda function when Auto Scaling launches or terminates instances.
 //
-// (Optional) ReadFile a notification target and an IAM role. The target can be
+// (Optional) Create a notification target and an IAM role. The target can be
 // either an Amazon SQS queue or an Amazon SNS topic. The role allows Auto Scaling
 // to publish lifecycle notifications to the target.
 //
-// ReadFile the lifecycle hook. Specify whether the hook is used when the instances
+// Create the lifecycle hook. Specify whether the hook is used when the instances
 // launch or terminate.
 //
 // If you need more time, record the lifecycle action heartbeat to keep the
@@ -5712,7 +5712,7 @@ type CreateAutoScalingGroupInput struct {
 	// derives its attributes from the specified instance, with the exception of
 	// the block device mapping.
 	//
-	// For more information, see ReadFile an Auto Scaling Group Using an EC2 Instance
+	// For more information, see Create an Auto Scaling Group Using an EC2 Instance
 	// (http://docs.aws.amazon.com/autoscaling/latest/userguide/create-asg-from-instance.html)
 	// in the Auto Scaling User Guide.
 	InstanceId *string `min:"1" type:"string"`
@@ -6071,7 +6071,7 @@ type CreateLaunchConfigurationInput struct {
 	// To create a launch configuration with a block device mapping or override
 	// any other instance attributes, specify them as part of the same request.
 	//
-	// For more information, see ReadFile a Launch Configuration Using an EC2 Instance
+	// For more information, see Create a Launch Configuration Using an EC2 Instance
 	// (http://docs.aws.amazon.com/autoscaling/latest/userguide/create-lc-with-instanceID.html)
 	// in the Auto Scaling User Guide.
 	InstanceId *string `min:"1" type:"string"`

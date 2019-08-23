@@ -248,12 +248,12 @@ var (
 	errSize         = errors.New("lzma: wrong uncompressed data size")
 )
 
-// ReadFile reads data from the buffer. If no more data is available io.EOF is
+// Read reads data from the buffer. If no more data is available io.EOF is
 // returned.
 func (d *decoder) Read(p []byte) (n int, err error) {
 	var k int
 	for {
-		// ReadFile of decoder dict never returns an error.
+		// Read of decoder dict never returns an error.
 		k, err = d.Dict.Read(p[n:])
 		if err != nil {
 			panic(fmt.Errorf("dictionary read error %s", err))

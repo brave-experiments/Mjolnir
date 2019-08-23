@@ -94,7 +94,7 @@ func (c ReaderConfig) NewReader(xz io.Reader) (r *Reader, err error) {
 
 var errUnexpectedData = errors.New("xz: unexpected data after stream")
 
-// ReadFile reads uncompressed data from the stream.
+// Read reads uncompressed data from the stream.
 func (r *Reader) Read(p []byte) (n int, err error) {
 	for n < len(p) {
 		if r.sr == nil {
@@ -209,7 +209,7 @@ func (r *streamReader) readTail() error {
 	return nil
 }
 
-// ReadFile reads actual data from the xz stream.
+// Read reads actual data from the xz stream.
 func (r *streamReader) Read(p []byte) (n int, err error) {
 	for n < len(p) {
 		if r.br == nil {
@@ -250,7 +250,7 @@ type countingReader struct {
 	n int64
 }
 
-// ReadFile reads data from the wrapped reader and adds it to the n field.
+// Read reads data from the wrapped reader and adds it to the n field.
 func (lr *countingReader) Read(p []byte) (n int, err error) {
 	n, err = lr.r.Read(p)
 	lr.n += int64(n)
@@ -315,7 +315,7 @@ func (br *blockReader) record() record {
 // is wrong.
 var errBlockSize = errors.New("xz: wrong uncompressed size for block")
 
-// ReadFile reads data from the block.
+// Read reads data from the block.
 func (br *blockReader) Read(p []byte) (n int, err error) {
 	n, err = br.r.Read(p)
 	br.n += int64(n)

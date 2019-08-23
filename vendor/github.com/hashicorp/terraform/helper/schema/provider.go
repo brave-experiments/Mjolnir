@@ -40,10 +40,10 @@ type Provider struct {
 
 	// DataSourcesMap is the collection of available data sources that
 	// this provider implements, with a Resource instance defining
-	// the schema and ReadFile operation of each.
+	// the schema and Read operation of each.
 	//
-	// Resource instances for data sources must have a ReadFile function
-	// and must *not* implement ReadFile, Update or Delete.
+	// Resource instances for data sources must have a Read function
+	// and must *not* implement Create, Update or Delete.
 	DataSourcesMap map[string]*Resource
 
 	// ConfigureFunc is a function for configuring the provider. If the
@@ -353,7 +353,7 @@ func (p *Provider) ImportState(
 		return nil, fmt.Errorf("resource %s doesn't support import", info.Type)
 	}
 
-	// ReadFile the data
+	// Create the data
 	data := r.Data(nil)
 	data.SetId(id)
 	data.SetType(info.Type)

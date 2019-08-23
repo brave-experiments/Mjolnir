@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a ACMPCA client from just a session.
+//     // Create a ACMPCA client from just a session.
 //     svc := acmpca.New(mySession)
 //
-//     // ReadFile a ACMPCA client with additional configuration
+//     // Create a ACMPCA client with additional configuration
 //     svc := acmpca.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ACMPCA {
 	c := p.ClientConfig(EndpointsID, cfgs...)

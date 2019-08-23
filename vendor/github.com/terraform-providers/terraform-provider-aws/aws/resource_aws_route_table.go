@@ -97,7 +97,7 @@ func resourceAwsRouteTable() *schema.Resource {
 func resourceAwsRouteTableCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).ec2conn
 
-	// ReadFile the routing table
+	// Create the routing table
 	createOpts := &ec2.CreateRouteTableInput{
 		VpcId: aws.String(d.Get("vpc_id").(string)),
 	}
@@ -154,7 +154,7 @@ func resourceAwsRouteTableRead(d *schema.ResourceData, meta interface{}) error {
 	}
 	d.Set("propagating_vgws", propagatingVGWs)
 
-	// ReadFile an empty schema.Set to hold all routes
+	// Create an empty schema.Set to hold all routes
 	route := &schema.Set{F: resourceAwsRouteTableHash}
 
 	// Loop through the routes and add them to the set

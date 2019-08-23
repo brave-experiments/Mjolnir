@@ -540,7 +540,7 @@ func (sa *SockaddrL2) sockaddr() (unsafe.Pointer, _Socklen, error) {
 //      _ = Listen(fd, 1)
 //      nfd, sa, _ := Accept(fd)
 //      fmt.Printf("conn addr=%v fd=%d", sa.(*unix.SockaddrRFCOMM).Addr, nfd)
-//      ReadFile(nfd, buf)
+//      Read(nfd, buf)
 //
 // Client example:
 //
@@ -576,12 +576,12 @@ func (sa *SockaddrRFCOMM) sockaddr() (unsafe.Pointer, _Socklen, error) {
 // The SockaddrCAN struct must be bound to the socket file descriptor
 // using Bind before the CAN socket can be used.
 //
-//      // ReadFile one raw CAN frame
+//      // Read one raw CAN frame
 //      fd, _ := Socket(AF_CAN, SOCK_RAW, CAN_RAW)
 //      addr := &SockaddrCAN{Ifindex: index}
 //      Bind(fd, addr)
 //      frame := make([]byte, 16)
-//      ReadFile(fd, frame)
+//      Read(fd, frame)
 //
 // The full SocketCAN documentation can be found in the linux kernel
 // archives at: https://www.kernel.org/doc/Documentation/networking/can.txt
@@ -632,19 +632,19 @@ func (sa *SockaddrCAN) sockaddr() (unsafe.Pointer, _Socklen, error) {
 //
 // Once a file descriptor has been returned from Accept, it may be used to
 // perform SHA1 hashing. The descriptor is not safe for concurrent use, but
-// may be re-used repeatedly with subsequent Write and ReadFile operations.
+// may be re-used repeatedly with subsequent Write and Read operations.
 //
-// When hashing a small byte slice or string, a single Write and ReadFile may
+// When hashing a small byte slice or string, a single Write and Read may
 // be used:
 //
 //      // Assume hashfd is already configured using the setup process.
 //      hash := os.NewFile(hashfd, "sha1")
 //      // Hash an input string and read the results. Each Write discards
-//      // previous hash state. ReadFile always reads the current state.
+//      // previous hash state. Read always reads the current state.
 //      b := make([]byte, 20)
 //      for i := 0; i < 2; i++ {
 //          io.WriteString(hash, "Hello, world.")
-//          hash.ReadFile(b)
+//          hash.Read(b)
 //          fmt.Println(hex.EncodeToString(b))
 //      }
 //      // Output:
@@ -661,13 +661,13 @@ func (sa *SockaddrCAN) sockaddr() (unsafe.Pointer, _Socklen, error) {
 //      f, _ := os.Open("/tmp/linux-4.10-rc7.tar.xz")
 //      b := make([]byte, 4096)
 //      for {
-//          n, err := f.ReadFile(b)
+//          n, err := f.Read(b)
 //          if err == io.EOF {
 //              break
 //          }
 //          unix.Sendto(hashfd, b[:n], unix.MSG_MORE, addr)
 //      }
-//      hash.ReadFile(b)
+//      hash.Read(b)
 //      fmt.Println(hex.EncodeToString(b))
 //      // Output: 85cdcad0c06eef66f805ecce353bec9accbeecc5
 //

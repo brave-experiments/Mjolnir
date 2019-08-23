@@ -91,7 +91,7 @@ func resourceAwsDbSubnetGroupCreate(d *schema.ResourceData, meta interface{}) er
 		Tags:                     tags,
 	}
 
-	log.Printf("[DEBUG] ReadFile DB Subnet Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create DB Subnet Group: %#v", createOpts)
 	_, err := rdsconn.CreateDBSubnetGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating DB Subnet Group: %s", err)

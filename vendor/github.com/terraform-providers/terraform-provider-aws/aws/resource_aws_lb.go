@@ -426,7 +426,7 @@ func resourceAwsLbUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	}
 
-	// subnets are assigned at ReadFile; the 'change' here is an empty map for old
+	// subnets are assigned at Create; the 'change' here is an empty map for old
 	// and current subnets for new, so this change is redundant when the
 	// resource is just created, so we don't attempt if it is a newly created
 	// resource.

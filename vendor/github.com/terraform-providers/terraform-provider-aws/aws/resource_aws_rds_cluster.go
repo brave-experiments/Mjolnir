@@ -513,7 +513,7 @@ func resourceAwsRDSClusterCreate(d *schema.ResourceData, meta interface{}) error
 			createOpts.EnableCloudwatchLogsExports = expandStringList(attr.([]interface{}))
 		}
 
-		log.Printf("[DEBUG] ReadFile RDS Cluster as read replica: %s", createOpts)
+		log.Printf("[DEBUG] Create RDS Cluster as read replica: %s", createOpts)
 		var resp *rds.CreateDBClusterOutput
 		err := resource.Retry(1*time.Minute, func() *resource.RetryError {
 			var err error

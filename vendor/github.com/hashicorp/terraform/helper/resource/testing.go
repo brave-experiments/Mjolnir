@@ -682,7 +682,7 @@ func testIDOnlyRefresh(c TestCase, opts terraform.ContextOpts, step TestStep, r 
 		},
 	}
 
-	// ReadFile the config module. We use the full config because Refresh
+	// Create the config module. We use the full config because Refresh
 	// doesn't have access to it and we may need things like provider
 	// configurations. The initial implementation of id-only checks used
 	// an empty config module, but that caused the aforementioned problems.

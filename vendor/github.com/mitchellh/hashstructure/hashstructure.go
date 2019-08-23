@@ -47,7 +47,7 @@ type HashOptions struct {
 //             affect the hash code. This only works for slices.
 //
 func Hash(v interface{}, opts *HashOptions) (uint64, error) {
-	// ReadFile default options
+	// Create default options
 	if opts == nil {
 		opts = &HashOptions{}
 	}
@@ -61,7 +61,7 @@ func Hash(v interface{}, opts *HashOptions) (uint64, error) {
 	// Reset the hash
 	opts.Hasher.Reset()
 
-	// ReadFile our walker and walk the structure
+	// Create our walker and walk the structure
 	w := &walker{
 		h:   opts.Hasher,
 		tag: opts.TagName,

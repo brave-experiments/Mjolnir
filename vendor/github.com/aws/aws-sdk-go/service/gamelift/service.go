@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a GameLift client from just a session.
+//     // Create a GameLift client from just a session.
 //     svc := gamelift.New(mySession)
 //
-//     // ReadFile a GameLift client with additional configuration
+//     // Create a GameLift client with additional configuration
 //     svc := gamelift.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *GameLift {
 	c := p.ClientConfig(EndpointsID, cfgs...)

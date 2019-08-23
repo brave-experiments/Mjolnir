@@ -89,7 +89,7 @@ func resourceAwsNeptuneSubnetGroupCreate(d *schema.ResourceData, meta interface{
 		Tags:                     tags,
 	}
 
-	log.Printf("[DEBUG] ReadFile Neptune Subnet Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create Neptune Subnet Group: %#v", createOpts)
 	_, err := conn.CreateDBSubnetGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating Neptune Subnet Group: %s", err)

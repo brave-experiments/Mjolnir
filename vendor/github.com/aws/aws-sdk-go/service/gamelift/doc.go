@@ -46,7 +46,7 @@
 // Learn more
 //
 //    *  Developer Guide (http://docs.aws.amazon.com/gamelift/latest/developerguide/)
-//    -- ReadFile about Amazon GameLift features and how to use them.
+//    -- Read about Amazon GameLift features and how to use them.
 //
 //    * Tutorials (https://gamedev.amazon.com/forums/tutorials) -- Get started
 //    fast with walkthroughs and sample projects.
@@ -144,7 +144,7 @@
 //
 //    * Manage game builds
 //
-// CreateBuild -- ReadFile a new build using files stored in an Amazon S3 bucket.
+// CreateBuild -- Create a new build using files stored in an Amazon S3 bucket.
 //    To create a build and upload files from a local path, use the AWS CLI
 //    command upload-build.
 //
@@ -190,7 +190,7 @@
 //
 // Autoscale -- Manage auto-scaling rules and apply them to a fleet.
 //
-// PutScalingPolicy -- ReadFile a new auto-scaling policy, or update an existing
+// PutScalingPolicy -- Create a new auto-scaling policy, or update an existing
 //    one.
 //
 // DescribeScalingPolicies -- Retrieve an existing auto-scaling policy.
@@ -256,7 +256,7 @@
 //
 //    * Manage game session queues
 //
-// CreateGameSessionQueue -- ReadFile a queue for processing requests for new
+// CreateGameSessionQueue -- Create a queue for processing requests for new
 //    game sessions.
 //
 // DescribeGameSessionQueues -- Retrieve game session queues defined in a Amazon
@@ -268,7 +268,7 @@
 //
 //    * Manage FlexMatch resources
 //
-// CreateMatchmakingConfiguration -- ReadFile a matchmaking configuration with
+// CreateMatchmakingConfiguration -- Create a matchmaking configuration with
 //    instructions for building a player group and placing in a new game session.
 //
 //
@@ -281,7 +281,7 @@
 // DeleteMatchmakingConfiguration -- Remove a matchmaking configuration from
 //    the region.
 //
-// CreateMatchmakingRuleSet -- ReadFile a set of rules to use when searching for
+// CreateMatchmakingRuleSet -- Create a set of rules to use when searching for
 //    player matches.
 //
 // DescribeMatchmakingRuleSets -- Retrieve matchmaking rule sets defined in

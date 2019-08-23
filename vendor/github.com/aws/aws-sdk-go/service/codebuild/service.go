@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a CodeBuild client from just a session.
+//     // Create a CodeBuild client from just a session.
 //     svc := codebuild.New(mySession)
 //
-//     // ReadFile a CodeBuild client with additional configuration
+//     // Create a CodeBuild client with additional configuration
 //     svc := codebuild.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CodeBuild {
 	c := p.ClientConfig(EndpointsID, cfgs...)

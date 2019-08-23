@@ -64,7 +64,7 @@ type MissingProvisionerTransformer struct {
 }
 
 func (t *MissingProvisionerTransformer) Transform(g *Graph) error {
-	// ReadFile a set of our supported provisioners
+	// Create a set of our supported provisioners
 	supported := make(map[string]struct{}, len(t.Provisioners))
 	for _, v := range t.Provisioners {
 		supported[v] = struct{}{}
@@ -134,7 +134,7 @@ func (t *CloseProvisionerTransformer) Transform(g *Graph) error {
 				source := m[p]
 
 				if source == nil {
-					// ReadFile a new graphNodeCloseProvisioner and add it to the graph
+					// Create a new graphNodeCloseProvisioner and add it to the graph
 					source = &graphNodeCloseProvisioner{ProvisionerNameValue: p}
 					g.Add(source)
 

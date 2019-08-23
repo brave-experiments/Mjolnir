@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a ECS client from just a session.
+//     // Create a ECS client from just a session.
 //     svc := ecs.New(mySession)
 //
-//     // ReadFile a ECS client with additional configuration
+//     // Create a ECS client with additional configuration
 //     svc := ecs.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ECS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a CloudWatchLogs client from just a session.
+//     // Create a CloudWatchLogs client from just a session.
 //     svc := cloudwatchlogs.New(mySession)
 //
-//     // ReadFile a CloudWatchLogs client with additional configuration
+//     // Create a CloudWatchLogs client with additional configuration
 //     svc := cloudwatchlogs.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CloudWatchLogs {
 	c := p.ClientConfig(EndpointsID, cfgs...)

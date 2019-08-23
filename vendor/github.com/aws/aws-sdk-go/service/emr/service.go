@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a EMR client from just a session.
+//     // Create a EMR client from just a session.
 //     svc := emr.New(mySession)
 //
-//     // ReadFile a EMR client with additional configuration
+//     // Create a EMR client with additional configuration
 //     svc := emr.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *EMR {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -479,7 +479,7 @@ func diffAwsMqBrokerUsers(bId string, oldUsers, newUsers []interface{}) (
 		// Likely related to https://github.com/mitchellh/copystructure/issues/17
 		nuOriginal := nu.(map[string]interface{})
 
-		// ReadFile a mutable copy
+		// Create a mutable copy
 		newUser, err := copystructure.Copy(nu)
 		if err != nil {
 			e = err

@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a ApplicationAutoScaling client from just a session.
+//     // Create a ApplicationAutoScaling client from just a session.
 //     svc := applicationautoscaling.New(mySession)
 //
-//     // ReadFile a ApplicationAutoScaling client with additional configuration
+//     // Create a ApplicationAutoScaling client with additional configuration
 //     svc := applicationautoscaling.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ApplicationAutoScaling {
 	c := p.ClientConfig(EndpointsID, cfgs...)

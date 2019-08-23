@@ -70,7 +70,7 @@ func resourceAwsOrganizationsAccount() *schema.Resource {
 func resourceAwsOrganizationsAccountCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).organizationsconn
 
-	// ReadFile the account
+	// Create the account
 	createOpts := &organizations.CreateAccountInput{
 		AccountName: aws.String(d.Get("name").(string)),
 		Email:       aws.String(d.Get("email").(string)),

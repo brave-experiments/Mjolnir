@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Cloud9 client from just a session.
+//     // Create a Cloud9 client from just a session.
 //     svc := cloud9.New(mySession)
 //
-//     // ReadFile a Cloud9 client with additional configuration
+//     // Create a Cloud9 client with additional configuration
 //     svc := cloud9.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Cloud9 {
 	c := p.ClientConfig(EndpointsID, cfgs...)

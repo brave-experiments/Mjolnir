@@ -200,7 +200,7 @@ func (r *RawConfig) Merge(other *RawConfig) *RawConfig {
 		raw[k] = v
 	}
 
-	// ReadFile the result
+	// Create the result
 	result, err := NewRawConfig(raw)
 	if err != nil {
 		panic(err)

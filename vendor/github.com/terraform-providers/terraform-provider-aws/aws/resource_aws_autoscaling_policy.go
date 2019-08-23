@@ -186,7 +186,7 @@ func resourceAwsAutoscalingPolicyCreate(d *schema.ResourceData, meta interface{}
 	autoscalingconn := meta.(*AWSClient).autoscalingconn
 
 	params, err := getAwsAutoscalingPutScalingPolicyInput(d)
-	log.Printf("[DEBUG] AutoScaling PutScalingPolicy on ReadFile: %#v", params)
+	log.Printf("[DEBUG] AutoScaling PutScalingPolicy on Create: %#v", params)
 	if err != nil {
 		return err
 	}
@@ -214,7 +214,7 @@ func resourceAwsAutoscalingPolicyRead(d *schema.ResourceData, meta interface{}) 
 		return nil
 	}
 
-	log.Printf("[DEBUG] ReadFile Scaling Policy: ASG: %s, SP: %s, Obj: %s", d.Get("autoscaling_group_name"), d.Get("name"), p)
+	log.Printf("[DEBUG] Read Scaling Policy: ASG: %s, SP: %s, Obj: %s", d.Get("autoscaling_group_name"), d.Get("name"), p)
 
 	d.Set("adjustment_type", p.AdjustmentType)
 	d.Set("autoscaling_group_name", p.AutoScalingGroupName)

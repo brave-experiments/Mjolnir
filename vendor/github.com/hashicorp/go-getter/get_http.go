@@ -127,7 +127,7 @@ func (g *HttpGetter) GetFile(dst string, u *url.URL) error {
 		return fmt.Errorf("bad response code: %d", resp.StatusCode)
 	}
 
-	// ReadFile all the parent directories
+	// Create all the parent directories
 	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
 		return err
 	}
@@ -150,7 +150,7 @@ func (g *HttpGetter) GetFile(dst string, u *url.URL) error {
 // getSubdir downloads the source into the destination, but with
 // the proper subdir.
 func (g *HttpGetter) getSubdir(dst, source, subDir string) error {
-	// ReadFile a temporary directory to store the full source. This has to be
+	// Create a temporary directory to store the full source. This has to be
 	// a non-existent directory.
 	td, tdcloser, err := safetemp.Dir("", "getter")
 	if err != nil {

@@ -97,7 +97,7 @@ func resourceAwsLogFlowCreate(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	log.Printf(
-		"[DEBUG] Flow Log ReadFile configuration: %s", opts)
+		"[DEBUG] Flow Log Create configuration: %s", opts)
 	resp, err := conn.CreateFlowLogs(opts)
 	if err != nil {
 		return fmt.Errorf("Error creating Flow Log for (%s), error: %s", resourceId, err)

@@ -165,7 +165,7 @@ func (c *Client) Get() error {
 	var decompressDir bool
 	decompressor := decompressors[archiveV]
 	if decompressor != nil {
-		// ReadFile a temporary directory to store our archive. We delete
+		// Create a temporary directory to store our archive. We delete
 		// this at the end of everything.
 		td, err := ioutil.TempDir("", "getter")
 		if err != nil {

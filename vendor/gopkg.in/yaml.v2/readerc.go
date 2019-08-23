@@ -99,7 +99,7 @@ func yaml_parser_update_buffer(parser *yaml_parser_t, length int) bool {
 
 	// If the EOF flag is set and the raw buffer is empty, do nothing.
 	if parser.eof && parser.raw_buffer_pos == len(parser.raw_buffer) {
-		// [Go] ACTUALLY! ReadFile the documentation of this function above.
+		// [Go] ACTUALLY! Read the documentation of this function above.
 		// This is just broken. To return true, we need to have the
 		// given length in the buffer. Not doing that means every single
 		// check that calls this function to make sure the buffer has a
@@ -398,7 +398,7 @@ func yaml_parser_update_buffer(parser *yaml_parser_t, length int) bool {
 			break
 		}
 	}
-	// [Go] ReadFile the documentation of this function above. To return true,
+	// [Go] Read the documentation of this function above. To return true,
 	// we need to have the given length in the buffer. Not doing that means
 	// every single check that calls this function to make sure the buffer
 	// has a given length is Go) panicking; or C) accessing invalid memory.

@@ -845,7 +845,7 @@ func (c *ACMPCA) ImportCertificateAuthorityCertificateRequest(input *ImportCerti
 // the CreateCertificateAuthority operation. You must then generate a certificate
 // signing request (CSR) by calling the GetCertificateAuthorityCsr operation.
 // Take the CSR to your on-premises CA and use the root certificate or a subordinate
-// certificate to sign it. ReadFile a certificate chain and copy the signed certificate
+// certificate to sign it. Create a certificate chain and copy the signed certificate
 // and the certificate chain to your working directory.
 //
 // Your certificate chain must not include the private CA certificate that you

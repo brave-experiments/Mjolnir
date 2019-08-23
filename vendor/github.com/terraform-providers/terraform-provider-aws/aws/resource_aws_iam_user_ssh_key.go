@@ -66,7 +66,7 @@ func resourceAwsIamUserSshKeyCreate(d *schema.ResourceData, meta interface{}) er
 		SSHPublicKeyBody: aws.String(publicKey),
 	}
 
-	log.Println("[DEBUG] ReadFile IAM User SSH Key Request:", request)
+	log.Println("[DEBUG] Create IAM User SSH Key Request:", request)
 	createResp, err := iamconn.UploadSSHPublicKey(request)
 	if err != nil {
 		return fmt.Errorf("Error creating IAM User SSH Key %s: %s", username, err)

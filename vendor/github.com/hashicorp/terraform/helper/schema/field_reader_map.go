@@ -109,7 +109,7 @@ func (r *MapFieldReader) readSet(
 		countRaw.Value = 0
 	}
 
-	// ReadFile the set that will be our result
+	// Create the set that will be our result
 	set := schema.ZeroValue().(*Set)
 
 	// If we have an empty list, then return an empty list

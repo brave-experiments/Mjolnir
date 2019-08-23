@@ -8836,7 +8836,7 @@ type CreateClusterInput struct {
 	//
 	// To create additional databases after the cluster is created, connect to the
 	// cluster with a SQL client and use SQL commands to create a database. For
-	// more information, go to ReadFile a Database (http://docs.aws.amazon.com/redshift/latest/dg/t_creating_database.html)
+	// more information, go to Create a Database (http://docs.aws.amazon.com/redshift/latest/dg/t_creating_database.html)
 	// in the Amazon Redshift Database Developer Guide.
 	//
 	// Default: dev
@@ -14109,7 +14109,7 @@ func (s *EventSubscription) SetTags(v []*Tag) *EventSubscription {
 type GetClusterCredentialsInput struct {
 	_ struct{} `type:"structure"`
 
-	// ReadFile a database user with the name specified for the user named in DbUser
+	// Create a database user with the name specified for the user named in DbUser
 	// if one does not exist.
 	AutoCreate *bool `type:"boolean"`
 

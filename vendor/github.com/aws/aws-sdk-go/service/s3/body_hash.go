@@ -78,7 +78,7 @@ func computeBodyHashes(r *request.Request) {
 		hashers = append(hashers, sha256Hash)
 	}
 
-	// ReadFile the destination writer based on the hashes that are not already
+	// Create the destination writer based on the hashes that are not already
 	// provided by the user.
 	var dst io.Writer
 	switch len(hashers) {
