@@ -9,7 +9,20 @@ var (
 	DefaultRecipes = map[string]CombinedRecipe{
 		"bastion": {
 			FilePaths: []string{
-				"bastion.tf",
+				"terra/bastion/main.tf",
+			},
+		},
+		"state-init": {
+			FilePaths: []string{
+				"terra/state_init/variables.tf",
+				"terra/state_init/outputs.tf",
+				"terra/state_init/main.tf",
+			},
+			File: File{
+				Variables: map[string]interface{}{
+					"network_name": "sidechain-sandbox",
+					"region":       "us-east-2",
+				},
 			},
 		},
 	}
@@ -90,7 +103,7 @@ func (combinedRecipe *CombinedRecipe) ParseBody() (err error) {
 	return nil
 }
 
-func (file *File) ReadFile() error {
+func (file *File) ReadFile() (err error) {
 	fileBodyBytes, err := ioutil.ReadFile(file.Location)
 
 	if nil != err {
@@ -100,4 +113,8 @@ func (file *File) ReadFile() error {
 	file.Body = string(fileBodyBytes)
 
 	return nil
+}
+
+func (file *File) WriteFile() (err error) {
+	return ioutil.WriteFile(file.Location, []byte(file.Body), 0644)
 }

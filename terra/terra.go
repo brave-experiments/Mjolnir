@@ -3,12 +3,43 @@ package terra
 import (
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
-	"github.com/terraform-providers/terraform-provider-aws/aws"
+)
+
+const (
+	CombinedRecipeDefaultFileName = "temp.tf"
 )
 
 type Client struct {
 	platform *terranova.Platform
 	state    *StateFile
+}
+
+func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
+	err = recipe.ParseBody()
+
+	if nil != err {
+		return err
+	}
+
+	if nil != &recipe.Location {
+		recipe.Location = CombinedRecipeDefaultFileName
+	}
+
+	err = recipe.WriteFile()
+
+	if nil != err {
+		return err
+	}
+
+	file := File{
+		Location:  recipe.Location,
+		Body:      recipe.Body,
+		Variables: recipe.Variables,
+	}
+
+	err = client.Apply(file, destroy)
+
+	return err
 }
 
 func (client *Client) Apply(file File, destroy bool) (err error) {
@@ -79,6 +110,8 @@ func (client *Client) DefaultClient() (err error) {
 		Providers: make(map[string]terraform.ResourceProvider),
 	}
 	client.platform.AddProvider(DefaultProvider("aws"))
+	client.platform.AddProvider(RandomProvider("random"))
+	client.platform.AddProvider(LocalProvider("local"))
 
 	client.state, err = DefaultStateFile()
 
@@ -89,12 +122,6 @@ func (client *Client) DefaultClient() (err error) {
 	err = client.assignStateFile()
 
 	return err
-}
-
-func DefaultProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
-	provider = aws.Provider()
-
-	return key, provider
 }
 
 func (client *Client) guard() (err error) {
