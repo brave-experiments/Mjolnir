@@ -7,7 +7,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "terraform_remote_state" {
-  bucket = "${var.region}-quorum-deployment-state-${data.aws_caller_identity.current.account_id}"
+  bucket = "${var.region}-quorum-deployment-state-${var.network_name}"
   acl    = "private"
 
   server_side_encryption_configuration {
@@ -19,9 +19,9 @@ resource "aws_s3_bucket" "terraform_remote_state" {
     }
   }
 
-    tags = {
+  tags = {
     Name        = "terraform-remote-state"
-    Environment = "Dev"
+    Environment = "${var.network_name}"
   }
 }
 
