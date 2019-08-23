@@ -22,7 +22,7 @@ data "aws_kms_alias" "state_bucket" {
 }
 
 resource "random_id" "deployment_id" {
-  count       = "${var.network_name == "" ? 1 : 0}"
+  count       = 1
   prefix      = "q-"
   byte_length = 8
 }
