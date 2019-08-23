@@ -4,3 +4,7 @@ docker-compose.override.yml
 apollo
 default.tfstate
 **/.terraform/
+coverage.out
+dist
+temp.tf
+.env.local
