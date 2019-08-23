@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a ElastiCache client from just a session.
+//     // Create a ElastiCache client from just a session.
 //     svc := elasticache.New(mySession)
 //
-//     // ReadFile a ElastiCache client with additional configuration
+//     // Create a ElastiCache client with additional configuration
 //     svc := elasticache.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ElastiCache {
 	c := p.ClientConfig(EndpointsID, cfgs...)

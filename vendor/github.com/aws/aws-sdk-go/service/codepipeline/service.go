@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a CodePipeline client from just a session.
+//     // Create a CodePipeline client from just a session.
 //     svc := codepipeline.New(mySession)
 //
-//     // ReadFile a CodePipeline client with additional configuration
+//     // Create a CodePipeline client with additional configuration
 //     svc := codepipeline.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CodePipeline {
 	c := p.ClientConfig(EndpointsID, cfgs...)

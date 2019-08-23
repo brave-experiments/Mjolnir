@@ -346,7 +346,7 @@ func resourceAwsNeptuneClusterCreate(d *schema.ResourceData, meta interface{}) e
 			createOpts.KmsKeyId = aws.String(attr.(string))
 		}
 
-		log.Printf("[DEBUG] ReadFile Neptune Cluster as read replica: %s", createOpts)
+		log.Printf("[DEBUG] Create Neptune Cluster as read replica: %s", createOpts)
 		var resp *neptune.CreateDBClusterOutput
 		err := resource.Retry(1*time.Minute, func() *resource.RetryError {
 			var err error

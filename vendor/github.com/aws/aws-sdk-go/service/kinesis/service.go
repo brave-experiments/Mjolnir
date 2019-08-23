@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Kinesis client from just a session.
+//     // Create a Kinesis client from just a session.
 //     svc := kinesis.New(mySession)
 //
-//     // ReadFile a Kinesis client with additional configuration
+//     // Create a Kinesis client with additional configuration
 //     svc := kinesis.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Kinesis {
 	c := p.ClientConfig(EndpointsID, cfgs...)

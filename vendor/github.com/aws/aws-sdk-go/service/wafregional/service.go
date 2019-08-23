@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a WAFRegional client from just a session.
+//     // Create a WAFRegional client from just a session.
 //     svc := wafregional.New(mySession)
 //
-//     // ReadFile a WAFRegional client with additional configuration
+//     // Create a WAFRegional client with additional configuration
 //     svc := wafregional.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *WAFRegional {
 	c := p.ClientConfig(EndpointsID, cfgs...)

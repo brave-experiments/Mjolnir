@@ -54,7 +54,7 @@ func (c *APIGateway) CreateApiKeyRequest(input *CreateApiKeyInput) (req *request
 
 // CreateApiKey API operation for Amazon API Gateway.
 //
-// ReadFile an ApiKey resource.
+// Create an ApiKey resource.
 //
 // AWS CLI (http://docs.aws.amazon.com/cli/latest/reference/apigateway/create-api-key.html)
 //
@@ -17856,7 +17856,7 @@ func (s *GetResourcesInput) SetRestApiId(v string) *GetResourcesInput {
 
 // Represents a collection of Resource resources.
 //
-// ReadFile an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
+// Create an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
 type GetResourcesOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -17964,7 +17964,7 @@ func (s *GetRestApisInput) SetPosition(v string) *GetRestApisInput {
 // Contains references to your APIs and links that guide you in how to interact
 // with your collection. A collection offers a paginated view of your APIs.
 //
-// ReadFile an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
+// Create an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
 type GetRestApisOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -18697,7 +18697,7 @@ func (s *GetUsagePlanKeysInput) SetUsagePlanId(v string) *GetUsagePlanKeysInput 
 // Represents the collection of usage plan keys added to usage plans for the
 // associated API keys and, possibly, other types of keys.
 //
-// ReadFile and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
+// Create and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
 type GetUsagePlanKeysOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -18774,7 +18774,7 @@ func (s *GetUsagePlansInput) SetPosition(v string) *GetUsagePlansInput {
 
 // Represents a collection of usage plans for an AWS account.
 //
-// ReadFile and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
+// Create and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
 type GetUsagePlansOutput struct {
 	_ struct{} `type:"structure"`
 
@@ -21118,7 +21118,7 @@ func (s *QuotaSettings) SetPeriod(v string) *QuotaSettings {
 
 // Represents an API resource.
 //
-// ReadFile an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
+// Create an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
 type Resource struct {
 	_ struct{} `type:"structure"`
 
@@ -21236,7 +21236,7 @@ func (s *Resource) SetResourceMethods(v map[string]*Method) *Resource {
 
 // Represents a REST API.
 //
-// ReadFile an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
+// Create an API (http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-create-api.html)
 type RestApi struct {
 	_ struct{} `type:"structure"`
 
@@ -23841,7 +23841,7 @@ func (s *UpdateVpcLinkOutput) SetTargetArns(v []*string) *UpdateVpcLinkOutput {
 
 // Represents the usage data of a usage plan.
 //
-// ReadFile and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html), Manage Usage in a Usage Plan (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-usage-plans-with-console.html#api-gateway-usage-plan-manage-usage)
+// Create and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html), Manage Usage in a Usage Plan (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-usage-plans-with-console.html#api-gateway-usage-plan-manage-usage)
 type Usage struct {
 	_ struct{} `type:"structure"`
 
@@ -23911,7 +23911,7 @@ func (s *Usage) SetUsagePlanId(v string) *Usage {
 // name of the specified API. You add plan customers by adding API keys to the
 // plan.
 //
-// ReadFile and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
+// Create and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
 type UsagePlan struct {
 	_ struct{} `type:"structure"`
 
@@ -23995,7 +23995,7 @@ func (s *UsagePlan) SetThrottle(v *ThrottleSettings) *UsagePlan {
 // To associate an API stage with a selected API key in a usage plan, you must
 // create a UsagePlanKey resource to represent the selected ApiKey.
 //
-// " ReadFile and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
+// " Create and Use Usage Plans (http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html)
 type UsagePlanKey struct {
 	_ struct{} `type:"structure"`
 

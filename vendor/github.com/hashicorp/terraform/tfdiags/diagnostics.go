@@ -24,7 +24,7 @@ type Diagnostics []Diagnostic
 //
 // The usual pattern for a function that natively "speaks" diagnostics is:
 //
-//     // ReadFile a nil Diagnostics at the start of the function
+//     // Create a nil Diagnostics at the start of the function
 //     var diags diag.Diagnostics
 //
 //     // At later points, build on it if errors / warnings occur:

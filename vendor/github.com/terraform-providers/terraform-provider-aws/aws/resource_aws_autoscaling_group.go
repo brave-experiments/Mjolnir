@@ -812,7 +812,7 @@ func resourceAwsAutoscalingGroupUpdate(d *schema.ResourceData, meta interface{})
 func resourceAwsAutoscalingGroupDelete(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).autoscalingconn
 
-	// ReadFile the autoscaling group first. If it doesn't exist, we're done.
+	// Read the autoscaling group first. If it doesn't exist, we're done.
 	// We need the group in order to check if there are instances attached.
 	// If so, we need to remove those first.
 	g, err := getAwsAutoscalingGroup(d.Id(), conn)

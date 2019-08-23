@@ -171,7 +171,7 @@ func (t *hclConfigurable) Config() (*Config, error) {
 // loadFileHcl is a fileLoaderFunc that knows how to read HCL
 // files and turn them into hclConfigurables.
 func loadFileHcl(root string) (configurable, []string, error) {
-	// ReadFile the HCL file and prepare for parsing
+	// Read the HCL file and prepare for parsing
 	d, err := ioutil.ReadFile(root)
 	if err != nil {
 		return nil, nil, fmt.Errorf(

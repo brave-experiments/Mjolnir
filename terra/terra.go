@@ -4,6 +4,7 @@ import (
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
+	"github.com/terraform-providers/terraform-provider-random/random"
 )
 
 const (
@@ -111,6 +112,7 @@ func (client *Client) DefaultClient() (err error) {
 		Providers: make(map[string]terraform.ResourceProvider),
 	}
 	client.platform.AddProvider(DefaultProvider("aws"))
+	client.platform.AddProvider(ProviderRandom("random"))
 
 	client.state, err = DefaultStateFile()
 
@@ -125,6 +127,12 @@ func (client *Client) DefaultClient() (err error) {
 
 func DefaultProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
 	provider = aws.Provider()
+
+	return key, provider
+}
+
+func ProviderRandom(key string) (returnKey string, provider terraform.ResourceProvider) {
+	provider = random.Provider()
 
 	return key, provider
 }

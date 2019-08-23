@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Batch client from just a session.
+//     // Create a Batch client from just a session.
 //     svc := batch.New(mySession)
 //
-//     // ReadFile a Batch client with additional configuration
+//     // Create a Batch client with additional configuration
 //     svc := batch.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Batch {
 	c := p.ClientConfig(EndpointsID, cfgs...)

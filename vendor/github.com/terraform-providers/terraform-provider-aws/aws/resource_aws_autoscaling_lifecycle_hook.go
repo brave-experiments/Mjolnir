@@ -100,7 +100,7 @@ func resourceAwsAutoscalingLifecycleHookRead(d *schema.ResourceData, meta interf
 		return nil
 	}
 
-	log.Printf("[DEBUG] ReadFile Lifecycle Hook: ASG: %s, SH: %s, Obj: %#v", d.Get("autoscaling_group_name"), d.Get("name"), p)
+	log.Printf("[DEBUG] Read Lifecycle Hook: ASG: %s, SH: %s, Obj: %#v", d.Get("autoscaling_group_name"), d.Get("name"), p)
 
 	d.Set("default_result", p.DefaultResult)
 	d.Set("heartbeat_timeout", p.HeartbeatTimeout)

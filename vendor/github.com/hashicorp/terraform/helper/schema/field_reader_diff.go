@@ -44,7 +44,7 @@ func (r *DiffFieldReader) ReadField(address []string) (FieldReadResult, error) {
 		r.cache = make(map[string]cachedFieldReadResult)
 	}
 
-	// ReadFile the cache key by joining around a value that isn't a valid part
+	// Create the cache key by joining around a value that isn't a valid part
 	// of an address. This assumes that the Source and Schema are not changed
 	// for the life of this DiffFieldReader.
 	cacheKey := strings.Join(address, "|")
@@ -176,7 +176,7 @@ func (r *DiffFieldReader) readSet(
 	address []string, schema *Schema) (FieldReadResult, error) {
 	prefix := strings.Join(address, ".") + "."
 
-	// ReadFile the set that will be our result
+	// Create the set that will be our result
 	set := schema.ZeroValue().(*Set)
 
 	// Go through the map and find all the set items

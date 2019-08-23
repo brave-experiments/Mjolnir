@@ -301,7 +301,7 @@ func resourceAwsVpnConnectionCreate(d *schema.ResourceData, meta interface{}) er
 		VpnGatewayId:      aws.String(d.Get("vpn_gateway_id").(string)),
 	}
 
-	// ReadFile the VPN Connection
+	// Create the VPN Connection
 	log.Printf("[DEBUG] Creating vpn connection")
 	resp, err := conn.CreateVpnConnection(createOpts)
 	if err != nil {
@@ -333,12 +333,12 @@ func resourceAwsVpnConnectionCreate(d *schema.ResourceData, meta interface{}) er
 			*vpnConnection.VpnConnectionId, stateErr)
 	}
 
-	// ReadFile tags.
+	// Create tags.
 	if err := setTags(conn, d); err != nil {
 		return err
 	}
 
-	// ReadFile off the API to populate our RO fields.
+	// Read off the API to populate our RO fields.
 	return resourceAwsVpnConnectionRead(d, meta)
 }
 

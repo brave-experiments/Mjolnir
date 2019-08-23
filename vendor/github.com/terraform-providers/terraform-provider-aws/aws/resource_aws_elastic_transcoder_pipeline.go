@@ -410,7 +410,7 @@ func resourceAwsElasticTranscoderPipelineRead(d *schema.ResourceData, meta inter
 		return err
 	}
 
-	log.Printf("[DEBUG] Elastic Transcoder Pipeline ReadFile response: %#v", resp)
+	log.Printf("[DEBUG] Elastic Transcoder Pipeline Read response: %#v", resp)
 
 	pipeline := resp.Pipeline
 

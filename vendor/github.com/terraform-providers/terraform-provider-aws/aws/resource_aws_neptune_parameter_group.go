@@ -90,7 +90,7 @@ func resourceAwsNeptuneParameterGroupCreate(d *schema.ResourceData, meta interfa
 		Description:            aws.String(d.Get("description").(string)),
 	}
 
-	log.Printf("[DEBUG] ReadFile Neptune Parameter Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create Neptune Parameter Group: %#v", createOpts)
 	resp, err := conn.CreateDBParameterGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating Neptune Parameter Group: %s", err)

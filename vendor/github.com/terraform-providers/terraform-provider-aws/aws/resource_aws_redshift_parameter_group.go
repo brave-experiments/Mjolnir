@@ -75,7 +75,7 @@ func resourceAwsRedshiftParameterGroupCreate(d *schema.ResourceData, meta interf
 		Description:          aws.String(d.Get("description").(string)),
 	}
 
-	log.Printf("[DEBUG] ReadFile Redshift Parameter Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create Redshift Parameter Group: %#v", createOpts)
 	_, err := conn.CreateClusterParameterGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating Redshift Parameter Group: %s", err)

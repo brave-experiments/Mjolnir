@@ -36,7 +36,7 @@ func resourceAwsInternetGateway() *schema.Resource {
 func resourceAwsInternetGatewayCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).ec2conn
 
-	// ReadFile the gateway
+	// Create the gateway
 	log.Printf("[DEBUG] Creating internet gateway")
 	var err error
 	resp, err := conn.CreateInternetGateway(nil)

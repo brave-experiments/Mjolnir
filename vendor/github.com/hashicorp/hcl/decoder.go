@@ -397,7 +397,7 @@ func (d *decoder) decodeMap(name string, node ast.Node, result reflect.Value) er
 }
 
 func (d *decoder) decodePtr(name string, node ast.Node, result reflect.Value) error {
-	// ReadFile an element of the concrete (non pointer) type and decode
+	// Create an element of the concrete (non pointer) type and decode
 	// into that. Then set the value of the pointer to this type.
 	resultType := result.Type()
 	resultElemType := resultType.Elem()
@@ -417,7 +417,7 @@ func (d *decoder) decodeSlice(name string, node ast.Node, result reflect.Value) 
 	if result.Kind() == reflect.Interface {
 		result = result.Elem()
 	}
-	// ReadFile the slice if it isn't nil
+	// Create the slice if it isn't nil
 	resultType := result.Type()
 	resultElemType := resultType.Elem()
 	if result.IsNil() {
@@ -680,7 +680,7 @@ func (d *decoder) decodeStruct(name string, node ast.Node, result reflect.Value)
 		// Track the used key
 		usedKeys[fieldName] = struct{}{}
 
-		// ReadFile the field name and decode. We range over the elements
+		// Create the field name and decode. We range over the elements
 		// because we actually want the value.
 		fieldName = fmt.Sprintf("%s.%s", name, fieldName)
 		if len(prefixMatches.Items) > 0 {

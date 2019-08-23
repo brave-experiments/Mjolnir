@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a CodeDeploy client from just a session.
+//     // Create a CodeDeploy client from just a session.
 //     svc := codedeploy.New(mySession)
 //
-//     // ReadFile a CodeDeploy client with additional configuration
+//     // Create a CodeDeploy client with additional configuration
 //     svc := codedeploy.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CodeDeploy {
 	c := p.ClientConfig(EndpointsID, cfgs...)

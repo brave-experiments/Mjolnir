@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Route53 client from just a session.
+//     // Create a Route53 client from just a session.
 //     svc := route53.New(mySession)
 //
-//     // ReadFile a Route53 client with additional configuration
+//     // Create a Route53 client with additional configuration
 //     svc := route53.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Route53 {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -309,7 +309,7 @@ func peekVersion(r io.Reader) (bufr *bufio.Reader, ver byte, err error) {
 	return
 }
 
-// ReadFile reads a single OpenPGP packet from the given io.Reader. If there is an
+// Read reads a single OpenPGP packet from the given io.Reader. If there is an
 // error parsing a packet, the whole packet is consumed from the input.
 func Read(r io.Reader) (p Packet, err error) {
 	tag, _, contents, err := readHeader(r)

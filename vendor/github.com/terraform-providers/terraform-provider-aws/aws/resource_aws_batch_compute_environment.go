@@ -217,7 +217,7 @@ func resourceAwsBatchComputeEnvironmentCreate(d *schema.ResourceData, meta inter
 		}
 	}
 
-	log.Printf("[DEBUG] ReadFile compute environment %s.\n", input)
+	log.Printf("[DEBUG] Create compute environment %s.\n", input)
 
 	if _, err := conn.CreateComputeEnvironment(input); err != nil {
 		return err
@@ -250,7 +250,7 @@ func resourceAwsBatchComputeEnvironmentRead(d *schema.ResourceData, meta interfa
 		},
 	}
 
-	log.Printf("[DEBUG] ReadFile compute environment %s.\n", input)
+	log.Printf("[DEBUG] Read compute environment %s.\n", input)
 
 	result, err := conn.DescribeComputeEnvironments(input)
 	if err != nil {

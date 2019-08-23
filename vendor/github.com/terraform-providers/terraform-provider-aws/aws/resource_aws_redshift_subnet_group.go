@@ -64,7 +64,7 @@ func resourceAwsRedshiftSubnetGroupCreate(d *schema.ResourceData, meta interface
 		Tags:                   tags,
 	}
 
-	log.Printf("[DEBUG] ReadFile Redshift Subnet Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create Redshift Subnet Group: %#v", createOpts)
 	_, err := conn.CreateClusterSubnetGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating Redshift Subnet Group: %s", err)

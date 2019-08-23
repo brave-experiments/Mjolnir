@@ -211,7 +211,7 @@ func resourceAwsRouteCreate(d *schema.ResourceData, meta interface{}) error {
 	}
 	log.Printf("[DEBUG] Route create config: %s", createOpts)
 
-	// ReadFile the route
+	// Create the route
 	var err error
 
 	err = resource.Retry(d.Timeout(schema.TimeoutCreate), func() *resource.RetryError {
@@ -472,7 +472,7 @@ func resourceAwsRouteExists(d *schema.ResourceData, meta interface{}) (bool, err
 	return false, nil
 }
 
-// ReadFile an ID for a route
+// Create an ID for a route
 func routeIDHash(d *schema.ResourceData, r *ec2.Route) string {
 
 	if r.DestinationIpv6CidrBlock != nil && *r.DestinationIpv6CidrBlock != "" {

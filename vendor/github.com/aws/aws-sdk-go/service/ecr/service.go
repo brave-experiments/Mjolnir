@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a ECR client from just a session.
+//     // Create a ECR client from just a session.
 //     svc := ecr.New(mySession)
 //
-//     // ReadFile a ECR client with additional configuration
+//     // Create a ECR client with additional configuration
 //     svc := ecr.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ECR {
 	c := p.ClientConfig(EndpointsID, cfgs...)

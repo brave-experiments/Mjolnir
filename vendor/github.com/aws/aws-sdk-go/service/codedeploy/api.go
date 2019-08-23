@@ -5434,7 +5434,7 @@ type CreateDeploymentGroupInput struct {
 	ServiceRoleArn *string `locationName:"serviceRoleArn" type:"string" required:"true"`
 
 	// Information about triggers to create when the deployment group is created.
-	// For examples, see ReadFile a Trigger for an AWS CodeDeploy Event (http://docs.aws.amazon.com/codedeploy/latest/userguide/how-to-notify-sns.html)
+	// For examples, see Create a Trigger for an AWS CodeDeploy Event (http://docs.aws.amazon.com/codedeploy/latest/userguide/how-to-notify-sns.html)
 	// in the AWS CodeDeploy User Guide.
 	TriggerConfigurations []*TriggerConfig `locationName:"triggerConfigurations" type:"list"`
 }

@@ -40,12 +40,12 @@ func IsReaderSeekable(r io.Reader) bool {
 	}
 }
 
-// ReadFile reads from the reader up to size of p. The number of bytes read, and
+// Read reads from the reader up to size of p. The number of bytes read, and
 // error if it occurred will be returned.
 //
 // If the reader is not an io.Reader zero bytes read, and nil error will be returned.
 //
-// Performs the same functionality as io.Reader ReadFile
+// Performs the same functionality as io.Reader Read
 func (r ReaderSeekerCloser) Read(p []byte) (int, error) {
 	switch t := r.r.(type) {
 	case io.Reader:
@@ -54,7 +54,7 @@ func (r ReaderSeekerCloser) Read(p []byte) (int, error) {
 	return 0, nil
 }
 
-// Seek sets the offset for the next ReadFile to offset, interpreted according to
+// Seek sets the offset for the next Read to offset, interpreted according to
 // whence: 0 means relative to the origin of the file, 1 means relative to the
 // current offset, and 2 means relative to the end. Seek returns the new offset
 // and an error, if any.

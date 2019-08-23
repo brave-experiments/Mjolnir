@@ -50,7 +50,7 @@ var CSVDecodeFunc = function.New(&function.Spec{
 		cr := csv.NewReader(r)
 		cr.FieldsPerRecord = len(atys)
 
-		// ReadFile the header row first, since that'll tell us which indices
+		// Read the header row first, since that'll tell us which indices
 		// map to which attribute names.
 		headers, err := cr.Read()
 		if err != nil {

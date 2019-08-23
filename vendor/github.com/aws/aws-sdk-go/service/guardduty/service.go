@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a GuardDuty client from just a session.
+//     // Create a GuardDuty client from just a session.
 //     svc := guardduty.New(mySession)
 //
-//     // ReadFile a GuardDuty client with additional configuration
+//     // Create a GuardDuty client with additional configuration
 //     svc := guardduty.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *GuardDuty {
 	c := p.ClientConfig(EndpointsID, cfgs...)

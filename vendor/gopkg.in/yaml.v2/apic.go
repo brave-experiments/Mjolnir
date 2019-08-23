@@ -23,7 +23,7 @@ func yaml_insert_token(parser *yaml_parser_t, pos int, token *yaml_token_t) {
 	parser.tokens[parser.tokens_head+pos] = *token
 }
 
-// ReadFile a new parser object.
+// Create a new parser object.
 func yaml_parser_initialize(parser *yaml_parser_t) bool {
 	*parser = yaml_parser_t{
 		raw_buffer: make([]byte, 0, input_raw_buffer_size),
@@ -79,7 +79,7 @@ func yaml_parser_set_encoding(parser *yaml_parser_t, encoding yaml_encoding_t) {
 	parser.encoding = encoding
 }
 
-// ReadFile a new emitter object.
+// Create a new emitter object.
 func yaml_emitter_initialize(emitter *yaml_emitter_t) {
 	*emitter = yaml_emitter_t{
 		buffer:     make([]byte, output_buffer_size),
@@ -250,7 +250,7 @@ func yaml_emitter_set_break(emitter *yaml_emitter_t, line_break yaml_break_t) {
 //}
 //
 
-// ReadFile STREAM-START.
+// Create STREAM-START.
 func yaml_stream_start_event_initialize(event *yaml_event_t, encoding yaml_encoding_t) {
 	*event = yaml_event_t{
 		typ:      yaml_STREAM_START_EVENT,
@@ -258,14 +258,14 @@ func yaml_stream_start_event_initialize(event *yaml_event_t, encoding yaml_encod
 	}
 }
 
-// ReadFile STREAM-END.
+// Create STREAM-END.
 func yaml_stream_end_event_initialize(event *yaml_event_t) {
 	*event = yaml_event_t{
 		typ: yaml_STREAM_END_EVENT,
 	}
 }
 
-// ReadFile DOCUMENT-START.
+// Create DOCUMENT-START.
 func yaml_document_start_event_initialize(
 	event *yaml_event_t,
 	version_directive *yaml_version_directive_t,
@@ -280,7 +280,7 @@ func yaml_document_start_event_initialize(
 	}
 }
 
-// ReadFile DOCUMENT-END.
+// Create DOCUMENT-END.
 func yaml_document_end_event_initialize(event *yaml_event_t, implicit bool) {
 	*event = yaml_event_t{
 		typ:      yaml_DOCUMENT_END_EVENT,
@@ -289,7 +289,7 @@ func yaml_document_end_event_initialize(event *yaml_event_t, implicit bool) {
 }
 
 ///*
-// * ReadFile ALIAS.
+// * Create ALIAS.
 // */
 //
 //YAML_DECLARE(int)
@@ -312,7 +312,7 @@ func yaml_document_end_event_initialize(event *yaml_event_t, implicit bool) {
 //    return 1
 //}
 
-// ReadFile SCALAR.
+// Create SCALAR.
 func yaml_scalar_event_initialize(event *yaml_event_t, anchor, tag, value []byte, plain_implicit, quoted_implicit bool, style yaml_scalar_style_t) bool {
 	*event = yaml_event_t{
 		typ:             yaml_SCALAR_EVENT,
@@ -326,7 +326,7 @@ func yaml_scalar_event_initialize(event *yaml_event_t, anchor, tag, value []byte
 	return true
 }
 
-// ReadFile SEQUENCE-START.
+// Create SEQUENCE-START.
 func yaml_sequence_start_event_initialize(event *yaml_event_t, anchor, tag []byte, implicit bool, style yaml_sequence_style_t) bool {
 	*event = yaml_event_t{
 		typ:      yaml_SEQUENCE_START_EVENT,
@@ -338,7 +338,7 @@ func yaml_sequence_start_event_initialize(event *yaml_event_t, anchor, tag []byt
 	return true
 }
 
-// ReadFile SEQUENCE-END.
+// Create SEQUENCE-END.
 func yaml_sequence_end_event_initialize(event *yaml_event_t) bool {
 	*event = yaml_event_t{
 		typ: yaml_SEQUENCE_END_EVENT,
@@ -346,7 +346,7 @@ func yaml_sequence_end_event_initialize(event *yaml_event_t) bool {
 	return true
 }
 
-// ReadFile MAPPING-START.
+// Create MAPPING-START.
 func yaml_mapping_start_event_initialize(event *yaml_event_t, anchor, tag []byte, implicit bool, style yaml_mapping_style_t) {
 	*event = yaml_event_t{
 		typ:      yaml_MAPPING_START_EVENT,
@@ -357,7 +357,7 @@ func yaml_mapping_start_event_initialize(event *yaml_event_t, anchor, tag []byte
 	}
 }
 
-// ReadFile MAPPING-END.
+// Create MAPPING-END.
 func yaml_mapping_end_event_initialize(event *yaml_event_t) {
 	*event = yaml_event_t{
 		typ: yaml_MAPPING_END_EVENT,
@@ -370,7 +370,7 @@ func yaml_event_delete(event *yaml_event_t) {
 }
 
 ///*
-// * ReadFile a document object.
+// * Create a document object.
 // */
 //
 //YAML_DECLARE(int)

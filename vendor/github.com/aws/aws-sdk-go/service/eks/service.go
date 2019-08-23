@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a EKS client from just a session.
+//     // Create a EKS client from just a session.
 //     svc := eks.New(mySession)
 //
-//     // ReadFile a EKS client with additional configuration
+//     // Create a EKS client with additional configuration
 //     svc := eks.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *EKS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

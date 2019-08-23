@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a SWF client from just a session.
+//     // Create a SWF client from just a session.
 //     svc := swf.New(mySession)
 //
-//     // ReadFile a SWF client with additional configuration
+//     // Create a SWF client with additional configuration
 //     svc := swf.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *SWF {
 	c := p.ClientConfig(EndpointsID, cfgs...)

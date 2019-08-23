@@ -41,7 +41,7 @@ func (g *FileGetter) Get(dst string, u *url.URL) error {
 		}
 	}
 
-	// ReadFile all the parent directories
+	// Create all the parent directories
 	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func (g *FileGetter) GetFile(dst string, u *url.URL) error {
 		}
 	}
 
-	// ReadFile all the parent directories
+	// Create all the parent directories
 	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
 		return err
 	}

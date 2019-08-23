@@ -85,7 +85,7 @@ func fillPresignedURL(r *request.Request) {
 	origParams.DestinationRegion = r.Config.Region
 	newParams := awsutil.CopyOf(r.Params).(*CopySnapshotInput)
 
-	// ReadFile a new request based on the existing request. We will use this to
+	// Create a new request based on the existing request. We will use this to
 	// presign the CopySnapshot request against the source region.
 	cfg := r.Config.Copy(aws.NewConfig().
 		WithEndpoint("").

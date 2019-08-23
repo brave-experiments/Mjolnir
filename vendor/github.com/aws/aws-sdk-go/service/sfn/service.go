@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a SFN client from just a session.
+//     // Create a SFN client from just a session.
 //     svc := sfn.New(mySession)
 //
-//     // ReadFile a SFN client with additional configuration
+//     // Create a SFN client with additional configuration
 //     svc := sfn.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *SFN {
 	c := p.ClientConfig(EndpointsID, cfgs...)

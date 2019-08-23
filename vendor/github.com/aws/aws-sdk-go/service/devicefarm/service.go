@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a DeviceFarm client from just a session.
+//     // Create a DeviceFarm client from just a session.
 //     svc := devicefarm.New(mySession)
 //
-//     // ReadFile a DeviceFarm client with additional configuration
+//     // Create a DeviceFarm client with additional configuration
 //     svc := devicefarm.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *DeviceFarm {
 	c := p.ClientConfig(EndpointsID, cfgs...)
