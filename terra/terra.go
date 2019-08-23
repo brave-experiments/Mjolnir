@@ -111,6 +111,7 @@ func (client *Client) DefaultClient() (err error) {
 	}
 	client.platform.AddProvider(DefaultProvider("aws"))
 	client.platform.AddProvider(RandomProvider("random"))
+	client.platform.AddProvider(LocalProvider("local"))
 
 	client.state, err = DefaultStateFile()
 

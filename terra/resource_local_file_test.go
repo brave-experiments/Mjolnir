@@ -22,34 +22,18 @@ func TestLocalFile_Basic(t *testing.T) {
 	}{
 		{
 			"local_file",
-			"This is some content", `
+			"This is some sensitive content", `
 resource "local_file" "file" {
-  content  = "This is some content"
-  filename = "local_file"
+ sensitive_content = "This is some sensitive content"
+ filename          = "local_file"
 }`,
 		},
 		{
 			"local_file",
 			"This is some sensitive content", `
 resource "local_file" "file" {
-  sensitive_content = "This is some sensitive content"
-  filename          = "local_file"
-}`,
-		},
-		{
-			"local_file",
-			"This is some sensitive content", `
-resource "local_file" "file" {
-  content_base64 = "VGhpcyBpcyBzb21lIHNlbnNpdGl2ZSBjb250ZW50"
-  filename       = "local_file"
-}`,
-		},
-		{
-			"local_file",
-			"This is some sensitive content", `
-resource "local_file" "file" {
-  content_base64 = base64encode("This is some sensitive content")
-  filename       = "local_file"
+ content_base64 = "VGhpcyBpcyBzb21lIHNlbnNpdGl2ZSBjb250ZW50"
+ filename       = "local_file"
 }`,
 		},
 	}
@@ -152,5 +136,4 @@ resource "local_file" "file" {
 	})
 
 	defer os.Remove(destinationDirPath)
-
 }
