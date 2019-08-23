@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a RDS client from just a session.
+//     // Create a RDS client from just a session.
 //     svc := rds.New(mySession)
 //
-//     // ReadFile a RDS client with additional configuration
+//     // Create a RDS client with additional configuration
 //     svc := rds.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *RDS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

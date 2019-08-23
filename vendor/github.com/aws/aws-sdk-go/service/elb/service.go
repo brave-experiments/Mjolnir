@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a ELB client from just a session.
+//     // Create a ELB client from just a session.
 //     svc := elb.New(mySession)
 //
-//     // ReadFile a ELB client with additional configuration
+//     // Create a ELB client with additional configuration
 //     svc := elb.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *ELB {
 	c := p.ClientConfig(EndpointsID, cfgs...)

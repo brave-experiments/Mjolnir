@@ -71,7 +71,7 @@ func resourceAwsIamUserCreate(d *schema.ResourceData, meta interface{}) error {
 		UserName: aws.String(name),
 	}
 
-	log.Println("[DEBUG] ReadFile IAM User request:", request)
+	log.Println("[DEBUG] Create IAM User request:", request)
 	createResp, err := iamconn.CreateUser(request)
 	if err != nil {
 		return fmt.Errorf("Error creating IAM User %s: %s", name, err)

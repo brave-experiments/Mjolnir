@@ -80,7 +80,7 @@ func (c *ConfigService) BatchGetResourceConfigRequest(input *BatchGetResourceCon
 //
 //   * ErrCodeNoAvailableConfigurationRecorderException "NoAvailableConfigurationRecorderException"
 //   There are no configuration recorders available to provide the role needed
-//   to describe your resources. ReadFile a configuration recorder.
+//   to describe your resources. Create a configuration recorder.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/BatchGetResourceConfig
 func (c *ConfigService) BatchGetResourceConfig(input *BatchGetResourceConfigInput) (*BatchGetResourceConfigOutput, error) {
@@ -863,7 +863,7 @@ func (c *ConfigService) DeliverConfigSnapshotRequest(input *DeliverConfigSnapsho
 //
 //   * ErrCodeNoAvailableConfigurationRecorderException "NoAvailableConfigurationRecorderException"
 //   There are no configuration recorders available to provide the role needed
-//   to describe your resources. ReadFile a configuration recorder.
+//   to describe your resources. Create a configuration recorder.
 //
 //   * ErrCodeNoRunningConfigurationRecorderException "NoRunningConfigurationRecorderException"
 //   There is no configuration recorder running.
@@ -2887,7 +2887,7 @@ func (c *ConfigService) GetResourceConfigHistoryRequest(input *GetResourceConfig
 //
 //   * ErrCodeNoAvailableConfigurationRecorderException "NoAvailableConfigurationRecorderException"
 //   There are no configuration recorders available to provide the role needed
-//   to describe your resources. ReadFile a configuration recorder.
+//   to describe your resources. Create a configuration recorder.
 //
 //   * ErrCodeResourceNotDiscoveredException "ResourceNotDiscoveredException"
 //   You have specified a resource that is either unknown or has not been discovered.
@@ -3043,7 +3043,7 @@ func (c *ConfigService) ListDiscoveredResourcesRequest(input *ListDiscoveredReso
 //
 //   * ErrCodeNoAvailableConfigurationRecorderException "NoAvailableConfigurationRecorderException"
 //   There are no configuration recorders available to provide the role needed
-//   to describe your resources. ReadFile a configuration recorder.
+//   to describe your resources. Create a configuration recorder.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/ListDiscoveredResources
 func (c *ConfigService) ListDiscoveredResources(input *ListDiscoveredResourcesInput) (*ListDiscoveredResourcesOutput, error) {
@@ -3263,7 +3263,7 @@ func (c *ConfigService) PutConfigRuleRequest(input *PutConfigRuleInput) (req *re
 //
 //   * ErrCodeNoAvailableConfigurationRecorderException "NoAvailableConfigurationRecorderException"
 //   There are no configuration recorders available to provide the role needed
-//   to describe your resources. ReadFile a configuration recorder.
+//   to describe your resources. Create a configuration recorder.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutConfigRule
 func (c *ConfigService) PutConfigRule(input *PutConfigRuleInput) (*PutConfigRuleOutput, error) {
@@ -3568,7 +3568,7 @@ func (c *ConfigService) PutDeliveryChannelRequest(input *PutDeliveryChannelInput
 //
 //   * ErrCodeNoAvailableConfigurationRecorderException "NoAvailableConfigurationRecorderException"
 //   There are no configuration recorders available to provide the role needed
-//   to describe your resources. ReadFile a configuration recorder.
+//   to describe your resources. Create a configuration recorder.
 //
 //   * ErrCodeInvalidDeliveryChannelNameException "InvalidDeliveryChannelNameException"
 //   The specified delivery channel name is not valid.

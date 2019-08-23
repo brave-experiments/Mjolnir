@@ -331,7 +331,7 @@ func (c *GameLift) CreateBuildRequest(input *CreateBuildInput) (req *request.Req
 //
 //    * Store a build file in an Amazon S3 bucket under your own AWS account.
 //    To use this option, you must first give Amazon GameLift access to that
-//    Amazon S3 bucket. See  ReadFile a Build with Files in Amazon S3 (http://docs.aws.amazon.com/gamelift/latest/developerguide/gamelift-build-cli-uploading.html#gamelift-build-cli-uploading-create-build)
+//    Amazon S3 bucket. See  Create a Build with Files in Amazon S3 (http://docs.aws.amazon.com/gamelift/latest/developerguide/gamelift-build-cli-uploading.html#gamelift-build-cli-uploading-create-build)
 //    for detailed help. To create a new build record using files in your Amazon
 //    S3 bucket, call CreateBuild and specify a build name, operating system,
 //    and the storage location of your game build.
@@ -16613,7 +16613,7 @@ func (s *RuntimeConfiguration) SetServerProcesses(v []*ServerProcess) *RuntimeCo
 
 // Location in Amazon Simple Storage Service (Amazon S3) where build files can
 // be stored for access by Amazon GameLift. This location is specified in a
-// CreateBuild request. For more details, see the ReadFile a Build with Files
+// CreateBuild request. For more details, see the Create a Build with Files
 // in Amazon S3 (http://docs.aws.amazon.com/gamelift/latest/developerguide/gamelift-build-cli-uploading.html#gamelift-build-cli-uploading-create-build).
 type S3Location struct {
 	_ struct{} `type:"structure"`

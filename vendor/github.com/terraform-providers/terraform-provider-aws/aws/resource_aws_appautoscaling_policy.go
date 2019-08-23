@@ -308,7 +308,7 @@ func resourceAwsAppautoscalingPolicyRead(d *schema.ResourceData, meta interface{
 		return nil
 	}
 
-	log.Printf("[DEBUG] ReadFile ApplicationAutoScaling policy: %s, SP: %s, Obj: %s", d.Get("name"), d.Get("name"), p)
+	log.Printf("[DEBUG] Read ApplicationAutoScaling policy: %s, SP: %s, Obj: %s", d.Get("name"), d.Get("name"), p)
 
 	d.Set("arn", p.PolicyARN)
 	d.Set("name", p.PolicyName)

@@ -94,7 +94,7 @@ func (r *Reader) EOSMarker() bool {
 	return r.d.eosMarker
 }
 
-// ReadFile returns uncompressed data.
+// Read returns uncompressed data.
 func (r *Reader) Read(p []byte) (n int, err error) {
 	return r.d.Read(p)
 }

@@ -48,7 +48,7 @@ func resourceAwsVpnConnectionRouteCreate(d *schema.ResourceData, meta interface{
 		VpnConnectionId:      aws.String(vpnConnectionId),
 	}
 
-	// ReadFile the route.
+	// Create the route.
 	log.Printf("[DEBUG] Creating VPN connection route")
 	_, err := conn.CreateVpnConnectionRoute(createOpts)
 	if err != nil {

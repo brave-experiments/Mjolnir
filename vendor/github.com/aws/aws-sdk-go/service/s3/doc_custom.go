@@ -9,7 +9,7 @@
 //   // The session the S3 Uploader will use
 //   sess := session.Must(session.NewSession())
 //
-//   // ReadFile an uploader with the session and default options
+//   // Create an uploader with the session and default options
 //   uploader := s3manager.NewUploader(sess)
 //
 //   f, err  := os.Open(filename)
@@ -41,11 +41,11 @@
 //   // The session the S3 Downloader will use
 //   sess := session.Must(session.NewSession())
 //
-//   // ReadFile a downloader with the session and default options
+//   // Create a downloader with the session and default options
 //   downloader := s3manager.NewDownloader(sess)
 //
-//   // ReadFile a file to write the S3 Object contents to.
-//   f, err := os.ReadFile(filename)
+//   // Create a file to write the S3 Object contents to.
+//   f, err := os.Create(filename)
 //   if err != nil {
 //       return fmt.Errorf("failed to create file %q, %v", filename, err)
 //   }
@@ -92,7 +92,7 @@
 //
 //    sess := session.Must(session.NewSession())
 //
-//    // ReadFile the decryption client.
+//    // Create the decryption client.
 //    svc := s3crypto.NewDecryptionClient(sess)
 //
 //    // The object will be downloaded from S3 and decrypted locally. By metadata

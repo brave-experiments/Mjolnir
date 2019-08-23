@@ -108,7 +108,7 @@ func resourceAwsDbParameterGroupCreate(d *schema.ResourceData, meta interface{})
 		Tags:                   tags,
 	}
 
-	log.Printf("[DEBUG] ReadFile DB Parameter Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create DB Parameter Group: %#v", createOpts)
 	resp, err := rdsconn.CreateDBParameterGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating DB Parameter Group: %s", err)

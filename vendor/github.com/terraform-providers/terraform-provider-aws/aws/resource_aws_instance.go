@@ -561,7 +561,7 @@ func resourceAwsInstanceCreate(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
-	// ReadFile the instance
+	// Create the instance
 	log.Printf("[DEBUG] Run configuration: %s", runOpts)
 
 	var runResp *ec2.Reservation
@@ -968,7 +968,7 @@ func resourceAwsInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
 		// If we have a new resource and source_dest_check is still true, don't modify
 		sourceDestCheck := d.Get("source_dest_check").(bool)
 
-		// Because we're calling Update prior to ReadFile, and the default value of `source_dest_check` is `true`,
+		// Because we're calling Update prior to Read, and the default value of `source_dest_check` is `true`,
 		// HasChange() thinks there is a diff between what is set on the instance and what is set in state. We need to ensure that
 		// if a diff has occured, it's not because it's a new instance.
 		if d.HasChange("source_dest_check") && !d.IsNewResource() || d.IsNewResource() && !sourceDestCheck {
@@ -1010,7 +1010,7 @@ func resourceAwsInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
 		// instance attributes via a `ModifyInstanceAttributes()` request would fail with the following error message:
 		// "There are multiple interfaces attached to instance 'i-XX'. Please specify an interface ID for the operation instead."
 		// Thus, we need to actually modify the primary network interface for the new security groups, as the primary
-		// network interface is where we modify/create security group assignments during ReadFile.
+		// network interface is where we modify/create security group assignments during Create.
 		log.Printf("[INFO] Modifying `vpc_security_group_ids` on Instance %q", d.Id())
 		instances, err := conn.DescribeInstances(&ec2.DescribeInstancesInput{
 			InstanceIds: []*string{aws.String(d.Id())},

@@ -2,11 +2,9 @@
 docker-compose.override.yml
 .env
 apollo
-<<<<<<< HEAD
 default.tfstate
 **/.terraform/
-=======
 coverage.out
 dist
 default.tfstate
->>>>>>> master
+temp.tf

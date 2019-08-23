@@ -132,7 +132,7 @@ func (r *Reader2) startChunk() error {
 	return nil
 }
 
-// ReadFile reads data from the LZMA2 chunk sequence.
+// Read reads data from the LZMA2 chunk sequence.
 func (r *Reader2) Read(p []byte) (n int, err error) {
 	if r.err != nil {
 		return 0, r.err
@@ -207,7 +207,7 @@ func (ur *uncompressedReader) fill() error {
 	return io.EOF
 }
 
-// ReadFile reads uncompressed data from the limited reader.
+// Read reads uncompressed data from the limited reader.
 func (ur *uncompressedReader) Read(p []byte) (n int, err error) {
 	if ur.err != nil {
 		return 0, ur.err

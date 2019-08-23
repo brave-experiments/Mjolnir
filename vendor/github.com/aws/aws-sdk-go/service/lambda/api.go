@@ -1453,7 +1453,7 @@ func (c *Lambda) InvokeRequest(input *InvokeInput) (req *request.Request, output
 
 // Invoke API operation for AWS Lambda.
 //
-// Invokes a specific Lambda function. For an example, see ReadFile the Lambda
+// Invokes a specific Lambda function. For an example, see Create the Lambda
 // Function and Test It Manually (http://docs.aws.amazon.com/lambda/latest/dg/with-dynamodb-create-function.html#with-dbb-invoke-manually).
 //
 // If you are using the versioning feature, you can invoke the specific function

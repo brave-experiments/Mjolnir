@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a DynamoDB client from just a session.
+//     // Create a DynamoDB client from just a session.
 //     svc := dynamodb.New(mySession)
 //
-//     // ReadFile a DynamoDB client with additional configuration
+//     // Create a DynamoDB client with additional configuration
 //     svc := dynamodb.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *DynamoDB {
 	c := p.ClientConfig(EndpointsID, cfgs...)

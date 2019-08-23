@@ -121,7 +121,7 @@ func resourceAwsVpc() *schema.Resource {
 func resourceAwsVpcCreate(d *schema.ResourceData, meta interface{}) error {
 	conn := meta.(*AWSClient).ec2conn
 
-	// ReadFile the VPC
+	// Create the VPC
 	createOpts := &ec2.CreateVpcInput{
 		CidrBlock:                   aws.String(d.Get("cidr_block").(string)),
 		InstanceTenancy:             aws.String(d.Get("instance_tenancy").(string)),

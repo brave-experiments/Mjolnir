@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Glacier client from just a session.
+//     // Create a Glacier client from just a session.
 //     svc := glacier.New(mySession)
 //
-//     // ReadFile a Glacier client with additional configuration
+//     // Create a Glacier client with additional configuration
 //     svc := glacier.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Glacier {
 	c := p.ClientConfig(EndpointsID, cfgs...)

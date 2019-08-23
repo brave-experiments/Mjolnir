@@ -482,7 +482,7 @@ func resourceAwsElasticTranscoderPresetRead(d *schema.ResourceData, meta interfa
 		return err
 	}
 
-	log.Printf("[DEBUG] Elastic Transcoder Preset ReadFile response: %#v", resp)
+	log.Printf("[DEBUG] Elastic Transcoder Preset Read response: %#v", resp)
 
 	preset := resp.Preset
 	d.Set("arn", *preset.Arn)

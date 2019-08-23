@@ -107,7 +107,7 @@ func resourceAwsNeptuneClusterParameterGroupCreate(d *schema.ResourceData, meta 
 		Tags:                        tags,
 	}
 
-	log.Printf("[DEBUG] ReadFile Neptune Cluster Parameter Group: %#v", createOpts)
+	log.Printf("[DEBUG] Create Neptune Cluster Parameter Group: %#v", createOpts)
 	resp, err := conn.CreateDBClusterParameterGroup(&createOpts)
 	if err != nil {
 		return fmt.Errorf("Error creating Neptune Cluster Parameter Group: %s", err)

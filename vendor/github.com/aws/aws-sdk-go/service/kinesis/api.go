@@ -187,7 +187,7 @@ func (c *Kinesis) CreateStreamRequest(input *CreateStreamInput) (req *request.Re
 //
 //    * Have more than five streams in the CREATING state at any point in time.
 //
-//    * ReadFile more shards than are authorized for your account.
+//    * Create more shards than are authorized for your account.
 //
 // For the default shard limit for an AWS account, see Amazon Kinesis Data Streams
 // Limits (http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html)
@@ -1783,7 +1783,7 @@ func (c *Kinesis) MergeShardsRequest(input *MergeShardsInput) (req *request.Requ
 // MergeShards is an asynchronous operation. Upon receiving a MergeShards request,
 // Amazon Kinesis Data Streams immediately returns a response and sets the StreamStatus
 // to UPDATING. After the operation is completed, Kinesis Data Streams sets
-// the StreamStatus to ACTIVE. ReadFile and write operations continue to work while
+// the StreamStatus to ACTIVE. Read and write operations continue to work while
 // the stream is in the UPDATING state.
 //
 // You use DescribeStream to determine the shard IDs that are specified in the
@@ -2342,7 +2342,7 @@ func (c *Kinesis) SplitShardRequest(input *SplitShardInput) (req *request.Reques
 // SplitShard is an asynchronous operation. Upon receiving a SplitShard request,
 // Kinesis Data Streams immediately returns a response and sets the stream status
 // to UPDATING. After the operation is completed, Kinesis Data Streams sets
-// the stream status to ACTIVE. ReadFile and write operations continue to work while
+// the stream status to ACTIVE. Read and write operations continue to work while
 // the stream is in the UPDATING state.
 //
 // You can use DescribeStream to check the status of the stream, which is returned
@@ -5388,7 +5388,7 @@ type StreamDescription struct {
 	//    or deletion. You should perform read and write operations only on an ACTIVE
 	//    stream.
 	//
-	//    * UPDATING - Shards in the stream are being merged or split. ReadFile and
+	//    * UPDATING - Shards in the stream are being merged or split. Read and
 	//    write operations continue to work while the stream is in the UPDATING
 	//    state.
 	//
@@ -5536,7 +5536,7 @@ type StreamDescriptionSummary struct {
 	//    or deletion. You should perform read and write operations only on an ACTIVE
 	//    stream.
 	//
-	//    * UPDATING - Shards in the stream are being merged or split. ReadFile and
+	//    * UPDATING - Shards in the stream are being merged or split. Read and
 	//    write operations continue to work while the stream is in the UPDATING
 	//    state.
 	//

@@ -258,7 +258,7 @@ func (c *Context) Graph(typ GraphType, opts *ContextGraphOpts) (*Graph, error) {
 		// The validate graph is just a slightly modified plan graph
 		fallthrough
 	case GraphTypePlan:
-		// ReadFile the plan graph builder
+		// Create the plan graph builder
 		p := &PlanGraphBuilder{
 			Module:    c.module,
 			State:     c.state,
@@ -769,7 +769,7 @@ func (c *Context) acquireRun(phase string) func() {
 	// Setup debugging
 	dbug.SetPhase(phase)
 
-	// ReadFile a new run context
+	// Create a new run context
 	c.runContext, c.runContextCancel = context.WithCancel(context.Background())
 
 	// Reset the stop hook so we're not stopped

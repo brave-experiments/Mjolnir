@@ -4836,7 +4836,7 @@ type PublishInput struct {
 	// to a specific transport protocol (e.g., "http").
 	//
 	// For information about sending different messages for each protocol using
-	// the AWS Management Console, go to ReadFile Different Messages for Each Protocol
+	// the AWS Management Console, go to Create Different Messages for Each Protocol
 	// (http://docs.aws.amazon.com/sns/latest/gsg/Publish.html#sns-message-formatting-by-protocol)
 	// in the Amazon Simple Notification Service Getting Started Guide.
 	//

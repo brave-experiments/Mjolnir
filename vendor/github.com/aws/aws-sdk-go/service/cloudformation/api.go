@@ -8183,7 +8183,7 @@ type Parameter struct {
 	// The input value associated with the parameter.
 	ParameterValue *string `type:"string"`
 
-	// ReadFile-only. The value that corresponds to a Systems Manager parameter key.
+	// Read-only. The value that corresponds to a Systems Manager parameter key.
 	// This field is returned only for SSM (http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html#aws-ssm-parameter-types)
 	// parameter types in the template.
 	ResolvedValue *string `type:"string"`
@@ -9911,7 +9911,7 @@ func (s *StackSet) SetTemplateBody(v string) *StackSet {
 type StackSetOperation struct {
 	_ struct{} `type:"structure"`
 
-	// The type of stack set operation: CREATE, UPDATE, or DELETE. ReadFile and delete
+	// The type of stack set operation: CREATE, UPDATE, or DELETE. Create and delete
 	// operations affect only the specified stack set instances that are associated
 	// with the specified stack set. Update operations affect both the stack set
 	// itself, as well as all associated stack set instances.
@@ -10254,7 +10254,7 @@ func (s *StackSetOperationResultSummary) SetStatusReason(v string) *StackSetOper
 type StackSetOperationSummary struct {
 	_ struct{} `type:"structure"`
 
-	// The type of operation: CREATE, UPDATE, or DELETE. ReadFile and delete operations
+	// The type of operation: CREATE, UPDATE, or DELETE. Create and delete operations
 	// affect only the specified stack instances that are associated with the specified
 	// stack set. Update operations affect both the stack set itself as well as
 	// all associated stack set instances.

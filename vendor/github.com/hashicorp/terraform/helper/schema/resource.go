@@ -18,7 +18,7 @@ import (
 // generation, etc. to this higher level library.
 //
 // In spite of the name, this struct is not used only for terraform resources,
-// but also for data sources. In the case of data sources, the ReadFile,
+// but also for data sources. In the case of data sources, the Create,
 // Update and Delete functions must not be provided.
 type Resource struct {
 	// Schema is the schema for the configuration of this resource.
@@ -131,7 +131,7 @@ type Resource struct {
 	// usage. For example, a user may specify a large Creation timeout for their
 	// AWS RDS Instance due to it's size, or restoring from a snapshot.
 	// Resource implementors must enable Timeout support by adding the allowed
-	// actions (ReadFile, ReadFile, Update, Delete, Default) to the Resource struct, and
+	// actions (Create, Read, Update, Delete, Default) to the Resource struct, and
 	// accessing them in the matching methods.
 	Timeouts *ResourceTimeout
 }
@@ -318,7 +318,7 @@ func (r *Resource) Refresh(
 
 	if r.Exists != nil {
 		// Make a copy of data so that if it is modified it doesn't
-		// affect our ReadFile later.
+		// affect our Read later.
 		data, err := schemaMap(r.Schema).Data(s, nil)
 		data.timeouts = &rt
 
@@ -375,7 +375,7 @@ func (r *Resource) InternalValidate(topSchemaMap schemaMap, writable bool) error
 
 	if !writable {
 		if r.Create != nil || r.Update != nil || r.Delete != nil {
-			return fmt.Errorf("must not implement ReadFile, Update or Delete")
+			return fmt.Errorf("must not implement Create, Update or Delete")
 		}
 
 		// CustomizeDiff cannot be defined for read-only resources
@@ -415,9 +415,9 @@ func (r *Resource) InternalValidate(topSchemaMap schemaMap, writable bool) error
 
 		tsm = schemaMap(r.Schema)
 
-		// Destroy, and ReadFile are required
+		// Destroy, and Read are required
 		if r.Read == nil {
-			return fmt.Errorf("ReadFile must be implemented")
+			return fmt.Errorf("Read must be implemented")
 		}
 		if r.Delete == nil {
 			return fmt.Errorf("Delete must be implemented")

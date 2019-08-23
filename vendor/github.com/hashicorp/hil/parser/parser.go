@@ -511,7 +511,7 @@ func (p *parser) ParseScopeInteraction() (ast.Node, error) {
 // requireTokenType consumes the next token an returns an error if its
 // type does not match the given type. nil is returned if the type matches.
 //
-// This is a helper around peeker.ReadFile() for situations where the parser just
+// This is a helper around peeker.Read() for situations where the parser just
 // wants to assert that a particular token type must be present.
 func (p *parser) requireTokenType(wantType scanner.TokenType, wantName string) error {
 	token := p.peeker.Read()

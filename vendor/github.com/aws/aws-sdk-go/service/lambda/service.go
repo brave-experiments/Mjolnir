@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Lambda client from just a session.
+//     // Create a Lambda client from just a session.
 //     svc := lambda.New(mySession)
 //
-//     // ReadFile a Lambda client with additional configuration
+//     // Create a Lambda client with additional configuration
 //     svc := lambda.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Lambda {
 	c := p.ClientConfig(EndpointsID, cfgs...)

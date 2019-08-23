@@ -51,7 +51,7 @@ func (sig *SignatureV3) parse(r io.Reader) (err error) {
 		return
 	}
 
-	// ReadFile hashed material: signature type + creation time
+	// Read hashed material: signature type + creation time
 	if _, err = readFull(r, buf[:5]); err != nil {
 		return
 	}

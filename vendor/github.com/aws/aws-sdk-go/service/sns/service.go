@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a SNS client from just a session.
+//     // Create a SNS client from just a session.
 //     svc := sns.New(mySession)
 //
-//     // ReadFile a SNS client with additional configuration
+//     // Create a SNS client with additional configuration
 //     svc := sns.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *SNS {
 	c := p.ClientConfig(EndpointsID, cfgs...)

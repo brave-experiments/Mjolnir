@@ -522,7 +522,7 @@ func (f *File) WriteTo(w io.Writer) (int64, error) {
 
 // SaveToIndent writes content to file system with given value indention.
 func (f *File) SaveToIndent(filename, indent string) error {
-	// Note: Because we are truncating with os.ReadFile,
+	// Note: Because we are truncating with os.Create,
 	// 	so it's safer to save to a temporary file location and rename afte done.
 	tmpPath := filename + "." + strconv.Itoa(time.Now().Nanosecond()) + ".tmp"
 	defer os.Remove(tmpPath)

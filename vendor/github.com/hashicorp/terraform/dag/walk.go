@@ -268,10 +268,10 @@ func (w *Walker) Update(g *AcyclicGraph) {
 			continue
 		}
 
-		// ReadFile a new done channel
+		// Create a new done channel
 		doneCh := make(chan bool, 1)
 
-		// ReadFile the channel we close for cancellation
+		// Create the channel we close for cancellation
 		cancelCh := make(chan struct{})
 
 		// Build a new deps copy

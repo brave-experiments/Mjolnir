@@ -1490,7 +1490,7 @@ func (c *DynamoDB) DescribeLimitsRequest(input *DescribeLimitsInput) (req *reque
 // Call DescribeLimits for a particular region to obtain your current account
 // limits on provisioned capacity there.
 //
-// ReadFile a variable to hold the aggregate read capacity units provisioned for
+// Create a variable to hold the aggregate read capacity units provisioned for
 // all your tables in that region, and one to hold the aggregate write capacity
 // units. Zero them both.
 //
@@ -3687,7 +3687,7 @@ func (c *DynamoDB) UpdateTableRequest(input *UpdateTableInput) (req *request.Req
 //
 //    * Remove a global secondary index from the table.
 //
-//    * ReadFile a new global secondary index on the table. Once the index begins
+//    * Create a new global secondary index on the table. Once the index begins
 //    backfilling, you can use UpdateTable to perform other operations.
 //
 // UpdateTable is an asynchronous operation; while it is executing, the table
@@ -7406,7 +7406,7 @@ func (s *GlobalSecondaryIndexUpdate) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "GlobalSecondaryIndexUpdate"}
 	if s.Create != nil {
 		if err := s.Create.Validate(); err != nil {
-			invalidParams.AddNested("ReadFile", err.(request.ErrInvalidParams))
+			invalidParams.AddNested("Create", err.(request.ErrInvalidParams))
 		}
 	}
 	if s.Delete != nil {
@@ -7426,7 +7426,7 @@ func (s *GlobalSecondaryIndexUpdate) Validate() error {
 	return nil
 }
 
-// SetCreate sets the ReadFile field's value.
+// SetCreate sets the Create field's value.
 func (s *GlobalSecondaryIndexUpdate) SetCreate(v *CreateGlobalSecondaryIndexAction) *GlobalSecondaryIndexUpdate {
 	s.Create = v
 	return s
@@ -8667,14 +8667,14 @@ type ProvisionedThroughput struct {
 
 	// The maximum number of strongly consistent reads consumed per second before
 	// DynamoDB returns a ThrottlingException. For more information, see Specifying
-	// ReadFile and Write Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
+	// Read and Write Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
 	// in the Amazon DynamoDB Developer Guide.
 	//
 	// ReadCapacityUnits is a required field
 	ReadCapacityUnits *int64 `min:"1" type:"long" required:"true"`
 
 	// The maximum number of writes consumed per second before DynamoDB returns
-	// a ThrottlingException. For more information, see Specifying ReadFile and Write
+	// a ThrottlingException. For more information, see Specifying Read and Write
 	// Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
 	// in the Amazon DynamoDB Developer Guide.
 	//
@@ -9859,12 +9859,12 @@ type ReplicaSettingsDescription struct {
 
 	// The maximum number of strongly consistent reads consumed per second before
 	// DynamoDB returns a ThrottlingException. For more information, see Specifying
-	// ReadFile and Write Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
+	// Read and Write Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
 	// in the Amazon DynamoDB Developer Guide.
 	ReplicaProvisionedReadCapacityUnits *int64 `min:"1" type:"long"`
 
 	// The maximum number of writes consumed per second before DynamoDB returns
-	// a ThrottlingException. For more information, see Specifying ReadFile and Write
+	// a ThrottlingException. For more information, see Specifying Read and Write
 	// Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
 	// in the Amazon DynamoDB Developer Guide.
 	ReplicaProvisionedWriteCapacityUnits *int64 `min:"1" type:"long"`
@@ -9936,7 +9936,7 @@ type ReplicaSettingsUpdate struct {
 
 	// The maximum number of strongly consistent reads consumed per second before
 	// DynamoDB returns a ThrottlingException. For more information, see Specifying
-	// ReadFile and Write Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
+	// Read and Write Requirements (http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html#ProvisionedThroughput)
 	// in the Amazon DynamoDB Developer Guide.
 	ReplicaProvisionedReadCapacityUnits *int64 `min:"1" type:"long"`
 }
@@ -10030,7 +10030,7 @@ func (s *ReplicaUpdate) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "ReplicaUpdate"}
 	if s.Create != nil {
 		if err := s.Create.Validate(); err != nil {
-			invalidParams.AddNested("ReadFile", err.(request.ErrInvalidParams))
+			invalidParams.AddNested("Create", err.(request.ErrInvalidParams))
 		}
 	}
 	if s.Delete != nil {
@@ -10045,7 +10045,7 @@ func (s *ReplicaUpdate) Validate() error {
 	return nil
 }
 
-// SetCreate sets the ReadFile field's value.
+// SetCreate sets the Create field's value.
 func (s *ReplicaUpdate) SetCreate(v *CreateReplicaAction) *ReplicaUpdate {
 	s.Create = v
 	return s
@@ -10876,7 +10876,7 @@ type SourceTableDetails struct {
 	// KeySchema is a required field
 	KeySchema []*KeySchemaElement `min:"1" type:"list" required:"true"`
 
-	// ReadFile IOPs and Write IOPS on the table when the backup was created.
+	// Read IOPs and Write IOPS on the table when the backup was created.
 	//
 	// ProvisionedThroughput is a required field
 	ProvisionedThroughput *ProvisionedThroughput `type:"structure" required:"true"`
@@ -12492,7 +12492,7 @@ type UpdateTableInput struct {
 	// An array of one or more global secondary indexes for the table. For each
 	// index in the array, you can request one action:
 	//
-	//    * ReadFile - add a new global secondary index to the table.
+	//    * Create - add a new global secondary index to the table.
 	//
 	//    * Update - modify the provisioned throughput settings of an existing global
 	//    secondary index.

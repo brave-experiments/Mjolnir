@@ -128,7 +128,7 @@ func (l *lineReader) Read(p []byte) (n int, err error) {
 	return
 }
 
-// openpgpReader passes ReadFile calls to the underlying base64 decoder, but keeps
+// openpgpReader passes Read calls to the underlying base64 decoder, but keeps
 // a running CRC of the resulting data and checks the CRC against the value
 // found by the lineReader at EOF.
 type openpgpReader struct {
@@ -184,7 +184,7 @@ TryNextBlock:
 	nextIsContinuation := false
 	var lastKey string
 
-	// ReadFile headers
+	// Read headers
 	for {
 		isContinuation := nextIsContinuation
 		line, nextIsContinuation, err = r.ReadLine()

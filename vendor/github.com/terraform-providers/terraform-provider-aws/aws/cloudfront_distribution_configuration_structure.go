@@ -39,7 +39,7 @@ func (p StringPtrSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 // complex structures which are necessary to properly build the
 // DistributionConfig structure.
 //
-// Used by the aws_cloudfront_distribution ReadFile and Update functions.
+// Used by the aws_cloudfront_distribution Create and Update functions.
 func expandDistributionConfig(d *schema.ResourceData) *cloudfront.DistributionConfig {
 	distributionConfig := &cloudfront.DistributionConfig{
 		CustomErrorResponses: expandCustomErrorResponses(d.Get("custom_error_response").(*schema.Set)),
@@ -101,7 +101,7 @@ func expandDistributionConfig(d *schema.ResourceData) *cloudfront.DistributionCo
 // sub-structures to their respective attributes in the
 // aws_cloudfront_distribution resource.
 //
-// Used by the aws_cloudfront_distribution ReadFile function.
+// Used by the aws_cloudfront_distribution Read function.
 func flattenDistributionConfig(d *schema.ResourceData, distributionConfig *cloudfront.DistributionConfig) error {
 	var err error
 

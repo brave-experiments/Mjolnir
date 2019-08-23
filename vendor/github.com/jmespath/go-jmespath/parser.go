@@ -591,7 +591,7 @@ func (p *Parser) syntaxError(msg string) SyntaxError {
 	}
 }
 
-// ReadFile a SyntaxError based on the provided token.
+// Create a SyntaxError based on the provided token.
 // This differs from syntaxError() which creates a SyntaxError
 // based on the current lookahead token.
 func (p *Parser) syntaxErrorToken(msg string, t token) SyntaxError {

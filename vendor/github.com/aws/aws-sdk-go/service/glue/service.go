@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Glue client from just a session.
+//     // Create a Glue client from just a session.
 //     svc := glue.New(mySession)
 //
-//     // ReadFile a Glue client with additional configuration
+//     // Create a Glue client with additional configuration
 //     svc := glue.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Glue {
 	c := p.ClientConfig(EndpointsID, cfgs...)

@@ -76,7 +76,7 @@ func (cd containerDefinitions) Reduce() error {
 			return *def.Environment[i].Name < *def.Environment[j].Name
 		})
 
-		// ReadFile a mutable copy
+		// Create a mutable copy
 		defCopy, err := copystructure.Copy(def)
 		if err != nil {
 			return err

@@ -232,7 +232,7 @@ func (w *walker) Map(m reflect.Value) error {
 	}
 	w.lock(m)
 
-	// ReadFile the map. If the map itself is nil, then just make a nil map
+	// Create the map. If the map itself is nil, then just make a nil map
 	var newMap reflect.Value
 	if m.IsNil() {
 		newMap = reflect.New(m.Type())
@@ -460,7 +460,7 @@ func (w *walker) replacePointerMaybe() {
 	//
 	// For more info, see GH-16
 	if iType, ok := w.ifaceTypes[ifaceKey(w.ps[w.depth], w.depth)]; ok && iType.Kind() == reflect.Interface {
-		y := reflect.New(iType)           // ReadFile *interface{}
+		y := reflect.New(iType)           // Create *interface{}
 		y.Elem().Set(reflect.Indirect(v)) // Assign "Foo" to interface{} (dereferenced)
 		v = y                             // v is now typed *interface{} (where *v = Foo)
 	}

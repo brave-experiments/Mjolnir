@@ -40,10 +40,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a SimpleDB client from just a session.
+//     // Create a SimpleDB client from just a session.
 //     svc := simpledb.New(mySession)
 //
-//     // ReadFile a SimpleDB client with additional configuration
+//     // Create a SimpleDB client with additional configuration
 //     svc := simpledb.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *SimpleDB {
 	c := p.ClientConfig(EndpointsID, cfgs...)

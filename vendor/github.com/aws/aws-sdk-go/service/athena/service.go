@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a Athena client from just a session.
+//     // Create a Athena client from just a session.
 //     svc := athena.New(mySession)
 //
-//     // ReadFile a Athena client with additional configuration
+//     // Create a Athena client with additional configuration
 //     svc := athena.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *Athena {
 	c := p.ClientConfig(EndpointsID, cfgs...)

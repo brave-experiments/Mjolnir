@@ -39,10 +39,10 @@ const (
 // aws.Config parameter to add your extra config.
 //
 // Example:
-//     // ReadFile a CodeCommit client from just a session.
+//     // Create a CodeCommit client from just a session.
 //     svc := codecommit.New(mySession)
 //
-//     // ReadFile a CodeCommit client with additional configuration
+//     // Create a CodeCommit client with additional configuration
 //     svc := codecommit.New(mySession, aws.NewConfig().WithRegion("us-west-2"))
 func New(p client.ConfigProvider, cfgs ...*aws.Config) *CodeCommit {
 	c := p.ClientConfig(EndpointsID, cfgs...)

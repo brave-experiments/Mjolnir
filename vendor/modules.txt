@@ -135,6 +135,8 @@ github.com/bgentry/speakeasy
 github.com/blang/semver
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
+# github.com/dustinkirkland/golang-petname v0.0.0-20190613200456-11339a705ed2
+github.com/dustinkirkland/golang-petname
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
 # github.com/go-ini/ini v1.25.4
@@ -179,9 +181,11 @@ github.com/hashicorp/hil/scanner
 # github.com/hashicorp/logutils v0.0.0-20150609070431-0dc08b1671f3
 github.com/hashicorp/logutils
 # github.com/hashicorp/terraform v0.11.13
+github.com/hashicorp/terraform/helper/schema
 github.com/hashicorp/terraform/terraform
 github.com/hashicorp/terraform/config
 github.com/hashicorp/terraform/config/configschema
+github.com/hashicorp/terraform/helper/hashcode
 github.com/hashicorp/terraform/config/module
 github.com/hashicorp/terraform/dag
 github.com/hashicorp/terraform/flatmap
@@ -193,13 +197,12 @@ github.com/hashicorp/terraform/tfdiags
 github.com/hashicorp/terraform/version
 github.com/hashicorp/terraform/helper/customdiff
 github.com/hashicorp/terraform/helper/encryption
-github.com/hashicorp/terraform/helper/hashcode
 github.com/hashicorp/terraform/helper/logging
 github.com/hashicorp/terraform/helper/mutexkv
 github.com/hashicorp/terraform/helper/resource
-github.com/hashicorp/terraform/helper/schema
 github.com/hashicorp/terraform/helper/structure
 github.com/hashicorp/terraform/helper/validation
+github.com/hashicorp/terraform/helper/acctest
 github.com/hashicorp/terraform/config/hcl2shim
 github.com/hashicorp/terraform/registry
 github.com/hashicorp/terraform/registry/regsrc
@@ -261,6 +264,8 @@ github.com/stretchr/testify/assert
 github.com/terraform-providers/terraform-provider-aws/aws
 # github.com/terraform-providers/terraform-provider-null v1.0.0
 github.com/terraform-providers/terraform-provider-null/null
+# github.com/terraform-providers/terraform-provider-random v2.0.0+incompatible
+github.com/terraform-providers/terraform-provider-random/random
 # github.com/ulikunitz/xz v0.5.4
 github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/xlog
@@ -271,19 +276,25 @@ github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
 github.com/zclconf/go-cty/cty/function
 github.com/zclconf/go-cty/cty/function/stdlib
-github.com/zclconf/go-cty/cty/gocty
 github.com/zclconf/go-cty/cty/set
+github.com/zclconf/go-cty/cty/gocty
 github.com/zclconf/go-cty/cty/json
 # golang.org/x/crypto v0.0.0-20180211211603-9de5f2eaf759
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/openpgp
+golang.org/x/crypto/ssh
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/openpgp/armor
 golang.org/x/crypto/openpgp/errors
 golang.org/x/crypto/openpgp/packet
 golang.org/x/crypto/openpgp/s2k
+golang.org/x/crypto/curve25519
+golang.org/x/crypto/ed25519
+golang.org/x/crypto/internal/chacha20
+golang.org/x/crypto/poly1305
 golang.org/x/crypto/cast5
 golang.org/x/crypto/openpgp/elgamal
+golang.org/x/crypto/ed25519/internal/edwards25519
 # golang.org/x/net v0.0.0-20171004034648-a04bdaca5b32
 golang.org/x/net/html
 golang.org/x/net/html/atom

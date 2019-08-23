@@ -64,7 +64,7 @@ func (b *buffer) addIndex(i int, n int) int {
 	return i
 }
 
-// ReadFile reads bytes from the buffer into p and returns the number of
+// Read reads bytes from the buffer into p and returns the number of
 // bytes read. The function never returns an error but might return less
 // data than requested.
 func (b *buffer) Read(p []byte) (n int, err error) {
