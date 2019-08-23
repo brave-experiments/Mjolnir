@@ -137,20 +137,6 @@ func TestClient_DefaultClientCreateStateFile(t *testing.T) {
 	removeStateFileAndRestore(t)
 }
 
-func TestDefaultProvider(t *testing.T) {
-	keyToTest := "dummy"
-	key, provider := DefaultProvider(keyToTest)
-	assert.Equal(t, keyToTest, key)
-	assert.IsType(t, aws.Provider(), provider)
-}
-
-func TestProviderRandom(t *testing.T) {
-	keyToTest := "dummy"
-	key, provider := ProviderRandom(keyToTest)
-	assert.Equal(t, keyToTest, key)
-	assert.IsType(t, aws.Provider(), provider)
-}
-
 func TestClient_DumpVariables_NilVariables(t *testing.T) {
 	client := createTestedDefaultClient(t)
 	variables, err := client.DumpVariables()
