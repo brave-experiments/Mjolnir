@@ -8,3 +8,4 @@ coverage.out
 dist
 default.tfstate
 temp.tf
+.env.local
