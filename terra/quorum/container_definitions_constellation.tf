@@ -47,7 +47,7 @@ locals {
 
     portMappings = [
       {
-        hostPort = "${local.constellation_port}",
+        hostPort      = "${local.constellation_port}"
         containerPort = "${local.constellation_port}"
       },
     ]

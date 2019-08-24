@@ -1,9 +1,9 @@
 locals {
-  tessera_config_file = "${local.shared_volume_container_path}/tessera.cfg"
-  tessera_port = 9000
+  tessera_config_file     = "${local.shared_volume_container_path}/tessera.cfg"
+  tessera_port            = 9000
   tessera_thirdparty_port = 9080
-  tessera_command = "java -jar /tessera/tessera-app.jar"
-  tessera_pub_key_file = "${local.shared_volume_container_path}/.pub"
+  tessera_command         = "java -jar /tessera/tessera-app.jar"
+  tessera_pub_key_file    = "${local.shared_volume_container_path}/.pub"
 
   tessera_config_commands = [
     "apk update",
@@ -208,6 +208,7 @@ EOF
 esac
 cat ${local.tessera_config_file}
 SCRIPT
+    ,
   ]
 
   tessera_run_commands = [
@@ -219,34 +220,34 @@ SCRIPT
   ]
 
   tessera_run_container_definition = {
-    name = "${local.tx_privacy_engine_run_container_name}"
-    image = "${local.tx_privacy_engine_docker_image}"
+    name      = "${local.tx_privacy_engine_run_container_name}"
+    image     = "${local.tx_privacy_engine_docker_image}"
     essential = "false"
 
     logConfiguration = {
       logDriver = "awslogs"
 
       options = {
-        awslogs-group = "${aws_cloudwatch_log_group.quorum.name}"
-        awslogs-region = "${var.region}"
+        awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+        awslogs-region        = "${var.region}"
         awslogs-stream-prefix = "logs"
       }
     }
 
     portMappings = [
       {
-        hostPort = "${local.tessera_port}",
+        hostPort      = "${local.tessera_port}"
         containerPort = "${local.tessera_port}"
       },
       {
-        hostPort = "${local.tessera_thirdparty_port}",
+        hostPort      = "${local.tessera_thirdparty_port}"
         containerPort = "${local.tessera_thirdparty_port}"
       },
     ]
 
     mountPoints = [
       {
-        sourceVolume = "${local.shared_volume_name}"
+        sourceVolume  = "${local.shared_volume_name}"
         containerPath = "${local.shared_volume_container_path}"
       },
     ]
@@ -258,9 +259,9 @@ SCRIPT
     ]
 
     healthCheck = {
-      interval = 30
-      retries = 10
-      timeout = 60
+      interval    = 30
+      retries     = 10
+      timeout     = 60
       startPeriod = 300
 
       command = [

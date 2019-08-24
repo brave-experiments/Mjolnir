@@ -51,11 +51,11 @@ data "aws_iam_policy_document" "ecs_task" {
     sid = "AllowECS"
 
     actions = [
-      "ecs:DescribeTasks"
+      "ecs:DescribeTasks",
     ]
 
     resources = [
-      "*"
+      "*",
     ]
   }
 }
@@ -81,4 +81,3 @@ resource "aws_iam_role_policy_attachment" "ecs_task_cloudwatch" {
   role       = "${aws_iam_role.ecs_task.id}"
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
-

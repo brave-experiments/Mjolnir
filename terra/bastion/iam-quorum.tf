@@ -1,4 +1,3 @@
-
 resource "aws_iam_role" "bastion" {
   name = "${local.default_bastion_resource_name}"
   path = "/"
@@ -69,7 +68,7 @@ data "aws_iam_policy_document" "bastion" {
     resources = [
       "*",
     ]
-  }  
+  }
 }
 
 resource "aws_iam_instance_profile" "bastion" {

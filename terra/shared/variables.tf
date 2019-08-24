@@ -13,19 +13,18 @@ variable "number_of_nodes" {
 
 variable "asg_instance_type" {
   description = "ASG instance type for EC2 based quorum"
-  default = "t2.xlarge"
+  default     = "t2.xlarge"
 }
 
 variable "ecs_mode" {
   description = "ECS engine mode: EC2 or FARGATE"
-  default = "FARGATE"
+  default     = "FARGATE"
 }
 
 variable "ecs_network_mode" {
   description = "ECS network node: awsvpc or bridge"
-  default = "awsvpc"
+  default     = "awsvpc"
 }
-
 
 variable "bastion_public_subnet_id" {
   description = "Public Subnet for Bastion node"
@@ -42,7 +41,7 @@ variable "is_igw_subnets" {
 
 variable "client_name" {
   description = "Etherum client name"
-  default = "quorum"
+  default     = "quorum"
 }
 
 variable "quorum_docker_image" {
@@ -115,19 +114,29 @@ variable "access_ec2_nodes_cidr_blocks" {
   default     = []
 }
 
-variable "vpc_id" {
-}
+variable "vpc_id" {}
+
 //TODO: extend descriptions
 # Variables definition
 
-variable "vpc_azs" { type = "list" }
-variable vpc_private_subnets { type = "list" }
-variable vpc_public_subnets { type = "list" }
+variable "vpc_azs" {
+  type = "list"
+}
+
+variable vpc_private_subnets {
+  type = "list"
+}
+
+variable vpc_public_subnets {
+  type = "list"
+}
 
 variable vpc_cidr {}
+
 #variable vpc_region {}
 variable vpc_enable_nat_gateway {}
+
 variable vpc_enable_vpn_gateway {}
+
 //variable bucket {}
 variable profile {}
-

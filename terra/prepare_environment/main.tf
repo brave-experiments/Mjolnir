@@ -32,7 +32,8 @@ resource "aws_s3_bucket" "terraform_remote_state" {
 
 resource "aws_s3_bucket_policy" "terraform_remote_state" {
   bucket = "${aws_s3_bucket.terraform_remote_state.id}"
-  policy =<<EOF
+
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Id": "RequireEncryption",
