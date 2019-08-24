@@ -19,7 +19,7 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   version = "~> 1.60"
 
-  name = "${var.environment_name}"
+  name = "${var.network_name}"
   cidr = "${var.vpc_cidr}"
 
   azs             = "${var.vpc_azs}"
@@ -31,6 +31,6 @@ module "vpc" {
 
   tags = {
     Terraform = "true"
-    Environment = "${var.environment_name}"
+    Environment = "${var.network_name}"
   }
 }

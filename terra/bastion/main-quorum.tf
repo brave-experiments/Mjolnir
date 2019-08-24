@@ -66,12 +66,12 @@ resource "aws_instance" "bastion" {
   instance_type = "t2.large"
 
   vpc_security_group_ids = [
-    "${aws_security_group.quorum.id}",
+     "${aws_security_group.quorum.id}",
     "${aws_security_group.bastion-ssh.id}",
     "${aws_security_group.bastion-ethstats.id}",
   ]
 
-  subnet_id = "${var.bastion_public_subnet_id}"
+  subnet_id = "${module.vpc.public_subnets[0]}"
   associate_public_ip_address = "true"
   key_name = "${aws_key_pair.ssh.key_name}"
   iam_instance_profile = "${aws_iam_instance_profile.bastion.name}"
@@ -136,8 +136,8 @@ do
   HOST_IP=$(echo $task_metadata | jq -r '.tasks[0] | .containers[] | select(.name == "${local.quorum_run_container_name}") | .networkInterfaces[] | .privateIpv4Address')
   if [ "${var.ecs_mode}" == "EC2" ]
   then
-    CONTAINER_INSTANCE_ARN=$(aws ecs describe-tasks --tasks $t --cluster quorum-network-sidechain-sandbox | jq -r '.tasks[] | .containerInstanceArn')
-    EC2_INSTANCE_ID=$(aws ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster quorum-network-sidechain-sandbox |jq -r '.containerInstances[] | .ec2InstanceId')
+    CONTAINER_INSTANCE_ARN=$(aws ecs describe-tasks --tasks $t --cluster ${local.ecs_cluster_name} | jq -r '.tasks[] | .containerInstanceArn')
+    EC2_INSTANCE_ID=$(aws ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster ${local.ecs_cluster_name} |jq -r '.containerInstances[] | .ec2InstanceId')
     HOST_IP=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID | jq -r '.Reservations[0] | .Instances[] | .PublicIpAddress')
   fi
   group=$(echo $task_metadata | jq -r '.tasks[0] | .group')
