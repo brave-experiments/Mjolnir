@@ -7,21 +7,42 @@ import (
 
 var (
 	DefaultRecipes = map[string]CombinedRecipe{
-		"bastion": {
+		"quorum": {
 			FilePaths: []string{
-				"terra/bastion/main.tf",
+				"terra/networking/main.tf",
+				"terra/bastion/iam-quorum.tf",
+				"terra/bastion/main-quorum.tf",
+				"terra/bastion/sq-quorum.tf",
+				"terra/quorum/asg.tf",
+				"terra/quorum/container_definition_bootstrap.tf",
+				"terra/quorum/container_definitions.tf",
+				"terra/quorum/container_definitions_constellation.tf",
+				"terra/quorum/container_definitions_quorum.tf",
+				"terra/quorum/container_definitions_tessera.tf",
+				"terra/quorum/ecs.tf",
+				"terra/quorum/iam.tf",
+				"terra/quorum/logging.tf",
+				"terra/quorum/main.tf",
+				"terra/quorum/outputs.tf",
+				"terra/quorum/security_groups.tf",
+				"terra/shared/terraform.tfvars",
+				"terra/shared/variables.tf",
+				"terra/shared/terraform.auto.tfvars",
+				"terra/shared/terraform.auto.backend_config",
 			},
 		},
-		"state-init": {
+		"prepare-environment": {
 			FilePaths: []string{
-				"terra/state_init/variables.tf",
-				"terra/state_init/outputs.tf",
-				"terra/state_init/main.tf",
+				"terra/prepare_environment/variables.tf",
+				"terra/prepare_environment/outputs.tf",
+				"terra/prepare_environment/main.tf",
 			},
 			File: File{
 				Variables: map[string]interface{}{
 					"network_name": "sidechain-sandbox",
+					"client_name":	"quorum",
 					"region":       "us-east-2",
+					"profile":		"default",
 				},
 			},
 		},
