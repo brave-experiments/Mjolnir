@@ -16,10 +16,10 @@ data "aws_security_group" "default" {
 }
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "~> 1.60"
 
-  name = "${var.environment_name}"
+  name = "${var.network_name}"
   cidr = "${var.vpc_cidr}"
 
   azs             = "${var.vpc_azs}"
@@ -30,7 +30,7 @@ module "vpc" {
   enable_vpn_gateway = "${var.vpc_enable_vpn_gateway}"
 
   tags = {
-    Terraform = "true"
-    Environment = "${var.environment_name}"
+    Terraform   = "true"
+    Environment = "${var.network_name}"
   }
 }

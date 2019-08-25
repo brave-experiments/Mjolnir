@@ -1,7 +1,7 @@
 locals {
   default_bastion_resource_name = "${format("quorum-bastion-%s", var.network_name)}"
-  ethstats_docker_image = "puppeth/ethstats:latest"
-  ethstats_port = 3000
+  ethstats_docker_image         = "puppeth/ethstats:latest"
+  ethstats_port                 = 3000
 }
 
 data "aws_ami" "this" {
@@ -44,25 +44,26 @@ resource "random_id" "ethstat_secret" {
 
 resource "tls_private_key" "ssh" {
   algorithm = "RSA"
-  rsa_bits = "2048"
+  rsa_bits  = "2048"
 }
 
 resource "aws_key_pair" "ssh" {
   public_key = "${tls_private_key.ssh.public_key_openssh}"
-  key_name = "${local.default_bastion_resource_name}"
+  key_name   = "${local.default_bastion_resource_name}"
 }
 
 resource "local_file" "private_key" {
   filename = "${path.module}/quorum-${var.network_name}.pem"
-  content = "${tls_private_key.ssh.private_key_pem}"
+  content  = "${tls_private_key.ssh.private_key_pem}"
+
   provisioner "local-exec" {
     on_failure = "continue"
-    command = "chmod 600 ${self.filename}"
+    command    = "chmod 600 ${self.filename}"
   }
 }
 
 resource "aws_instance" "bastion" {
-  ami = "${data.aws_ami.this.id}"
+  ami           = "${data.aws_ami.this.id}"
   instance_type = "t2.large"
 
   vpc_security_group_ids = [
@@ -71,10 +72,10 @@ resource "aws_instance" "bastion" {
     "${aws_security_group.bastion-ethstats.id}",
   ]
 
-  subnet_id = "${var.bastion_public_subnet_id}"
+  subnet_id                   = "${module.vpc.public_subnets[0]}"
   associate_public_ip_address = "true"
-  key_name = "${aws_key_pair.ssh.key_name}"
-  iam_instance_profile = "${aws_iam_instance_profile.bastion.name}"
+  key_name                    = "${aws_key_pair.ssh.key_name}"
+  iam_instance_profile        = "${aws_iam_instance_profile.bastion.name}"
 
   user_data = <<EOF
 #!/bin/bash
@@ -136,8 +137,8 @@ do
   HOST_IP=$(echo $task_metadata | jq -r '.tasks[0] | .containers[] | select(.name == "${local.quorum_run_container_name}") | .networkInterfaces[] | .privateIpv4Address')
   if [ "${var.ecs_mode}" == "EC2" ]
   then
-    CONTAINER_INSTANCE_ARN=$(aws ecs describe-tasks --tasks $t --cluster quorum-network-sidechain-sandbox | jq -r '.tasks[] | .containerInstanceArn')
-    EC2_INSTANCE_ID=$(aws ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster quorum-network-sidechain-sandbox |jq -r '.containerInstances[] | .ec2InstanceId')
+    CONTAINER_INSTANCE_ARN=$(aws ecs describe-tasks --tasks $t --cluster ${local.ecs_cluster_name} | jq -r '.tasks[] | .containerInstanceArn')
+    EC2_INSTANCE_ID=$(aws ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster ${local.ecs_cluster_name} |jq -r '.containerInstances[] | .ec2InstanceId')
     HOST_IP=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID | jq -r '.Reservations[0] | .Instances[] | .PublicIpAddress')
   fi
   group=$(echo $task_metadata | jq -r '.tasks[0] | .group')
@@ -178,19 +179,19 @@ EOF
 
 resource "null_resource" "bastion_remote_exec" {
   triggers {
-    bastion = "${aws_instance.bastion.public_dns}"
+    bastion             = "${aws_instance.bastion.public_dns}"
     ecs_task_definition = "${aws_ecs_task_definition.quorum.revision}"
-    script = "${md5(local_file.bootstrap.content)}"
+    script              = "${md5(local_file.bootstrap.content)}"
   }
 
   provisioner "remote-exec" {
     script = "${local_file.bootstrap.filename}"
 
     connection {
-      host = "${aws_instance.bastion.public_ip}"
-      user = "ec2-user"
+      host        = "${aws_instance.bastion.public_ip}"
+      user        = "ec2-user"
       private_key = "${tls_private_key.ssh.private_key_pem}"
-      timeout = "10m"
+      timeout     = "10m"
     }
   }
 }
