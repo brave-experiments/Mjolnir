@@ -20,3 +20,6 @@ Releases will lay on certain locked branches, it will occur here after we will b
 - All commands/scripts that are run from host to set up environment are run via `bin/run`
 
 This logic should be sustained to clearify where code should be executed
+
+### IDE Goland
+To forward go dependencies from container to your host write `go mod vendor` within container
