@@ -1,9 +1,9 @@
 package terra
 
 import (
-	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
+	"github.com/terraform-providers/terraform-provider-local/local"
 	"github.com/terraform-providers/terraform-provider-random/random"
 )
 
@@ -20,13 +20,7 @@ func RandomProvider(key string) (returnKey string, provider terraform.ResourcePr
 }
 
 func LocalProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
-	return key, &schema.Provider{
-		Schema: map[string]*schema.Schema{},
-		ResourcesMap: map[string]*schema.Resource{
-			"local_file": resourceLocalFile(),
-		},
-		DataSourcesMap: map[string]*schema.Resource{
-			"local_file": dataSourceLocalFile(),
-		},
-	}
+	provider = local.Provider()
+
+	return key, provider
 }
