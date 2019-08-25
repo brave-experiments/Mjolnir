@@ -18,3 +18,4 @@ temp.tf
 !terra/shared/terraform.auto.tfvars
 **/terraform.auto.backend_config
 !terra/shared/terraform.auto.backend_config
+vendor
