@@ -3,6 +3,7 @@ package terra
 import (
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
+	"os"
 )
 
 const (
@@ -53,14 +54,17 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 		return err
 	}
 
-	err = client.WriteStateToFile()
+	// Cover this feature beneath the feature flag
+	if "true" == os.Getenv("CLI_FEATURE_TERRASTATE") {
+		err = client.WriteStateToFile()
 
-	if nil != err {
-		return err
+		if nil != err {
+			return err
+		}
+
+		// Synchronize state from platform and state object
+		err = client.state.ReadFile()
 	}
-
-	// Synchronize state from platform and state object
-	err = client.state.ReadFile()
 
 	return err
 }

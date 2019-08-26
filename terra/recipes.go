@@ -12,7 +12,7 @@ var (
 				"terra/networking/main.tf",
 				"terra/bastion/iam-quorum.tf",
 				"terra/bastion/main-quorum.tf",
-				"terra/bastion/sq-quorum.tf",
+				"terra/bastion/sg-quorum.tf",
 				"terra/quorum/asg.tf",
 				"terra/quorum/container_definition_bootstrap.tf",
 				"terra/quorum/container_definitions.tf",
@@ -31,9 +31,9 @@ var (
 			File: File{
 				Variables: map[string]interface{}{
 					"network_name": "sidechain-sandbox",
-					"client_name":	"quorum",
+					"client_name":  "quorum",
 					"region":       "us-east-2",
-					"profile":		"default",
+					"profile":      "default",
 				},
 			},
 		},
