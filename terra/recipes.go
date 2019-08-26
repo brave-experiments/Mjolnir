@@ -27,15 +27,6 @@ var (
 				"terra/quorum/security_groups.tf",
 				"terra/shared/terraform.tfvars",
 				"terra/shared/variables.tf",
-				"terra/shared/terraform.auto.tfvars",
-				"terra/shared/terraform.auto.backend_config",
-			},
-		},
-		"prepare-environment": {
-			FilePaths: []string{
-				"terra/prepare_environment/variables.tf",
-				"terra/prepare_environment/outputs.tf",
-				"terra/prepare_environment/main.tf",
 			},
 			File: File{
 				Variables: map[string]interface{}{
