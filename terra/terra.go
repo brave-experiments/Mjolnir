@@ -1,6 +1,7 @@
 package terra
 
 import (
+	"github.com/hashicorp/terraform/config/module"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
 	"os"
@@ -8,11 +9,17 @@ import (
 
 const (
 	CombinedRecipeDefaultFileName = "temp.tf"
+	FetchedModulesDIR             = "./terra/modules"
+)
+
+var (
+	FetchedModules = FetchedModulesDIR
 )
 
 type Client struct {
 	platform *terranova.Platform
 	state    *StateFile
+	storage  *module.Storage
 }
 
 func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
@@ -83,6 +90,8 @@ func (client *Client) PreparePlatform(file File) (err error) {
 	}
 
 	client.platform.Code = file.Body
+
+	err = client.DefaultModules(FetchedModules)
 
 	return err
 }
