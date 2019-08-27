@@ -11,11 +11,9 @@ temp.tf
 **/symlink_*
 **/variables.tf
 !terra/shared/variables.tf
+!terra/networking/vpc/variables.tf
 !terra/prepare_environment/variables.tf
 **/terraform.tfvars
 !terra/shared/terraform.tfvars
-**/terraform.auto.tfvars
-!terra/shared/terraform.auto.tfvars
-**/terraform.auto.backend_config
-!terra/shared/terraform.auto.backend_config
 vendor
+src

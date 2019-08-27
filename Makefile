@@ -6,6 +6,9 @@ depends:
 test: clean
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
 
+test-silent: clean-build
+	go test -cover -covermode=count -coverprofile=coverage.out ./... > dist/${CLI_VERSION}/unit.log
+
 clean-build: clean
 	rm -rf dist
 	mkdir -p dist/${CLI_VERSION}/alpine
