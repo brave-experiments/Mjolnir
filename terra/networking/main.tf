@@ -27,4 +27,5 @@ module "vpc" {
     Terraform   = "true"
     Environment = "${var.network_name}"
   }
+  secondary_cidr_blocks = ""
 }

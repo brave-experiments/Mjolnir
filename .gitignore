@@ -16,3 +16,4 @@ temp.tf
 **/terraform.tfvars
 !terra/shared/terraform.tfvars
 vendor
+src
