@@ -35,7 +35,7 @@ access_ec2_nodes_cidr_blocks = [
   "0.0.0.0/0",
 ]
 
-number_of_nodes = 3
+number_of_nodes = 0 
 
 # EC2 based quorum
 ecs_mode = "EC2"   # EC2, FARGATE 
