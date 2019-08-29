@@ -1,0 +1,4 @@
+version: 0.1
+resourceType: variables
+variables:
+  simpleKey: variable
