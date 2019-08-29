@@ -8,6 +8,25 @@ import (
 	"testing"
 )
 
+func TestAllDefaultRecipes(t *testing.T) {
+	currentDir, err := os.Getwd()
+	assert.Nil(t, err)
+	err = os.Chdir("../")
+	assert.Nil(t, err)
+
+	for key, recipe := range DefaultRecipes {
+		err = recipe.ParseBody()
+		assert.Nil(t, err)
+
+		if nil != err {
+			t.Errorf("%s recipe is invalid: %s", key, err.Error())
+		}
+	}
+
+	err = os.Chdir(currentDir)
+	assert.Nil(t, err)
+}
+
 func TestRecipes_CreateWithDefaults(t *testing.T) {
 	recipes := Recipes{}
 	recipes.CreateWithDefaults()
