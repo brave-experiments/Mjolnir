@@ -72,7 +72,7 @@ resource "aws_instance" "bastion" {
     "${aws_security_group.bastion-ethstats.id}",
   ]
 
-  subnet_id                   = "${module.vpc.public_subnets[0]}"
+  subnet_id                   = "${var.public_subnets[0]}"
   associate_public_ip_address = "true"
   key_name                    = "${aws_key_pair.ssh.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.bastion.name}"
