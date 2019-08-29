@@ -42,7 +42,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 
     if len(args) < expectedMinimumArguments {
         fmt.Printf(
-            "Not enough arguments, expected more than %v \n write `apply --help` for more info",
+            "Not enough arguments, expected more than %v \n write `apply --help` for more info\n",
             expectedMinimumArguments,
         )
 
@@ -95,8 +95,8 @@ func (applyCmd ApplyCmd) Help() (helpMessage string) {
         }
     }
 
-    helpMessage = helpMessage + "\n \t" + "Filepath must be valid yaml file with variables, like:" + "\n"
-    helpMessage = helpMessage + "\n \t" + terra.SchemaV1 + "\n"
+    helpMessage = helpMessage + "\n" + "Filepath must be valid yaml file with variables, like:" + "\n"
+    helpMessage = helpMessage + "\n" + terra.SchemaV1 + "\n"
 
     return helpMessage
 }
