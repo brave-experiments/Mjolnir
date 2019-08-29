@@ -25,7 +25,6 @@ var (
 				"terra/quorum/main.tf",
 				"terra/quorum/outputs.tf",
 				"terra/quorum/security_groups.tf",
-				"terra/shared/terraform.tfvars",
 				"terra/shared/variables.tf",
 			},
 			File: File{
