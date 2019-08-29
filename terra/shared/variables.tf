@@ -28,25 +28,6 @@ variable "ecs_network_mode" {
   default     = "bridge"
 }
 
-<<<<<<< HEAD
-=======
-variable "bastion_public_subnet_id" {
-  description = "Public Subnet for Bastion node"
-  default = "10.0.0.0/24"
-}
-
-variable "subnet_ids" {
-  type        = "list"
-  description = "List of subnet ids used by ECS to create instances. These subnets must be routable to the internet, via Internet Gateway or NAT instance"
-  default = ["10.0.0.0/24"]
-}
-
-variable "is_igw_subnets" {
-  description = "Indicate that if subnets supplied in subnet_ids are routable to the internet via Internet Gateway"
-  default = false
-}
-
->>>>>>> d7815b7842714054780cba38abbf92f4d1cd6587
 variable "client_name" {
   description = "Etherum client name"
   default     = "quorum"
@@ -115,13 +96,13 @@ variable "quorum_bucket_kms_key_arn" {
 variable "access_bastion_cidr_blocks" {
   type        = "list"
   description = "CIDR blocks that will be added to allow SSH to Bastion Node"
-  default     = []
+  default     = ["0.0.0.0/0"]
 }
 
 variable "access_ec2_nodes_cidr_blocks" {
   type        = "list"
   description = "CIDR blocks that will be added to allow all traffic to cluster EC2 nodes"
-  default     = []
+  default     = ["0.0.0.0/0"]
 }
 
 //variable bucket {}
