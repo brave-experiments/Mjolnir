@@ -1,6 +1,10 @@
 variable "region" {
   description = "Target AWS Region. This must be pre-initialized from `_terraform_init` run"
+<<<<<<< HEAD
+  default = "us-east-1"
+=======
   default = "us-east-2a"
+>>>>>>> d7815b7842714054780cba38abbf92f4d1cd6587
 }
 
 variable "network_name" {
@@ -28,6 +32,8 @@ variable "ecs_network_mode" {
   default     = "bridge"
 }
 
+<<<<<<< HEAD
+=======
 variable "bastion_public_subnet_id" {
   description = "Public Subnet for Bastion node"
   default = "10.0.0.0/24"
@@ -44,6 +50,7 @@ variable "is_igw_subnets" {
   default = false
 }
 
+>>>>>>> d7815b7842714054780cba38abbf92f4d1cd6587
 variable "client_name" {
   description = "Etherum client name"
   default     = "quorum"
@@ -119,42 +126,6 @@ variable "access_ec2_nodes_cidr_blocks" {
   type        = "list"
   description = "CIDR blocks that will be added to allow all traffic to cluster EC2 nodes"
   default     = []
-}
-
-variable "vpc_id" {
-  description = "Id of vpc"
-  default = ""
-}
-
-//TODO: extend descriptions
-# Variables definition
-
-variable "vpc_azs" {
-  type = "list"
-  default = ["us-east-2a", "us-east-2b", "us-east-2c"]
-}
-
-variable vpc_private_subnets {
-  type = "list"
-  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-}
-
-variable vpc_public_subnets {
-  type = "list"
-  default = ["10.0.0.0/24"]
-}
-
-variable vpc_cidr {
-  default = "10.0.0.0/16"
-}
-
-#variable vpc_region {}
-variable vpc_enable_nat_gateway {
-  default = false
-}
-
-variable vpc_enable_vpn_gateway {
-  default = false
 }
 
 //variable bucket {}

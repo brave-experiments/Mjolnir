@@ -10,10 +10,12 @@ var (
 		"quorum": {
 			FilePaths: []string{
 				"terra/networking/main.tf",
+				"terra/networking/variables.tf",
+				"terra/networking/outputs.tf",
 				"terra/bastion/iam-quorum.tf",
 				"terra/bastion/main-quorum.tf",
 				"terra/bastion/sg-quorum.tf",
-				"terra/quorum/asg.tf",
+				//"terra/quorum/asg.tf",
 				"terra/quorum/container_definition_bootstrap.tf",
 				"terra/quorum/container_definitions.tf",
 				"terra/quorum/container_definitions_constellation.tf",

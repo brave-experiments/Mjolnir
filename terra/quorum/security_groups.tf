@@ -1,5 +1,5 @@
 resource "aws_security_group" "quorum" {
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = "${local.vpc_id}"
   name        = "quorum-sg-${var.network_name}"
   description = "Security group used in Quorum network ${var.network_name}"
 

@@ -1,15 +1,15 @@
 # Variables list
 
-vpc_azs                           = ["us-east-2a", "us-east-2b", "us-east-2c"]
-vpc_private_subnets               = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-vpc_public_subnets                = ["10.0.0.0/24"]
+azs                           = ["us-east-2a", "us-east-2b", "us-east-2c"]
+private_subnets               = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+public_subnets                = ["10.0.0.0/24"]
 
-vpc_cidr                          = "10.0.0.0/16"
-vpc_enable_nat_gateway            = false
-vpc_enable_vpn_gateway            = false
+cidr                          = "10.0.0.0/16"
+enable_nat_gateway            = false
+enable_vpn_gateway            = false
 
 #TODO pass it from CLI
-profile                           = "binarapps-brave-sidechain-sandbox"
+#profile                           = "binarapps-brave-sidechain-sandbox"
 
 is_igw_subnets = "false"
 

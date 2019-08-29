@@ -1,5 +1,5 @@
 resource "aws_security_group" "bastion-ssh" {
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = "${local.vpc_id}"
   name        = "quorum-bastion-ssh-${var.network_name}"
   description = "Security group used by Bastion node to access Quorum network ${var.network_name}"
 
@@ -31,7 +31,7 @@ resource "aws_security_group" "bastion-ssh" {
 }
 
 resource "aws_security_group" "bastion-ethstats" {
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = "${local.vpc_id}"
   name        = "quorum-bastion-ethstats-${var.network_name}"
   description = "Security group used by external to access ethstats for Quorum network ${var.network_name}"
 
