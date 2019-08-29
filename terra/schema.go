@@ -27,10 +27,6 @@ var (
 	SupportedResourceTypes = []string{"variables"}
 )
 
-//func (variablesSchema *VariablesSchema) ReadFile() (err error) {
-//
-//}
-
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
 
