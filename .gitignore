@@ -9,10 +9,6 @@ dist
 temp.tf
 .env.local
 **/symlink_*
-**/variables.tf
-!terra/shared/variables.tf
-!terra/networking/vpc/variables.tf
-!terra/prepare_environment/variables.tf
 **/terraform.tfvars
 !terra/shared/terraform.tfvars
 vendor
