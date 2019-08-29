@@ -77,6 +77,30 @@ resource "aws_instance" "bastion" {
   key_name                    = "${aws_key_pair.ssh.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.bastion.name}"
 
+  # Copies the prometheus config file
+  provisioner "file" {
+    source      = "prometheus.yml"
+    destination = "/qdata"
+    connection {
+      host        = "${aws_instance.bastion.public_ip}"
+      user        = "ec2-user"
+      private_key = "${tls_private_key.ssh.private_key_pem}"
+      timeout     = "10m"
+    }
+  }
+
+  # Copies the docker-compose yml
+  provisioner "file" {
+    source      = "prometheus-docker-compose.yml"
+    destination = "/qdata/prometheus-docker-compose.yml"
+    connection {
+      host        = "${aws_instance.bastion.public_ip}"
+      user        = "ec2-user"
+      private_key = "${tls_private_key.ssh.private_key_pem}"
+      timeout     = "10m"
+    }
+  }
+
   user_data = <<EOF
 #!/bin/bash
 
@@ -93,9 +117,11 @@ yum -y install jq
 amazon-linux-extras install docker -y
 systemctl enable docker
 systemctl start docker
+curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 docker pull ${local.quorum_docker_image}
 docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
-
+/usr/local/bin/docker-compose -f /qdata/prometheus-docker-compose.yml up -d
 EOF
 
   tags = "${merge(local.common_tags, map("Name", local.default_bastion_resource_name))}"

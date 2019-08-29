@@ -6,6 +6,7 @@ import (
 	"github.com/terraform-providers/terraform-provider-local/local"
 	"github.com/terraform-providers/terraform-provider-null/null"
 	"github.com/terraform-providers/terraform-provider-random/random"
+	"github.com/terraform-providers/terraform-provider-template/template"
 	"github.com/terraform-providers/terraform-provider-tls/tls"
 )
 
@@ -35,6 +36,12 @@ func NullProvider(key string) (returnKey string, provider terraform.ResourceProv
 
 func TlsProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
 	provider = tls.Provider()
+
+	return key, provider
+}
+
+func TemplateProvider(key string) (returnKey string, provider terraform.ResourceProvider) {
+	provider = template.Provider()
 
 	return key, provider
 }
