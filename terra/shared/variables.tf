@@ -1,10 +1,6 @@
 variable "region" {
   description = "Target AWS Region. This must be pre-initialized from `_terraform_init` run"
-<<<<<<< HEAD
   default = "us-east-1"
-=======
-  default = "us-east-2a"
->>>>>>> d7815b7842714054780cba38abbf92f4d1cd6587
 }
 
 variable "network_name" {
