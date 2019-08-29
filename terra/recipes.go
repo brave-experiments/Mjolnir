@@ -11,7 +11,7 @@ var (
 			FilePaths: []string{
 				"terra/networking/main.tf",
 				"terra/networking/variables.tf",
-				"terra/networking/outputs.tf",
+				//"terra/networking/outputs.tf",
 				"terra/bastion/iam-quorum.tf",
 				"terra/bastion/main-quorum.tf",
 				"terra/bastion/sg-quorum.tf",
