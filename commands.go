@@ -42,7 +42,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 
     if len(args) < expectedMinimumArguments {
         fmt.Printf(
-            "Not enough arguments, expected more than %v \n",
+            "Not enough arguments, expected more than %v \n write `apply --help` for more info",
             expectedMinimumArguments,
         )
 

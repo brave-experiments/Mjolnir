@@ -41,3 +41,10 @@ func TestTlsProvider(t *testing.T) {
 	assert.Equal(t, keyToTest, key)
 	assert.IsType(t, aws.Provider(), provider)
 }
+
+func TestTemplateProvider(t *testing.T) {
+	keyToTest := "dummy"
+	key, provider := TemplateProvider(keyToTest)
+	assert.Equal(t, keyToTest, key)
+	assert.IsType(t, aws.Provider(), provider)
+}

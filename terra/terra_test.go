@@ -306,6 +306,10 @@ func TestClient_DefaultClient(t *testing.T) {
 	provider, ok = providers["tls"]
 	assert.True(t, ok)
 	assert.IsType(t, aws.Provider(), provider)
+
+	provider, ok = providers["template"]
+	assert.True(t, ok)
+	assert.IsType(t, aws.Provider(), provider)
 }
 
 func createTestedDefaultClient(t *testing.T) Client {
