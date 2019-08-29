@@ -1,5 +1,6 @@
 variable "region" {
   description = "Target AWS Region. This must be pre-initialized from `_terraform_init` run"
+  default = "us-east-1"
 }
 
 variable "network_name" {
@@ -24,19 +25,6 @@ variable "ecs_mode" {
 variable "ecs_network_mode" {
   description = "ECS network node: awsvpc or bridge"
   default     = "awsvpc"
-}
-
-variable "bastion_public_subnet_id" {
-  description = "Public Subnet for Bastion node"
-}
-
-variable "subnet_ids" {
-  type        = "list"
-  description = "List of subnet ids used by ECS to create instances. These subnets must be routable to the internet, via Internet Gateway or NAT instance"
-}
-
-variable "is_igw_subnets" {
-  description = "Indicate that if subnets supplied in subnet_ids are routable to the internet via Internet Gateway"
 }
 
 variable "client_name" {
@@ -116,29 +104,8 @@ variable "access_ec2_nodes_cidr_blocks" {
   default     = []
 }
 
-variable "vpc_id" {}
-
 //TODO: extend descriptions
 # Variables definition
-
-variable "vpc_azs" {
-  type = "list"
-}
-
-variable vpc_private_subnets {
-  type = "list"
-}
-
-variable vpc_public_subnets {
-  type = "list"
-}
-
-variable vpc_cidr {}
-
-#variable vpc_region {}
-variable vpc_enable_nat_gateway {}
-
-variable vpc_enable_vpn_gateway {}
 
 //variable bucket {}
 variable profile {}
