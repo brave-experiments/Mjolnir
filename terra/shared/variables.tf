@@ -1,10 +1,15 @@
 variable "region" {
   description = "Target AWS Region. This must be pre-initialized from `_terraform_init` run"
+<<<<<<< HEAD
   default = "us-east-1"
+=======
+  default = "us-east-2a"
+>>>>>>> d7815b7842714054780cba38abbf92f4d1cd6587
 }
 
 variable "network_name" {
   description = "Identify the Quorum network from multiple deployments. This must be pre-initialized from `_terraform_init` run"
+  default = "apollo"
 }
 
 variable "number_of_nodes" {
@@ -19,14 +24,33 @@ variable "asg_instance_type" {
 
 variable "ecs_mode" {
   description = "ECS engine mode: EC2 or FARGATE"
-  default     = "FARGATE"
+  default     = "EC2"
 }
 
 variable "ecs_network_mode" {
   description = "ECS network node: awsvpc or bridge"
-  default     = "awsvpc"
+  default     = "bridge"
 }
 
+<<<<<<< HEAD
+=======
+variable "bastion_public_subnet_id" {
+  description = "Public Subnet for Bastion node"
+  default = "10.0.0.0/24"
+}
+
+variable "subnet_ids" {
+  type        = "list"
+  description = "List of subnet ids used by ECS to create instances. These subnets must be routable to the internet, via Internet Gateway or NAT instance"
+  default = ["10.0.0.0/24"]
+}
+
+variable "is_igw_subnets" {
+  description = "Indicate that if subnets supplied in subnet_ids are routable to the internet via Internet Gateway"
+  default = false
+}
+
+>>>>>>> d7815b7842714054780cba38abbf92f4d1cd6587
 variable "client_name" {
   description = "Etherum client name"
   default     = "quorum"
@@ -104,8 +128,7 @@ variable "access_ec2_nodes_cidr_blocks" {
   default     = []
 }
 
-//TODO: extend descriptions
-# Variables definition
-
 //variable bucket {}
-variable profile {}
+variable profile {
+  default = "default"
+}
