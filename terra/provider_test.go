@@ -27,3 +27,17 @@ func TestLocalProvider(t *testing.T) {
 	assert.Equal(t, keyToTest, key)
 	assert.IsType(t, aws.Provider(), provider)
 }
+
+func TestNullProvider(t *testing.T) {
+	keyToTest := "dummy"
+	key, provider := NullProvider(keyToTest)
+	assert.Equal(t, keyToTest, key)
+	assert.IsType(t, aws.Provider(), provider)
+}
+
+func TestTlsProvider(t *testing.T) {
+	keyToTest := "dummy"
+	key, provider := TlsProvider(keyToTest)
+	assert.Equal(t, keyToTest, key)
+	assert.IsType(t, aws.Provider(), provider)
+}
