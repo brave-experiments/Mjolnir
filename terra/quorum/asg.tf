@@ -19,5 +19,7 @@ module "ecs-asg" {
   root_volume_size      = "16"
   ssh_key_name          = "${aws_key_pair.ssh.key_name}"
 
+  user_data       = "${file("${path.module}/files/node_exporter_install")}"
+
   //tags = ["${local.common_tags}"]
 }
