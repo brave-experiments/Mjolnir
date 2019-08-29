@@ -159,5 +159,5 @@ variable vpc_enable_vpn_gateway {
 
 //variable bucket {}
 variable profile {
-  default = "binarapps-brave-sidechain-sandbox"
+  default = "default"
 }
