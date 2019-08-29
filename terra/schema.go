@@ -20,6 +20,11 @@ type variablesModel struct {
 
 const (
 	CurrentVersion = float64(0.1)
+	SchemaV1       = `version: 0.1
+resourceType: variables
+variables: 
+  simpleKey: dummyValue
+`
 )
 
 var (

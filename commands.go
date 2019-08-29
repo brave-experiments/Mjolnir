@@ -37,7 +37,7 @@ func ApplyCmdFactory() (command cli.Command, err error) {
 }
 
 func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
-    expectedMinimumArguments := 1
+    expectedMinimumArguments := 2
 
     if len(args) < expectedMinimumArguments {
         fmt.Printf(
@@ -84,7 +84,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 }
 
 func (applyCmd ApplyCmd) Help() (helpMessage string) {
-    helpMessage = "\nThis is apply command. Usage: apollo apply [recipe]\n"
+    helpMessage = "\nThis is apply command. Usage: apollo apply [recipe] [yamlFilePath]\n"
 
     if nil != &applyCmd.Recipes {
         helpMessage = helpMessage + "\nAvailable Recipes: \n"
@@ -94,11 +94,14 @@ func (applyCmd ApplyCmd) Help() (helpMessage string) {
         }
     }
 
+    helpMessage = helpMessage + "\n \t" + "Filepath must be valid yaml file with variables, like:" + "\n"
+    helpMessage = helpMessage + "\n \t" + terra.SchemaV1 + "\n"
+
     return helpMessage
 }
 
 func (applyCmd ApplyCmd) Synopsis() (synopsis string) {
-    synopsis = "apply [recipe]"
+    synopsis = "apply [recipe] [yamlSchemaPath]"
     return synopsis
 }
 

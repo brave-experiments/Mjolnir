@@ -116,6 +116,28 @@ func (combinedRecipe *CombinedRecipe) ParseBody() (err error) {
 	return nil
 }
 
+func (combinedRecipe *CombinedRecipe) BindYamlWithVars(yamlFilePath string) (err error) {
+	schema := VariablesSchema{
+		File: File{Location: yamlFilePath},
+	}
+
+	err = schema.Read()
+
+	if nil != err {
+		return err
+	}
+
+	if nil == combinedRecipe.Variables {
+		combinedRecipe.Variables = make(map[string]interface{}, 0)
+	}
+
+	for schemaKey, value := range schema.Variables {
+		combinedRecipe.Variables[schemaKey] = value
+	}
+
+	return
+}
+
 func (file *File) ReadFile() (err error) {
 	fileBodyBytes, err := ioutil.ReadFile(file.Location)
 
