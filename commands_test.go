@@ -22,6 +22,11 @@ const (
     count         = "${var.count}"
     key_name      = "${var.key_name}"
   }`
+	YamlV1Fixture = `version: 0.1
+resourceType: variables
+variables: 
+  simpleKey: variable
+`
 )
 
 func TestApplyCmdFactory(t *testing.T) {
@@ -42,7 +47,8 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 
 	// ApplyCmd has no Recipes
 	invalidCmd := ApplyCmd{}
-	exitCode = invalidCmd.Run([]string{"dummy"})
+	dummyArgs := []string{"dummy", "dummy.yml"}
+	exitCode = invalidCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeInvalidSetup, exitCode)
 
 	// ApplyCmd has no Elements in Recipes
@@ -50,39 +56,53 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 	invalidCmd = ApplyCmd{
 		Recipes: recipes,
 	}
-	exitCode = invalidCmd.Run([]string{"dummy"})
+	exitCode = invalidCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeInvalidSetup, exitCode)
 
 	// ApplyCmd has no matching key
-	exitCode = command.Run([]string{"dummy"})
+	exitCode = command.Run(dummyArgs)
 	assert.Equal(t, ExitCodeInvalidArgument, exitCode)
 
+	// Should return error because there is no .yml variable file
 	keyName := "dummy"
 	filePath := "dummy.tf"
 	recipes = GetMockedRecipes(t, keyName, filePath, DummyFileTfBody)
+	invalidCmd = ApplyCmd{
+		Recipes: recipes,
+	}
+	assert.IsType(t, ApplyCmd{}, invalidCmd)
+	terra.DefaultRecipes = recipes.Elements
+	exitCode = invalidCmd.Run(dummyArgs)
+	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+
+	// Since it is not mocked we want to end our testing process here
+	yamlFileName := dummyArgs[1]
+	PrepareDummyFile(t, yamlFileName, YamlV1Fixture)
 	command = ApplyCmd{
 		Recipes: recipes,
 	}
-	assert.IsType(t, ApplyCmd{}, command)
-	terra.DefaultRecipes = recipes.Elements
-	exitCode = command.Run([]string{"dummy"})
-	// Since it is not mocked we want to end our testing process here
+	exitCode = command.Run(dummyArgs)
 	assert.Equal(t, ExitCodeTerraformError, exitCode)
 	RemoveDummyFile(t, filePath)
+	RemoveDummyFile(t, yamlFileName)
 }
 
 func TestApplyCmd_Run(t *testing.T) {
 	// If body of file is empty it wont fail with errors
 	keyName := "dummy"
 	filePath := "dummy.tf"
+	schemaFilePath := "dummy.yml"
+	yamlFileSchema := terra.SchemaV1
+	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
 	recipes := GetMockedRecipes(t, keyName, filePath, "")
 	command := ApplyCmd{
 		Recipes: recipes,
 	}
 	assert.IsType(t, ApplyCmd{}, command)
-	exitCode := command.Run([]string{keyName})
+	exitCode := command.Run([]string{keyName, schemaFilePath})
 	assert.Equal(t, ExitCodeSuccess, exitCode)
 	RemoveDummyFile(t, filePath)
+	RemoveDummyFile(t, schemaFilePath)
 }
 
 func TestApplyCmd_Help(t *testing.T) {
