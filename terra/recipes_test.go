@@ -157,11 +157,6 @@ func TestCombinedRecipe_ParseBodyFailure(t *testing.T) {
 	}
 	err = combinedRecipe.ParseBody()
 	assert.IsType(t, &os.PathError{}, err)
-	//assert.Equal(
-	//	t,
-	//	"There are no recipes within this combined recipe",
-	//	err.Error(),
-	//)
 }
 
 func TestCombinedRecipe_ParseBody(t *testing.T) {
@@ -212,6 +207,67 @@ func TestCombinedRecipe_ParseBody(t *testing.T) {
 
 	RemoveDummyFile(t, dummyFile.Location)
 	RemoveDummyFile(t, dummyFile1.Location)
+}
+
+func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
+	dummyYamlFilePath := "dummy.yml"
+	dummyYamlFileBody := YamlV1Fixture
+	expectedVariables := make(map[string]interface{}, 0)
+	expectedStdKey := "simpleKey"
+	expectedStdVar := "variable"
+	expectedVariables[expectedStdKey] = expectedStdVar
+	PrepareDummyFile(t, dummyYamlFilePath, dummyYamlFileBody)
+
+	// Should create new vars
+	combinedRecipe := CombinedRecipe{}
+	err := combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
+	assert.Nil(t, err)
+	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
+
+	// Should override vars
+	combinedRecipe = CombinedRecipe{}
+	combinedRecipe.Variables = map[string]interface{}{
+		"simpleKey": "otherVariable",
+	}
+	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
+	assert.Nil(t, err)
+	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
+
+	// Should override only provided vars
+	expectedKey := "dummy"
+	expectedVal := "dummyValue"
+	expectedVariables[expectedKey] = expectedVal
+
+	combinedRecipe = CombinedRecipe{}
+	combinedRecipe.Variables = map[string]interface{}{
+		expectedKey: expectedVal,
+	}
+	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
+	assert.Nil(t, err)
+	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
+
+	// Should not destroy after second run
+	expectedKey = "dummyKey1"
+	expectedVal = "dummyVal"
+	expectedVariables[expectedKey] = expectedVal
+	combinedRecipe.Variables[expectedKey] = expectedVal
+	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
+	assert.Nil(t, err)
+	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
+
+	RemoveDummyFile(t, dummyYamlFilePath)
+}
+
+func TestCombinedRecipe_BindYamlWithVarsFailure(t *testing.T) {
+	dummyYamlFilePath := "dummy.yml"
+	combinedRecipe := CombinedRecipe{}
+	err := combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		fmt.Sprintf("open %s: no such file or directory", dummyYamlFilePath),
+		err.Error(),
+	)
 }
 
 func PrepareDummyFile(t *testing.T, fileName string, content string) {

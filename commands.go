@@ -12,6 +12,7 @@ const (
     ExitCodeInvalidSetup = 2
     ExitCodeInvalidArgument = 3
     ExitCodeTerraformError = 4
+    ExitCodeYamlBindingError = 5
 )
 
 var (
@@ -37,7 +38,7 @@ func ApplyCmdFactory() (command cli.Command, err error) {
 }
 
 func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
-    expectedMinimumArguments := 1
+    expectedMinimumArguments := 2
 
     if len(args) < expectedMinimumArguments {
         fmt.Printf(
@@ -54,18 +55,18 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
         return ExitCodeInvalidSetup
     }
 
-    recipes := applyCmd.Recipes.Elements
     recipeKey := args[0]
-    recipe, contains := recipes[recipeKey]
+    recipe, exitCode := applyCmd.getRecipe(recipeKey)
 
-    if false == contains {
-        fmt.Printf(
-            "Recipe %s not found within recipes, available are: \n",
-            recipeKey,
-        )
-        applyCmd.printRecipesKeys()
+    if exitCode > ExitCodeSuccess {
+        return exitCode
+    }
 
-        return ExitCodeInvalidArgument
+    yamlFilePath := args[1]
+    err := recipe.BindYamlWithVars(yamlFilePath)
+
+    if nil != err {
+        return ExitCodeYamlBindingError
     }
 
     fmt.Printf(
@@ -73,7 +74,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
         recipeKey,
     )
 
-    err := applyCmd.executeTerra(recipe)
+    err = applyCmd.executeTerra(recipe)
 
     if nil != err {
         fmt.Println(err)
@@ -84,7 +85,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 }
 
 func (applyCmd ApplyCmd) Help() (helpMessage string) {
-    helpMessage = "\nThis is apply command. Usage: apollo apply [recipe]\n"
+    helpMessage = "\nThis is apply command. Usage: apollo apply [recipe] [yamlFilePath]\n"
 
     if nil != &applyCmd.Recipes {
         helpMessage = helpMessage + "\nAvailable Recipes: \n"
@@ -94,11 +95,14 @@ func (applyCmd ApplyCmd) Help() (helpMessage string) {
         }
     }
 
+    helpMessage = helpMessage + "\n \t" + "Filepath must be valid yaml file with variables, like:" + "\n"
+    helpMessage = helpMessage + "\n \t" + terra.SchemaV1 + "\n"
+
     return helpMessage
 }
 
 func (applyCmd ApplyCmd) Synopsis() (synopsis string) {
-    synopsis = "apply [recipe]"
+    synopsis = "apply [recipe] [yamlSchemaPath]"
     return synopsis
 }
 
@@ -123,4 +127,21 @@ func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) 
    err = terraClient.ApplyCombined(recipe, false)
 
    return err
+}
+
+func (applyCmd *ApplyCmd) getRecipe(recipeKey string) (recipe terra.CombinedRecipe, exitCode int) {
+    recipes := applyCmd.Recipes.Elements
+    recipe, contains := recipes[recipeKey]
+
+    if false == contains {
+        fmt.Printf(
+            "Recipe %s not found within recipes, available are: \n",
+            recipeKey,
+        )
+        applyCmd.printRecipesKeys()
+
+        return terra.CombinedRecipe{}, ExitCodeInvalidArgument
+    }
+
+    return recipe, ExitCodeSuccess
 }
