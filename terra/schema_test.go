@@ -2,7 +2,7 @@ package terra
 
 import (
 	"fmt"
-	"github.com/brave-experiments/apollo-devops/src/github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 	"path"
 	"testing"
 )
