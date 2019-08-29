@@ -140,10 +140,11 @@ func (client *Client) addProviders() {
 		Providers: make(map[string]terraform.ResourceProvider),
 	}
 	client.platform.AddProvider(DefaultProvider("aws"))
-	client.platform.AddProvider(RandomProvider("random"))
 	client.platform.AddProvider(LocalProvider("local"))
-	client.platform.AddProvider(TlsProvider("tls"))
 	client.platform.AddProvider(NullProvider("null"))
+	client.platform.AddProvider(RandomProvider("random"))
+	client.platform.AddProvider(TemplateProvider("template"))
+	client.platform.AddProvider(TlsProvider("tls"))
 }
 
 func (client *Client) assignVariables(file File) (err error) {

@@ -71,6 +71,7 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 		Recipes: recipes,
 	}
 	assert.IsType(t, ApplyCmd{}, invalidCmd)
+	oldRecipes := terra.DefaultRecipes
 	terra.DefaultRecipes = recipes.Elements
 	exitCode = invalidCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
@@ -85,6 +86,7 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 	assert.Equal(t, ExitCodeTerraformError, exitCode)
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, yamlFileName)
+	terra.DefaultRecipes = oldRecipes
 }
 
 func TestApplyCmd_Run(t *testing.T) {

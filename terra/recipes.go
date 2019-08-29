@@ -16,7 +16,7 @@ var (
 				"terra/bastion/main-quorum.tf",
 				"terra/bastion/sg-quorum.tf",
 				"terra/quorum/asg.tf",
-				"terta/quorum/asg_ecs.tf",
+				"terra/quorum/asg_ecs.tf",
 				"terra/quorum/container_definition_bootstrap.tf",
 				"terra/quorum/container_definitions.tf",
 				"terra/quorum/container_definitions_constellation.tf",
