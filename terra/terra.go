@@ -119,12 +119,7 @@ func (client *Client) DumpVariables() (vars map[string]interface{}, err error) {
 }
 
 func (client *Client) DefaultClient() (err error) {
-	client.platform = &terranova.Platform{
-		Providers: make(map[string]terraform.ResourceProvider),
-	}
-	client.platform.AddProvider(DefaultProvider("aws"))
-	client.platform.AddProvider(RandomProvider("random"))
-	client.platform.AddProvider(LocalProvider("local"))
+	client.addProviders()
 
 	client.state, err = DefaultStateFile()
 
@@ -147,6 +142,17 @@ func (client *Client) guard() (err error) {
 	}
 
 	return nil
+}
+
+func (client *Client) addProviders() {
+	client.platform = &terranova.Platform{
+		Providers: make(map[string]terraform.ResourceProvider),
+	}
+	client.platform.AddProvider(DefaultProvider("aws"))
+	client.platform.AddProvider(RandomProvider("random"))
+	client.platform.AddProvider(LocalProvider("local"))
+	client.platform.AddProvider(TlsProvider("tls"))
+	client.platform.AddProvider(NullProvider("null"))
 }
 
 func (client *Client) assignVariables(file File) (err error) {
