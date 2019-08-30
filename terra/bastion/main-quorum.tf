@@ -115,7 +115,7 @@ scrape_configs:
     - source_labels: [__meta_ec2_tag_Name,__meta_ec2_tag_tagkey]
       target_label: instance
 EOF
-    destination = "/qdata/prometheus.yml"
+    destination = "/tmp/prometheus.yml"
     connection {
       host        = "${aws_instance.bastion.public_ip}"
       user        = "ec2-user"
@@ -133,7 +133,7 @@ services:
     prometheus:
         image: prom/prometheus:latest
         volumes:
-            - /qdata/prometheus.yml:/etc/prometheus/prometheus.yml
+            - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
         command:
             - '--config.file=/etc/prometheus/prometheus.yml'
         ports:
@@ -151,7 +151,7 @@ services:
         ports:
             - "3001:3000"
 EOF
-    destination = "/qdata/prometheus-docker-compose.yml"
+    destination = "/tmp/prometheus-docker-compose.yml"
     connection {
       host        = "${aws_instance.bastion.public_ip}"
       user        = "ec2-user"
@@ -180,8 +180,23 @@ curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compo
 chmod +x /usr/local/bin/docker-compose
 docker pull ${local.quorum_docker_image}
 docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
-/usr/local/bin/docker-compose -f /qdata/prometheus-docker-compose.yml up -d
+/usr/local/bin/docker-compose -f /opt/prometheus/docker-compose yml up -d
 EOF
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkdir -p /opt/prometheus/",
+      "sudo mv /tmp/prometheus.yml /opt/prometheus/prometheus.yml",
+      "sudo mv /tmp/prometheus-docker-compose.yml /opt/prometheus/docker-compose.yml",
+    ]
+
+    connection {
+      host        = "${aws_instance.bastion.public_ip}"
+      user        = "ec2-user"
+      private_key = "${tls_private_key.ssh.private_key_pem}"
+      timeout     = "10m"
+    }
+  }
 
   tags = "${merge(local.common_tags, map("Name", local.default_bastion_resource_name))}"
 }
