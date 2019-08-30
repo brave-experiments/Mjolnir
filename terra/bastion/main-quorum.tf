@@ -2,6 +2,7 @@ locals {
   default_bastion_resource_name = "${format("quorum-bastion-%s", var.network_name)}"
   ethstats_docker_image         = "puppeth/ethstats:latest"
   ethstats_port                 = 3000
+  bastion_bucket    = "${var.region}-bastion-${lower(var.network_name)}-${random_id.bucket_postfix.hex}"
 }
 
 data "aws_ami" "this" {
@@ -177,12 +178,6 @@ amazon-linux-extras install docker -y
 systemctl enable docker
 systemctl start docker
 
-# Libfaketime
-printf "FROM alpine\nCOPY --from=trajano/alpine-libfaketime  /faketime.so /lib/faketime.so\n" >> Dockerfile.libfaketime
-docker build -f Dockerfile.libfaketime . -t libfaketime:latest
-docker run -v $PWD:/tmp --rm --entrypoint cp libfaketime:latest /lib/faketime.so /tmp/libfaketime.so
-sudo aws s3 cp libfaketime.so "${local.quorum_bucket}/libs/libfaketime.so" > /dev/null 2>&1
-
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 docker pull ${local.quorum_docker_image}
@@ -195,6 +190,15 @@ EOF
       "sudo mkdir -p /opt/prometheus/",
       "sudo mv /tmp/prometheus.yml /opt/prometheus/prometheus.yml",
       "sudo mv /tmp/prometheus-docker-compose.yml /opt/prometheus/docker-compose.yml",
+      "sudo yum -y update",
+      "sudo yum -y install jq",
+      "sudo amazon-linux-extras install docker -y",
+      "sudo systemctl enable docker",
+      "sudo systemctl start docker",
+      "printf 'FROM alpine\nCOPY --from=trajano/alpine-libfaketime  /faketime.so /lib/faketime.so\n' > /tmp/Dockerfile.libfaketime",
+      "sudo docker build -f /tmp/Dockerfile.libfaketime . -t libfaketime:latest",
+      "sudo docker run -v $PWD:/tmp --rm --entrypoint cp libfaketime:latest /lib/faketime.so /tmp/libfaketime.so",
+      "sudo aws s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so"
     ]
 
     connection {
@@ -221,6 +225,20 @@ export TASK_REVISION=${aws_ecs_task_definition.quorum.revision}
 sudo rm -rf ${local.shared_volume_container_path}
 sudo mkdir -p ${local.shared_volume_container_path}/mappings
 sudo mkdir -p ${local.privacy_addresses_folder}
+
+# Faketime array ( ClockSkew )
+IFS=',' faketime=(${join(" ", var.faketime)})
+counter="$${#faketime[@]}"
+
+while [ $counter -gt 0 ]
+do
+    echo $counter
+    echo -n "$${faketime[-1]}" > ./$counter
+    faketime=($${faketime[@]::$counter})
+    echo $counter
+    sudo aws s3 cp ./$counter s3://${local.bastion_bucket}/clockSkew/
+    counter=$((counter - 1))
+done
 
 count=0
 while [ $count -lt ${var.number_of_nodes} ]
@@ -300,5 +318,15 @@ resource "null_resource" "bastion_remote_exec" {
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
+  }
+}
+
+resource "aws_s3_bucket" "bastion" {
+  bucket        = "${local.bastion_bucket}"
+  region        = "${var.region}"
+  force_destroy = true
+
+  versioning {
+    enabled = true
   }
 }

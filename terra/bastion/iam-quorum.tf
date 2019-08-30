@@ -35,6 +35,19 @@ data "aws_iam_policy_document" "bastion" {
   }
 
   statement {
+    sid = "AllowS3Bastion"
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.bastion_bucket}",
+      "arn:aws:s3:::${local.bastion_bucket}/*",
+    ]
+  }
+
+  statement {
     sid = "AllowKMSAccess"
 
     actions = [

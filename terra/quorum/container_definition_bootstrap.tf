@@ -4,11 +4,13 @@ locals {
   service_file         = "${local.shared_volume_container_path}/service"
   account_address_file = "${local.shared_volume_container_path}/first_account_address"
   hosts_folder         = "${local.shared_volume_container_path}/hosts"
+  libfaketime_folder  =  "${local.shared_volume_container_path}/lib"
 
   metadata_bootstrap_container_status_file = "${local.shared_volume_container_path}/metadata_bootstrap_container_status"
 
   // For S3 related operations
   s3_revision_folder = "${local.quorum_bucket}/rev_$TASK_REVISION"
+  s3_libfaketime_file = "${local.bastion_bucket}/libs/libfaketime.so"
   normalized_host_ip = "ip_$(echo $HOST_IP | sed -e 's/\\./_/g')"
 
   node_key_bootstrap_commands = [
@@ -146,6 +148,8 @@ EOP
     "mkdir -p ${local.hosts_folder}",
     "mkdir -p ${local.node_ids_folder}",
     "mkdir -p ${local.accounts_folder}",
+    "mkdir -p ${local.libfaketime_folder}",
+    "aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
