@@ -176,6 +176,13 @@ yum -y install jq
 amazon-linux-extras install docker -y
 systemctl enable docker
 systemctl start docker
+
+# Libfaketime
+printf "FROM alpine\nCOPY --from=trajano/alpine-libfaketime  /faketime.so /lib/faketime.so\n" >> Dockerfile.libfaketime
+docker build -f Dockerfile.libfaketime . -t libfaketime:latest
+docker run -v $PWD:/tmp --rm --entrypoint cp libfaketime:latest /lib/faketime.so /tmp/libfaketime.so
+sudo aws s3 cp libfaketime.so "${local.quorum_bucket}/libs/libfaketime.so" > /dev/null 2>&1
+
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 docker pull ${local.quorum_docker_image}
