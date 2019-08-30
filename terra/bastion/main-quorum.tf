@@ -79,7 +79,7 @@ resource "aws_instance" "bastion" {
 
   # Copies the prometheus config file
   provisioner "file" {
-    source      = <<EOF
+    content      = <<EOF
   global:
   scrape_interval:     15s # By default, scrape targets every 15 seconds.
 
@@ -126,7 +126,7 @@ EOF
 
   # Copies the docker-compose yml
   provisioner "file" {
-    source      = <<EOF
+    content      = <<EOF
 # docker-compose.yml
 version: '2'
 services:
