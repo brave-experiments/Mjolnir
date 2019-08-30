@@ -79,8 +79,43 @@ resource "aws_instance" "bastion" {
 
   # Copies the prometheus config file
   provisioner "file" {
-    source      = "prometheus.yml"
-    destination = "/qdata"
+    source      = <<EOF
+  global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'anvibo-monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['localhost:9090']
+
+
+  - job_name: 'nodes-dev'
+    ec2_sd_configs:
+    - region: us-east-2
+      port: 9100
+      refresh_interval: 1m
+
+    relabel_configs:
+    # Only monitor instances with a Name starting with "dev-"
+    - source_labels: [__meta_ec2_tag_Name]
+      regex: .*-dev
+      action: keep
+    - source_labels: [__meta_ec2_tag_Name,__meta_ec2_tag_tagkey]
+      target_label: instance
+EOF
+    destination = "/qdata/prometheus.yml"
     connection {
       host        = "${aws_instance.bastion.public_ip}"
       user        = "ec2-user"
@@ -91,7 +126,31 @@ resource "aws_instance" "bastion" {
 
   # Copies the docker-compose yml
   provisioner "file" {
-    source      = "prometheus-docker-compose.yml"
+    source      = <<EOF
+# docker-compose.yml
+version: '2'
+services:
+    prometheus:
+        image: prom/prometheus:latest
+        volumes:
+            - /qdata/prometheus.yml:/etc/prometheus/prometheus.yml
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+        ports:
+            - '9090:9090'
+    node-exporter:
+        image: prom/node-exporter:latest
+        ports:
+            - '9100:9100'
+    grafana:
+        image: grafana/grafana:latest
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=my-pass
+        depends_on:
+            - prometheus
+        ports:
+            - "3001:3000"
+EOF
     destination = "/qdata/prometheus-docker-compose.yml"
     connection {
       host        = "${aws_instance.bastion.public_ip}"
