@@ -2,7 +2,7 @@ package terra
 
 import (
 	"fmt"
-	"github.com/brave-experiments/apollo-devops/src/github.com/hashicorp/terraform/builtin/provisioners/local-exec"
+	"github.com/hashicorp/terraform/builtin/provisioners/local-exec"
 	"github.com/hashicorp/terraform/builtin/provisioners/remote-exec"
 	"github.com/johandry/terranova"
 	"github.com/stretchr/testify/assert"
