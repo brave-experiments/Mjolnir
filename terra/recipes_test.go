@@ -8,6 +8,10 @@ import (
 	"testing"
 )
 
+const (
+	ExpectedEnvKey = "APP_SIMPLE_KEY"
+)
+
 func TestAllDefaultRecipes(t *testing.T) {
 	currentDir, err := os.Getwd()
 	assert.Nil(t, err)
@@ -234,19 +238,25 @@ func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
 	expectedVariables := make(map[string]interface{}, 0)
 	expectedStdKey := "simpleKey"
 	expectedStdVar := "variable"
+	expectedEnvKey := ExpectedEnvKey
+	oldEnvValue := "DUMMY_OLD_VALUE"
+
+	err := os.Setenv(expectedEnvKey, oldEnvValue)
+	assert.Nil(t, err)
+
 	expectedVariables[expectedStdKey] = expectedStdVar
 	PrepareDummyFile(t, dummyYamlFilePath, dummyYamlFileBody)
 
 	// Should create new vars
 	combinedRecipe := CombinedRecipe{}
-	err := combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
+	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
 	assert.Nil(t, err)
 	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
 
 	// Should override vars
 	combinedRecipe = CombinedRecipe{}
 	combinedRecipe.Variables = map[string]interface{}{
-		"simpleKey": "otherVariable",
+		expectedStdKey: "otherVariable",
 	}
 	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
 	assert.Nil(t, err)
@@ -257,13 +267,21 @@ func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
 	expectedVal := "dummyValue"
 	expectedVariables[expectedKey] = expectedVal
 
+	// Should set variables and environmental variables
 	combinedRecipe = CombinedRecipe{}
 	combinedRecipe.Variables = map[string]interface{}{
 		expectedKey: expectedVal,
 	}
+	combinedRecipe.envVariablesMap = map[string]string{
+		expectedStdKey: expectedEnvKey,
+	}
 	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
 	assert.Nil(t, err)
 	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
+	envVal := os.Getenv(expectedEnvKey)
+	assert.Equal(t, combinedRecipe.Variables[expectedStdKey], envVal)
+	assert.Equal(t, 1, len(combinedRecipe.envVariablesRollBack))
+	assert.Equal(t, oldEnvValue, combinedRecipe.envVariablesRollBack[expectedEnvKey])
 
 	// Should not destroy after second run
 	expectedKey = "dummyKey1"
@@ -273,7 +291,14 @@ func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
 	err = combinedRecipe.BindYamlWithVars(dummyYamlFilePath)
 	assert.Nil(t, err)
 	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
+	envVal = os.Getenv(expectedEnvKey)
+	assert.Equal(t, combinedRecipe.Variables[expectedStdKey], envVal)
+	assert.Equal(t, 1, len(combinedRecipe.envVariablesRollBack))
+	assert.Equal(t, oldEnvValue, combinedRecipe.envVariablesRollBack[expectedEnvKey])
 
+	// Clean up
+	err = os.Setenv(expectedEnvKey, "")
+	assert.Nil(t, err)
 	RemoveDummyFile(t, dummyYamlFilePath)
 }
 
