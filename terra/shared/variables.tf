@@ -75,7 +75,7 @@ variable "aws_cli_docker_image_tag" {
 
 variable "consensus_mechanism" {
   description = "Concensus mechanism used in the network. Supported values are raft/istanbul"
-  default     = "raft"
+  default     = "istanbul"
 }
 
 variable "tx_privacy_engine" {
