@@ -329,6 +329,23 @@ func TestCombinedRecipe_UnbindEnvVars(t *testing.T) {
 	err = combinedRecipe.UnbindEnvVars()
 	assert.Nil(t, err)
 	assert.Equal(t, expectedEnvOldValue, os.Getenv(expectedEnvKey))
+
+	err = os.Setenv(expectedEnvKey, "")
+	assert.Nil(t, err)
+}
+
+func TestCombinedRecipe_UnbindEnvVarsFailure(t *testing.T) {
+	expectedEnvKey := ""
+	expectedEnvOldValue := ""
+
+	oldEnvVars := map[string]string{
+		expectedEnvKey: expectedEnvOldValue,
+	}
+	combinedRecipe := CombinedRecipe{
+		File: File{envVariablesRollBack: oldEnvVars},
+	}
+	err := combinedRecipe.UnbindEnvVars()
+	assert.Error(t, err)
 }
 
 func PrepareDummyFile(t *testing.T, fileName string, content string) {
