@@ -18,4 +18,4 @@ RUN go get -v
 RUN apk add openssh
 RUN ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 
-CMD CompileDaemon -log-prefix=false -build="CGO_ENABLED=0 go build -a -installsuffix cgo -o apollo" -command="./apollo"
+CMD CompileDaemon -log-prefix=false -build="make build" -command="./apollo"

@@ -1,4 +1,4 @@
-package builder
+package main
 
 import (
 	"github.com/brave-experiments/apollo-devops/terra"
@@ -14,12 +14,14 @@ func TestBuild(t *testing.T) {
 			"key1": "var1",
 		},
 	}
+	// It is hardcoded, because it is crucial to further workflow of app
+	expectedString := "\npackage builder\n\nvar (\nStaticKey1 = `var1`\n)\n"
 
 	result, err := Build(staticVariablesMap)
 	assert.Nil(t, err)
 	assert.Equal(
 		t,
-		html.UnescapeString("\npackage builder\n\nvar (\nkey1 = &#96;var1&#96;\n)\n"),
+		html.UnescapeString(expectedString),
 		result,
 	)
 }
@@ -47,11 +49,9 @@ func TestBuild_BuildRecipe(t *testing.T) {
 
 	result, err := Build(staticVariablesMap)
 	assert.Nil(t, err)
-	file, err := os.Create("dupa.go")
-	assert.Nil(t, err)
-	_, err = file.Write([]byte(result))
-	assert.Nil(t, err)
-	assert.Equal(t, "", result)
+	// Check that file has more than 100 chars.
+	// It means that parsing process injected combined recipes
+	assert.Greater(t, len(result), 100)
 
 	err = os.Chdir(currentDir)
 	assert.Nil(t, err)
