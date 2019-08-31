@@ -7,9 +7,11 @@ import (
 )
 
 const (
-	AwsDefaultRegion = "AWS_DEFAULT_REGION"
-	AwsRegion        = "AWS_REGION"
-	AwsProfile       = "AWS_PROFILE"
+	AwsDefaultRegion   = "AWS_DEFAULT_REGION"
+	AwsRegion          = "AWS_REGION"
+	AwsProfile         = "AWS_PROFILE"
+	AwsAccessKeyId     = "AWS_ACCESS_KEY_ID"
+	AwsSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
 )
 
 var (
@@ -44,9 +46,11 @@ var (
 					"profile":      "default",
 				},
 				envVariablesMap: map[string]string{
-					"region":         AwsRegion,
-					"profile":        AwsProfile,
-					"default_region": AwsDefaultRegion,
+					"region":                AwsRegion,
+					"profile":               AwsProfile,
+					"default_region":        AwsDefaultRegion,
+					"aws_access_key_id":     AwsAccessKeyId,
+					"aws_secret_access_key": AwsSecretAccessKey,
 				},
 			},
 		},
