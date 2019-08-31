@@ -58,6 +58,19 @@ data "aws_iam_policy_document" "ecs_task" {
       "*",
     ]
   }
+
+  statement {
+    sid = "AllowS3Bastion"
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.bastion_bucket}",
+      "arn:aws:s3:::${local.bastion_bucket}/*",
+    ]
+  }
 }
 
 resource "aws_iam_policy" "ecs_task" {
