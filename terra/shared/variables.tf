@@ -1,10 +1,10 @@
 variable "region" {
-  description = "Target AWS Region. This must be pre-initialized from `_terraform_init` run"
+  description = "Target AWS Region"
   default = "us-east-1"
 }
 
 variable "network_name" {
-  description = "Identify the Quorum network from multiple deployments. This must be pre-initialized from `_terraform_init` run"
+  description = "Identify the Quorum network from multiple deployments"
   default = "apollo"
 }
 
@@ -86,11 +86,11 @@ variable "tx_privacy_engine" {
 //TODO remove
 /*
 variable "quorum_bucket" {
-  description = "This is to store shared data during the bootstrap. This must be pre-initialized from `_terraform_init` run"
+  description = "This is to store shared data during the bootstrap. 
 }
 
 variable "quorum_bucket_kms_key_arn" {
-  description = "To encrypt/decrypt objects stored in quorum_bucket. This must be pre-initialized from `_terraform_init` run"
+  description = "To encrypt/decrypt objects stored in quorum_bucket. 
 }
 */
 variable "access_bastion_cidr_blocks" {

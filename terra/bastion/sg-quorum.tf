@@ -36,6 +36,38 @@ resource "aws_security_group" "bastion-ethstats" {
   description = "Security group used by external to access ethstats for Quorum network ${var.network_name}"
 
   ingress {
+    from_port = "${local.quorum_rpc_port}"
+    protocol  = "tcp"
+    to_port   = "${local.quorum_rpc_port}"
+
+    cidr_blocks = [
+      "${aws_subnet.public.cidr_block}",
+    ]
+
+    description = "Allow geth console"
+  }
+
+  egress {
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+
+    description = "Allow all"
+  }
+
+  tags = "${merge(local.common_tags, map("Name", format("client-bastion-geth-%s", var.network_name)))}"
+}
+
+resource "aws_security_group" "bastion-geth" {
+  vpc_id      = "${local.vpc_id}"
+  name        = "${var.client_name}-bastion-get-${var.network_name}"
+  description = "Security group used by external to access geth for ${var.client_name} network ${var.network_name}"
+
+  ingress {
     from_port = 3000
     protocol  = "tcp"
     to_port   = 3000
@@ -59,5 +91,5 @@ resource "aws_security_group" "bastion-ethstats" {
     description = "Allow all"
   }
 
-  tags = "${merge(local.common_tags, map("Name", format("quorum-bastion-ethstats-%s", var.network_name)))}"
+  tags = "${merge(local.common_tags, map("Name", format("%s-bastion-ethstats-%s", var.client_name ,var.network_name)))}"
 }
