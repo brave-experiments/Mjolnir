@@ -19,7 +19,7 @@ locals {
     "mkdir -p ${local.quorum_data_dir}/geth",
     "echo \"\" > ${local.quorum_password_file}",
     "echo \"Creating ${local.quorum_static_nodes_file} and ${local.quorum_permissioned_nodes_file}\"",
-    "all=\"\"; for f in `ls ${local.node_ids_folder}`; do nodeid=$(cat ${local.node_ids_folder}/$f); ip=$(cat ${local.hosts_folder}/$f); all=\"$all,\\\"enode://$nodeid@$ip:${local.quorum_p2p_port}?discport=0&${join("&", local.consensus_config_map["enode_params"])}\\\"\"; done; all=$${all:1}",
+    "all=\"\"; for f in $(ls ${local.node_ids_folder}); do nodeid=$(cat ${local.node_ids_folder}/$f); ip=$(cat ${local.hosts_folder}/$f); all=\"$all,\\\"enode://$nodeid@$ip:${local.quorum_p2p_port}?discport=0&${join("&", local.consensus_config_map["enode_params"])}\\\"\"; done; all=$${all:1}",
     "echo \"[$all]\" > ${local.quorum_static_nodes_file}",
     "echo \"[$all]\" > ${local.quorum_permissioned_nodes_file}",
     "echo Permissioned Nodes: $(cat ${local.quorum_permissioned_nodes_file})",
