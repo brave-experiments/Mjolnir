@@ -17,5 +17,6 @@ ADD . .
 RUN go get -v
 RUN apk add openssh
 RUN ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+RUN make generate
 
 CMD CompileDaemon -log-prefix=false -build="make build" -command="./apollo"
