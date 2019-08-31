@@ -13,6 +13,7 @@ const (
     ExitCodeInvalidArgument = 3
     ExitCodeTerraformError = 4
     ExitCodeYamlBindingError = 5
+    ExitCodeEnvUnbindingError = 6
 )
 
 var (
@@ -75,13 +76,22 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
     )
 
     err = applyCmd.executeTerra(recipe)
+    exitCode = ExitCodeSuccess
 
     if nil != err {
         fmt.Println(err)
-        return ExitCodeTerraformError
+        exitCode = ExitCodeTerraformError
     }
 
-    return ExitCodeSuccess
+    fmt.Println("Restoring env variables.")
+    err = applyCmd.restoreEnvVariables(recipe)
+
+    if nil != err {
+        fmt.Printf("Error restoring variables: %s", err)
+        exitCode = ExitCodeEnvUnbindingError
+    }
+
+    return exitCode
 }
 
 func (applyCmd ApplyCmd) Help() (helpMessage string) {
@@ -144,4 +154,8 @@ func (applyCmd *ApplyCmd) getRecipe(recipeKey string) (recipe terra.CombinedReci
     }
 
     return recipe, ExitCodeSuccess
+}
+
+func (applyCmd *ApplyCmd) restoreEnvVariables(recipe terra.CombinedRecipe) (err error) {
+    return recipe.UnbindEnvVars()
 }

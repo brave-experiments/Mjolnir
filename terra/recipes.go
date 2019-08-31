@@ -3,6 +3,15 @@ package terra
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
+)
+
+const (
+	AwsDefaultRegion   = "AWS_DEFAULT_REGION"
+	AwsRegion          = "AWS_REGION"
+	AwsProfile         = "AWS_PROFILE"
+	AwsAccessKeyId     = "AWS_ACCESS_KEY_ID"
+	AwsSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
 )
 
 var (
@@ -36,15 +45,24 @@ var (
 					"region":       "us-east-2",
 					"profile":      "default",
 				},
+				envVariablesMap: map[string]string{
+					"region":                AwsRegion,
+					"profile":               AwsProfile,
+					"default_region":        AwsDefaultRegion,
+					"aws_access_key_id":     AwsAccessKeyId,
+					"aws_secret_access_key": AwsSecretAccessKey,
+				},
 			},
 		},
 	}
 )
 
 type File struct {
-	Location  string
-	Body      string
-	Variables map[string]interface{}
+	Location             string
+	Body                 string
+	Variables            map[string]interface{}
+	EnvVariablesRollBack map[string]string
+	envVariablesMap      map[string]string
 }
 
 type CombinedRecipe struct {
@@ -131,8 +149,32 @@ func (combinedRecipe *CombinedRecipe) BindYamlWithVars(yamlFilePath string) (err
 		combinedRecipe.Variables = make(map[string]interface{}, 0)
 	}
 
+	if nil == combinedRecipe.EnvVariablesRollBack {
+		combinedRecipe.EnvVariablesRollBack = make(map[string]string, 0)
+	}
+
 	for schemaKey, value := range schema.Variables {
-		combinedRecipe.Variables[schemaKey] = value
+		err = combinedRecipe.handleAssignVars(schemaKey, value)
+
+		if nil != err {
+			return err
+		}
+	}
+
+	return err
+}
+
+func (combinedRecipe *CombinedRecipe) UnbindEnvVars() (err error) {
+	if nil == combinedRecipe.EnvVariablesRollBack {
+		return
+	}
+
+	for envKey, envVar := range combinedRecipe.EnvVariablesRollBack {
+		err = os.Setenv(envKey, envVar)
+
+		if nil != err {
+			return err
+		}
 	}
 
 	return
@@ -152,4 +194,42 @@ func (file *File) ReadFile() (err error) {
 
 func (file *File) WriteFile() (err error) {
 	return ioutil.WriteFile(file.Location, []byte(file.Body), 0644)
+}
+
+func (combinedRecipe *CombinedRecipe) handleAssignVars(schemaKey string, value interface{}) (err error) {
+	combinedRecipe.Variables[schemaKey] = value
+
+	if len(combinedRecipe.envVariablesMap) < 1 {
+		return
+	}
+
+	envKey := combinedRecipe.envVariablesMap[schemaKey]
+
+	fmt.Printf(
+		"\n Trying to assign env variables from recipe %s \n",
+		combinedRecipe.envVariablesMap,
+	)
+
+	if len(envKey) < 1 {
+		fmt.Println("No variables to assign")
+		return
+	}
+
+	isPreviousRollbackSet := len(combinedRecipe.EnvVariablesRollBack[envKey]) > 0
+
+	if false == isPreviousRollbackSet {
+		previousEnv := os.Getenv(envKey)
+		combinedRecipe.EnvVariablesRollBack[envKey] = previousEnv
+	}
+
+	stringVar := value.(string)
+	err = os.Setenv(envKey, stringVar)
+
+	if nil != err {
+		return err
+	}
+
+	fmt.Printf("\n Assigned env key: %s with value: %s \n", envKey, value)
+
+	return
 }

@@ -27,6 +27,7 @@ resourceType: variables
 variables: 
   simpleKey: variable
 `
+	ExpectedEnvKey = "APP_DEFAULT_KEY"
 )
 
 func TestApplyCmdFactory(t *testing.T) {
@@ -38,6 +39,8 @@ func TestApplyCmdFactory(t *testing.T) {
 
 func TestApplyCmd_RunInvalid(t *testing.T) {
 	command, err := ApplyCmdFactory()
+	expectedEnvKey := ExpectedEnvKey
+	expectedOldEnvValue := os.Getenv(expectedEnvKey)
 	assert.Nil(t, err)
 	assert.IsType(t, ApplyCmd{}, command)
 
@@ -66,7 +69,13 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 	// Should return error because there is no .yml variable file
 	keyName := "dummy"
 	filePath := "dummy.tf"
-	recipes = GetMockedRecipes(t, keyName, filePath, DummyFileTfBody)
+	recipes = GetMockedRecipes(
+		t,
+		keyName,
+		filePath,
+		DummyFileTfBody,
+		map[string]string{},
+	)
 	invalidCmd = ApplyCmd{
 		Recipes: recipes,
 	}
@@ -75,15 +84,29 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 	terra.DefaultRecipes = recipes.Elements
 	exitCode = invalidCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	terra.DefaultRecipes = oldRecipes
 
 	// Since it is not mocked we want to end our testing process here
 	yamlFileName := dummyArgs[1]
 	PrepareDummyFile(t, yamlFileName, YamlV1Fixture)
+	envRecipesMapping := map[string]string{
+		"simpleKey": expectedEnvKey,
+	}
+	recipes = GetMockedRecipes(
+		t,
+		keyName,
+		filePath,
+		DummyFileTfBody,
+		envRecipesMapping,
+	)
+	oldRecipes = terra.DefaultRecipes
+	terra.DefaultRecipes = recipes.Elements
 	command = ApplyCmd{
 		Recipes: recipes,
 	}
 	exitCode = command.Run(dummyArgs)
 	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	assert.Equal(t, expectedOldEnvValue, os.Getenv(expectedEnvKey))
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, yamlFileName)
 	terra.DefaultRecipes = oldRecipes
@@ -96,7 +119,7 @@ func TestApplyCmd_Run(t *testing.T) {
 	schemaFilePath := "dummy.yml"
 	yamlFileSchema := terra.SchemaV1
 	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
-	recipes := GetMockedRecipes(t, keyName, filePath, "")
+	recipes := GetMockedRecipes(t, keyName, filePath, "", map[string]string{})
 	command := ApplyCmd{
 		Recipes: recipes,
 	}
@@ -131,6 +154,7 @@ func GetMockedRecipes(
 	keyName string,
 	fileName string,
 	fileBody string,
+	envVariablesRollback map[string]string,
 ) (recipes terra.Recipes) {
 	recipes = terra.Recipes{}
 	PrepareDummyFile(t, fileName, fileBody)
@@ -139,6 +163,7 @@ func GetMockedRecipes(
 		terra.CombinedRecipe{
 			File: terra.File{
 				Location: fileName,
+				EnvVariablesRollBack: envVariablesRollback,
 			},
 			FilePaths: []string{fileName},
 		},
