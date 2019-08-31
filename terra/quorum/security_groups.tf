@@ -28,6 +28,16 @@ resource "aws_security_group_rule" "ethstats" {
   description       = "ethstats traffic"
 }
 
+resource "aws_security_group_rule" "ethstats-bastion" {
+  from_port         = "${local.ethstats_port}"
+  protocol          = "tcp"
+  security_group_id = "${aws_security_group.bastion-ethstats.id}"
+  to_port           = "${local.ethstats_port}"
+  type              = "ingress"
+  self              = true
+  description       = "ethstats traffic"
+}
+
 resource "aws_security_group_rule" "geth_p2p" {
   from_port         = "${local.quorum_p2p_port}"
   protocol          = "tcp"

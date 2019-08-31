@@ -14,7 +14,7 @@ locals {
     "export TM_KEY=$(cat ${local.shared_volume_container_path}/.key)",
     "echo \"\nHost IP: $HOST_IP\"",
     "echo \"Public Key: $TM_PUB\"",
-    "all=\"\"; for f in `ls ${local.hosts_folder} | grep -v ${local.normalized_host_ip}`; do ip=$(cat ${local.hosts_folder}/$f); all=\"$all,{ \\\"url\\\": \\\"http://$ip:${local.tessera_port}/\\\" }\"; done",
+    "all=\"\"; for f in $(ls ${local.hosts_folder} | grep -v ${local.normalized_host_ip}); do ip=$(cat ${local.hosts_folder}/$f); all=\"$all,{ \\\"url\\\": \\\"http://$ip:${local.tessera_port}/\\\" }\"; done",
     "all=\"[{ \\\"url\\\": \\\"http://$HOST_IP:${local.tessera_port}/\\\" }$all]\"",
     "export TESSERA_VERSION=${var.tessera_docker_image_tag}",
     "export V=$(echo -e \"0.8\n$TESSERA_VERSION\" | sort -n -r -t '.' -k 1,1 -k 2,2 | head -n1)",
