@@ -2,6 +2,7 @@ locals {
   default_bastion_resource_name = "${format("quorum-bastion-%s", var.network_name)}"
   ethstats_docker_image         = "puppeth/ethstats:latest"
   ethstats_port                 = 3000
+  bastion_bucket    = "${var.region}-bastion-${lower(var.network_name)}-${random_id.bucket_postfix.hex}"
 }
 
 data "aws_ami" "this" {
@@ -77,89 +78,6 @@ resource "aws_instance" "bastion" {
   key_name                    = "${aws_key_pair.ssh.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.bastion.name}"
 
-  # Copies the prometheus config file
-  provisioner "file" {
-    content      = <<EOF
-  global:
-  scrape_interval:     15s # By default, scrape targets every 15 seconds.
-
-  # Attach these labels to any time series or alerts when communicating with
-  # external systems (federation, remote storage, Alertmanager).
-  external_labels:
-    monitor: 'anvibo-monitor'
-
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
-scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 5s
-
-    static_configs:
-      - targets: ['localhost:9090']
-
-
-  - job_name: 'nodes-dev'
-    ec2_sd_configs:
-    - region: us-east-2
-      port: 9100
-      refresh_interval: 1m
-
-    relabel_configs:
-    # Only monitor instances with a Name starting with "dev-"
-    - source_labels: [__meta_ec2_tag_Name]
-      regex: .*-dev
-      action: keep
-    - source_labels: [__meta_ec2_tag_Name,__meta_ec2_tag_tagkey]
-      target_label: instance
-EOF
-    destination = "/tmp/prometheus.yml"
-    connection {
-      host        = "${aws_instance.bastion.public_ip}"
-      user        = "ec2-user"
-      private_key = "${tls_private_key.ssh.private_key_pem}"
-      timeout     = "10m"
-    }
-  }
-
-  # Copies the docker-compose yml
-  provisioner "file" {
-    content      = <<EOF
-# docker-compose.yml
-version: '2'
-services:
-    prometheus:
-        image: prom/prometheus:latest
-        volumes:
-            - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-        command:
-            - '--config.file=/etc/prometheus/prometheus.yml'
-        ports:
-            - '9090:9090'
-    node-exporter:
-        image: prom/node-exporter:latest
-        ports:
-            - '9100:9100'
-    grafana:
-        image: grafana/grafana:latest
-        environment:
-            - GF_SECURITY_ADMIN_PASSWORD=my-pass
-        depends_on:
-            - prometheus
-        ports:
-            - "3001:3000"
-EOF
-    destination = "/tmp/prometheus-docker-compose.yml"
-    connection {
-      host        = "${aws_instance.bastion.public_ip}"
-      user        = "ec2-user"
-      private_key = "${tls_private_key.ssh.private_key_pem}"
-      timeout     = "10m"
-    }
-  }
-
   user_data = <<EOF
 #!/bin/bash
 
@@ -176,18 +94,28 @@ yum -y install jq
 amazon-linux-extras install docker -y
 systemctl enable docker
 systemctl start docker
+
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 docker pull ${local.quorum_docker_image}
+docker pull prom/prometheus
+docker pull prom/node-exporter:latest
+docker pull grafana/grafana:latest
+mkdir -p /opt/prometheus
 docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
-/usr/local/bin/docker-compose -f /opt/prometheus/docker-compose yml up -d
 EOF
 
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir -p /opt/prometheus/",
-      "sudo mv /tmp/prometheus.yml /opt/prometheus/prometheus.yml",
-      "sudo mv /tmp/prometheus-docker-compose.yml /opt/prometheus/docker-compose.yml",
+      "sudo yum -y update",
+      "sudo yum -y install jq",
+      "sudo amazon-linux-extras install docker -y",
+      "sudo systemctl enable docker",
+      "sudo systemctl start docker",
+      "printf 'FROM alpine\nCOPY --from=trajano/alpine-libfaketime  /faketime.so /lib/faketime.so\n' > /tmp/Dockerfile.libfaketime",
+      "sudo docker build -f /tmp/Dockerfile.libfaketime . -t libfaketime:latest",
+      "sudo docker run -v $PWD:/tmp --rm --entrypoint cp libfaketime:latest /lib/faketime.so /tmp/libfaketime.so",
+      "sudo aws s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so"
     ]
 
     connection {
@@ -197,6 +125,7 @@ EOF
       timeout     = "10m"
     }
   }
+
 
   tags = "${merge(local.common_tags, map("Name", local.default_bastion_resource_name))}"
 }
@@ -214,6 +143,20 @@ export TASK_REVISION=${aws_ecs_task_definition.quorum.revision}
 sudo rm -rf ${local.shared_volume_container_path}
 sudo mkdir -p ${local.shared_volume_container_path}/mappings
 sudo mkdir -p ${local.privacy_addresses_folder}
+
+# Faketime array ( ClockSkew )
+old_IFS=$IFS
+IFS=',' faketime=(${join(" ", var.faketime)})
+IFS=$${old_IFS}
+counter="$${#faketime[@]}"
+
+while [ $counter -gt 0 ]
+do
+    echo -n "$${faketime[-1]}" > ./$counter
+    faketime=($${faketime[@]::$counter})
+    sudo aws s3 cp ./$counter s3://${local.bastion_bucket}/clockSkew/
+    counter=$((counter - 1))
+done
 
 count=0
 while [ $count -lt ${var.number_of_nodes} ]
@@ -274,6 +217,72 @@ SS
       third-party-url: http://$ip:${local.tessera_thirdparty_port}
 SS
 done
+
+cat <<SS | sudo tee /opt/prometheus/prometheus.yml
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+- job_name: 'node'
+  file_sd_configs:
+  - files:
+    - 'targets.json'
+SS
+
+cat <<SS | sudo tee /opt/prometheus/docker-compose.yml
+# docker-compose.yml
+version: '2'
+services:
+    prometheus:
+        image: prom/prometheus:latest
+        volumes:
+            - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+            - /opt/prometheus/targets.json:/etc/prometheus/targets.json
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+        ports:
+            - '9090:9090'
+    node-exporter:
+        image: prom/node-exporter:latest
+        ports:
+            - '9100:9100'
+    grafana:
+        image: grafana/grafana:latest
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=my-pass
+        depends_on:
+            - prometheus
+        ports:
+            - "3001:3000"
+SS
+
+count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+target_file=/tmp/targets.json
+i=0
+echo '[' > $target_file
+for idx in "$${!nodes[@]}"
+do
+  f=$(grep -l $${nodes[$idx]} *)
+  ip=$(cat ${local.hosts_folder}/$f)
+  i=$(($i+1))
+  if [ $i -lt "$count" ]; then
+    echo '{ "targets": ["'$ip':9100"] },' >> $target_file
+  else
+    echo '{ "targets": ["'$ip':9100"] }'  >> $target_file
+    echo $i >> /tmp/test1
+    echo $count >> /tmp/test2
+  fi
+done
+echo ']' >> $target_file
+sudo mv $target_file /opt/prometheus/
+sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
 EOF
 }
 
@@ -293,5 +302,15 @@ resource "null_resource" "bastion_remote_exec" {
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
+  }
+}
+
+resource "aws_s3_bucket" "bastion" {
+  bucket        = "${local.bastion_bucket}"
+  region        = "${var.region}"
+  force_destroy = true
+
+  versioning {
+    enabled = true
   }
 }
