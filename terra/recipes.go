@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 )
 
 const (
@@ -13,7 +12,6 @@ const (
 	AwsProfile         = "AWS_PROFILE"
 	AwsAccessKeyId     = "AWS_ACCESS_KEY_ID"
 	AwsSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
-	StaticKeyPrefix    = "Static"
 )
 
 var (
@@ -47,6 +45,7 @@ var (
 					"region":       "us-east-2",
 					"profile":      "default",
 				},
+				Body: StaticQuorum,
 				envVariablesMap: map[string]string{
 					"region":                AwsRegion,
 					"profile":               AwsProfile,
@@ -182,18 +181,6 @@ func (combinedRecipe *CombinedRecipe) UnbindEnvVars() (err error) {
 	return
 }
 
-func (recipes *Recipes) ReadStaticBody() (err error) {
-	for key, recipe := range recipes.Elements {
-		err = recipe.readStaticBody(key)
-
-		if nil != err {
-			return err
-		}
-	}
-
-	return err
-}
-
 func (file *File) ReadFile() (err error) {
 	fileBodyBytes, err := ioutil.ReadFile(file.Location)
 
@@ -246,9 +233,4 @@ func (combinedRecipe *CombinedRecipe) handleAssignVars(schemaKey string, value i
 	fmt.Printf("\n Assigned env key: %s with value: %s \n", envKey, value)
 
 	return
-}
-
-func (combinedRecipe *CombinedRecipe) readStaticBody(recipeKey string) (err error) {
-	staticKey := StaticKeyPrefix + strings.Title(recipeKey)
-	// use this string as Var
 }
