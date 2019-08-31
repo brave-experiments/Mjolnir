@@ -75,6 +75,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
     )
 
     err = applyCmd.executeTerra(recipe)
+    applyCmd.restoreEnvVariables(recipe)
 
     if nil != err {
         fmt.Println(err)
@@ -144,4 +145,8 @@ func (applyCmd *ApplyCmd) getRecipe(recipeKey string) (recipe terra.CombinedReci
     }
 
     return recipe, ExitCodeSuccess
+}
+
+func (applyCmd *ApplyCmd) restoreEnvVariables(recipe terra.CombinedRecipe) {
+
 }

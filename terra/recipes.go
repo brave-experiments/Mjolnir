@@ -160,6 +160,38 @@ func (combinedRecipe *CombinedRecipe) BindYamlWithVars(yamlFilePath string) (err
 	return err
 }
 
+func (combinedRecipe *CombinedRecipe) UnbindEnvVars() (err error) {
+	if nil == combinedRecipe.envVariablesRollBack {
+		return
+	}
+
+	for envKey, envVar := range combinedRecipe.envVariablesRollBack {
+		err = os.Setenv(envKey, envVar)
+
+		if nil != err {
+			return err
+		}
+	}
+
+	return
+}
+
+func (file *File) ReadFile() (err error) {
+	fileBodyBytes, err := ioutil.ReadFile(file.Location)
+
+	if nil != err {
+		return err
+	}
+
+	file.Body = string(fileBodyBytes)
+
+	return nil
+}
+
+func (file *File) WriteFile() (err error) {
+	return ioutil.WriteFile(file.Location, []byte(file.Body), 0644)
+}
+
 func (combinedRecipe *CombinedRecipe) handleAssignVars(schemaKey string, value interface{}) (err error) {
 	combinedRecipe.Variables[schemaKey] = value
 
@@ -196,20 +228,4 @@ func (combinedRecipe *CombinedRecipe) handleAssignVars(schemaKey string, value i
 	fmt.Printf("\n Assigned env key: %s with value: %s \n", envKey, value)
 
 	return
-}
-
-func (file *File) ReadFile() (err error) {
-	fileBodyBytes, err := ioutil.ReadFile(file.Location)
-
-	if nil != err {
-		return err
-	}
-
-	file.Body = string(fileBodyBytes)
-
-	return nil
-}
-
-func (file *File) WriteFile() (err error) {
-	return ioutil.WriteFile(file.Location, []byte(file.Body), 0644)
 }
