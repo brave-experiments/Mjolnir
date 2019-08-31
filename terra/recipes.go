@@ -57,8 +57,8 @@ type File struct {
 	Location             string
 	Body                 string
 	Variables            map[string]interface{}
+	EnvVariablesRollBack map[string]string
 	envVariablesMap      map[string]string
-	envVariablesRollBack map[string]string
 }
 
 type CombinedRecipe struct {
@@ -145,8 +145,8 @@ func (combinedRecipe *CombinedRecipe) BindYamlWithVars(yamlFilePath string) (err
 		combinedRecipe.Variables = make(map[string]interface{}, 0)
 	}
 
-	if nil == combinedRecipe.envVariablesRollBack {
-		combinedRecipe.envVariablesRollBack = make(map[string]string, 0)
+	if nil == combinedRecipe.EnvVariablesRollBack {
+		combinedRecipe.EnvVariablesRollBack = make(map[string]string, 0)
 	}
 
 	for schemaKey, value := range schema.Variables {
@@ -161,11 +161,11 @@ func (combinedRecipe *CombinedRecipe) BindYamlWithVars(yamlFilePath string) (err
 }
 
 func (combinedRecipe *CombinedRecipe) UnbindEnvVars() (err error) {
-	if nil == combinedRecipe.envVariablesRollBack {
+	if nil == combinedRecipe.EnvVariablesRollBack {
 		return
 	}
 
-	for envKey, envVar := range combinedRecipe.envVariablesRollBack {
+	for envKey, envVar := range combinedRecipe.EnvVariablesRollBack {
 		err = os.Setenv(envKey, envVar)
 
 		if nil != err {
@@ -211,11 +211,11 @@ func (combinedRecipe *CombinedRecipe) handleAssignVars(schemaKey string, value i
 		return
 	}
 
-	isPreviousRollbackSet := len(combinedRecipe.envVariablesRollBack[envKey]) > 0
+	isPreviousRollbackSet := len(combinedRecipe.EnvVariablesRollBack[envKey]) > 0
 
 	if false == isPreviousRollbackSet {
 		previousEnv := os.Getenv(envKey)
-		combinedRecipe.envVariablesRollBack[envKey] = previousEnv
+		combinedRecipe.EnvVariablesRollBack[envKey] = previousEnv
 	}
 
 	stringVar := value.(string)

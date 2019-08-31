@@ -280,8 +280,8 @@ func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
 	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
 	envVal := os.Getenv(expectedEnvKey)
 	assert.Equal(t, combinedRecipe.Variables[expectedStdKey], envVal)
-	assert.Equal(t, 1, len(combinedRecipe.envVariablesRollBack))
-	assert.Equal(t, oldEnvValue, combinedRecipe.envVariablesRollBack[expectedEnvKey])
+	assert.Equal(t, 1, len(combinedRecipe.EnvVariablesRollBack))
+	assert.Equal(t, oldEnvValue, combinedRecipe.EnvVariablesRollBack[expectedEnvKey])
 
 	// Should not destroy after second run
 	expectedKey = "dummyKey1"
@@ -293,8 +293,8 @@ func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
 	assert.Equal(t, expectedVariables, combinedRecipe.Variables)
 	envVal = os.Getenv(expectedEnvKey)
 	assert.Equal(t, combinedRecipe.Variables[expectedStdKey], envVal)
-	assert.Equal(t, 1, len(combinedRecipe.envVariablesRollBack))
-	assert.Equal(t, oldEnvValue, combinedRecipe.envVariablesRollBack[expectedEnvKey])
+	assert.Equal(t, 1, len(combinedRecipe.EnvVariablesRollBack))
+	assert.Equal(t, oldEnvValue, combinedRecipe.EnvVariablesRollBack[expectedEnvKey])
 
 	// Clean up
 	err = os.Setenv(expectedEnvKey, "")
@@ -324,7 +324,7 @@ func TestCombinedRecipe_UnbindEnvVars(t *testing.T) {
 		expectedEnvKey: expectedEnvOldValue,
 	}
 	combinedRecipe := CombinedRecipe{
-		File: File{envVariablesRollBack: oldEnvVars},
+		File: File{EnvVariablesRollBack: oldEnvVars},
 	}
 	err = combinedRecipe.UnbindEnvVars()
 	assert.Nil(t, err)
@@ -342,7 +342,7 @@ func TestCombinedRecipe_UnbindEnvVarsFailure(t *testing.T) {
 		expectedEnvKey: expectedEnvOldValue,
 	}
 	combinedRecipe := CombinedRecipe{
-		File: File{envVariablesRollBack: oldEnvVars},
+		File: File{EnvVariablesRollBack: oldEnvVars},
 	}
 	err := combinedRecipe.UnbindEnvVars()
 	assert.Error(t, err)
