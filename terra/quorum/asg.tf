@@ -2,7 +2,7 @@
  * Generate user_data from template file
  */
 data "template_file" "user_data" {
-  template = <<-EOT
+  template = <<EOT
     #!/bin/bash
     echo ECS_CLUSTER=${local.ecs_cluster_name} >> /etc/ecs/ecs.config
 
@@ -16,120 +16,120 @@ data "template_file" "user_data" {
 
 
     tee -a /etc/init.d/node_exporter << END
-    #!/bin/bash
+#!/bin/bash
 
-    ### BEGIN INIT INFO
-    # processname:       node_exporter
-    # Short-Description: Exporter for machine metrics.
-    # Description:       Prometheus exporter for machine metrics,
-    #                    written in Go with pluggable metric collectors.
-    #
-    # chkconfig: 2345 80 80
-    # pidfile: /var/run/node_exporter/node_exporter.pid
-    #
-    #
-    ### END INIT INFO
+### BEGIN INIT INFO
+# processname:       node_exporter
+# Short-Description: Exporter for machine metrics.
+# Description:       Prometheus exporter for machine metrics,
+#                    written in Go with pluggable metric collectors.
+#
+# chkconfig: 2345 80 80
+# pidfile: /var/run/node_exporter/node_exporter.pid
+#
+#
+### END INIT INFO
 
-    # Source function library.
-    . /etc/init.d/functions
+# Source function library.
+. /etc/init.d/functions
 
-    NAME=node_exporter
-    DESC="Exporter for machine metrics"
-    DAEMON=/usr/local/bin/node_exporter
-    USER=node_exporter
-    CONFIG=
-    PID=/var/run/node_exporter/\$NAME.pid
-    LOG=/var/log/node_exporter/\$NAME.log
+NAME=node_exporter
+DESC="Exporter for machine metrics"
+DAEMON=/usr/local/bin/node_exporter
+USER=node_exporter
+CONFIG=
+PID=/var/run/node_exporter/\$NAME.pid
+LOG=/var/log/node_exporter/\$NAME.log
 
-    DAEMON_OPTS=
-    RETVAL=0
+DAEMON_OPTS=
+RETVAL=0
 
-    # Check if DAEMON binary exist
-    [ -f \$DAEMON ] || exit 0
+# Check if DAEMON binary exist
+[ -f \$DAEMON ] || exit 0
 
-    [ -f /etc/default/node_exporter ]  &&  . /etc/default/node_exporter
+[ -f /etc/default/node_exporter ]  &&  . /etc/default/node_exporter
 
-    service_checks() {
-      # Prepare directories
-      mkdir -p /var/run/node_exporter /var/log/node_exporter
-      chown -R \$USER /var/run/node_exporter /var/log/node_exporter
+service_checks() {
+  # Prepare directories
+  mkdir -p /var/run/node_exporter /var/log/node_exporter
+  chown -R \$USER /var/run/node_exporter /var/log/node_exporter
 
-      # Check if PID exists
-      if [ -f "\$PID" ]; then
-        PID_NUMBER=\$(cat \$PID)
-        if [ -z "\$(ps axf | grep \$PID_NUMBER | grep -v grep)" ]; then
-          echo "Service was aborted abnormally; clean the PID file and continue..."
-          rm -f "\$PID"
-        else
-          echo "Service already started; skip..."
-          exit 1
-        fi
-      fi
-    }
+  # Check if PID exists
+  if [ -f "\$PID" ]; then
+    PID_NUMBER=\$(cat \$PID)
+    if [ -z "\$(ps axf | grep \$PID_NUMBER | grep -v grep)" ]; then
+      echo "Service was aborted abnormally; clean the PID file and continue..."
+      rm -f "\$PID"
+    else
+      echo "Service already started; skip..."
+      exit 1
+    fi
+  fi
+}
 
-    start() {
-      service_checks \$1
-      sudo -H -u \$USER   \$DAEMON \$DAEMON_OPTS  > \$LOG 2>&1  &
-      RETVAL=\$?
-      echo \$! > \$PID
-    }
+start() {
+  service_checks \$1
+  sudo -H -u \$USER   \$DAEMON \$DAEMON_OPTS  > \$LOG 2>&1  &
+  RETVAL=\$?
+  echo \$! > \$PID
+}
 
-    stop() {
-      killproc -p \$PID -b \$DAEMON  \$NAME
-      RETVAL=\$?
-    }
+stop() {
+  killproc -p \$PID -b \$DAEMON  \$NAME
+  RETVAL=\$?
+}
 
-    reload() {
-      #-- sorry but node_exporter doesn't handle -HUP signal...
-      #killproc -p \$PID -b \$DAEMON  \$NAME -HUP
-      #RETVAL=\$?
-      stop
-      start
-    }
+reload() {
+  #-- sorry but node_exporter doesn't handle -HUP signal...
+  #killproc -p \$PID -b \$DAEMON  \$NAME -HUP
+  #RETVAL=\$?
+  stop
+  start
+}
 
-    case "\$1" in
-      start)
-        echo -n \$"Starting \$DESC -" "\$NAME" \$'\n'
-        start
-        ;;
+case "\$1" in
+  start)
+    echo -n \$"Starting \$DESC -" "\$NAME" \$'\n'
+    start
+    ;;
 
-      stop)
-        echo -n \$"Stopping \$DESC -" "\$NAME" \$'\n'
-        stop
-        ;;
+  stop)
+    echo -n \$"Stopping \$DESC -" "\$NAME" \$'\n'
+    stop
+    ;;
 
-      reload)
-        echo -n \$"Reloading \$DESC configuration -" "\$NAME" \$'\n'
-        reload
-        ;;
+  reload)
+    echo -n \$"Reloading \$DESC configuration -" "\$NAME" \$'\n'
+    reload
+    ;;
 
-      restart|force-reload)
-        echo -n \$"Restarting \$DESC -" "\$NAME" \$'\n'
-        stop
-        start
-        ;;
+  restart|force-reload)
+    echo -n \$"Restarting \$DESC -" "\$NAME" \$'\n'
+    stop
+    start
+    ;;
 
-      syntax)
-        \$DAEMON --help
-        ;;
+  syntax)
+    \$DAEMON --help
+    ;;
 
-      status)
-        status -p \$PID \$DAEMON
-        ;;
+  status)
+    status -p \$PID \$DAEMON
+    ;;
 
-      *)
-        echo -n \$"Usage: /etc/init.d/\$NAME {start|stop|reload|restart|force-reload|syntax|status}" \$'\n'
-        ;;
-    esac
+  *)
+    echo -n \$"Usage: /etc/init.d/\$NAME {start|stop|reload|restart|force-reload|syntax|status}" \$'\n'
+    ;;
+esac
 
-    exit \$RETVAL
-    END
+exit \$RETVAL
+END
 
-    chmod +x /etc/init.d/node_exporter
-    service node_exporter start
-    chkconfig node_exporter on
+chmod +x /etc/init.d/node_exporter
+service node_exporter start
+chkconfig node_exporter on
 
-  EOT
+EOT
 
   vars {
     ecs_cluster_name = "${local.ecs_cluster_name}"
