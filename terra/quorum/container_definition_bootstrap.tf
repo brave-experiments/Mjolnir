@@ -120,7 +120,7 @@ EOP
     "export GOPATH=/istanbul-tools",
     "export GOROOT=/usr/lib/go",
     "echo '${local.validator_address_program}' > /istanbul-tools/src/github.com/getamis/istanbul-tools/extra.go",
-    "all=\"\"; for f in `ls ${local.node_ids_folder}`; do address=$(cat ${local.node_ids_folder}/$f); all=\"$all,$(go run /istanbul-tools/src/github.com/getamis/istanbul-tools/extra.go $address)\"; done",
+    "all=\"\"; for f in $(ls ${local.node_ids_folder}); do address=$(cat ${local.node_ids_folder}/$f); all=\"$all,$(go run /istanbul-tools/src/github.com/getamis/istanbul-tools/extra.go $address)\"; done",
     "all=\"$${all:1}\"",
     "echo Validator Addresses: $all",
     "extraData=\"\\\"$(go run /istanbul-tools/src/github.com/getamis/istanbul-tools/cmd/istanbul/main.go extra encode --validators $all | awk -F: '{print $2}' | tr -d ' ')\\\"\"",
@@ -170,7 +170,7 @@ EOP
     "echo \"All nodes have registered their IDs\"",
 
     // Prepare Genesis file
-    "alloc=\"\"; for f in `ls ${local.accounts_folder}`; do address=$(cat ${local.accounts_folder}/$f); alloc=\"$alloc,\\\"$address\\\": { \"balance\": \"\\\"1000000000000000000000000000\\\"\"}\"; done",
+    "alloc=\"\"; for f in $(ls ${local.accounts_folder}); do address=$(cat ${local.accounts_folder}/$f); alloc=\"$alloc,\\\"$address\\\": { \"balance\": \"\\\"1000000000000000000000000000\\\"\"}\"; done",
 
     "alloc=\"{$${alloc:1}}\"",
     "extraData=\"\\\"0x0000000000000000000000000000000000000000000000000000000000000000\\\"\"",

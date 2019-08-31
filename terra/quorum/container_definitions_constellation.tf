@@ -8,7 +8,7 @@ locals {
     "export HOST_IP=$(cat ${local.host_ip_file})",
     "echo \"\nHost IP: $HOST_IP\"",
     "echo \"Public Key: $(cat ${local.constellation_pub_key_file})\"",
-    "all=\"\"; for f in `ls ${local.hosts_folder} | grep -v ${local.normalized_host_ip}`; do ip=$(cat ${local.hosts_folder}/$f); all=\"$all,\\\"http://$ip:${local.constellation_port}/\\\"\"; done",
+    "all=\"\"; for f in $(ls ${local.hosts_folder} | grep -v ${local.normalized_host_ip}); do ip=$(cat ${local.hosts_folder}/$f); all=\"$all,\\\"http://$ip:${local.constellation_port}/\\\"\"; done",
     "echo \"Creating ${local.constellation_config_file}\"",
     "echo \"# This file is auto generated. Please do not edit\" > ${local.constellation_config_file}",
     "echo \"url = \\\"http://$HOST_IP:${local.constellation_port}/\\\"\" >> ${local.constellation_config_file}",
