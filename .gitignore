@@ -13,3 +13,4 @@ temp.tf
 !terra/shared/terraform.tfvars
 vendor
 src
+terra/static.go

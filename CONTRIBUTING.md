@@ -23,3 +23,7 @@ This logic should be sustained to clearify where code should be executed
 
 ### IDE Goland
 To forward go dependencies from container to your host write `go mod vendor` within container
+
+### Terraform Code:
+Never use "`" (&#96;) sign in terraform code.
+We pass it to build as static asset, so this sign will be removed from whole string
