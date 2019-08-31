@@ -231,6 +231,8 @@ global:
 # Here it's Prometheus itself.
 scrape_configs:
 - job_name: 'node'
+  static_configs:
+  - targets: ['node-exporter:9100','gethexporter:9090']
   file_sd_configs:
   - files:
     - 'targets.json'
@@ -260,7 +262,15 @@ services:
         depends_on:
             - prometheus
         ports:
-            - "3001:3000"
+            - '3001:3000'
+    gethexporter:
+        image: hunterlong/gethexporter:latest
+        environment:
+            - GETH=http://mygethserverhere:22000
+        depends_on:
+            - prometheus
+        ports:
+            - '9191:9090'
 SS
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
@@ -276,12 +286,11 @@ do
     echo '{ "targets": ["'$ip':9100"] },' >> $target_file
   else
     echo '{ "targets": ["'$ip':9100"] }'  >> $target_file
-    echo $i >> /tmp/test1
-    echo $count >> /tmp/test2
   fi
 done
 echo ']' >> $target_file
 sudo mv $target_file /opt/prometheus/
+sudo sed -i s"/mygethserverhere/$ip/" /opt/prometheus/docker-compose.yml
 sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
 EOF
 }
