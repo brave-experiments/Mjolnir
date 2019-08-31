@@ -262,7 +262,7 @@ services:
         depends_on:
             - prometheus
         ports:
-            - '30feature/31/static-assets-to-binary01:3000'
+            - '3001:3000'
     gethexporter:
         image: hunterlong/gethexporter:latest
         environment:
