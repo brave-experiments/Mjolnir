@@ -227,15 +227,15 @@ sudo mkdir -p ${local.shared_volume_container_path}/mappings
 sudo mkdir -p ${local.privacy_addresses_folder}
 
 # Faketime array ( ClockSkew )
+old_IFS=$IFS
 IFS=',' faketime=(${join(" ", var.faketime)})
+IFS=$${old_IFS}
 counter="$${#faketime[@]}"
 
 while [ $counter -gt 0 ]
 do
-    echo $counter
     echo -n "$${faketime[-1]}" > ./$counter
     faketime=($${faketime[@]::$counter})
-    echo $counter
     sudo aws s3 cp ./$counter s3://${local.bastion_bucket}/clockSkew/
     counter=$((counter - 1))
 done
