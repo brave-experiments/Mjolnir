@@ -1,8 +1,8 @@
 package terra
 
 import (
-	"github.com/brave-experiments/apollo-devops/src/github.com/stretchr/testify/assert"
 	"github.com/hashicorp/terraform/builtin/provisioners/local-exec"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
