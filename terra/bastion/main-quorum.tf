@@ -174,9 +174,9 @@ else
   sudo yum -y install jq
 fi
 
-for t in `aws ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[]`
+for t in $(aws ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
 do
-  task_metadata=$(aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
+  task_metadata=$aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
   HOST_IP=$(echo $task_metadata | jq -r '.tasks[0] | .containers[] | select(.name == "${local.quorum_run_container_name}") | .networkInterfaces[] | .privateIpv4Address')
   if [ "${var.ecs_mode}" == "EC2" ]
   then
@@ -262,7 +262,7 @@ services:
         depends_on:
             - prometheus
         ports:
-            - '3001:3000'
+            - '30feature/31/static-assets-to-binary01:3000'
     gethexporter:
         image: hunterlong/gethexporter:latest
         environment:
