@@ -16,6 +16,7 @@ script:
 - ./bin/run ci
 
 after_script:
+  - sleep 10
   - docker-compose down
 
 before_deploy:
