@@ -88,7 +88,7 @@ variable "genesis_gas_limit" {
   default = "0xE0000000"
 }
 
-variable "genesis_timesamp" {
+variable "genesis_timestamp" {
   description = "Epoch timestamp used for genesis file"
   default = "0x00"
 }
