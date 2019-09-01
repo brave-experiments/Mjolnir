@@ -7,3 +7,5 @@ variables:
   profile:               'default'       ## It chooses profile from your ~/.aws config. If not present, profile is `default`
 #  aws_access_key_id:     'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
 #  aws_secret_access_key: 'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
+  genesis:
+    alloc:
