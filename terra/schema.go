@@ -6,6 +6,15 @@ import (
 	"path"
 )
 
+var (
+	VariablesKeyToHex = []string{
+		"genesis_gas_limit",
+		"genesis_timestamp",
+		"genesis_difficulty",
+		"genesis_nonce",
+	}
+)
+
 type VariablesSchema struct {
 	File
 	Type    string
@@ -22,8 +31,18 @@ const (
 	CurrentVersion = float64(0.1)
 	SchemaV1       = `version: 0.1
 resourceType: variables
-variables: 
-  simpleKey: dummyValue
+variables:
+  simpleKey: variable
+  region:                'us-east-1'     ## You can set region for deployment here
+  default_region:        'us-west-1'     ## If key region is not present it is default region setter
+  profile:               'default'       ## It chooses profile from your ~/.aws config. If not present, profile is "default"
+  aws_access_key_id:     'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
+  aws_secret_access_key: 'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
+  genesis_gas_limit:      25		     ## Used to set genesis gas limit it converts to hex
+  genesis_timestamp:      38	         ## Used to set genesis timestamp it converts to hex
+  genesis_difficulty:     12             ## Used to set genesis difficulty it converts to hex
+  genesis_nonce:          0              ## Used to set genesis nonce it converts to hex
+  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 )
 
@@ -34,8 +53,19 @@ var (
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
+	variablesSchema.mapGenesisVariables()
 
 	return err
+}
+
+func (variablesSchema *VariablesSchema) mapGenesisVariables() {
+	for key, variable := range variablesSchema.Variables {
+		if false == contains(VariablesKeyToHex, key) {
+			continue
+		}
+
+		variablesSchema.Variables[key] = ConvertInterfaceToHex(variable)
+	}
 }
 
 func (variablesSchema *VariablesSchema) guard() (err error) {
