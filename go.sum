@@ -110,6 +110,8 @@ github.com/dylanmei/iso8601 v0.1.0 h1:812NGQDBcqquTfH5Yeo7lwR0nzx/cKdsmf3qMjPURU
 github.com/dylanmei/iso8601 v0.1.0/go.mod h1:w9KhXSgIyROl1DefbMYIE7UVSIvELTbMrCfx+QkYnoQ=
 github.com/dylanmei/winrmtest v0.0.0-20170819153634-c2fbb09e6c08/go.mod h1:VBVDFSBXCIW8JaHQpI8lldSKfYaLMzP9oyq6IJ4fhzY=
 github.com/dylanmei/winrmtest v0.0.0-20190225150635-99b7fe2fddf1/go.mod h1:lcy9/2gH1jn/VCLouHA6tOEwLoNVd4GW6zhuKLmHC2Y=
+github.com/ethereum/go-ethereum v1.9.2 h1:RMIHDO/diqXEgORSVzYx8xW9x2+S32PoAX5lQwya0Lw=
+github.com/ethereum/go-ethereum v1.9.2/go.mod h1:PwpWDrCLZrV+tfrhqqF6kPknbISMHaJv9Ln3kPCZLwY=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
@@ -444,7 +446,6 @@ github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJy
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/svanharmelen/jsonapi v0.0.0-20180618144545-0c0828c3f16d/go.mod h1:BSTlc8jOjh0niykqEGVXOLXdi9o0r0kR8tCYiMvjFgw=
 github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07/go.mod h1:kDXzergiv9cbyO7IOYJZWg1U88JhDg3PB6klq9Hg2pA=
-github.com/terraform-aws-modules/terraform-aws-vpc v2.9.0+incompatible/go.mod h1:CKWt7AE6s7KwWo90oGcCPupV2j6aT4UC8OLwi7FCSO0=
 github.com/terraform-providers/terraform-provider-aws v1.29.0 h1:gvi87HjR5Q1YSD2ihBadB+gd/DNk+6F8Ki4vGxIVnlM=
 github.com/terraform-providers/terraform-provider-aws v1.29.0/go.mod h1:uvqaeKnm2ydZ2LuKuW1NDNBu6heC/7IDGXWm36/6oKs=
 github.com/terraform-providers/terraform-provider-local v1.1.0 h1:9sqx15JtSUFqz5TlIVXp/m89F38c4xGRo2h24VLTm5g=
