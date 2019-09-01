@@ -14,3 +14,4 @@ temp.tf
 vendor
 src
 values-local.yml
+variables.log

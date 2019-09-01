@@ -1,13 +1,18 @@
 package terra
 
 import (
+	"fmt"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
-	"os"
 )
 
 const (
 	CombinedRecipeDefaultFileName = "temp.tf"
+	LastExecutedVariablesFileName = "variables.log"
+)
+
+var (
+	LastExecutedFileName = LastExecutedVariablesFileName
 )
 
 type Client struct {
@@ -50,23 +55,31 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 		return err
 	}
 
+	executableFile := File{
+		Location: LastExecutedFileName,
+		Body:     fmt.Sprintf("Last executed variables in recipe: \n%s", file.Variables),
+	}
+
+	err = executableFile.WriteFile()
+
+	if nil != err {
+		return err
+	}
+
 	err = client.platform.Apply(destroy)
 
 	if nil != err {
 		return err
 	}
 
-	// Cover this feature beneath the feature flag
-	if "true" == os.Getenv("CLI_FEATURE_TERRASTATE") {
-		err = client.WriteStateToFile()
+	err = client.WriteStateToFile()
 
-		if nil != err {
-			return err
-		}
-
-		// Synchronize state from platform and state object
-		err = client.state.ReadFile()
+	if nil != err {
+		return err
 	}
+
+	// Synchronize state from platform and state object
+	err = client.state.ReadFile()
 
 	return err
 }
