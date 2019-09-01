@@ -7,8 +7,8 @@ variables:
   profile:               'default'       ## It chooses profile from your ~/.aws config. If not present, profile is `default`
 #  aws_access_key_id:     'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
 #  aws_secret_access_key: 'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
-#  genesis_gas_limit:      "0xE0000000"   ## Used to set genesis gas limit
-#  genesis_timestamp:      "0x00"         ## Used to set genesis timestamp
-#  genesis_difficulty:     "0x0"          ## Used to set genesis difficulty
-#  genesis_nonce:          "0x0"          ## Used to set genesis nonce
-#  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism
+#  genesis_gas_limit:      25		     ## Used to set genesis gas limit it converts to hex
+#  genesis_timestamp:      38	         ## Used to set genesis timestamp it converts to hex
+#  genesis_difficulty:     12             ## Used to set genesis difficulty it converts to hex
+#  genesis_nonce:          0              ## Used to set genesis nonce it converts to hex
+#  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
