@@ -8,6 +8,8 @@ services:
       - ./:/usr/local/go/src/github.com/brave-experiments/apollo-devops
     env_file:
       - .env
+    command: >
+      sh -c "CompileDaemon -log-prefix=false -build=\"echo acquired change\" "
     networks:
       apollo:
         aliases:

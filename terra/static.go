@@ -1502,7 +1502,7 @@ fi
 
 for t in $(aws ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
 do
-  task_metadata=$aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
+  task_metadata=$(aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
   HOST_IP=$(echo $task_metadata | jq -r '.tasks[0] | .containers[] | select(.name == "${local.quorum_run_container_name}") | .networkInterfaces[] | .privateIpv4Address')
   if [ "${var.ecs_mode}" == "EC2" ]
   then
@@ -3653,7 +3653,7 @@ variable "genesis_gas_limit" {
   default = "0xE0000000"
 }
 
-variable "genesis_timesamp" {
+variable "genesis_timestamp" {
   description = "Epoch timestamp used for genesis file"
   default = "0x00"
 }
