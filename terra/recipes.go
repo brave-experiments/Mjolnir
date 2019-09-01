@@ -45,6 +45,7 @@ var (
 					"region":       "us-east-2",
 					"profile":      "default",
 				},
+				Body: StaticQuorum,
 				envVariablesMap: map[string]string{
 					"region":                AwsRegion,
 					"profile":               AwsProfile,

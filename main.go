@@ -10,9 +10,13 @@ var (
 	Cli *cli.CLI
 )
 
+const (
+	CliName = "apollo"
+)
+
 func New() *cli.CLI {
 	Cli = cli.NewCLI(
-		os.Getenv("CLI_NAME"),
+		CliName,
 		os.Getenv("CLI_VERSION"),
 	)
 	Cli.Args = os.Args[1:]

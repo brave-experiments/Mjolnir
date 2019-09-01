@@ -16,7 +16,9 @@ type Client struct {
 }
 
 func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
-	err = recipe.ParseBody()
+	if len(recipe.Body) < 1 {
+		err = recipe.ParseBody()
+	}
 
 	if nil != err {
 		return err
