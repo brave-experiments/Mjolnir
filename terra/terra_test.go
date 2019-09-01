@@ -67,6 +67,28 @@ func TestClient_ApplyCombinedFailure(t *testing.T) {
 		err.Error(),
 	)
 
+	// Test that file path for default write file is invalid
+	LastExecutedFileName = "/some/dummy.path/invalid"
+	PrepareDummyFile(t, filePath, "")
+	filePath = "dummy.tf"
+	combinedRecipe = CombinedRecipe{
+		File: File{
+			Variables: variables,
+		},
+		FilePaths: []string{
+			filePath,
+		},
+	}
+	err = client.ApplyCombined(combinedRecipe, false)
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		fmt.Sprintf("open %s: no such file or directory", LastExecutedFileName),
+		err.Error(),
+	)
+	LastExecutedFileName = LastExecutedVariablesFileName
+	RemoveDummyFile(t, filePath)
+
 	//Test that file body is not valid
 	PrepareDummyFile(t, filePath, DummyRecipeBodyFail)
 	err = client.ApplyCombined(combinedRecipe, false)
@@ -78,6 +100,7 @@ func TestClient_ApplyCombinedFailure(t *testing.T) {
 	)
 
 	RemoveDummyFile(t, filePath)
+	RemoveDummyFile(t, LastExecutedFileName)
 	removeStateFileAndRestore(t)
 }
 
@@ -92,8 +115,21 @@ func TestClient_ApplyCombined(t *testing.T) {
 	err := client.ApplyCombined(combinedRecipe, false)
 	assert.Nil(t, err)
 
+	file := File{
+		Location: LastExecutedFileName,
+	}
+
+	err = file.ReadFile()
+	assert.Nil(t, err)
+	assert.Equal(
+		t,
+		fmt.Sprintf("Last executed variables in recipe: \n%s", file.Variables),
+		file.Body,
+	)
+
 	RemoveDummyFile(t, filePath)
 	removeStateFileAndRestore(t)
+	RemoveDummyFile(t, LastExecutedFileName)
 }
 
 func TestClient_ApplyFailure(t *testing.T) {
@@ -126,6 +162,7 @@ func TestClient_ApplyFailure(t *testing.T) {
 	)
 
 	removeStateFileAndRestore(t)
+	RemoveDummyFile(t, LastExecutedFileName)
 }
 
 func TestClient_DefaultClientCreateStateFile(t *testing.T) {
