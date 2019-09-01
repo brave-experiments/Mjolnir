@@ -1,7 +1,7 @@
 package terra
 
 var (
-    StaticQuorum = `
+	StaticQuorum = `
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${aws_vpc.this.id}"
@@ -2813,13 +2813,13 @@ locals {
       "isQuorum"       = "true"
     }
 
-    "difficulty" = "0x0"
+    "difficulty" = "${var.genesis_difficulty}"
     "extraData"  = "0x0000000000000000000000000000000000000000000000000000000000000000"
-    "gasLimit"   = "0xE0000000"
+    "gasLimit"   = "${var.genesis_gas_limit}"
     "mixHash"    = "0x00000000000000000000000000000000000000647572616c65787365646c6578"
-    "nonce"      = "0x0"
+    "nonce"      = "${var.genesis_nonce}"
     "parentHash" = "0x0000000000000000000000000000000000000000000000000000000000000000"
-    "timestamp"  = "0x00"
+    "timestamp"  = "${var.genesis_timestamp}"
   }
 }
 
@@ -3646,6 +3646,26 @@ variable "consensus_mechanism" {
 variable "tx_privacy_engine" {
   description = "Engine that implements transaction privacy. Supported values are constellation/tessera"
   default     = "tessera"
+}
+
+variable "genesis_gas_limit" {
+  description = "Gas limit used for genesis file"
+  default = "0xE0000000"
+}
+
+variable "genesis_timesamp" {
+  description = "Epoch timestamp used for genesis file"
+  default = "0x00"
+}
+
+variable "genesis_difficulty" {
+  description = "Difficulty used for genesis file"
+  default = "0x0"
+}
+
+variable "genesis_nonce" {
+  description = "Nonce used for genesis file"
+  default = "0x0"
 }
 
 //TODO remove
