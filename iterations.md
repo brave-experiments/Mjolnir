@@ -22,22 +22,21 @@ So I have a complete testing environment available.
    [x] - Quorum (https://github.com/jpmorganchase/quorum)
 - [] For each client that is supported, the following consensus engines should be configurable:
     - [] Quorum: IBFT , Raft, Clique
-- [] Monitor VM metrics
-    - [] CPU Utilization
-    - [] Memory Utilization
-    - [] Disk Reads / Writes
-    - [] Network (Egress / Ingress)
+- [x] Monitor VM metrics
+    - [x] CPU Utilization
+    - [x] Memory Utilization
+    - [x] Disk Reads / Writes
+    - [x] Network (Egress / Ingress)
 
 - [] For each client, version number should also be configurable.
 - [] It should be possible to specify each off the following from the
 command line:
     - [x] stepDuration/ Blocktime / Epoch
     - [x] Blockgaslimit
-- [] Basic client metrics from relevant exporter
-- [] Client container logs available though AWS CloudWatch
-- [] Basic client metrics from relevant exporter
+- [x] Basic client metrics from relevant exporter
+- [x] Client container logs available though AWS CloudWatch
 - [] Client container logs available though Logging tool
-- [] Monitor Ethereum specific metrics:
+- [x] Monitor Ethereum specific metrics:
     - [] Should include logs from the client. These should trigger and alert for WARN or ERROR log levels.
     - [] The following RPC endpoints should be polled: 
         - [] Block Number
