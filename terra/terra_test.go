@@ -2,6 +2,8 @@ package terra
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform/builtin/provisioners/local-exec"
+	"github.com/hashicorp/terraform/builtin/provisioners/remote-exec"
 	"github.com/johandry/terranova"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
@@ -285,6 +287,7 @@ func TestClient_DefaultClient(t *testing.T) {
 	err := client.DefaultClient()
 	assert.Nil(t, err)
 	providers := client.platform.Providers
+	provisioners := client.platform.Provisioners
 	assert.NotNil(t, providers)
 
 	provider, ok := providers["random"]
@@ -310,6 +313,14 @@ func TestClient_DefaultClient(t *testing.T) {
 	provider, ok = providers["template"]
 	assert.True(t, ok)
 	assert.IsType(t, aws.Provider(), provider)
+
+	provisioner, ok := provisioners["local-exec"]
+	assert.True(t, ok)
+	assert.IsType(t, localexec.Provisioner(), provisioner)
+
+	provisioner, ok = provisioners["remote-exec"]
+	assert.True(t, ok)
+	assert.IsType(t, remoteexec.Provisioner(), provisioner)
 }
 
 func createTestedDefaultClient(t *testing.T) Client {
