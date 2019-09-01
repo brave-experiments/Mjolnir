@@ -83,6 +83,26 @@ variable "tx_privacy_engine" {
   default     = "tessera"
 }
 
+variable "genesis_gas_limit" {
+  description = "Gas limit used for genesis file"
+  default = "0xE0000000"
+}
+
+variable "genesis_timesamp" {
+  description = "Epoch timestamp used for genesis file"
+  default = "0x00"
+}
+
+variable "genesis_difficulty" {
+  description = "Difficulty used for genesis file"
+  default = "0x0"
+}
+
+variable "genesis_nonce" {
+  description = "Nonce used for genesis file"
+  default = "0x0"
+}
+
 //TODO remove
 /*
 variable "quorum_bucket" {
