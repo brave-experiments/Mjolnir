@@ -12,7 +12,6 @@ import (
 )
 
 const (
-	StaticKeyPrefix    = "Static"
 	StaticFilePath     = "terra/static.go"
 	StaticFileTemplate = `
 package {{with .PackageName}}{{index .}}{{else}}builder{{end}}

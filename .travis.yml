@@ -16,7 +16,8 @@ script:
 - ./bin/run ci
 
 after_script:
-  - docker-compose down
+  - sleep 10
+  - docker-compose down --remove-orphans -t 20
 
 before_deploy:
 - git config --local user.name "TravisCI"
