@@ -21,7 +21,10 @@ So I have a complete testing environment available.
 - [x] Support the following clients:
    [x] - Quorum (https://github.com/jpmorganchase/quorum)
 - [] For each client that is supported, the following consensus engines should be configurable:
-    - [] Quorum: IBFT , Raft, Clique
+    - [] Quorum: 
+        - [x] IBFT
+        - [x] Raft
+        - [] Clique
 - [x] Monitor VM metrics
     - [x] CPU Utilization
     - [x] Memory Utilization

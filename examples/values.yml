@@ -2,8 +2,8 @@ version: 0.1
 resourceType: variables
 variables:
   simpleKey: variable
-  region:                'us-east-1'     ## You can set region for deployment here
-  default_region:        'us-west-1'     ## If key region is not present it is default region setter
+  region:                'us-east-2'     ## You can set region for deployment here
+  default_region:        'us-east-2'     ## If key region is not present it is default region setter
   profile:               'default'       ## It chooses profile from your ~/.aws config. If not present, profile is `default`
 #  aws_access_key_id:     'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
 #  aws_secret_access_key: 'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
