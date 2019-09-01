@@ -446,7 +446,6 @@ github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJy
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/svanharmelen/jsonapi v0.0.0-20180618144545-0c0828c3f16d/go.mod h1:BSTlc8jOjh0niykqEGVXOLXdi9o0r0kR8tCYiMvjFgw=
 github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07/go.mod h1:kDXzergiv9cbyO7IOYJZWg1U88JhDg3PB6klq9Hg2pA=
-github.com/terraform-aws-modules/terraform-aws-vpc v2.9.0+incompatible/go.mod h1:CKWt7AE6s7KwWo90oGcCPupV2j6aT4UC8OLwi7FCSO0=
 github.com/terraform-providers/terraform-provider-aws v1.29.0 h1:gvi87HjR5Q1YSD2ihBadB+gd/DNk+6F8Ki4vGxIVnlM=
 github.com/terraform-providers/terraform-provider-aws v1.29.0/go.mod h1:uvqaeKnm2ydZ2LuKuW1NDNBu6heC/7IDGXWm36/6oKs=
 github.com/terraform-providers/terraform-provider-local v1.1.0 h1:9sqx15JtSUFqz5TlIVXp/m89F38c4xGRo2h24VLTm5g=

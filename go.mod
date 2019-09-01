@@ -18,7 +18,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/posener/complete v1.2.1 // indirect
 	github.com/stretchr/testify v1.4.0
-	github.com/terraform-aws-modules/terraform-aws-vpc v2.9.0+incompatible
 	github.com/terraform-providers/terraform-provider-aws v1.29.0
 	github.com/terraform-providers/terraform-provider-local v1.1.0
 	github.com/terraform-providers/terraform-provider-null v1.0.0
