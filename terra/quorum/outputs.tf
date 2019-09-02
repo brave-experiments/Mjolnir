@@ -37,3 +37,11 @@ output "private_key_file" {
 output "bucket_name" {
   value = "${aws_s3_bucket.quorum.bucket}"
 }
+
+output "grafana_host_url" {
+  value = "http://${aws_instance.bastion.public_ip}:3001"
+}
+
+output "grafana_password" {
+  value = "${random_string.random.result}"
+}
