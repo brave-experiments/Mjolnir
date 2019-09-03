@@ -19,6 +19,7 @@ locals {
   constellation_docker_image     = "${var.tx_privacy_engine == "constellation" ? format("%s:%s", var.constellation_docker_image, var.constellation_docker_image_tag) : ""}"
   quorum_docker_image            = "${format("%s:%s", var.quorum_docker_image, var.quorum_docker_image_tag)}"
   tx_privacy_engine_docker_image = "${coalesce(local.tessera_docker_image, local.constellation_docker_image)}"
+  chaos_testing_docker_image     = "${format("%s:%s", var.chaos_testing_docker_image, var.chaos_testing_docker_image_tag)}"
   aws_cli_docker_image           = "${format("%s:%s", var.aws_cli_docker_image, var.aws_cli_docker_image_tag)}"
 
   common_tags = {
