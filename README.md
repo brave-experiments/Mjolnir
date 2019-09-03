@@ -63,4 +63,12 @@ On bastion you will find Node{n} scripts. To get nodes IP addresses for each one
 
 You can then connect to each node from your workstation using the same key like for bastion.
 
+Additional tools you will find under links
+* eth-stats: http://bastion_host_ip:3000
+* Grafana: http://bastion_host_ip:3001
+* Prometheus: http://bastion_host_ip:9090
+
+
+
+
 We will update this file as soon as CLI `output` is fixed. 
