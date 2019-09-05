@@ -12,21 +12,6 @@ import (
 	"testing"
 )
 
-const (
-	DummyRecipeBodyFail = `variable "count"    { default = 2 }
-  variable "key_name" {}
-  variable "region" {}
-  provider "aws" {
-    region        =  "${var.region}"
-  }
-  resource "aws_instance" "server" {
-    instance_type = "t2.micro"
-    ami           = "ami-6e1a0117"
-    count         = "${var.count}"
-    key_name      = "${var.key_name}"
-  }`
-)
-
 func TestClient_ApplyCombinedFailure(t *testing.T) {
 	client := createTestedDefaultClient(t)
 	assert.IsType(t, Client{}, client)
