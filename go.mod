@@ -4,18 +4,13 @@ go 1.12
 
 require (
 	github.com/armon/go-radix v1.0.0 // indirect
-	github.com/davecgh/go-spew v1.1.1
 	github.com/dustinkirkland/golang-petname v0.0.0-20190613200456-11339a705ed2 // indirect
 	github.com/ethereum/go-ethereum v1.9.2
-	github.com/hashicorp/go-getter v0.0.0-20180327010114-90bb99a48d86
-	github.com/hashicorp/go-multierror v1.0.0
-	github.com/hashicorp/go-version v1.0.0
 	github.com/hashicorp/terraform v0.11.13
 	github.com/johandry/terranova v0.0.0-20190422213246-704ed6ce88e7
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mitchellh/cli v1.0.0
-	github.com/pmezard/go-difflib v1.0.0
 	github.com/posener/complete v1.2.1 // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/terraform-providers/terraform-provider-aws v1.29.0
