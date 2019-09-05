@@ -70,6 +70,7 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 
 	if nil != err {
 		_ = client.WriteStateToFile()
+
 		return err
 	}
 

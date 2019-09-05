@@ -3,7 +3,7 @@ package terra
 import "os"
 
 const (
-	DefaulStateFileName  = "default.tfstate"
+	DefaulStateFileName  = "terraform.tfstate"
 	DefaultStateFileBody = `{
     "version": 3,
     "terraform_version": "0.11.13",
