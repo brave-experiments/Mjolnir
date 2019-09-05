@@ -5,27 +5,14 @@ import (
 	"testing"
 )
 
-func TestOutputRecord_ParseOutputsFromJson(t *testing.T) {
-	outputRecord := OutputRecord{}
-	outputRecord.ParseOutputsFromJson(InvalidOutputFixture)
-	assert.Equal(t, "", outputRecord.Name)
-	assert.Equal(t, false, outputRecord.Sensitive)
-	assert.Equal(t, "", outputRecord.Type)
-	assert.Nil(t, outputRecord.Value)
+func TestOutputRecords_ParseOutputsFromJson(t *testing.T) {
+	// It fails on invalid fixture
+	outputRecords := OutputRecords{}
+	outputRecords.ParseOutputsFromJson(InvalidOutputFixture)
+	assert.Equal(t, 0, len(outputRecords.Records))
 
-	outputRecordName := "dummyRecord"
-	outputRecord = OutputRecord{Name: outputRecordName}
-	outputRecord.ParseOutputsFromJson(InvalidOutputFixture)
-	assert.Equal(t, outputRecordName, outputRecord.Name)
-	assert.Equal(t, false, outputRecord.Sensitive)
-	assert.Equal(t, "", outputRecord.Type)
-	assert.Nil(t, outputRecord.Value)
-
-	outputRecordName = "bastion_host_ip"
-	outputRecord = OutputRecord{Name: outputRecordName}
-	outputRecord.ParseOutputsFromJson(ProperOutputFixture)
-	assert.Equal(t, outputRecordName, outputRecord.Name)
-	assert.Equal(t, false, outputRecord.Sensitive)
-	assert.Equal(t, "", outputRecord.Type)
-	assert.Nil(t, outputRecord.Value)
+	// It parses records
+	outputRecords = OutputRecords{}
+	outputRecords.ParseOutputsFromJson(ProperOutputFixture)
+	assert.Equal(t, 1, len(outputRecords.Records))
 }
