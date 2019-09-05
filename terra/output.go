@@ -1,9 +1,17 @@
 package terra
 
-import "github.com/tidwall/gjson"
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/tidwall/gjson"
+)
 
 const (
-	ModulesLocator = "modules.outputs"
+	ModulesLocator = "modules"
+)
+
+var (
+	SupportedType = "string"
 )
 
 type OutputRecord struct {
@@ -13,13 +21,36 @@ type OutputRecord struct {
 	Value     interface{} `json:"value"`
 }
 
-func (outputRecord *OutputRecord) ParseOutputsFromJson(jsonBody string) {
-	outputLocator := ModulesLocator + "." + outputRecord.Name
-	jsonOutputs := gjson.Get(jsonBody, outputLocator)
+type OutputRecords struct {
+	Records []OutputRecord
+}
 
-	if false == jsonOutputs.Exists() {
+func (outputRecords *OutputRecords) ParseOutputsFromJson(jsonBody string) {
+	modulesLocator := ModulesLocator
+	jsonModules := gjson.Get(jsonBody, modulesLocator)
+
+	if false == jsonModules.Exists() {
 		return
 	}
 
-	//outputRecord.Sensitive = jsonOutputs.Exists()
+	outputRecords.Records = make([]OutputRecord, 0)
+
+	jsonModules.ForEach(func(key, value gjson.Result) bool {
+		records := make([]OutputRecord, 0)
+		jsonOutputs := value.Get("outputs")
+		err := json.Unmarshal([]byte(jsonOutputs.Raw), &records)
+
+		// This is key => value not []value!
+
+		if nil != err {
+			fmt.Println("Error!: ", err)
+			return false
+		}
+
+		outputRecords.Records = append(outputRecords.Records, records...)
+
+		return true
+	})
+
+	fmt.Println("records!", outputRecords.Records)
 }
