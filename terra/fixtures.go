@@ -1,7 +1,8 @@
 package terra
 
 const (
-	ProperOutputFixture = `{
+	InvalidOutputFixture = `{"some": "value", "modules": {}}`
+	ProperOutputFixture  = `{
     "version": 3,
     "terraform_version": "0.11.13",
     "serial": 3,
