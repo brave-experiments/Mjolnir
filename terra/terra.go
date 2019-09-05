@@ -82,6 +82,9 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 
 	// Synchronize state from platform and state object
 	err = client.state.ReadFile()
+	outputRecords := OutputRecords{}
+	outputRecords.ParseOutputsFromJson(client.platform.State.String())
+	println(outputRecords.Records)
 
 	return err
 }
