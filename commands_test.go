@@ -162,7 +162,7 @@ func GetMockedRecipes(
 		keyName,
 		terra.CombinedRecipe{
 			File: terra.File{
-				Location: fileName,
+				Location:             fileName,
 				EnvVariablesRollBack: envVariablesRollback,
 			},
 			FilePaths: []string{fileName},
