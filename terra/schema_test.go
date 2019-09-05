@@ -83,6 +83,17 @@ func TestVariablesSchema_ReadFailure(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, "yaml: line 1: did not find expected ',' or '}'", err.Error())
 	RemoveDummyFile(t, dummyFilePath)
+
+	// It fails on invalid file path
+	dummyFilePath = "dummyInvalidPath.yml"
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		fmt.Sprintf("open %s: no such file or directory", dummyFilePath),
+		err.Error(),
+	)
 }
 
 func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
