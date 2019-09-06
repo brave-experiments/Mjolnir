@@ -130,7 +130,11 @@ func (client *Client) WriteStateToFile() (err error) {
 
 	client.platform, err = client.platform.WriteStateToFile(client.state.Location)
 
-	return err
+	if nil != err {
+		return err
+	}
+
+	return
 }
 
 func (client *Client) DumpVariables() (vars map[string]interface{}, err error) {
