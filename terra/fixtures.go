@@ -4315,4 +4315,12 @@ variables:
 	PrivateKeyPairBody                    = "---DUMMY PRIVATE KEY---"
 	PublicKeyPairBody                     = "---DUMMY PUBLIC KEY---"
 	OpenSshKeyBody                        = "dummyKeySsh"
+	DefaulStateFileName                   = "terraform.tfstate"
+	DefaultStateFileBody                  = `{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 1,
+    "outputs": {},
+    "resources": []
+}`
 )
