@@ -76,8 +76,25 @@ func (currentKeyPair *keyPair) Save() (err error) {
 		return ClientError{"Deploy Name not present"}
 	}
 
+	if len(currentKeyPair.PublicKey) < 1 || len(currentKeyPair.PrivateKey) < 1 {
+		return ClientError{"Key pair body is absent"}
+	}
+
 	client := Client{}
-	_, err = client.CreateDirInTemp(currentKeyPair.DeployName)
+	location, err := client.CreateDirInTemp(currentKeyPair.DeployName)
+	fmt.Println("this is location", location)
+
+	if nil != err {
+		return err
+	}
+
+	err = currentKeyPair.writePrivateKey(location)
+
+	if nil != err {
+		return err
+	}
+
+	err = currentKeyPair.writePublicKey(location)
 
 	if nil != err {
 		return err
@@ -187,4 +204,42 @@ func (currentKeyPair *keyPair) mapName(key string, value gjson.Result) {
 	}
 
 	currentKeyPair.DeployName = deploymentName.String()
+}
+
+func (currentKeyPair *keyPair) writePrivateKey(location string) (err error) {
+	privateKeyName := location + "/id_rsa"
+
+	privateKeyFile := File{
+		Location: privateKeyName,
+		Body:     currentKeyPair.PrivateKey,
+	}
+
+	err = privateKeyFile.WriteFile()
+
+	if nil != err {
+		return err
+	}
+
+	currentKeyPair.privateKeyFile = privateKeyFile
+
+	return
+}
+
+func (currentKeyPair *keyPair) writePublicKey(location string) (err error) {
+	publicKeyName := location + "/id_rsa.pub"
+
+	publicKeyFile := File{
+		Location: publicKeyName,
+		Body:     currentKeyPair.PublicKey,
+	}
+
+	err = publicKeyFile.WriteFile()
+
+	if nil != err {
+		return err
+	}
+
+	currentKeyPair.publicKeyFile = publicKeyFile
+
+	return
 }

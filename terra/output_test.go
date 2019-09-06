@@ -3,6 +3,7 @@ package terra
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
@@ -118,16 +119,83 @@ func TestKeyPair_FromJson(t *testing.T) {
 	assert.Equal(t, "2048", keyPairToTest.RsaBits)
 }
 
-//func TestKeyPair_SaveFailure(t *testing.T) {
-//	keyPairToTest := keyPair{}
-//	err := keyPairToTest.Save()
-//	assert.IsType(t, ClientError{}, err)
-//	assert.Equal(t, "Deploy Name not present", err.Error())
-//
-//	deploymentName := "dummy-deploy"
-//	keyPairToTest = keyPair{
-//		DeployName: deploymentName,
-//	}
-//	err = keyPairToTest.Save()
-//
-//}
+func TestKeyPair_SaveFailure(t *testing.T) {
+	// Should fail when no deploy name
+	TempDirPathLocation = ".apolloTest"
+	keyPairToTest := keyPair{}
+	err := keyPairToTest.Save()
+	assert.IsType(t, ClientError{}, err)
+	assert.Equal(t, "Deploy Name not present", err.Error())
+
+	// Should fail when no key pair
+	deploymentName := "dummy-deploy"
+	keyPairToTest = keyPair{
+		DeployName: deploymentName,
+	}
+	err = keyPairToTest.Save()
+	assert.Error(t, err)
+	assert.Equal(t, "Key pair body is absent", err.Error())
+
+	// Should fail when only one of keys is present
+	privateKeyBody := "dummyKey"
+	keyPairToTest = keyPair{
+		DeployName: deploymentName,
+		PrivateKey: privateKeyBody,
+	}
+	err = keyPairToTest.Save()
+	assert.Error(t, err)
+	assert.Equal(t, "Key pair body is absent", err.Error())
+
+	// Should fail when only one of keys is present
+	publicKeyBody := "dummyKey"
+	keyPairToTest = keyPair{
+		DeployName: deploymentName,
+		PublicKey:  publicKeyBody,
+	}
+	err = keyPairToTest.Save()
+	assert.Error(t, err)
+	assert.Equal(t, "Key pair body is absent", err.Error())
+
+	err = os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
+	TempDirPathLocation = TempDirPath
+}
+
+func TestKeyPair_Save(t *testing.T) {
+	// Should succeed when both keys are present
+	TempDirPathLocation = ".apolloTest"
+	deploymentName := "dummy-deploy"
+	privateKeyBody := "dummyKey"
+	publicKeyBody := "dummyKeyPub"
+	keyPairToTest := keyPair{
+		DeployName: deploymentName,
+		PrivateKey: privateKeyBody,
+		PublicKey:  publicKeyBody,
+	}
+	err := keyPairToTest.Save()
+	assert.Nil(t, err)
+
+	assert.Equal(t, privateKeyBody, keyPairToTest.privateKeyFile.Body)
+	assert.FileExists(t, keyPairToTest.privateKeyFile.Location)
+
+	assert.Equal(t, publicKeyBody, keyPairToTest.publicKeyFile.Body)
+	assert.FileExists(t, keyPairToTest.publicKeyFile.Location)
+
+	privateFile := File{
+		Location: keyPairToTest.privateKeyFile.Location,
+	}
+	err = privateFile.ReadFile()
+	assert.Nil(t, err)
+	assert.Equal(t, privateKeyBody, privateFile.Body)
+
+	publicFile := File{
+		Location: keyPairToTest.publicKeyFile.Location,
+	}
+	err = publicFile.ReadFile()
+	assert.Nil(t, err)
+	assert.Equal(t, publicKeyBody, publicFile.Body)
+
+	err = os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
+	TempDirPathLocation = TempDirPath
+}
