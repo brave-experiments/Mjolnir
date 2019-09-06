@@ -4,6 +4,7 @@ import "os"
 
 var (
 	StateFileName = DefaulStateFileName
+	StateFileBody = DefaultStateFileBody
 )
 
 type StateFile struct {
@@ -28,7 +29,7 @@ func DefaultStateFile() (stateFile *StateFile, err error) {
 
 	// Write default state file if current is empty
 	if len(defaultStateFile.Body) == 0 {
-		_, err = fileBody.Write([]byte(DefaultStateFileBody))
+		_, err = fileBody.Write([]byte(StateFileBody))
 	}
 
 	if nil != err {
