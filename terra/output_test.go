@@ -31,6 +31,19 @@ func TestOutputRecords_FromJsonAsString(t *testing.T) {
 		firstOutputRecord.Value,
 	)
 	assert.Equal(t, OutputAsAStringWithoutHeaderFixture, stringOutput)
+
+	// Should parse output twice
+	outputRecords = OutputRecords{}
+	stringOutput = outputRecords.FromJsonAsString(ProperOutputFixture, false)
+	stringOutput = outputRecords.FromJsonAsString(ProperOutputFixture, false)
+	assert.Equal(
+		t,
+		fmt.Sprintf("%s\n%s", OutputAsAStringWithoutHeaderFixture, OutputAsAStringWithoutHeaderFixture),
+		stringOutput,
+	)
+
+	// Should have output
+	outputRecords = OutputRecords{}
 	stringOutput = outputRecords.FromJsonAsString(ProperOutputFixture, true)
 	assert.Equal(
 		t,
@@ -77,4 +90,30 @@ func TestOutputRecords_FromJsonAsString(t *testing.T) {
 		fmt.Sprintf("%s%s", ColorizedOutputPrefix, OutputAsAStringFromMultipleValueTypes),
 		stringOutput,
 	)
+}
+
+func TestKeyPair_FromJson(t *testing.T) {
+	// Should not parse from broken json
+	keyPairToTest := keyPair{}
+	keyPairToTest.FromJson(InvalidOutputFixture)
+	assert.Equal(t, "", keyPairToTest.DeployName)
+	assert.Equal(t, "", keyPairToTest.Id)
+	assert.Equal(t, "", keyPairToTest.Algorithm)
+	assert.Equal(t, "", keyPairToTest.EcdsaCurve)
+	assert.Equal(t, "", keyPairToTest.PrivateKey)
+	assert.Equal(t, "", keyPairToTest.PublicFingerprint)
+	assert.Equal(t, "", keyPairToTest.PublicKey)
+	assert.Equal(t, "", keyPairToTest.RsaBits)
+
+	// Should parse from valid json
+	keyPairToTest = keyPair{}
+	keyPairToTest.FromJson(ProperOutputFixture)
+	assert.Equal(t, "quorum-bastion-cocroaches-attack", keyPairToTest.DeployName)
+	assert.Equal(t, "e28f0d026fcd4faea3dd1ae386c7f918484f1273", keyPairToTest.Id)
+	//assert.Equal(t, PrivateKeyPairBody, keyPairToTest.PrivateKey)
+	//assert.Equal(t, PublicKeyPairBody, keyPairToTest.PublicKey)
+	//assert.Equal(t, OpenSshKeyBody, keyPairToTest.OpenSsh)
+	//assert.Equal(t, "RSA", keyPairToTest.Algorithm)
+	//assert.Equal(t, "P224", keyPairToTest.EcdsaCurve)
+	//assert.Equal(t, "2048", keyPairToTest.RsaBits)
 }
