@@ -134,6 +134,11 @@ func (client *Client) WriteStateToFile() (err error) {
 		return err
 	}
 
+	// TODO: implement it
+	//currentKeyPair := keyPair{}
+	//currentKeyPair.FromJson(client.platform.State.String())
+	//err = currentKeyPair.Save()
+
 	return
 }
 
