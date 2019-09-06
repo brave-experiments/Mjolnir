@@ -1,11 +1,15 @@
 package terra
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/tidwall/gjson"
+	"strings"
 )
 
 const (
-	ModulesLocator = "modules"
+	ModulesLocator        = "modules"
+	ColorizedOutputPrefix = "[reset][bold][green]\nOutputs:\n\n"
 )
 
 type OutputRecord struct {
@@ -19,7 +23,38 @@ type OutputRecords struct {
 	Records []OutputRecord
 }
 
-func (outputRecords *OutputRecords) ParseOutputsFromJson(jsonBody string) {
+func (outputRecords *OutputRecords) FromJsonAsString(jsonBody string, includeHeader bool) string {
+	outputRecords.parseOutputsFromJson(jsonBody)
+	outputs := outputRecords.Records
+
+	if len(outputs) < 1 {
+		return ""
+	}
+
+	outputBuf := new(bytes.Buffer)
+
+	if includeHeader {
+		outputBuf.WriteString(ColorizedOutputPrefix)
+	}
+
+	for key := range outputs {
+		outputRecord := outputs[key]
+		outputRecordName := outputRecord.Name
+
+		if outputRecord.Sensitive {
+			outputBuf.WriteString(fmt.Sprintf("%s = <sensitive>\n", outputRecordName))
+			continue
+		}
+
+		result := outputRecord.Value
+
+		outputBuf.WriteString(fmt.Sprintf("%s = %s\n", outputRecordName, result))
+	}
+
+	return strings.TrimSpace(outputBuf.String())
+}
+
+func (outputRecords *OutputRecords) parseOutputsFromJson(jsonBody string) {
 	modulesLocator := ModulesLocator
 	jsonModules := gjson.Get(jsonBody, modulesLocator)
 

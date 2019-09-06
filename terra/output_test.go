@@ -1,19 +1,24 @@
 package terra
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestOutputRecords_ParseOutputsFromJson(t *testing.T) {
-	// It fails on invalid fixture
+func TestOutputRecords_FromJsonAsString(t *testing.T) {
+	// Should return empty string
 	outputRecords := OutputRecords{}
-	outputRecords.ParseOutputsFromJson(InvalidOutputFixture)
+	stringOutput := outputRecords.FromJsonAsString(InvalidOutputFixture, false)
 	assert.Equal(t, 0, len(outputRecords.Records))
+	assert.Equal(t, 0, len(stringOutput))
+	stringOutput = outputRecords.FromJsonAsString(InvalidOutputFixture, true)
+	assert.Equal(t, 0, len(outputRecords.Records))
+	assert.Equal(t, 0, len(stringOutput))
 
-	// It parses records
+	// Should return parsed string from proper output fixture
 	outputRecords = OutputRecords{}
-	outputRecords.ParseOutputsFromJson(ProperOutputFixture)
+	stringOutput = outputRecords.FromJsonAsString(ProperOutputFixture, false)
 	assert.Equal(t, 10, len(outputRecords.Records))
 	firstOutputRecord := outputRecords.Records[0]
 	assert.IsType(t, OutputRecord{}, firstOutputRecord)
@@ -25,10 +30,17 @@ func TestOutputRecords_ParseOutputsFromJson(t *testing.T) {
 		"Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n",
 		firstOutputRecord.Value,
 	)
+	assert.Equal(t, OutputAsAStringWithoutHeaderFixture, stringOutput)
+	stringOutput = outputRecords.FromJsonAsString(ProperOutputFixture, true)
+	assert.Equal(
+		t,
+		fmt.Sprintf("%s%s", ColorizedOutputPrefix, OutputAsAStringWithoutHeaderFixture),
+		stringOutput,
+	)
 
 	// Should parse multiple values to string
 	outputRecords = OutputRecords{}
-	outputRecords.ParseOutputsFromJson(MultipleValuesOutputFixture)
+	stringOutput = outputRecords.FromJsonAsString(MultipleValuesOutputFixture, false)
 	assert.Equal(t, 10, len(outputRecords.Records))
 	secondOutputRecord := outputRecords.Records[1]
 	assert.IsType(t, OutputRecord{}, secondOutputRecord)
@@ -40,10 +52,15 @@ func TestOutputRecords_ParseOutputsFromJson(t *testing.T) {
 		"[\"\", \"\"]",
 		secondOutputRecord.Value,
 	)
+	assert.Equal(
+		t,
+		OutputAsAStringFromMultipleValueTypes,
+		stringOutput,
+	)
 
-	// Should parse object
+	// Should return parser object with header
 	outputRecords = OutputRecords{}
-	outputRecords.ParseOutputsFromJson(MultipleValuesOutputFixture)
+	stringOutput = outputRecords.FromJsonAsString(MultipleValuesOutputFixture, true)
 	assert.Equal(t, 10, len(outputRecords.Records))
 	thirdOutputRecord := outputRecords.Records[2]
 	assert.IsType(t, OutputRecord{}, thirdOutputRecord)
@@ -54,5 +71,10 @@ func TestOutputRecords_ParseOutputsFromJson(t *testing.T) {
 		t,
 		"{\"ip\": \"3.15.144.150\"}",
 		thirdOutputRecord.Value,
+	)
+	assert.Equal(
+		t,
+		fmt.Sprintf("%s%s", ColorizedOutputPrefix, OutputAsAStringFromMultipleValueTypes),
+		stringOutput,
 	)
 }
