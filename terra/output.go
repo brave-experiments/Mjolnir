@@ -71,7 +71,11 @@ func (outputRecords *OutputRecords) FromJsonAsString(jsonBody string, includeHea
 	return strings.TrimSpace(outputBuf.String())
 }
 
-func (keyPair *keyPair) FromJson(jsonBody string) {
+func (currentKeyPair *keyPair) Save() (err error) {
+
+}
+
+func (currentKeyPair *keyPair) FromJson(jsonBody string) {
 	modulesLocator := ModulesLocator
 	jsonModules := gjson.Get(jsonBody, modulesLocator)
 
@@ -79,23 +83,26 @@ func (keyPair *keyPair) FromJson(jsonBody string) {
 		return
 	}
 
-	jsonModules.ForEach(func(key, value gjson.Result) bool {
-		jsonResources := value.Get("resources")
-		shouldIterate := true
+	jsonModules.ForEach(currentKeyPair.mapModules)
+}
 
-		if false == jsonResources.Exists() {
-			return false
-		}
+func (currentKeyPair *keyPair) mapModules(key, value gjson.Result) bool {
+	jsonResources := value.Get("resources")
 
-		jsonResources.ForEach(func(key, value gjson.Result) bool {
-			keyPair.mapName(key.String(), value)
-			keyPair.marshalKeyPair(key.String(), value, &shouldIterate)
+	if false == jsonResources.Exists() {
+		return false
+	}
 
-			return shouldIterate
-		})
+	jsonResources.ForEach(currentKeyPair.mapResources)
 
-		return shouldIterate
-	})
+	return true
+}
+
+func (currentKeyPair *keyPair) mapResources(key, value gjson.Result) bool {
+	currentKeyPair.mapName(key.String(), value)
+	shouldIterate := currentKeyPair.unmarshalKeyPair(key.String(), value)
+
+	return shouldIterate
 }
 
 func (outputRecords *OutputRecords) parseOutputsFromJson(jsonBody string) {
@@ -106,12 +113,14 @@ func (outputRecords *OutputRecords) parseOutputsFromJson(jsonBody string) {
 		return
 	}
 
-	jsonModules.ForEach(func(key, value gjson.Result) bool {
-		jsonOutputs := value.Get("outputs")
-		jsonOutputs.ForEach(outputRecords.mapRecords)
+	jsonModules.ForEach(outputRecords.mapOutputs)
+}
 
-		return true
-	})
+func (outputRecords *OutputRecords) mapOutputs(key, value gjson.Result) bool {
+	jsonOutputs := value.Get("outputs")
+	jsonOutputs.ForEach(outputRecords.mapRecords)
+
+	return true
 }
 
 func (outputRecords *OutputRecords) mapRecords(key, value gjson.Result) (shouldIterate bool) {
@@ -135,27 +144,27 @@ func (outputRecords *OutputRecords) mapRecords(key, value gjson.Result) (shouldI
 	return true
 }
 
-func (keyPair *keyPair) marshalKeyPair(key string, value gjson.Result, shouldIterate *bool) {
+func (currentKeyPair *keyPair) unmarshalKeyPair(key string, value gjson.Result) bool {
 	if PrivateKeyLocator != key {
-		return
+		return true
 	}
 
 	jsonKeyPair := value.Get("primary.attributes")
 
 	if false == jsonKeyPair.Exists() {
-		return
+		return true
 	}
 
-	err := json.Unmarshal([]byte(jsonKeyPair.Raw), &keyPair)
+	err := json.Unmarshal([]byte(jsonKeyPair.Raw), &currentKeyPair)
 
 	if nil != err {
-		*shouldIterate = false
+		return false
 	}
 
-	return
+	return true
 }
 
-func (keyPair *keyPair) mapName(key string, value gjson.Result) {
+func (currentKeyPair *keyPair) mapName(key string, value gjson.Result) {
 	if BastionKeyLocator != key {
 		return
 	}
@@ -166,5 +175,5 @@ func (keyPair *keyPair) mapName(key string, value gjson.Result) {
 		return
 	}
 
-	keyPair.DeployName = deploymentName.String()
+	currentKeyPair.DeployName = deploymentName.String()
 }

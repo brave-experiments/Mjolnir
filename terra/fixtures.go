@@ -2117,7 +2117,7 @@ const (
                             "algorithm": "RSA",
                             "ecdsa_curve": "P224",
                             "id": "e28f0d026fcd4faea3dd1ae386c7f918484f1273",
-                            "private_key_pem": ---DUMMY PRIVATE KEY---,
+                            "private_key_pem": "---DUMMY PRIVATE KEY---",
                             "public_key_fingerprint_md5": "44:43:cb:61:29:71:33:19:21:23:d3:69:3a:b2:3e:00",
                             "public_key_openssh": "dummyKeySsh",
                             "public_key_pem": "---DUMMY PUBLIC KEY---",
@@ -4102,7 +4102,7 @@ const (
                     "primary": {
                         "id": "0619bff6918e2e978bb10f0b57b549297a9eaad0",
                         "attributes": {
-                            "content": ---DUMMY PRIVATE KEY---,
+                            "content": "---DUMMY PRIVATE KEY---",
                             "filename": "/tmp/.terranova273240257/quorum-cocroaches-attack.pem",
                             "id": "0619bff6918e2e978bb10f0b57b549297a9eaad0"
                         },
@@ -4249,7 +4249,7 @@ const (
                             "algorithm": "RSA",
                             "ecdsa_curve": "P224",
                             "id": "e28f0d026fcd4faea3dd1ae386c7f918484f1273",
-                            "private_key_pem": ---DUMMY PRIVATE KEY---,
+                            "private_key_pem": "---DUMMY PRIVATE KEY---",
                             "public_key_fingerprint_md5": "44:43:cb:61:29:71:33:19:21:23:d3:69:3a:b2:3e:00",
                             "public_key_openssh": "dummyKeySsh",
                             "public_key_pem": "---DUMMY PUBLIC KEY---",
