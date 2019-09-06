@@ -24,14 +24,8 @@ type Client struct {
 }
 
 func (client *Client) CreateDirInTemp(dirName string) (location string, err error) {
-	err = makeDirIfNotExist(TempDirPathLocation)
-
-	if nil != err {
-		return "", err
-	}
-
 	fullDirPath := fmt.Sprintf("%s/%s", TempDirPathLocation, dirName)
-	err = makeDirIfNotExist(fullDirPath)
+	err = os.MkdirAll(fullDirPath, os.ModeDir)
 
 	if nil != err {
 		return "", err
@@ -222,15 +216,4 @@ func (client *Client) outputsAsString(includeHeader bool) string {
 	stateAsString := client.platform.State.String()
 
 	return outputRecords.FromJsonAsString(stateAsString, true)
-}
-
-func makeDirIfNotExist(path string) (err error) {
-	_, err = os.Stat(path)
-
-	if os.IsNotExist(err) {
-		err = nil
-		err = os.Mkdir(path, os.ModeDir)
-	}
-
-	return err
 }
