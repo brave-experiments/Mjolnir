@@ -1,9 +1,11 @@
 package terra
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
+	"strings"
 )
 
 const (
@@ -82,11 +84,54 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 
 	// Synchronize state from platform and state object
 	err = client.state.ReadFile()
-	outputRecords := OutputRecords{}
-	outputRecords.ParseOutputsFromJson(client.platform.State.String())
-	println(outputRecords.Records)
+
+	consoleOutputsFromTerraState := client.outputsAsString(true)
+	fmt.Println(consoleOutputsFromTerraState)
 
 	return err
+}
+
+func (client *Client) outputsAsString(includeHeader bool) string {
+
+	outputRecords := OutputRecords{}
+	outputRecords.ParseOutputsFromJson(client.platform.State.String())
+
+	if client.platform.State == nil {
+		return ""
+	}
+
+	outputs := outputRecords.Records
+
+	outputBuf := new(bytes.Buffer)
+	if len(outputRecords.Records) > 0 {
+		if includeHeader {
+			outputBuf.WriteString("[reset][bold][green]\nOutputs:\n\n")
+		}
+
+		for key := range outputs {
+			outputRecord := outputs[key]
+			outputRecordName := outputRecord.Name
+
+			if outputRecord.Sensitive {
+				outputBuf.WriteString(fmt.Sprintf("%s = <sensitive>\n", outputRecordName))
+				continue
+			}
+
+			// Here as we said yesterday - prepared for interface not string
+			//legacyVal := hcl2shim.ConfigValueFromHCL2(outputRecord.Value)
+			//result, err := repl.FormatResult(legacyVal)
+
+			//if err != nil {
+			//	result = "<error during formatting>"
+			//}
+
+			result := outputRecord.Value
+
+			outputBuf.WriteString(fmt.Sprintf("%s = %s\n", outputRecordName, result))
+		}
+	}
+
+	return strings.TrimSpace(outputBuf.String())
 }
 
 func (client *Client) PreparePlatform(file File) (err error) {

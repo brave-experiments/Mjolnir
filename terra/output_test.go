@@ -27,7 +27,6 @@ func TestOutputRecords_ParseOutputsFromJson(t *testing.T) {
 	)
 
 	// Should parse multiple values to string
-	// It parses records
 	outputRecords = OutputRecords{}
 	outputRecords.ParseOutputsFromJson(MultipleValuesOutputFixture)
 	assert.Equal(t, 10, len(outputRecords.Records))
