@@ -4,20 +4,40 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
+	"os"
 )
 
 const (
 	CombinedRecipeDefaultFileName = "temp.tf"
 	LastExecutedVariablesFileName = "variables.log"
+	TempDirPath                   = ".apollo"
 )
 
 var (
 	LastExecutedFileName = LastExecutedVariablesFileName
+	TempDirPathLocation  = TempDirPath
 )
 
 type Client struct {
 	platform *terranova.Platform
 	state    *StateFile
+}
+
+func (client *Client) CreateDirInTemp(dirName string) (location string, err error) {
+	err = makeDirIfNotExist(TempDirPathLocation)
+
+	if nil != err {
+		return "", err
+	}
+
+	fullDirPath := fmt.Sprintf("%s/%s", TempDirPathLocation, dirName)
+	err = makeDirIfNotExist(fullDirPath)
+
+	if nil != err {
+		return "", err
+	}
+
+	return fullDirPath, err
 }
 
 func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
@@ -202,4 +222,15 @@ func (client *Client) outputsAsString(includeHeader bool) string {
 	stateAsString := client.platform.State.String()
 
 	return outputRecords.FromJsonAsString(stateAsString, true)
+}
+
+func makeDirIfNotExist(path string) (err error) {
+	_, err = os.Stat(path)
+
+	if os.IsNotExist(err) {
+		err = nil
+		err = os.Mkdir(path, os.ModeDir)
+	}
+
+	return err
 }

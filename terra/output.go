@@ -72,7 +72,18 @@ func (outputRecords *OutputRecords) FromJsonAsString(jsonBody string, includeHea
 }
 
 func (currentKeyPair *keyPair) Save() (err error) {
+	if len(currentKeyPair.DeployName) < 1 {
+		return ClientError{"Deploy Name not present"}
+	}
 
+	client := Client{}
+	_, err = client.CreateDirInTemp(currentKeyPair.DeployName)
+
+	if nil != err {
+		return err
+	}
+
+	return
 }
 
 func (currentKeyPair *keyPair) FromJson(jsonBody string) {

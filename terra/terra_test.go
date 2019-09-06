@@ -12,6 +12,32 @@ import (
 	"testing"
 )
 
+func TestClient_CreateDirInTempFailure(t *testing.T) {
+	TempDirPathLocation = "/some/dummy/location"
+	client := Client{}
+	tempDirName := "dummy/invalid"
+	dirPath, err := client.CreateDirInTemp(tempDirName)
+	assert.Error(t, err)
+	assert.Equal(
+		t,
+		fmt.Sprintf("mkdir %s: no such file or directory", TempDirPathLocation),
+		err.Error(),
+	)
+	assert.Equal(t, "", dirPath)
+	TempDirPathLocation = TempDirPath
+
+	tempDirName = "../../../../../../../../invalid"
+	dirPath, err = client.CreateDirInTemp(tempDirName)
+	assert.Equal(
+		t,
+		fmt.Sprintf("mkdir %s: no such file or directory", tempDirName),
+		err.Error(),
+	)
+	assert.Equal(t, "", dirPath)
+	err = os.RemoveAll(TempDirPath)
+	assert.Nil(t, err)
+}
+
 func TestClient_ApplyCombinedFailure(t *testing.T) {
 	client := createTestedDefaultClient(t)
 	assert.IsType(t, Client{}, client)

@@ -117,3 +117,17 @@ func TestKeyPair_FromJson(t *testing.T) {
 	assert.Equal(t, "P224", keyPairToTest.EcdsaCurve)
 	assert.Equal(t, "2048", keyPairToTest.RsaBits)
 }
+
+//func TestKeyPair_SaveFailure(t *testing.T) {
+//	keyPairToTest := keyPair{}
+//	err := keyPairToTest.Save()
+//	assert.IsType(t, ClientError{}, err)
+//	assert.Equal(t, "Deploy Name not present", err.Error())
+//
+//	deploymentName := "dummy-deploy"
+//	keyPairToTest = keyPair{
+//		DeployName: deploymentName,
+//	}
+//	err = keyPairToTest.Save()
+//
+//}
