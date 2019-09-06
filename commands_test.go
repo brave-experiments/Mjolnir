@@ -125,7 +125,7 @@ func TestApplyCmd_Run(t *testing.T) {
 	}
 	assert.IsType(t, ApplyCmd{}, command)
 	exitCode := command.Run([]string{keyName, schemaFilePath})
-	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	assert.Equal(t, ExitCodeSuccess, exitCode)
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, schemaFilePath)
 }
