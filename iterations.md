@@ -20,8 +20,8 @@ So I have a complete testing environment available.
 - [x] The whole set up should be deployable with one command.
 - [x] Support the following clients:
    [x] - Quorum (https://github.com/jpmorganchase/quorum)
-- [] For each client that is supported, the following consensus engines should be configurable:
-    - [] Quorum: 
+- [x] For each client that is supported, the following consensus engines should be configurable:
+    - [x] Quorum: 
         - [x] IBFT
         - [x] Raft
         - [] Clique
@@ -31,8 +31,8 @@ So I have a complete testing environment available.
     - [x] Disk Reads / Writes
     - [x] Network (Egress / Ingress)
 
-- [] For each client, version number should also be configurable.
-- [] It should be possible to specify each off the following from the
+- [x] For each client, version number should also be configurable.
+- [x] It should be possible to specify each off the following from the
 command line:
     - [x] stepDuration/ Blocktime / Epoch
     - [x] Blockgaslimit
@@ -40,17 +40,17 @@ command line:
 - [x] Client container logs available though AWS CloudWatch
 - [] Client container logs available though Logging tool
 - [x] Monitor Ethereum specific metrics:
-    - [] Should include logs from the client. These should trigger and alert for WARN or ERROR log levels.
-    - [] The following RPC endpoints should be polled: 
-        - [] Block Number
-        - [] Number of Connected Peers 
-        - [] Transactions Time
-        - [] Transaction Pool
-        - [] Block Processing
-        - [] Transaction Propagation 
-        - [] Data Rate
-- [] Clock Skew
-- [] Chaos Testing (Dropped packets , network latency, etc)
+    - [x] Should include logs from the client. These should trigger and alert for WARN or ERROR log levels.
+    - [x] The following RPC endpoints should be polled: 
+        - [x] Block Number
+        - [x] Number of Connected Peers 
+        - [x] Transactions Time
+        - [x] Transaction Pool
+        - [x] Block Processing
+        - [x] Transaction Propagation 
+        - [x] Data Rate
+- [PR] Clock Skew
+- [PR] Chaos Testing (Dropped packets , network latency, etc)
 
 
 ## Knowledge to gather:
@@ -67,10 +67,10 @@ I can:
 a quorum client cluster 
 with side services: 
 - [x] monitoring
-- [] logs
-- [] chaos testing
+- [x] logs
+- [PR] chaos testing
 
-2. Sprint ​Blockchain Monitoring​ 120h of work 2 weeks @Jerzy @Grzegorz @Błażej ​( from 02.08 to 12.09 )
+2. Sprint ​Blockchain Monitoring​ 120h of work 2 weeks @Jerzy @Grzegorz @Błażej ​( from 9th of September to 25th of September )
 
 ## Goal 
 
