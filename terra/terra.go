@@ -69,6 +69,7 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 	err = client.platform.Apply(destroy)
 
 	if nil != err {
+		_ = client.WriteStateToFile()
 		return err
 	}
 
