@@ -1,6 +1,6 @@
 # Iterations v2.0
 
-1. Initial sprint 180h of work. @Blazej @Grzegorz @Jerzy ​3 weeks ( from 13.08 to 01.09 )
+1. Initial sprint 180h of work. @Blazej @Grzegorz @Jerzy ​3 weeks ( from 13th of August to 1th Septmeber )
 
 ## Goal
 
