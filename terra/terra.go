@@ -1,6 +1,7 @@
 package terra
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
@@ -83,12 +84,12 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 	err = client.platform.Apply(destroy)
 
 	if nil != err {
-		_ = client.WriteStateToFile()
+		_ = client.WriteStateToFiles()
 
 		return err
 	}
 
-	err = client.WriteStateToFile()
+	err = client.WriteStateToFiles()
 
 	if nil != err {
 		return err
@@ -121,7 +122,7 @@ func (client *Client) PreparePlatform(file File) (err error) {
 	return err
 }
 
-func (client *Client) WriteStateToFile() (err error) {
+func (client *Client) WriteStateToFiles() (err error) {
 	err = client.guard()
 
 	if nil != err {
@@ -134,10 +135,16 @@ func (client *Client) WriteStateToFile() (err error) {
 		return err
 	}
 
-	// TODO: implement it
-	//currentKeyPair := keyPair{}
-	//currentKeyPair.FromJson(client.platform.State.String())
-	//err = currentKeyPair.Save()
+	currentKeyPair := keyPair{}
+	jsonBytes, err := json.Marshal(client.platform.State)
+	currentKeyPair.FromJson(string(jsonBytes))
+	err = currentKeyPair.Save()
+
+	if nil != err {
+		fmt.Println(err.Error())
+
+		return err
+	}
 
 	return
 }
