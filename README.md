@@ -25,11 +25,11 @@ To execute apollo binary file:
 try `./apollo` to see all commands that are registered
 try `./apollo {cmdName} --help` to see help from command
 
-###Quorum execution
+### Quorum execution
 after build
 `./apollo apply quorum {values.yml}`
 
-###Providing values
+### Providing values
 See `example/values.yml` that shows how to attach values to apply execution. 
 Since any `values-local.yml` file is gitignored
 you should copy `example/values.yml` to `values-local.yml` and provide values that you need.
