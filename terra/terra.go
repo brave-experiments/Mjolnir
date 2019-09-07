@@ -98,9 +98,6 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 	// Synchronize state from platform and state object
 	err = client.state.ReadFile()
 
-	consoleOutputsFromTerraState := client.outputsAsString(true)
-	fmt.Println(consoleOutputsFromTerraState)
-
 	return err
 }
 
@@ -142,11 +139,19 @@ func (client *Client) WriteStateToFiles() (err error) {
 
 	if nil != err {
 		fmt.Println(err.Error())
-
-		return err
 	}
 
-	return
+	consoleOutputsFromTerraState := client.outputsAsString(true)
+	fmt.Println("[FINAL] Summary execution:", consoleOutputsFromTerraState)
+
+	outputFile := File{
+		Location: TempDirPathLocation + "/" + currentKeyPair.DeployName + "/output.log",
+		Body:     consoleOutputsFromTerraState,
+	}
+	_ = outputFile.WriteFile()
+	fmt.Println("Wrote summarry output to: ", outputFile.Location)
+
+	return err
 }
 
 func (client *Client) DumpVariables() (vars map[string]interface{}, err error) {
@@ -229,7 +234,8 @@ func (client *Client) assignStateFile() (err error) {
 
 func (client *Client) outputsAsString(includeHeader bool) string {
 	outputRecords := OutputRecords{}
-	stateAsString := client.platform.State.String()
+	jsonBytes, _ := json.Marshal(client.platform.State)
+	stringOutput := outputRecords.FromJsonAsString(string(jsonBytes), true)
 
-	return outputRecords.FromJsonAsString(stateAsString, true)
+	return stringOutput
 }

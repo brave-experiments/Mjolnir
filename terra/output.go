@@ -83,7 +83,7 @@ func (currentKeyPair *keyPair) Save() (err error) {
 
 	client := Client{}
 	location, err := client.CreateDirInTemp(currentKeyPair.DeployName)
-	fmt.Println("this is location", location)
+	fmt.Println("Created output dir: ", location)
 
 	if nil != err {
 		return err
