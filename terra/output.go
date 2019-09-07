@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/tidwall/gjson"
+	"os"
 	"strings"
 )
 
@@ -220,6 +221,12 @@ func (currentKeyPair *keyPair) writePrivateKey(location string) (err error) {
 		return err
 	}
 
+	err = os.Chmod(privateKeyName, 0644)
+
+	if nil != err {
+		return err
+	}
+
 	currentKeyPair.privateKeyFile = privateKeyFile
 
 	return
@@ -234,6 +241,12 @@ func (currentKeyPair *keyPair) writePublicKey(location string) (err error) {
 	}
 
 	err = publicKeyFile.WriteFile()
+
+	if nil != err {
+		return err
+	}
+
+	err = os.Chmod(publicKeyName, 0644)
 
 	if nil != err {
 		return err

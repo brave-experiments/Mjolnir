@@ -291,7 +291,7 @@ func TestClient_PreparePlatformWithVariables(t *testing.T) {
 	removeStateFileAndRestore(t)
 }
 
-func TestClient_WriteStateToFileFailure(t *testing.T) {
+func TestClient_WriteStateToFilesFailure(t *testing.T) {
 	client := Client{
 		platform: &terranova.Platform{},
 	}
@@ -301,7 +301,7 @@ func TestClient_WriteStateToFileFailure(t *testing.T) {
 	assert.Equal(t, "No state file found", err.Error())
 }
 
-func TestClient_WriteStateToFile(t *testing.T) {
+func TestClient_WriteStateToFiles(t *testing.T) {
 	StateFileName = "dummy.tfstate"
 	StateFileBody = ProperOutputFixture
 	stateFile, err := DefaultStateFile()
@@ -377,6 +377,8 @@ func createTestedDefaultClient(t *testing.T) Client {
 
 func removeStateFileAndRestore(t *testing.T) {
 	RemoveDummyFile(t, StateFileName)
+	err := os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
 	StateFileName = DefaulStateFileName
 	StateFileBody = DefaultStateFileBody
 }

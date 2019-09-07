@@ -177,9 +177,15 @@ func TestKeyPair_Save(t *testing.T) {
 
 	assert.Equal(t, privateKeyBody, keyPairToTest.privateKeyFile.Body)
 	assert.FileExists(t, keyPairToTest.privateKeyFile.Location)
+	info, err := os.Stat(keyPairToTest.privateKeyFile.Location)
+	assert.Nil(t, err)
+	assert.Equal(t, 0644, int(info.Mode()))
 
 	assert.Equal(t, publicKeyBody, keyPairToTest.publicKeyFile.Body)
 	assert.FileExists(t, keyPairToTest.publicKeyFile.Location)
+	info, err = os.Stat(keyPairToTest.privateKeyFile.Location)
+	assert.Nil(t, err)
+	assert.Equal(t, 0644, int(info.Mode()))
 
 	privateFile := File{
 		Location: keyPairToTest.privateKeyFile.Location,
