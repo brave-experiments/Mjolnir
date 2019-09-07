@@ -10,10 +10,11 @@ import (
 func TestDefaultStateFileWithCreationOfFile(t *testing.T) {
 	// Change default state for test purposes
 	StateFileName = "dummy.tfstate"
+	StateFileBody = ProperOutputFixture
 	defaultStateFile, err := DefaultStateFile()
 	assert.Nil(t, err)
 	assert.IsType(t, &StateFile{}, defaultStateFile)
-	assert.Equal(t, len(defaultStateFile.Body), len(DefaultStateFileBody))
+	assert.Equal(t, len(StateFileBody), len(defaultStateFile.Body))
 
 	restoreFilesAndState(t)
 }
@@ -56,4 +57,5 @@ func restoreFilesAndState(t *testing.T) {
 	err := os.Remove(StateFileName)
 	assert.Nil(t, err)
 	StateFileName = DefaulStateFileName
+	StateFileBody = DefaultStateFileBody
 }
