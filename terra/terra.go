@@ -26,7 +26,7 @@ type Client struct {
 
 func (client *Client) CreateDirInTemp(dirName string) (location string, err error) {
 	fullDirPath := fmt.Sprintf("%s/%s", TempDirPathLocation, dirName)
-	err = os.MkdirAll(fullDirPath, 0644)
+	err = os.MkdirAll(fullDirPath, 0777)
 
 	if nil != err {
 		return "", err
