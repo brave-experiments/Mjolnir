@@ -304,14 +304,13 @@ func TestClient_WriteStateToFilesFailure(t *testing.T) {
 func TestClient_WriteStateToFiles(t *testing.T) {
 	StateFileName = "dummy.tfstate"
 	StateFileBody = ProperOutputFixture
+	TempDirPathLocation = ".apolloTest"
 	stateFile, err := DefaultStateFile()
 	assert.Nil(t, err)
 
 	platform := &terranova.Platform{}
 	platform, err = platform.ReadStateFromFile(StateFileName)
 	assert.Nil(t, err)
-
-	fmt.Println("this is state file ", stateFile.Body, platform.State.String())
 
 	client := Client{
 		platform: platform,
@@ -320,6 +319,20 @@ func TestClient_WriteStateToFiles(t *testing.T) {
 
 	err = client.WriteStateToFiles()
 	assert.Nil(t, err)
+
+	outputLogFileName := TempDirPathLocation + "/quorum-bastion-cocroaches-attack/output.log"
+	outputLogFile := File{
+		Location: outputLogFileName,
+	}
+	assert.FileExists(t, TempDirPathLocation+"/quorum-bastion-cocroaches-attack/output.log")
+	err = outputLogFile.ReadFile()
+	assert.Nil(t, err)
+	assert.Greater(t, len(outputLogFile.Body), 1)
+	assert.Equal(
+		t,
+		fmt.Sprintf("%s%s", ColorizedOutputPrefix, OutputAsAStringWithoutHeaderFixture),
+		outputLogFile.Body,
+	)
 
 	removeStateFileAndRestore(t)
 }
