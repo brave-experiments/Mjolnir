@@ -56,11 +56,6 @@ resource "aws_key_pair" "ssh" {
 resource "local_file" "private_key" {
   filename = "${path.module}/quorum-${var.network_name}.pem"
   content  = "${tls_private_key.ssh.private_key_pem}"
-
-  provisioner "local-exec" {
-    on_failure = "continue"
-    command    = "chmod 600 ${self.filename}"
-  }
 }
 
 resource "aws_instance" "bastion" {
@@ -156,18 +151,19 @@ sudo mkdir -p ${local.shared_volume_container_path}/mappings
 sudo mkdir -p ${local.privacy_addresses_folder}
 
 # Faketime array ( ClockSkew )
-old_IFS=$IFS
-IFS=',' faketime=(${join(" ", var.faketime)})
-IFS=$${old_IFS}
-counter="$${#faketime[@]}"
-
-while [ $counter -gt 0 ]
-do
-    echo -n "$${faketime[-1]}" > ./$counter
-    faketime=($${faketime[@]::$counter})
-    sudo aws s3 cp ./$counter s3://${local.bastion_bucket}/clockSkew/
-    counter=$((counter - 1))
-done
+#TODO remove
+#old_IFS=$IFS
+#IFS=',' faketime=(${join(" ", var.faketime)})
+#IFS=$${old_IFS}
+#counter="$${#faketime[@]}"
+#
+#while [ $counter -gt 0 ]
+#do
+#    echo -n "$${faketime[-1]}" > ./$counter
+#    faketime=($${faketime[@]::$counter})
+#    sudo aws s3 cp ./$counter s3://${local.bastion_bucket}/clockSkew/
+#    counter=$((counter - 1))
+#done
 
 count=0
 while [ $count -lt ${var.number_of_nodes} ]
