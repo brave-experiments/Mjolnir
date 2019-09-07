@@ -1,7 +1,8 @@
+
 package terra
 
 var (
-	StaticQuorum = `
+StaticQuorum = `
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${aws_vpc.this.id}"
@@ -1427,7 +1428,13 @@ docker pull ${local.quorum_docker_image}
 docker pull prom/prometheus
 docker pull prom/node-exporter:latest
 docker pull grafana/grafana:latest
+docker pull ethereum/client-go:latest
 mkdir -p /opt/prometheus
+mkdir -p /opt/grafana/dashboards
+mkdir -p /opt/grafana/provisioning/dashboards
+mkdir -p /opt/grafana/provisioning/datasources
+curl -L https://gist.githubusercontent.com/karalabe/e7ca79abdec54755ceae09c08bd090cd/raw/3a400ab90f9402f2233280afd086cb9d6aac2111/dashboard.json -o /opt/grafana/dashboards/dashboard-geth.json
+curl -L https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
 docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
 EOF
 
@@ -1454,6 +1461,11 @@ EOF
 
 
   tags = "${merge(local.common_tags, map("Name", local.default_bastion_resource_name))}"
+}
+
+resource "random_string" "random" {
+  length = 16
+  special = true
 }
 
 resource "local_file" "bootstrap" {
@@ -1556,9 +1568,15 @@ global:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
+- job_name: geth
+  metrics_path: /debug/metrics/prometheus
+  scheme: http
+  static_configs:
+  - targets:
+    - geth:6060
 - job_name: 'node'
   static_configs:
-  - targets: ['node-exporter:9100','gethexporter:9090']
+  - targets: [ node-exporter:9100 ]
   file_sd_configs:
   - files:
     - 'targets.json'
@@ -1583,20 +1601,22 @@ services:
             - '9100:9100'
     grafana:
         image: grafana/grafana:latest
+        volumes:
+            - /opt/grafana/dashboards:/var/lib/grafana/dashboards
+            - /opt/grafana/provisioning/dashboards/all.yml:/etc/grafana/provisioning/dashboards/all.yml
+            - /opt/grafana/provisioning/datasources/all.yml:/etc/grafana/provisioning/datasources/all.yml
         environment:
-            - GF_SECURITY_ADMIN_PASSWORD=my-pass
+            - GF_SECURITY_ADMIN_PASSWORD=${random_string.random.result}
         depends_on:
             - prometheus
         ports:
             - '3001:3000'
-    gethexporter:
-        image: hunterlong/gethexporter:latest
-        environment:
-            - GETH=http://mygethserverhere:22000
-        depends_on:
-            - prometheus
+    geth:
+        image: ethereum/client-go:latest
         ports:
-            - '9191:9090'
+            - '6060:6060'
+        command: --goerli --metrics --metrics.expensive --pprof --pprofaddr=0.0.0.0
+
 SS
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
@@ -1616,7 +1636,30 @@ do
 done
 echo ']' >> $target_file
 sudo mv $target_file /opt/prometheus/
-sudo sed -i s"/mygethserverhere/$ip/" /opt/prometheus/docker-compose.yml
+
+cat <<SS | sudo tee /opt/grafana/provisioning/datasources/all.yml
+datasources:
+- name: 'prometheus'
+  type: 'prometheus'
+  access: 'proxy'
+  org_id: 1
+  url: 'http://prometheus:9090'
+  is_default: true
+  version: 1
+  editable: true
+SS
+
+cat <<SS | sudo tee /opt/grafana/provisioning/dashboards/all.yml
+- name: 'default'
+  org_id: 1
+  folder: ''
+  type: 'file'
+  options:
+    folder: '/var/lib/grafana/dashboards'
+SS
+
+sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
+sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-node-exporter.json
 sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
 EOF
 }
@@ -1649,6 +1692,7 @@ resource "aws_s3_bucket" "bastion" {
     enabled = true
   }
 }
+
 resource "aws_security_group" "bastion-ssh" {
   vpc_id      = "${local.vpc_id}"
   name        = "quorum-bastion-ssh-${var.network_name}"
@@ -3446,6 +3490,14 @@ output "private_key_file" {
 
 output "bucket_name" {
   value = "${aws_s3_bucket.quorum.bucket}"
+}
+
+output "grafana_host_url" {
+  value = "http://${aws_instance.bastion.public_ip}:3001"
+}
+
+output "grafana_password" {
+  value = "${random_string.random.result}"
 }
 
 resource "aws_security_group" "quorum" {
