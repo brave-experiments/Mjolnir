@@ -53,9 +53,14 @@ var (
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
+
+	if nil != err {
+		return err
+	}
+
 	variablesSchema.mapGenesisVariables()
 
-	return err
+	return
 }
 
 func (variablesSchema *VariablesSchema) mapGenesisVariables() {

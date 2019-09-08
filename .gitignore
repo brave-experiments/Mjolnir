@@ -15,3 +15,8 @@ vendor
 src
 values-local.yml
 variables.log
+terraform.tfstate
+terraform.tfstate*
+out.log
+.apollo
+.apollo*

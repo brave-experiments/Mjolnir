@@ -1,23 +1,38 @@
 package terra
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
+	"os"
 )
 
 const (
 	CombinedRecipeDefaultFileName = "temp.tf"
 	LastExecutedVariablesFileName = "variables.log"
+	TempDirPath                   = ".apollo"
 )
 
 var (
 	LastExecutedFileName = LastExecutedVariablesFileName
+	TempDirPathLocation  = TempDirPath
 )
 
 type Client struct {
 	platform *terranova.Platform
 	state    *StateFile
+}
+
+func (client *Client) CreateDirInTemp(dirName string) (location string, err error) {
+	fullDirPath := fmt.Sprintf("%s/%s", TempDirPathLocation, dirName)
+	err = os.MkdirAll(fullDirPath, 0777)
+
+	if nil != err {
+		return "", err
+	}
+
+	return fullDirPath, err
 }
 
 func (client *Client) ApplyCombined(recipe CombinedRecipe, destroy bool) (err error) {
@@ -69,10 +84,12 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 	err = client.platform.Apply(destroy)
 
 	if nil != err {
+		_ = client.WriteStateToFiles()
+
 		return err
 	}
 
-	err = client.WriteStateToFile()
+	err = client.WriteStateToFiles()
 
 	if nil != err {
 		return err
@@ -102,7 +119,7 @@ func (client *Client) PreparePlatform(file File) (err error) {
 	return err
 }
 
-func (client *Client) WriteStateToFile() (err error) {
+func (client *Client) WriteStateToFiles() (err error) {
 	err = client.guard()
 
 	if nil != err {
@@ -110,6 +127,29 @@ func (client *Client) WriteStateToFile() (err error) {
 	}
 
 	client.platform, err = client.platform.WriteStateToFile(client.state.Location)
+
+	if nil != err {
+		return err
+	}
+
+	currentKeyPair := keyPair{}
+	jsonBytes, err := json.Marshal(client.platform.State)
+	currentKeyPair.FromJson(string(jsonBytes))
+	err = currentKeyPair.Save()
+
+	if nil != err {
+		fmt.Println(err.Error())
+	}
+
+	consoleOutputsFromTerraState := client.outputsAsString(true)
+	fmt.Println("[FINAL] Summary execution:", consoleOutputsFromTerraState)
+
+	outputFile := File{
+		Location: TempDirPathLocation + "/" + currentKeyPair.DeployName + "/output.log",
+		Body:     consoleOutputsFromTerraState,
+	}
+	_ = outputFile.WriteFile()
+	fmt.Println("Wrote summarry output to: ", outputFile.Location)
 
 	return err
 }
@@ -190,4 +230,12 @@ func (client *Client) assignStateFile() (err error) {
 	client.platform, err = client.platform.ReadStateFromFile(client.state.Location)
 
 	return err
+}
+
+func (client *Client) outputsAsString(includeHeader bool) string {
+	outputRecords := OutputRecords{}
+	jsonBytes, _ := json.Marshal(client.platform.State)
+	stringOutput := outputRecords.FromJsonAsString(string(jsonBytes), true)
+
+	return stringOutput
 }
