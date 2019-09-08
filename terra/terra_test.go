@@ -12,20 +12,19 @@ import (
 	"testing"
 )
 
-const (
-	DummyRecipeBodyFail = `variable "count"    { default = 2 }
-  variable "key_name" {}
-  variable "region" {}
-  provider "aws" {
-    region        =  "${var.region}"
-  }
-  resource "aws_instance" "server" {
-    instance_type = "t2.micro"
-    ami           = "ami-6e1a0117"
-    count         = "${var.count}"
-    key_name      = "${var.key_name}"
-  }`
-)
+func TestClient_CreateDirInTempFailure(t *testing.T) {
+	TempDirPathLocation = ".apolloTest"
+	client := Client{}
+	tempDirName := "dummy/invalid"
+	fullTempDirPath := TempDirPathLocation + "/" + tempDirName
+	dirPath, err := client.CreateDirInTemp(tempDirName)
+	assert.Nil(t, err)
+	assert.Equal(t, fullTempDirPath, dirPath)
+	assert.DirExists(t, fullTempDirPath)
+	err = os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
+	TempDirPathLocation = TempDirPath
+}
 
 func TestClient_ApplyCombinedFailure(t *testing.T) {
 	client := createTestedDefaultClient(t)
@@ -113,7 +112,8 @@ func TestClient_ApplyCombined(t *testing.T) {
 		FilePaths: []string{filePath},
 	}
 	err := client.ApplyCombined(combinedRecipe, false)
-	assert.Nil(t, err)
+	assert.Error(t, err)
+	assert.Equal(t, "1 error occurred:\n\t* provider.aws: Not a valid region: \n\n", err.Error())
 
 	file := File{
 		Location: LastExecutedFileName,
@@ -291,30 +291,48 @@ func TestClient_PreparePlatformWithVariables(t *testing.T) {
 	removeStateFileAndRestore(t)
 }
 
-func TestClient_WriteStateToFileFailure(t *testing.T) {
+func TestClient_WriteStateToFilesFailure(t *testing.T) {
 	client := Client{
 		platform: &terranova.Platform{},
 	}
-	err := client.WriteStateToFile()
+	err := client.WriteStateToFiles()
 	assert.Error(t, err)
 	assert.IsType(t, ClientError{}, err)
 	assert.Equal(t, "No state file found", err.Error())
 }
 
-func TestClient_WriteStateToFile(t *testing.T) {
+func TestClient_WriteStateToFiles(t *testing.T) {
 	StateFileName = "dummy.tfstate"
+	StateFileBody = ProperOutputFixture
+	TempDirPathLocation = ".apolloTest"
 	stateFile, err := DefaultStateFile()
 	assert.Nil(t, err)
 
 	platform := &terranova.Platform{}
+	platform, err = platform.ReadStateFromFile(StateFileName)
+	assert.Nil(t, err)
 
 	client := Client{
 		platform: platform,
 		state:    stateFile,
 	}
 
-	err = client.WriteStateToFile()
+	err = client.WriteStateToFiles()
 	assert.Nil(t, err)
+
+	outputLogFileName := TempDirPathLocation + "/quorum-bastion-cocroaches-attack/output.log"
+	outputLogFile := File{
+		Location: outputLogFileName,
+	}
+	assert.FileExists(t, TempDirPathLocation+"/quorum-bastion-cocroaches-attack/output.log")
+	err = outputLogFile.ReadFile()
+	assert.Nil(t, err)
+	assert.Greater(t, len(outputLogFile.Body), 1)
+	assert.Equal(
+		t,
+		fmt.Sprintf("%s%s", ColorizedOutputPrefix, OutputAsAStringWithoutHeaderFixture),
+		outputLogFile.Body,
+	)
 
 	removeStateFileAndRestore(t)
 }
@@ -362,6 +380,7 @@ func TestClient_DefaultClient(t *testing.T) {
 
 func createTestedDefaultClient(t *testing.T) Client {
 	StateFileName = "dummy.tfstate"
+	StateFileBody = ProperOutputFixture
 	client := Client{}
 	err := client.DefaultClient()
 	assert.Nil(t, err)
@@ -371,5 +390,8 @@ func createTestedDefaultClient(t *testing.T) Client {
 
 func removeStateFileAndRestore(t *testing.T) {
 	RemoveDummyFile(t, StateFileName)
+	err := os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
 	StateFileName = DefaulStateFileName
+	StateFileBody = DefaultStateFileBody
 }
