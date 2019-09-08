@@ -3486,6 +3486,7 @@ output "chain_id" {
 
 output "private_key_file" {
   value = "${local_file.private_key.filename}"
+  sensitive = true
 }
 
 output "bucket_name" {
