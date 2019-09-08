@@ -113,7 +113,7 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 }
 
 func TestApplyCmd_Run(t *testing.T) {
-	// If body of file is empty it wont fail with errors
+	// We want to end with ExitCodeTerraformError without actual e2e calls
 	keyName := "dummy"
 	filePath := "dummy.tf"
 	schemaFilePath := "dummy.yml"
@@ -162,7 +162,7 @@ func GetMockedRecipes(
 		keyName,
 		terra.CombinedRecipe{
 			File: terra.File{
-				Location: fileName,
+				Location:             fileName,
 				EnvVariablesRollBack: envVariablesRollback,
 			},
 			FilePaths: []string{fileName},
