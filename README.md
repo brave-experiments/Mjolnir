@@ -76,15 +76,9 @@ This will show you a json formated list of outputs including:
 * network_name      - provided network_name
 * private_key_file  - SSH key for bastion and cluster nodes
 
-In order to get the current node list please copy a file from `private_key_file` var into local dir and chmod it to 0400.
+In order to get the current node list please login to bastion using the key:
 
-eg. 
-`cp /tmp/.terranova141687627/network_name-deploy.pem .`
-`chmod 0400 network_name-deploy.pem`
-
-then login to bastion using the key:
-
-`ssh -i ./network_name-deploy.pem ec2-user@bastion_host_ip`
+`ssh -i .apollo/$bastion-name/id_rsa.pem ec2-user@bastion_host_ip`
 
 On bastion you will find Node{n} scripts. To get nodes IP addresses for each one run:
 
@@ -96,8 +90,3 @@ Additional tools you will find under links
 * eth-stats: http://bastion_host_ip:3000
 * Grafana: http://bastion_host_ip:3001
 * Prometheus: http://bastion_host_ip:9090
-
-
-
-
-We will update this file as soon as CLI `output` is fixed. 
