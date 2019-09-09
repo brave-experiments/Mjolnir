@@ -73,6 +73,21 @@ variable "aws_cli_docker_image_tag" {
   default     = "latest"
 }
 
+variable "chaos_testing_docker_image" {
+  description = "Chaos testing tool docker image to be used"
+  default     = "gaiaadm/pumba"
+}
+
+variable "chaos_testing_docker_image_tag" {
+  description = "Chaos testing tool Docker image tag to be used"
+  default     = "latest"
+}
+
+variable "chaos_testing_run_command" {
+  description = "Chaos testing tool run command to be used"
+  default     = []
+}
+
 variable "consensus_mechanism" {
   description = "Concensus mechanism used in the network. Supported values are raft/istanbul"
   default     = "istanbul"

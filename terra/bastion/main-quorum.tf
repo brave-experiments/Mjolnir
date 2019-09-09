@@ -340,6 +340,8 @@ resource "null_resource" "bastion_remote_exec" {
     script              = "${md5(local_file.bootstrap.content)}"
   }
 
+  depends_on = ["aws_ecs_cluster.quorum"]
+
   provisioner "remote-exec" {
     script = "${local_file.bootstrap.filename}"
 

@@ -27,6 +27,7 @@ var (
 				"terra/quorum/asg_ecs.tf",
 				"terra/quorum/container_definition_bootstrap.tf",
 				"terra/quorum/container_definitions.tf",
+				"terra/quorum/container_definitions_chaos_testing.tf",
 				"terra/quorum/container_definitions_constellation.tf",
 				"terra/quorum/container_definitions_quorum.tf",
 				"terra/quorum/container_definitions_tessera.tf",
