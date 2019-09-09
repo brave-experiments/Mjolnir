@@ -9,6 +9,7 @@ locals {
   quorum_run_container_name                   = "quorum-run"
   tx_privacy_engine_run_container_name        = "${var.tx_privacy_engine}-run"
   istanbul_extradata_bootstrap_container_name = "istanbul-extramain-bootstrap"
+  chaos_testing_run_container_name            = "chaos-testing-pumba-run"
 
   consensus_config = {
     raft = {
@@ -54,6 +55,7 @@ locals {
     "${local.node_key_bootstrap_container_definition}",
     "${local.metadata_bootstrap_container_definition}",
     "${local.quorum_run_container_definition}",
+    "${local.chaos_testing_run_container_definition}",
   ]
 
   container_definitions_for_constellation = [
