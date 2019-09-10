@@ -19,12 +19,17 @@ const (
 var (
     RegisteredCommands = map[string]cli.CommandFactory{
         "apply": ApplyCmdFactory,
+        "destroy": DestroyCmdFactory,
     }
 )
 
 type ApplyCmd struct {
     cli.Command
     Recipes terra.Recipes
+}
+
+type DestroyCmd struct {
+    ApplyCmd
 }
 
 func ApplyCmdFactory() (command cli.Command, err error) {
@@ -36,6 +41,57 @@ func ApplyCmdFactory() (command cli.Command, err error) {
     }
 
     return command, err
+}
+
+func DestroyCmdFactory() (command cli.Command, err error) {
+    recipes := terra.Recipes{}
+    recipes.CreateWithDefaults()
+    command = DestroyCmd{
+        ApplyCmd: ApplyCmd{
+            Recipes: recipes,
+        },
+    }
+
+    return command, err
+}
+
+func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
+    expectedMinimumArguments := 1
+
+    if len(args) < expectedMinimumArguments {
+        fmt.Printf(
+            "Not enough arguments, expected more than %v \n write `apply --help` for more info\n",
+            expectedMinimumArguments,
+        )
+
+        return ExitCodeInvalidNumOfArgs
+    }
+
+    yamlFilePath := args[0]
+    recipe := terra.CombinedRecipe{}
+    err := recipe.BindYamlWithVars(yamlFilePath)
+
+    if nil != err {
+        return ExitCodeYamlBindingError
+    }
+
+    err = destroyCmd.ApplyCmd.executeTerra(recipe, true)
+    exitCode = ExitCodeSuccess
+
+    if nil != err {
+        fmt.Println(err)
+        exitCode = ExitCodeTerraformError
+    }
+
+    fmt.Println("Restoring env variables.")
+    err = destroyCmd.ApplyCmd.restoreEnvVariables(recipe)
+
+    if nil != err {
+        fmt.Printf("Error restoring variables: %s", err)
+        exitCode = ExitCodeEnvUnbindingError
+    }
+
+    return exitCode
 }
 
 func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
@@ -75,7 +131,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
         recipeKey,
     )
 
-    err = applyCmd.executeTerra(recipe)
+    err = applyCmd.executeTerra(recipe, false)
     exitCode = ExitCodeSuccess
 
     if nil != err {
@@ -111,8 +167,20 @@ func (applyCmd ApplyCmd) Help() (helpMessage string) {
     return helpMessage
 }
 
+func (destroyCmd DestroyCmd) Help() (helpMessage string) {
+    helpMessage = "\nThis is destroy command. Usage: apollo destroy [yamlFilePath]"
+    helpMessage = helpMessage + "\nThere must be a valid terraform.tfstate file at root of execution"
+
+    return helpMessage
+}
+
 func (applyCmd ApplyCmd) Synopsis() (synopsis string) {
     synopsis = "apply [recipe] [yamlSchemaPath]"
+    return synopsis
+}
+
+func (destroyCmd DestroyCmd) Synopsis() (synopsis string) {
+    synopsis = "destroy [yamlSchemaPath]"
     return synopsis
 }
 
@@ -126,7 +194,7 @@ func (applyCmd ApplyCmd) printRecipesKeys() {
     }
 }
 
-func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) {
+func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe, destroy bool) (err error) {
    terraClient := terra.Client{}
    err = terraClient.DefaultClient()
 
@@ -134,7 +202,7 @@ func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe) (err error) 
        return err
    }
 
-   err = terraClient.ApplyCombined(recipe, false)
+   err = terraClient.ApplyCombined(recipe, destroy)
 
    return err
 }
