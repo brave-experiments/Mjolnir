@@ -73,6 +73,16 @@ variable "aws_cli_docker_image_tag" {
   default     = "latest"
 }
 
+variable "pantheon_docker_image" {
+  description = "URL to Pantheon docker image to be used"
+  default     = "pegasyseng/pantheon"
+}
+
+variable "pantheon_docker_image_tag" {
+  description = "Pantheon Docker image tag to be used"
+  default     = "latest"
+}
+
 variable "consensus_mechanism" {
   description = "Concensus mechanism used in the network. Supported values are raft/istanbul"
   default     = "istanbul"
