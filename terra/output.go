@@ -221,7 +221,7 @@ func (currentKeyPair *keyPair) writePrivateKey(location string) (err error) {
 		return err
 	}
 
-	err = os.Chmod(privateKeyName, 0644)
+	err = os.Chmod(privateKeyName, 0400)
 
 	if nil != err {
 		return err
@@ -246,7 +246,7 @@ func (currentKeyPair *keyPair) writePublicKey(location string) (err error) {
 		return err
 	}
 
-	err = os.Chmod(publicKeyName, 0644)
+	err = os.Chmod(publicKeyName, 0400)
 
 	if nil != err {
 		return err
