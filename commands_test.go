@@ -37,6 +37,13 @@ func TestApplyCmdFactory(t *testing.T) {
 	testThatCommandHasWholeInterface(t, command)
 }
 
+func TestDestroyCmdFactory(t *testing.T) {
+	command, err := DestroyCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, DestroyCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
+}
+
 func TestApplyCmd_RunInvalid(t *testing.T) {
 	command, err := ApplyCmdFactory()
 	expectedEnvKey := ExpectedEnvKey
@@ -112,6 +119,85 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 	terra.DefaultRecipes = oldRecipes
 }
 
+func TestDestroyCmd_RunInvalid(t *testing.T) {
+	command, err := DestroyCmdFactory()
+	expectedEnvKey := ExpectedEnvKey
+	expectedOldEnvValue := os.Getenv(expectedEnvKey)
+	assert.Nil(t, err)
+	assert.IsType(t, DestroyCmd{}, command)
+
+	// DestroyCmd has no arguments
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
+
+	// DestroyCmd has no Recipes
+	invalidCmd := DestroyCmd{}
+	dummyArgs := []string{"dummy", "dummy.yml"}
+	exitCode = invalidCmd.Run(dummyArgs)
+	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+
+	// DestroyCmd has no Elements in Recipes
+	recipes := terra.Recipes{}
+	invalidDestroyCmd := DestroyCmd{
+		ApplyCmd{
+			Recipes: recipes,
+		},
+	}
+	exitCode = invalidDestroyCmd.Run(dummyArgs)
+	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+
+	// DestroyCmd has no matching key
+	exitCode = command.Run(dummyArgs)
+	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+
+	// Should return error because there is no .yml variable file
+	keyName := "dummy"
+	filePath := "dummy.tf"
+	recipes = GetMockedRecipes(
+		t,
+		keyName,
+		filePath,
+		DummyFileTfBody,
+		map[string]string{},
+	)
+	invalidDestroyCmd = DestroyCmd{
+		ApplyCmd{
+			Recipes: recipes,
+		},
+	}
+	assert.IsType(t, DestroyCmd{}, invalidDestroyCmd)
+	oldRecipes := terra.DefaultRecipes
+	terra.DefaultRecipes = recipes.Elements
+	exitCode = invalidDestroyCmd.Run(dummyArgs)
+	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	terra.DefaultRecipes = oldRecipes
+
+	// Since it is not mocked we want to end our testing process here
+	yamlFileName := dummyArgs[1]
+	PrepareDummyFile(t, yamlFileName, YamlV1Fixture)
+	envRecipesMapping := map[string]string{
+		"simpleKey": expectedEnvKey,
+	}
+	recipes = GetMockedRecipes(
+		t,
+		keyName,
+		filePath,
+		DummyFileTfBody,
+		envRecipesMapping,
+	)
+	oldRecipes = terra.DefaultRecipes
+	terra.DefaultRecipes = recipes.Elements
+	command = ApplyCmd{
+		Recipes: recipes,
+	}
+	exitCode = command.Run(dummyArgs)
+	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	assert.Equal(t, expectedOldEnvValue, os.Getenv(expectedEnvKey))
+	RemoveDummyFile(t, filePath)
+	RemoveDummyFile(t, yamlFileName)
+	terra.DefaultRecipes = oldRecipes
+}
+
 func TestApplyCmd_Run(t *testing.T) {
 	// We want to end with ExitCodeTerraformError without actual e2e calls
 	keyName := "dummy"
@@ -130,10 +216,37 @@ func TestApplyCmd_Run(t *testing.T) {
 	RemoveDummyFile(t, schemaFilePath)
 }
 
+func TestDestroyCmd_Run(t *testing.T) {
+	keyName := "dummy"
+	filePath := "dummy.tf"
+	schemaFilePath := "dummy.yml"
+	yamlFileSchema := terra.SchemaV1
+	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
+	recipes := GetMockedRecipes(t, keyName, filePath, "", map[string]string{})
+	commandDestroy := DestroyCmd{
+		ApplyCmd{
+			Recipes: recipes,
+		},
+	}
+	assert.IsType(t, DestroyCmd{}, commandDestroy)
+	exitCode := commandDestroy.Run([]string{keyName, schemaFilePath})
+	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	RemoveDummyFile(t, filePath)
+	RemoveDummyFile(t, schemaFilePath)
+}
+
 func TestApplyCmd_Help(t *testing.T) {
 	command, err := ApplyCmdFactory()
 	assert.Nil(t, err)
 	assert.IsType(t, ApplyCmd{}, command)
+	helpMsg := command.Help()
+	assert.Greater(t, len(helpMsg), 0)
+}
+
+func TestDestroyCmd_Help(t *testing.T) {
+	command, err := DestroyCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, DestroyCmd{}, command)
 	helpMsg := command.Help()
 	assert.Greater(t, len(helpMsg), 0)
 }
