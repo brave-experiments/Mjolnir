@@ -68,7 +68,12 @@ func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
     }
 
     yamlFilePath := args[0]
-    recipe := terra.CombinedRecipe{}
+    recipe, exitCode := destroyCmd.getRecipe("quorum")
+
+    if exitCode != ExitCodeSuccess {
+        panic(fmt.Sprintf("Exited with code: %v, recipe not found", exitCode))
+    }
+
     err := recipe.BindYamlWithVars(yamlFilePath)
 
     if nil != err {
