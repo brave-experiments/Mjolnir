@@ -1,8 +1,7 @@
-
 package terra
 
 var (
-StaticQuorum = `
+	StaticQuorum = `
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${aws_vpc.this.id}"
@@ -1671,6 +1670,8 @@ resource "null_resource" "bastion_remote_exec" {
     script              = "${md5(local_file.bootstrap.content)}"
   }
 
+  depends_on = ["aws_ecs_cluster.quorum"]
+
   provisioner "remote-exec" {
     script = "${local_file.bootstrap.filename}"
 
@@ -2549,6 +2550,7 @@ locals {
   quorum_run_container_name                   = "quorum-run"
   tx_privacy_engine_run_container_name        = "${var.tx_privacy_engine}-run"
   istanbul_extradata_bootstrap_container_name = "istanbul-extramain-bootstrap"
+  chaos_testing_run_container_name            = "chaos-testing-pumba-run"
 
   consensus_config = {
     raft = {
@@ -2594,6 +2596,7 @@ locals {
     "${local.node_key_bootstrap_container_definition}",
     "${local.metadata_bootstrap_container_definition}",
     "${local.quorum_run_container_definition}",
+    "${local.chaos_testing_run_container_definition}",
   ]
 
   container_definitions_for_constellation = [
@@ -2610,6 +2613,56 @@ locals {
     "${var.tx_privacy_engine == "constellation" ? jsonencode(local.container_definitions_for_constellation) : ""}",
     "${var.tx_privacy_engine == "tessera" ? jsonencode(local.container_definitions_for_tessera) : ""}",
   ]
+}
+
+locals {
+
+  chaos_testing_run_commands    = "${var.chaos_testing_run_command}"
+
+  chaos_testing_run_container_definition = {
+    name      = "${local.chaos_testing_run_container_name}"
+    image     = "${local.chaos_testing_docker_image}"
+    essential = "false"
+
+    logConfiguration = {
+      logDriver = "awslogs"
+
+      options = {
+        awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+        awslogs-region        = "${var.region}"
+        awslogs-stream-prefix = "logs"
+      }
+    }
+
+    mountPoints = [
+      {
+        sourceVolume  = "${local.shared_volume_name}"
+        containerPath = "${local.shared_volume_container_path}"
+      },
+      {
+        sourceVolume  = "docker_socket"
+        containerPath = "/var/run/docker.sock"
+      },
+    ]
+
+    volumesFrom = [
+      {
+        sourceContainer = "${local.metadata_bootstrap_container_name}"
+      },
+    ]
+    /*
+    entrypoint = [
+      "sleep",
+      "180;",
+      "/pumba",
+    ]
+    */
+
+    command = "${local.chaos_testing_run_commands}"
+    dockerLabels = "${local.common_tags}"
+
+    cpu = 0
+  }
 }
 
 locals {
@@ -3183,6 +3236,12 @@ resource "aws_ecs_task_definition" "quorum" {
   volume {
     name = "${local.shared_volume_name}"
   }
+
+  volume {
+    name      = "docker_socket"
+    host_path = "/var/run/docker.sock"
+  }
+
 }
 
 resource "aws_ecs_service" "quorum" {
@@ -3442,6 +3501,7 @@ locals {
   constellation_docker_image     = "${var.tx_privacy_engine == "constellation" ? format("%s:%s", var.constellation_docker_image, var.constellation_docker_image_tag) : ""}"
   quorum_docker_image            = "${format("%s:%s", var.quorum_docker_image, var.quorum_docker_image_tag)}"
   tx_privacy_engine_docker_image = "${coalesce(local.tessera_docker_image, local.constellation_docker_image)}"
+  chaos_testing_docker_image     = "${format("%s:%s", var.chaos_testing_docker_image, var.chaos_testing_docker_image_tag)}"
   aws_cli_docker_image           = "${format("%s:%s", var.aws_cli_docker_image, var.aws_cli_docker_image_tag)}"
 
   common_tags = {
@@ -3689,6 +3749,21 @@ variable "aws_cli_docker_image" {
 variable "aws_cli_docker_image_tag" {
   description = "AWS CLI Docker image tag to be used"
   default     = "latest"
+}
+
+variable "chaos_testing_docker_image" {
+  description = "Chaos testing tool docker image to be used"
+  default     = "gaiaadm/pumba"
+}
+
+variable "chaos_testing_docker_image_tag" {
+  description = "Chaos testing tool Docker image tag to be used"
+  default     = "latest"
+}
+
+variable "chaos_testing_run_command" {
+  description = "Chaos testing tool run command to be used"
+  default     = []
 }
 
 variable "consensus_mechanism" {
