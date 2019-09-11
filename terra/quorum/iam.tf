@@ -52,6 +52,7 @@ data "aws_iam_policy_document" "ecs_task" {
 
     actions = [
       "ecs:DescribeTasks",
+      "ecs:ListTagsForResource"
     ]
 
     resources = [
