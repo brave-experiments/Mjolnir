@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/mitchellh/cli"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -26,6 +27,10 @@ func New() *cli.CLI {
 }
 
 func main() {
+	if os.Getenv("TF_LOG") == "" {
+		log.SetOutput(ioutil.Discard)
+	}
+
 	New()
 
 	exitStatus, err := Cli.Run()
