@@ -148,6 +148,6 @@ variable profile {
 variable "faketime" {
   type    = "list"
   description = "A faketime value passed to cluster node"
-  default = [ "1", "-3", "2" ]
+  default = []
 
 }
