@@ -1,7 +1,8 @@
+
 package terra
 
 var (
-	StaticQuorum = `
+StaticQuorum = `
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${aws_vpc.this.id}"
