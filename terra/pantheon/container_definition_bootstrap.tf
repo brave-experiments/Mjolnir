@@ -14,9 +14,11 @@ locals {
   normalized_host_ip = "ip_$(echo $HOST_IP | sed -e 's/\\./_/g')"
 
   node_key_bootstrap_commands = [
-    "mkdir -p ${local.pantheon_data_dir}/pantheon",
-    "echo Writing account address $ACCOUNT_ADDRESS to ${local.account_address_file}",
-    "echo $ACCOUNT_ADDRESS > ${local.account_address_file}",
+    "mkdir -p ${local.pantheon_data_dir}/pantheon/public-keys/",
+    "echo export pantheon public-keys",
+    "HOSTNAME=`hostname`",
+    "/opt/pantheon/bin/pantheon public-key export --to=${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME",
+    "NODE_ID=`cat ${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME`",
     "echo Writing Node Id [$NODE_ID] to ${local.node_id_file}",
     "echo $NODE_ID > ${local.node_id_file}",
   ]
@@ -167,7 +169,8 @@ EOP
     "echo \"Done!\" > ${local.metadata_bootstrap_container_status_file}",
 
     "echo Wait until privacy engine initialized ...",
-    "while [ ! -f \"${local.tx_privacy_engine_address_file}\" ]; do sleep 1; done",
+    //TODO Grzes
+    //"while [ ! -f \"${local.tx_privacy_engine_address_file}\" ]; do sleep 1; done",
     "aws s3 cp ${local.tx_privacy_engine_address_file} s3://${local.s3_revision_folder}/privacyaddresses/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
   ]
 
