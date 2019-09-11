@@ -17,10 +17,17 @@ locals {
     "mkdir -p ${local.pantheon_data_dir}/pantheon/public-keys/",
     "echo export pantheon public-keys",
     "HOSTNAME=`hostname`",
-    "/opt/pantheon/bin/pantheon public-key export --to=${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME",
-    "NODE_ID=`cat ${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME`",
+    "/opt/pantheon/bin/pantheon public-key export --to=${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_pubkey",
+    "/opt/pantheon/bin/pantheon public-key export-address --to=${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_address",
+
+    "export ACCOUNT_ADDRESS=`cat ${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_address`",
+    "echo Writing account address $ACCOUNT_ADDRESS to ${local.account_address_file}",
+    "echo $ACCOUNT_ADDRESS > ${local.account_address_file}",
+
+    "export NODE_ID=`cat ${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_pubkey`",
     "echo Writing Node Id [$NODE_ID] to ${local.node_id_file}",
     "echo $NODE_ID > ${local.node_id_file}",
+    "cp ${local.account_address_file} ${local.tx_privacy_engine_address_file}"
   ]
 
   node_key_bootstrap_container_definition = {
@@ -133,7 +140,8 @@ EOP
     "mkdir -p ${local.node_ids_folder}",
     "mkdir -p ${local.accounts_folder}",
     "mkdir -p ${local.libfaketime_folder}",
-    "aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
+    //TODO Grzes
+    //"aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
@@ -161,16 +169,15 @@ EOP
     "${var.consensus_mechanism == "istanbul" ? join("\n", local.istanbul_bootstrap_commands) : ""}",
     "mixHash=\"\\\"${element(local.consensus_config_map["genesis_mixHash"], 0)}\\\"\"",
     "difficulty=\"\\\"${element(local.consensus_config_map["genesis_difficulty"], 0)}\\\"\"",
-    //TODO grzes
-    //"echo '${replace(jsonencode(local.genesis), "/\"(true|false|[0-9]+)\"/", "$1")}' | jq \". + { alloc : $alloc, extraData: $extraData, mixHash: $mixHash, difficulty: $difficulty}${var.consensus_mechanism == "istanbul" ? " | .config=.config + {istanbul: {epoch: 30000, policy: 0} }" : ""}\" > ${local.genesis_file}",
+    "echo '${replace(jsonencode(local.genesis), "/\"(true|false|[0-9]+)\"/", "$1")}' | jq \". + { alloc : $alloc, extraData: $extraData, mixHash: $mixHash, difficulty: $difficulty}${var.consensus_mechanism == "istanbul" ? " | .config=.config + {istanbul: {epoch: 30000, policy: 0} }" : ""}\" > ${local.genesis_file}",
     "cat ${local.genesis_file}",
 
     // Write status
     "echo \"Done!\" > ${local.metadata_bootstrap_container_status_file}",
 
-    "echo Wait until privacy engine initialized ...",
     //TODO Grzes
-    //"while [ ! -f \"${local.tx_privacy_engine_address_file}\" ]; do sleep 1; done",
+    "echo Wait until privacy engine initialized ...",
+    "while [ ! -f \"${local.tx_privacy_engine_address_file}\" ]; do sleep 1; done",
     "aws s3 cp ${local.tx_privacy_engine_address_file} s3://${local.s3_revision_folder}/privacyaddresses/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
   ]
 
