@@ -270,12 +270,7 @@ SCRIPT
       ]
     }
 
-    environment = [
-      {
-        name  = "LD_PRELOAD",
-        value = "${local.libfaketime_folder}/libfaketime.so"
-      }
-    ]
+    environment = []
 
     entrypoint = [
       "/bin/sh",
