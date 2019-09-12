@@ -6,6 +6,7 @@ RUN apk add --no-cache make \
     musl-dev \
     linux-headers\
     git \
+	bzr \
     curl
 
 RUN go get github.com/githubnemo/CompileDaemon
