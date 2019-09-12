@@ -32,4 +32,4 @@ build-mac: generate clean-build-mac
 
 test-and-build: clean clean-build generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
-	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo
+	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo
