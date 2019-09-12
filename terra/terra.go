@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/johandry/terranova"
+	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -79,6 +81,10 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 
 	if nil != err {
 		return err
+	}
+
+	if "" == os.Getenv("TF_LOG") {
+		log.SetOutput(ioutil.Discard)
 	}
 
 	err = client.platform.Apply(destroy)
