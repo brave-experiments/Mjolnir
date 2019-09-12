@@ -167,7 +167,7 @@ func (applyCmd ApplyCmd) Help() (helpMessage string) {
     }
 
     helpMessage = helpMessage + "\n" + "Filepath must be valid yaml file with variables, like:" + "\n"
-    helpMessage = helpMessage + "\n" + terra.SchemaV1 + "\n"
+    helpMessage = helpMessage + "\n" + terra.SchemaV02 + "\n"
 
     return helpMessage
 }
