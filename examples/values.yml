@@ -19,4 +19,3 @@ variables:
 #  faketime:                   ["+2d", "-3h", "+120", "0", "0"]  ## You need to fill all values for existing number of nodes for now.
 #  asg_instance_type:          "t2.xlarge" ## instance type user for ethereum nodes
 #  tf_log:                     "" ## If other than empty string, tf output is enabled
-
