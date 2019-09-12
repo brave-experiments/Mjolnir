@@ -1,8 +1,9 @@
-
 package terra
 
 var (
-StaticQuorum = `
+	StaticCliCliName    = "APOLLO"
+	StaticCliCliVersion = "v0.0.7"
+	StaticQuorum        = `
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${aws_vpc.this.id}"

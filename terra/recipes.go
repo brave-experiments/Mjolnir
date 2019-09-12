@@ -12,6 +12,7 @@ const (
 	AwsProfile         = "AWS_PROFILE"
 	AwsAccessKeyId     = "AWS_ACCESS_KEY_ID"
 	AwsSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
+	OutputLog          = "TF_LOG"
 )
 
 var (
@@ -53,6 +54,7 @@ var (
 					"default_region":        AwsDefaultRegion,
 					"aws_access_key_id":     AwsAccessKeyId,
 					"aws_secret_access_key": AwsSecretAccessKey,
+					"tf_log":                OutputLog,
 				},
 			},
 		},
