@@ -10,10 +10,6 @@ CloudWatch Log Group        = ${aws_cloudwatch_log_group.quorum.name}
 MSG
 }
 
-output "bastion_host_dns" {
-  value = "${aws_instance.bastion.public_dns}"
-}
-
 output "bastion_host_ip" {
   value = "${aws_instance.bastion.public_ip}"
 }
