@@ -3,7 +3,9 @@ package terra
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"math/rand"
 	"path"
+	"time"
 )
 
 var (
@@ -28,8 +30,31 @@ type variablesModel struct {
 }
 
 const (
-	CurrentVersion = float64(0.1)
-	SchemaV1       = `version: 0.1
+	CurrentVersion = float64(0.2)
+	NetworkNameKey = "network_name"
+	SchemaV02      = `version: 0.2
+resourceType: variables
+variables:
+  simpleKey: variable
+  region:                     'us-east-2'     ## You can set region for deployment here
+  default_region:             'us-east-2'     ## If key region is not present it is default region setter
+  profile:                    'default'       ## It chooses profile from your ~/.aws config. If not present, profile is "default"
+  network_name:               'sidechain-example'
+  number_of_nodes:            '5'
+  quorum_docker_image_tag:    '2.2.5'
+  aws_access_key_id:          'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
+  aws_secret_access_key:      'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
+  genesis_gas_limit:          "28"            ## Used to set genesis gas limit
+  is_timestamp:               "30"            ## Used to set genesis timestamp
+  genesis_difficulty:         "12"            ## Used to set genesis difficulty
+  genesis_nonce:              "0"             ## Used to set genesis nonce
+  consensus_mechanism:        "instanbul"     ## Used to set consensus mechanism
+  chaos_testing_run_command:  ["netem", "--duration", "5m", "--interface", "eth0", "delay", "--time", "3000", "--jitter", "30", "--correlation", "20", "re2:^ecs-quorum*"]
+  faketime:                   ["+2d", "-3h", "+120", "0", "0"]  ## You need to fill all values for existing number of nodes for now.
+  tf_log:                     "" ## Used to enable/disable or point logs type that Terraform outputs to console
+`
+	// Deprecated, remove in 0.3
+	SchemaV01 = `version: 0.1
 resourceType: variables
 variables:
   simpleKey: variable
@@ -59,8 +84,27 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 	}
 
 	variablesSchema.mapGenesisVariables()
+	variablesSchema.mapNetworkName()
 
 	return
+}
+
+func (variablesSchema *VariablesSchema) mapNetworkName() {
+	variables := variablesSchema.Variables
+
+	if nil == variables {
+		return
+	}
+
+	networkName := variables[NetworkNameKey]
+
+	if nil == networkName {
+		return
+	}
+
+	fixedSalt := rand.New(rand.NewSource(time.Now().UnixNano()))
+	randomString := fmt.Sprintf("%v", fixedSalt.Int())
+	variablesSchema.Variables[NetworkNameKey] = fmt.Sprintf("%s-%v", networkName, randomString[0:8])
 }
 
 func (variablesSchema *VariablesSchema) mapGenesisVariables() {
