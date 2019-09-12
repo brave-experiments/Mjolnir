@@ -15,7 +15,7 @@ func TestBuild(t *testing.T) {
 		},
 	}
 	// It is hardcoded, because it is crucial to further workflow of app
-	expectedString := "\npackage builder\n\nvar (\nStaticKey1 = `var1`\n)\n"
+	expectedString := "package builder\n\nvar (\n    StaticKey1 = `var1`\n)\n"
 
 	result, err := Build(staticVariablesMap)
 	assert.Nil(t, err)
@@ -45,6 +45,7 @@ func TestBuild_BuildRecipe(t *testing.T) {
 	staticVariablesMap := map[string]interface{}{
 		"PackageName":     "terra",
 		"StaticVariables": staticVariables,
+		"CliVariables":    staticVariables,
 	}
 
 	result, err := Build(staticVariablesMap)
