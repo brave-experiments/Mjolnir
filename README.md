@@ -26,7 +26,7 @@ try `./apollo` to see all commands that are registered
 try `./apollo {cmdName} --help` to see help from command
 
 ### Quorum execution
-after build
+to build
 `./apollo apply quorum {values.yml}`
 
 ### Providing values
@@ -42,11 +42,11 @@ After execution of `apply` command certain files will be created on your host:
 - `terraform.tfstate` at root of execution dir, which contains state of execution
 - `variables.log` at root of execution dir, which contains last executed variables in recipe
 - `.apollo` dir which contains necessary files like ssh key pair to bastion
-- `.apollo/$bastion-name/` is a dir where should end private and public key pair
+- `.apollo/$network-name+$timestamp/` is a dir where should end private and public key pair
 > Also see CONTRIBUTING.md
 
 
-## Manually running build
+## Manually running deploy build
 
 To manually test build please run 
 
@@ -57,28 +57,60 @@ To execute apollo CLI run:
 `./apollo apply quorum values.yml`  - with previosly prepared values.yml taken from `examples/` folder in repo
 
 After successful you will find following files in your working directory:
-* default.tfstate   - current terraform object state
+* terraform.tfstate   - current terraform object state
 * temp.tf           - full dump of terraform code
 * variables.log     - log file with provided vatiables
 
+On successful run on the output you will see following example information:
 
-As we don't have a working output function yet ( depends of Blazej availability  should be ready  tomorrow 4.09.2019 )
-you need to run following command on `default.tfstate` file to extract deployment details.
+```
+Created output dir:  .apollo/network-name-12345678
+[FINAL] Summary execution: [reset][bold][green]
+Outputs:
 
-`cat default.tfstate | jq '.modules[0].outputs'`
+_status = Completed!
 
-This will show you a json formated list of outputs including:
-* _status           - deployment details
-* bastion_host_ip   - bastion public IP
-* bucket_name       - S3 bucket name with deployment meta files
-* chain_id          - deploy chain ID
-* ecs_cluster_name  - full cluster name combined of provided vars
-* network_name      - provided network_name
-* private_key_file  - SSH key for bastion and cluster nodes
+Quorum Docker Image         = quorumengineering/quorum:2.2.5
+Privacy Engine Docker Image = quorumengineering/tessera:latest
+Number of Quorum Nodes      = 3
+ECS Task Revision           = 1
+CloudWatch Log Group        = /ecs/quorum/network-name-12345678
+
+bastion_host_ip = xxx.xxx.xxx.xxx
+bucket_name = us-east-2-ecs-network-name-12345678-b616bc76ee59e4ba
+chain_id = 7774
+ecs_cluster_name = quorum-network-name-12345678
+ethstats_host_url = http://xxx.xxx.xxx.xxx:3000
+grafana_host_url = http://xxx.xxx.xxx.xxx:3001
+grafana_username = admin
+grafana_password = XXXXXXXXX
+network_name = network-name
+private_key_file = <sensitive>
+Wrote summarry output to:  .apollo/quorum-bastion-jkopacze-n3-66790866/output.log
+Restoring env variables.
+```
+
+
+
+## Manually destroying deploy
+
+to destroy run:
+`./apollo destroy {values.yml}`
+
+Current success output looks like this ( will be correted in next release ):
+```Deploy Name not present
+   [FINAL] Summary execution: 
+   Wrote summarry output to:  .apollo//output.log
+   Deploy Name not present
+   Restoring env variables.
+```
+
+## Deploy usage
+
 
 In order to get the current node list please login to bastion using the key:
 
-`ssh -i .apollo/$bastion-name/id_rsa.pem ec2-user@bastion_host_ip`
+`ssh -i .apollo/$network-name+$timestamp/id_rsa.pem ec2-user@bastion_host_ip`
 
 On bastion you will find Node{n} scripts. To get nodes IP addresses for each one run:
 
