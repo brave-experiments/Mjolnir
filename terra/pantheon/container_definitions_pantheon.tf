@@ -1,7 +1,7 @@
 locals {
-  pantheon_rpc_port                = 22000
-  pantheon_p2p_port                = 21000
-  raft_port                      = 50400
+  pantheon_rpc_port                = 8546
+  pantheon_p2p_port                = 30304
+  metrics_port                     = 9545
   pantheon_data_dir                = "${local.shared_volume_container_path}/dd"
   pantheon_password_file           = "${local.shared_volume_container_path}/passwords.txt"
   pantheon_static_nodes_file       = "${local.pantheon_data_dir}/static-nodes.json"
@@ -32,6 +32,12 @@ locals {
   pantheon_args = [
     "--networkid ${random_integer.network_id.result}",
     "--discovery-enabled=false",
+    "--p2p-port=30304", 
+    "--rpc-http-enabled",
+    "--rpc-http-api=ETH,NET,IBFT",
+    "--host-whitelist='*'",
+    "--rpc-http-cors-origins='all'",
+    "--rpc-http-port=8546", 
     "--metrics-enabled",
     "--metrics-host=0.0.0.0",
     "--metrics-port=9545",
@@ -97,8 +103,8 @@ locals {
         containerPort = "${local.pantheon_p2p_port}"
       },
       {
-        hostPort      = "${local.raft_port}"
-        containerPort = "${local.raft_port}"
+        hostPort      = "${local.metrics_port}"
+        containerPort = "${local.metrics_port}"
       },
     ]
 

@@ -105,8 +105,9 @@ mkdir -p /opt/prometheus
 mkdir -p /opt/grafana/dashboards
 mkdir -p /opt/grafana/provisioning/dashboards
 mkdir -p /opt/grafana/provisioning/datasources
-curl -L https://gist.githubusercontent.com/karalabe/e7ca79abdec54755ceae09c08bd090cd/raw/3a400ab90f9402f2233280afd086cb9d6aac2111/dashboard.json -o /opt/grafana/dashboards/dashboard-geth.json
+#curl -L https://gist.githubusercontent.com/karalabe/e7ca79abdec54755ceae09c08bd090cd/raw/3a400ab90f9402f2233280afd086cb9d6aac2111/dashboard.json -o /opt/grafana/dashboards/dashboard-geth.json
 curl -L https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
+curl -L https://grafana.com/api/dashboards/10273/revisions/4/download -o /opt/grafana/dashboards/dashboard-pantheon.json
 docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
 EOF
 
@@ -300,8 +301,10 @@ do
   ip=$(cat ${local.hosts_folder}/$f)
   i=$(($i+1))
   if [ $i -lt "$count" ]; then
+    echo '{ "targets": ["'$ip':9545"] },' >> $target_file
     echo '{ "targets": ["'$ip':9100"] },' >> $target_file
   else
+    echo '{ "targets": ["'$ip':9545"] },' >> $target_file
     echo '{ "targets": ["'$ip':9100"] }'  >> $target_file
   fi
 done
@@ -329,8 +332,9 @@ cat <<SS | sudo tee /opt/grafana/provisioning/dashboards/all.yml
     folder: '/var/lib/grafana/dashboards'
 SS
 
-sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
+#sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
 sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-node-exporter.json
+sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-pantheon.json
 sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
 EOF
 }
