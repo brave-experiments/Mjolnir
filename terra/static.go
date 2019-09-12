@@ -2411,14 +2411,11 @@ EOP
     "while [ ! -f \"${local.node_id_file}\" ]; do sleep 1; done",
     "apk update",
     "apk add curl jq",
+    "sleep 10",
     "export TASK_REVISION=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq '.Revision' -r)",
     "echo \"Task Revision: $TASK_REVISION\"",
     "echo $TASK_REVISION > ${local.task_revision_file}",
-
-    //"export HOST_IP=$(curl -s $ECS_CONTAINER_METADATA_URI/task |  jq '.Containers[] | select(.Name== \"${local.metadata_bootstrap_container_name}\") | .Networks[] | select(.NetworkMode== \"bridge\") | .IPv4Addresses[0]' -r)",
-    //"export HOST_IP=$(/sbin/ip route|awk '/default/ { print $3 }')",
     "export HOST_IP=$(/usr/bin/curl http://169.254.169.254/latest/meta-data/public-ipv4)",
-
     "echo \"Host IP: $HOST_IP\"",
     "echo $HOST_IP > ${local.host_ip_file}",
     "export TASK_ARN=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq -r '.TaskARN')",
@@ -2428,11 +2425,6 @@ EOP
     "mkdir -p ${local.node_ids_folder}",
     "mkdir -p ${local.accounts_folder}",
     "mkdir -p ${local.libfaketime_folder}",
-    //"aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
-    //"touch ${local.libfaketime_file}",
-    //"aws ecs --region $REGION list-tags-for-resource --resource-arn $TASK_ARN | jq -r '.tags[0] | .value' > ${local.libfaketime_file}",
-    //"ls -l ${local.libfaketime_file}",
-    //"cat ${local.libfaketime_file}",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
@@ -2732,12 +2724,7 @@ locals {
       ]
     }
 
-    environment = [
-      {
-        name  = "LD_PRELOAD",
-        value = "${local.libfaketime_folder}/libfaketime.so"
-      }
-    ]
+    environment = []
 
     entrypoint = [
       "/bin/sh",
@@ -2874,10 +2861,6 @@ locals {
         name  = "PRIVATE_CONFIG"
         value = "${local.tx_privacy_engine_socket_file}"
       },
-      {
-        name  = "LD_PRELOAD"
-        value = "${local.libfaketime_folder}/libfaketime.so FAKETIME_NO_CACHE=1"
-      }
     ]
 
     entrypoint = [
@@ -3197,12 +3180,7 @@ SCRIPT
       ]
     }
 
-    environment = [
-      {
-        name  = "LD_PRELOAD",
-        value = "${local.libfaketime_folder}/libfaketime.so"
-      }
-    ]
+    environment = []
 
     entrypoint = [
       "/bin/sh",
@@ -3255,13 +3233,6 @@ resource "aws_ecs_service" "quorum" {
   launch_type     = "EC2"
   desired_count   = "1"
 
-  /*
-  tags = {
-    FAKETIME = "${element(var.faketime, count.index)}"
-  }
-
-  propagate_tags = "SERVICE"
-  */
   // not compatible with 'bridge' network mode
   //network_configuration {
   //  subnets          = ["${var.subnet_ids}"]
@@ -3533,10 +3504,6 @@ Number of Quorum Nodes      = ${var.number_of_nodes}
 ECS Task Revision           = ${aws_ecs_task_definition.quorum.revision}
 CloudWatch Log Group        = ${aws_cloudwatch_log_group.quorum.name}
 MSG
-}
-
-output "bastion_host_dns" {
-  value = "${aws_instance.bastion.public_dns}"
 }
 
 output "bastion_host_ip" {
