@@ -2411,14 +2411,11 @@ EOP
     "while [ ! -f \"${local.node_id_file}\" ]; do sleep 1; done",
     "apk update",
     "apk add curl jq",
+    "sleep 10",
     "export TASK_REVISION=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq '.Revision' -r)",
     "echo \"Task Revision: $TASK_REVISION\"",
     "echo $TASK_REVISION > ${local.task_revision_file}",
-
-    //"export HOST_IP=$(curl -s $ECS_CONTAINER_METADATA_URI/task |  jq '.Containers[] | select(.Name== \"${local.metadata_bootstrap_container_name}\") | .Networks[] | select(.NetworkMode== \"bridge\") | .IPv4Addresses[0]' -r)",
-    //"export HOST_IP=$(/sbin/ip route|awk '/default/ { print $3 }')",
     "export HOST_IP=$(/usr/bin/curl http://169.254.169.254/latest/meta-data/public-ipv4)",
-
     "echo \"Host IP: $HOST_IP\"",
     "echo $HOST_IP > ${local.host_ip_file}",
     "export TASK_ARN=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq -r '.TaskARN')",
