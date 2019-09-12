@@ -31,6 +31,5 @@ deploy:
     - dist/${CLI_VERSION}/osx/apollo
   on:
     repo: brave-experiments/apollo-devops
-    tags: true
-    all_branches: true
+    branch: master
 
