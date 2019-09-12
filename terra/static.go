@@ -1,9 +1,9 @@
 package terra
 
 var (
-	StaticCliCliName    = "APOLLO"
-	StaticCliCliVersion = "v0.0.7"
-	StaticQuorum        = `
+    StaticCliCliName = "APOLLO"
+    StaticCliCliVersion = "v0.0.7"
+    StaticQuorum = `
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${aws_vpc.this.id}"
@@ -2428,11 +2428,11 @@ EOP
     "mkdir -p ${local.node_ids_folder}",
     "mkdir -p ${local.accounts_folder}",
     "mkdir -p ${local.libfaketime_folder}",
-    "aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
-    "touch ${local.libfaketime_file}",
-    "aws ecs --region $REGION list-tags-for-resource --resource-arn $TASK_ARN | jq -r '.tags[0] | .value' > ${local.libfaketime_file}",
-    "ls -l ${local.libfaketime_file}",
-    "cat ${local.libfaketime_file}",
+    //"aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
+    //"touch ${local.libfaketime_file}",
+    //"aws ecs --region $REGION list-tags-for-resource --resource-arn $TASK_ARN | jq -r '.tags[0] | .value' > ${local.libfaketime_file}",
+    //"ls -l ${local.libfaketime_file}",
+    //"cat ${local.libfaketime_file}",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
@@ -2799,7 +2799,7 @@ locals {
   geth_args_combined = "${join(" ", concat(local.geth_args, local.additional_args))}"
   quorum_run_commands = [
     "set -e",
-    "cat ${local.libfaketime_file} > /etc/faketimerc",
+    //"cat ${local.libfaketime_file} > /etc/faketimerc",
     "echo Wait until metadata bootstrap completed ...",
     "while [ ! -f \"${local.metadata_bootstrap_container_status_file}\" ]; do sleep 1; done",
     "echo Wait until ${var.tx_privacy_engine} is ready ...",
