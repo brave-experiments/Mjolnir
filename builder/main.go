@@ -12,12 +12,14 @@ import (
 )
 
 const (
-	StaticFilePath     = "terra/static.go"
-	StaticFileTemplate = `
-package {{with .PackageName}}{{index .}}{{else}}builder{{end}}
+	StaticFilePath      = "terra/static.go"
+	StaticCliVersionKey = "CliVersion"
+	StaticCliNameKey    = "CliName"
+	StaticFileTemplate  = `package {{with .PackageName}}{{index .}}{{else}}builder{{end}}
 
-var (
-{{range $key, $value := .StaticVariables}}Static{{$key | Title}} = &#96;{{$value}}&#96;{{end}}
+var ({{range $key, $value := .CliVariables}}
+    StaticCli{{$key | Title}} = "{{$value}}"{{end}}
+{{range $key, $value := .StaticVariables}}    Static{{$key | Title}} = &#96;{{$value}}&#96;{{end}}
 )
 `
 )
@@ -58,6 +60,7 @@ func main() {
 	staticVariablesMap := map[string]interface{}{
 		"PackageName":     "terra",
 		"StaticVariables": staticVariables,
+		"CliVariables":    cliStaticVariables(),
 	}
 
 	result, err := Build(staticVariablesMap)
@@ -79,4 +82,15 @@ func main() {
 	}
 
 	fmt.Printf("\nSuccessfully wrote %v bytes to path %s \n", bytesCount, DefaultFilePath)
+}
+
+func cliStaticVariables() (cliStaticVariables map[string]string) {
+	cliStaticVariables = make(map[string]string)
+	cliVersion := os.Getenv("CLI_VERSION")
+	cliName := os.Getenv("CLI_NAME")
+
+	cliStaticVariables[StaticCliNameKey] = cliName
+	cliStaticVariables[StaticCliVersionKey] = cliVersion
+
+	return cliStaticVariables
 }
