@@ -1383,11 +1383,6 @@ resource "aws_key_pair" "ssh" {
 resource "local_file" "private_key" {
   filename = "${path.module}/quorum-${var.network_name}.pem"
   content  = "${tls_private_key.ssh.private_key_pem}"
-
-  provisioner "local-exec" {
-    on_failure = "continue"
-    command    = "chmod 600 ${self.filename}"
-  }
 }
 
 resource "aws_instance" "bastion" {
@@ -1481,20 +1476,6 @@ export TASK_REVISION=${aws_ecs_task_definition.quorum.revision}
 sudo rm -rf ${local.shared_volume_container_path}
 sudo mkdir -p ${local.shared_volume_container_path}/mappings
 sudo mkdir -p ${local.privacy_addresses_folder}
-
-# Faketime array ( ClockSkew )
-old_IFS=$IFS
-IFS=',' faketime=(${join(" ", var.faketime)})
-IFS=$${old_IFS}
-counter="$${#faketime[@]}"
-
-while [ $counter -gt 0 ]
-do
-    echo -n "$${faketime[-1]}" > ./$counter
-    faketime=($${faketime[@]::$counter})
-    sudo aws s3 cp ./$counter s3://${local.bastion_bucket}/clockSkew/
-    counter=$((counter - 1))
-done
 
 count=0
 while [ $count -lt ${var.number_of_nodes} ]
@@ -2300,7 +2281,8 @@ locals {
   service_file         = "${local.shared_volume_container_path}/service"
   account_address_file = "${local.shared_volume_container_path}/first_account_address"
   hosts_folder         = "${local.shared_volume_container_path}/hosts"
-  libfaketime_folder  =  "${local.shared_volume_container_path}/lib"
+  libfaketime_folder   = "${local.shared_volume_container_path}/lib"
+  libfaketime_file     = "${local.shared_volume_container_path}/lib/libfaketime_value"
 
   metadata_bootstrap_container_status_file = "${local.shared_volume_container_path}/metadata_bootstrap_container_status"
 
@@ -2446,6 +2428,10 @@ EOP
     "mkdir -p ${local.accounts_folder}",
     "mkdir -p ${local.libfaketime_folder}",
     "aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
+    "touch ${local.libfaketime_file}",
+    "aws ecs --region $REGION list-tags-for-resource --resource-arn $TASK_ARN | jq -r '.tags[0] | .value' > ${local.libfaketime_file}",
+    "ls -l ${local.libfaketime_file}",
+    "cat ${local.libfaketime_file}",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
@@ -2745,6 +2731,13 @@ locals {
       ]
     }
 
+    environment = [
+      {
+        name  = "LD_PRELOAD",
+        value = "${local.libfaketime_folder}/libfaketime.so"
+      }
+    ]
+
     entrypoint = [
       "/bin/sh",
       "-c",
@@ -2805,6 +2798,7 @@ locals {
   geth_args_combined = "${join(" ", concat(local.geth_args, local.additional_args))}"
   quorum_run_commands = [
     "set -e",
+    "cat ${local.libfaketime_file} > /etc/faketimerc",
     "echo Wait until metadata bootstrap completed ...",
     "while [ ! -f \"${local.metadata_bootstrap_container_status_file}\" ]; do sleep 1; done",
     "echo Wait until ${var.tx_privacy_engine} is ready ...",
@@ -2880,8 +2874,8 @@ locals {
         value = "${local.tx_privacy_engine_socket_file}"
       },
       {
-        name  = "LD_PRELOAD",
-        value = "${local.libfaketime_folder}/libfaketime.so"
+        name  = "LD_PRELOAD"
+        value = "${local.libfaketime_folder}/libfaketime.so FAKETIME_NO_CACHE=1"
       }
     ]
 
@@ -3202,6 +3196,13 @@ SCRIPT
       ]
     }
 
+    environment = [
+      {
+        name  = "LD_PRELOAD",
+        value = "${local.libfaketime_folder}/libfaketime.so"
+      }
+    ]
+
     entrypoint = [
       "/bin/sh",
       "-c",
@@ -3253,6 +3254,13 @@ resource "aws_ecs_service" "quorum" {
   launch_type     = "EC2"
   desired_count   = "1"
 
+  /*
+  tags = {
+    FAKETIME = "${element(var.faketime, count.index)}"
+  }
+
+  propagate_tags = "SERVICE"
+  */
   // not compatible with 'bridge' network mode
   //network_configuration {
   //  subnets          = ["${var.subnet_ids}"]
@@ -3432,6 +3440,7 @@ data "aws_iam_policy_document" "ecs_task" {
 
     actions = [
       "ecs:DescribeTasks",
+      "ecs:ListTagsForResource"
     ]
 
     resources = [
@@ -3827,7 +3836,7 @@ variable profile {
 variable "faketime" {
   type    = "list"
   description = "A faketime value passed to cluster node"
-  default = [ "1", "-3", "2" ]
+  default = ["0", "0", "0", "0", "0"]
 
 }
 `

@@ -14,11 +14,11 @@ require (
 	github.com/mitchellh/cli v1.0.0
 	github.com/posener/complete v1.2.1 // indirect
 	github.com/stretchr/testify v1.4.0
-	github.com/terraform-providers/terraform-provider-aws v2.27.0
+	github.com/terraform-providers/terraform-provider-aws v1.29.0
 	github.com/terraform-providers/terraform-provider-local v1.1.0
 	github.com/terraform-providers/terraform-provider-null v1.0.0
 	github.com/terraform-providers/terraform-provider-random v2.0.0+incompatible
-	github.com/terraform-providers/terraform-provider-template v2.1.0
+	github.com/terraform-providers/terraform-provider-template v1.0.0
 	github.com/terraform-providers/terraform-provider-tls v1.2.0
 	github.com/tidwall/gjson v1.3.2
 	golang.org/x/net v0.0.0-20171024115130-4b14673ba32b
