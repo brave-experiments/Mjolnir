@@ -4266,11 +4266,15 @@ const (
         }
     ]
 }`
-	YamlV1Fixture = `version: 0.1
+	YamlV01Fixture = `version: 0.1
 resourceType: variables
 variables: 
   simpleKey: variable
 `
+	YamlV02Fixture = `version: 0.2
+resourceType: variables
+variables: 
+  network_name: variable`
 	YamlFixtureConfigurable = `version: %v
 resourceType: %s
 variables:

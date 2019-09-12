@@ -203,7 +203,7 @@ func TestApplyCmd_Run(t *testing.T) {
 	keyName := "dummy"
 	filePath := "dummy.tf"
 	schemaFilePath := "dummy.yml"
-	yamlFileSchema := terra.SchemaV1
+	yamlFileSchema := terra.SchemaV02
 	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
 	recipes := GetMockedRecipes(t, keyName, filePath, "", map[string]string{})
 	command := ApplyCmd{
@@ -220,7 +220,7 @@ func TestDestroyCmd_Run(t *testing.T) {
 	keyName := "dummy"
 	filePath := "dummy.tf"
 	schemaFilePath := "dummy.yml"
-	yamlFileSchema := terra.SchemaV1
+	yamlFileSchema := terra.SchemaV02
 	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
 	recipes := GetMockedRecipes(t, keyName, filePath, "", map[string]string{})
 	commandDestroy := DestroyCmd{
