@@ -114,15 +114,33 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 func TestVariablesSchema_Read(t *testing.T) {
 	variablesSchema := VariablesSchema{}
 	dummyFilePath := "dummy.yml"
-	PrepareDummyFile(t, dummyFilePath, YamlV1Fixture)
+	PrepareDummyFile(t, dummyFilePath, YamlV01Fixture)
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Nil(t, err)
-	assert.Equal(t, variablesSchema.Version, float64(0.1))
+	assert.Equal(t, float64(0.1), variablesSchema.Version)
 	assert.Equal(t, variablesSchema.Type, "variables")
 	assert.NotNil(t, variablesSchema.Variables)
 	variables := variablesSchema.Variables
 	assert.Equal(t, "variable", variables["simpleKey"])
+	RemoveDummyFile(t, dummyFilePath)
+}
+
+func TestVariablesSchema_Read_v02(t *testing.T) {
+	// Network name should have added hash
+	variablesSchema := VariablesSchema{}
+	dummyFilePath := "dummy.yml"
+	PrepareDummyFile(t, dummyFilePath, YamlV02Fixture)
+	variablesSchema.Location = dummyFilePath
+	err := variablesSchema.Read()
+	assert.Nil(t, err)
+	assert.Equal(t, float64(0.2), variablesSchema.Version)
+	assert.Equal(t, variablesSchema.Type, "variables")
+	assert.NotNil(t, variablesSchema.Variables)
+	variables := variablesSchema.Variables
+	// Network name should look like `variable-[8-length-random-integer]`
+	newNetworkName := variables["network_name"].(string)
+	assert.Equal(t, 17, len(newNetworkName))
 	RemoveDummyFile(t, dummyFilePath)
 }
 

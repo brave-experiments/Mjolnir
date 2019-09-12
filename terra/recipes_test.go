@@ -234,7 +234,7 @@ func TestCombinedRecipe_ParseBody(t *testing.T) {
 
 func TestCombinedRecipe_BindYamlWithVars(t *testing.T) {
 	dummyYamlFilePath := "dummy.yml"
-	dummyYamlFileBody := YamlV1Fixture
+	dummyYamlFileBody := YamlV01Fixture
 	expectedVariables := make(map[string]interface{}, 0)
 	expectedStdKey := "simpleKey"
 	expectedStdVar := "variable"
