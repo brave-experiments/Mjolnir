@@ -121,10 +121,6 @@ locals {
         name  = "PRIVATE_CONFIG"
         value = "${local.tx_privacy_engine_socket_file}"
       },
-      {
-        name  = "LD_PRELOAD"
-        value = "${local.libfaketime_folder}/libfaketime.so FAKETIME_NO_CACHE=1"
-      }
     ]
 
     entrypoint = [
