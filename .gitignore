@@ -1,5 +1,6 @@
 .idea
 docker-compose.override.yml
+terra/static.go
 .env
 apollo
 default.tfstate
@@ -20,3 +21,4 @@ terraform.tfstate*
 out.log
 .apollo
 .apollo*
+.DS_Store

@@ -1,7 +1,10 @@
 default: test
 
-generate:
+generate: static-switch
 	go run builder/main.go
+
+static-switch:
+	cp terra/static.go.dist terra/static.go
 
 test: clean generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
