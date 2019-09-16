@@ -15,6 +15,7 @@ VOLUME /usr/local/go/src/github.com/brave-experiments/apollo-devops
 WORKDIR /usr/local/go/src/github.com/brave-experiments/apollo-devops
 
 ADD . .
+RUN cp terra/static.go.dist terra/static.go
 RUN make generate
 RUN go get -v
 RUN apk add openssh
