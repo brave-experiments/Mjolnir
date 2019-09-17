@@ -120,7 +120,8 @@ EOP
     "set -e",
     "echo Wait until Node Key is ready ...",
     "while [ ! -f \"${local.node_id_file}\" ]; do sleep 1; done",
-    "export TASK_REVISION=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq '.Revision' -r)",
+    "apk update",
+    "apk add curl jq",
     "echo \"Task Revision: $TASK_REVISION\"",
     "echo $TASK_REVISION > ${local.task_revision_file}",
 
@@ -128,7 +129,7 @@ EOP
 
     "echo \"Host IP: $HOST_IP\"",
     "echo $HOST_IP > ${local.host_ip_file}",
-    "export TASK_ARN=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq -r '.TaskARN')",
+    "export TASK_ARN=$(curl --connect-timeout 5 --retry 5 --max-time 10 -s $ECS_CONTAINER_METADATA_URI/task | jq -r '.TaskARN')",
     "export REGION=$(echo $TASK_ARN | awk -F: '{ print $4}')",
     "aws ecs describe-tasks --region $REGION --cluster ${local.ecs_cluster_name} --tasks $TASK_ARN | jq -r '.tasks[0] | .group' > ${local.service_file}",
     "mkdir -p ${local.hosts_folder}",
