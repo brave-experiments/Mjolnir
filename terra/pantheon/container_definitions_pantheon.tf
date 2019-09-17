@@ -1,5 +1,6 @@
 locals {
   pantheon_rpc_port                = 8545
+  pantheon_ws_port                 = 8546
   pantheon_p2p_port                = 30303
   pantheon_metrics_port            = 9545
   pantheon_data_dir                = "${local.shared_volume_container_path}/dd"
@@ -49,11 +50,18 @@ locals {
     "--discovery-enabled=false",
     "--p2p-port=${local.pantheon_p2p_port}", 
     "--rpc-http-enabled",
-    "--rpc-http-api=ETH,NET,IBFT",
+    "--rpc-http-api=WEB3,ETH,NET,IBFT",
+    "--rpc-http-host=0.0.0.0",
     "--rpc-http-port=${local.pantheon_rpc_port}", 
+    "--rpc-http-cors-origins=*",
+    "--rpc-ws-enabled",
+    "--rpc-ws-api=WEB3,ETH,NET,IBFT",
+    "--rpc-ws-host=0.0.0.0",
+    "--rpc-ws-port=${local.pantheon_ws_port}",
     "--metrics-enabled",
     "--metrics-host=0.0.0.0",
-    "--metrics-port=${local.pantheon_metrics_port}"
+    "--metrics-port=${local.pantheon_metrics_port}",
+    "--host-whitelist=*"
     ]
 
   pantheon_args_combined = "${join(" ", concat(local.pantheon_args, local.additional_args))}"
@@ -113,6 +121,10 @@ locals {
       {
         hostPort      = "${local.pantheon_rpc_port}"
         containerPort = "${local.pantheon_rpc_port}"
+      },
+      {
+        hostPort      = "${local.pantheon_ws_port}"
+        containerPort = "${local.pantheon_ws_port}"
       },
       {
         hostPort      = "${local.pantheon_p2p_port}"
