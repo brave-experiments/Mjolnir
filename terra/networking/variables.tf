@@ -135,7 +135,7 @@ variable "create_database_nat_gateway_route" {
 
 variable "azs" {
   description = "A list of availability zones in the region"
-  default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
+  default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
 variable "enable_dns_hostnames" {

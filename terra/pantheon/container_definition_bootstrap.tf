@@ -4,7 +4,7 @@ locals {
   service_file         = "${local.shared_volume_container_path}/service"
   account_address_file = "${local.shared_volume_container_path}/first_account_address"
   hosts_folder         = "${local.shared_volume_container_path}/hosts"
-  libfaketime_folder  =  "${local.shared_volume_container_path}/lib"
+  libfaketime_folder   = "${local.shared_volume_container_path}/lib"
 
   metadata_bootstrap_container_status_file = "${local.shared_volume_container_path}/metadata_bootstrap_container_status"
 
@@ -15,18 +15,17 @@ locals {
 
   node_key_bootstrap_commands = [
     "mkdir -p ${local.pantheon_data_dir}/pantheon/public-keys/",
-    "echo export pantheon public-keys",
-    "HOSTNAME=`hostname`",
-    "/opt/pantheon/bin/pantheon public-key export --to=${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_pubkey",
-    "/opt/pantheon/bin/pantheon public-key export-address --to=${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_address",
+    "echo Exporting pantheon public-keys",
+    "${local.pantheon_binary} public-key export --to=${local.pantheon_data_dir}/pantheon/public-keys/$(hostname)_pubkey",
+    "${local.pantheon_binary} public-key export-address --to=${local.pantheon_data_dir}/pantheon/public-keys/$(hostname)_address",
 
-    "export ACCOUNT_ADDRESS=`cat ${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_address`",
+    "export ACCOUNT_ADDRESS=$(cat ${local.pantheon_data_dir}/pantheon/public-keys/$(hostname)_address)",
     "echo Writing account address $ACCOUNT_ADDRESS to ${local.account_address_file}",
-    "echo $ACCOUNT_ADDRESS > ${local.account_address_file}",
+    "echo $ACCOUNT_ADDRESS | sed 's/^0x//' > ${local.account_address_file}",
 
-    "export NODE_ID=`cat ${local.pantheon_data_dir}/pantheon/public-keys/$HOSTNAME_pubkey`",
+    "export NODE_ID=$(cat ${local.pantheon_data_dir}/pantheon/public-keys/$(hostname)_pubkey)",
     "echo Writing Node Id [$NODE_ID] to ${local.node_id_file}",
-    "echo $NODE_ID > ${local.node_id_file}",
+    "echo $NODE_ID | sed 's/^0x//' > ${local.node_id_file}",
     "cp ${local.account_address_file} ${local.tx_privacy_engine_address_file}"
   ]
 
@@ -154,7 +153,7 @@ EOP
     // Gather all Accounts
     "count=0; while [ $count -lt ${var.number_of_nodes} ]; do count=$(ls ${local.accounts_folder} | grep ^ip | wc -l); aws s3 cp --recursive s3://${local.s3_revision_folder}/accounts ${local.accounts_folder} > /dev/null 2>&1 | echo \"Wait for other nodes to report their accounts ... $count/${var.number_of_nodes}\"; sleep 1; done",
 
-    "echo \"All nodes have registered accounts\"",
+      "echo \"All nodes have registered accounts\"",
 
     // Gather all Node IDs
     "count=0; while [ $count -lt ${var.number_of_nodes} ]; do count=$(ls ${local.node_ids_folder} | grep ^ip | wc -l); aws s3 cp --recursive s3://${local.s3_revision_folder}/nodeids ${local.node_ids_folder} > /dev/null 2>&1 | echo \"Wait for other nodes to report their IDs ... $count/${var.number_of_nodes}\"; sleep 1; done",
@@ -165,7 +164,7 @@ EOP
     "alloc=\"\"; for f in $(ls ${local.accounts_folder}); do address=$(cat ${local.accounts_folder}/$f); alloc=\"$alloc,\\\"$address\\\": { \"balance\": \"\\\"1000000000000000000000000000\\\"\"}\"; done",
 
     "alloc=\"{$${alloc:1}}\"",
-    "extraData=\"\\\"0x0000000000000000000000000000000000000000000000000000000000000000\\\"\"",
+    "extraData=\"\\\"RLP_EXTRA_DATA\\\"\"",
     "${var.consensus_mechanism == "istanbul" ? join("\n", local.istanbul_bootstrap_commands) : ""}",
     "mixHash=\"\\\"${element(local.consensus_config_map["genesis_mixHash"], 0)}\\\"\"",
     "difficulty=\"\\\"${element(local.consensus_config_map["genesis_difficulty"], 0)}\\\"\"",
@@ -213,7 +212,7 @@ EOP
       },
     ]
 
-    healthCheck = {
+/*    healthCheck = {
       interval    = 30
       retries     = 10
       timeout     = 60
@@ -224,7 +223,7 @@ EOP
         "[ -f ${local.metadata_bootstrap_container_status_file} ];",
       ]
     }
-
+*/
     entryPoint = [
       "/bin/sh",
       "-c",
