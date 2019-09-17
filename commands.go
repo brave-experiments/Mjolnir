@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/brave-experiments/apollo-devops/terra"
     "github.com/mitchellh/cli"
+    "os"
 )
 
 const (
@@ -71,7 +72,7 @@ func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
     recipe, exitCode := destroyCmd.getRecipe("quorum")
 
     if exitCode != ExitCodeSuccess {
-        fmt.Sprintf("Exited with code: %v, recipe not found", exitCode)
+        fmt.Printf("Exited with code: %v, recipe not found", exitCode)
     }
 
     err := recipe.BindYamlWithVars(yamlFilePath)
@@ -208,6 +209,10 @@ func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe, destroy bool
    }
 
    err = terraClient.ApplyCombined(recipe, destroy)
+
+   if true == destroy {
+       _  = os.RemoveAll(terra.TempDirPathLocation)
+   }
 
    return err
 }
