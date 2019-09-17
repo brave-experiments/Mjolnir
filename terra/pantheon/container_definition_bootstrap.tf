@@ -117,16 +117,16 @@ EOP
   ]
 
   metadata_bootstrap_commands = [
-    "set -e",
+       "set -e",
     "echo Wait until Node Key is ready ...",
     "while [ ! -f \"${local.node_id_file}\" ]; do sleep 1; done",
     "apk update",
     "apk add curl jq",
+    "sleep 10",
+    "export TASK_REVISION=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq '.Revision' -r)",
     "echo \"Task Revision: $TASK_REVISION\"",
     "echo $TASK_REVISION > ${local.task_revision_file}",
-
     "export HOST_IP=$(/usr/bin/curl http://169.254.169.254/latest/meta-data/public-ipv4)",
-
     "echo \"Host IP: $HOST_IP\"",
     "echo $HOST_IP > ${local.host_ip_file}",
     "export TASK_ARN=$(curl --connect-timeout 5 --retry 5 --max-time 10 -s $ECS_CONTAINER_METADATA_URI/task | jq -r '.TaskARN')",
