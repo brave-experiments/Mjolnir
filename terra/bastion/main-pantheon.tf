@@ -100,7 +100,6 @@ docker pull ${local.pantheon_docker_image}
 docker pull prom/prometheus
 docker pull prom/node-exporter:latest
 docker pull grafana/grafana:latest
-docker pull ethereum/client-go:latest
 mkdir -p /opt/prometheus
 mkdir -p /opt/grafana/dashboards
 mkdir -p /opt/grafana/provisioning/dashboards
@@ -122,7 +121,7 @@ EOF
       "sudo docker build -f /tmp/Dockerfile.libfaketime . -t libfaketime:latest",
       "sudo docker run -v $PWD:/tmp --rm --entrypoint cp libfaketime:latest /lib/faketime.so /tmp/libfaketime.so",
       "sudo aws s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so"
-    ]
+    ] 
 
     connection {
       host        = "${aws_instance.bastion.public_ip}"
@@ -283,11 +282,6 @@ services:
             - prometheus
         ports:
             - '3001:3000'
-    geth:
-        image: ethereum/client-go:latest
-        ports:
-            - '6060:6060'
-        command: --goerli --metrics --metrics.expensive --pprof --pprofaddr=0.0.0.0
 
 SS
 
