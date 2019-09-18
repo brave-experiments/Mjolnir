@@ -19,8 +19,8 @@ const (
 
 var ({{range $key, $value := .CliVariables}}
     StaticCli{{$key | Title}} = "{{$value}}"{{end}}
-{{range $key, $value := .StaticVariables}}    Static{{$key | Title}} = &#96;{{$value}}&#96;{{end}}
-)
+{{range $key, $value := .StaticVariables}}    Static{{$key | Title}} = &#96;{{$value}}&#96;
+{{end}})
 `
 )
 

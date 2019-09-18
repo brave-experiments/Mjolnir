@@ -16,6 +16,14 @@ const (
 )
 
 var (
+	DefaultVariablesMap = map[string]string{
+		"region":                AwsRegion,
+		"profile":               AwsProfile,
+		"default_region":        AwsDefaultRegion,
+		"aws_access_key_id":     AwsAccessKeyId,
+		"aws_secret_access_key": AwsSecretAccessKey,
+		"tf_log":                OutputLog,
+	}
 	DefaultRecipes = map[string]CombinedRecipe{
 		"quorum": {
 			FilePaths: []string{
@@ -47,15 +55,39 @@ var (
 					"region":       "us-east-2",
 					"profile":      "default",
 				},
-				Body: StaticQuorum,
-				envVariablesMap: map[string]string{
-					"region":                AwsRegion,
-					"profile":               AwsProfile,
-					"default_region":        AwsDefaultRegion,
-					"aws_access_key_id":     AwsAccessKeyId,
-					"aws_secret_access_key": AwsSecretAccessKey,
-					"tf_log":                OutputLog,
+				Body:            StaticQuorum,
+				envVariablesMap: DefaultVariablesMap,
+			},
+		},
+		"pantheon": {
+			FilePaths: []string{
+				"terra/pantheon/asg.tf",
+				"terra/pantheon/asg_ecs.tf",
+				"terra/pantheon/container_definition_bootstrap.tf",
+				"terra/pantheon/container_definitions.tf",
+				"terra/pantheon/container_definitions_pantheon.tf",
+				"terra/pantheon/ecs.tf",
+				"terra/pantheon/iam.tf",
+				"terra/pantheon/main.tf",
+				"terra/pantheon/logging.tf",
+				"terra/pantheon/outputs.tf",
+				"terra/pantheon/security_groups.tf",
+				"terra/bastion/iam-pantheon.tf",
+				"terra/bastion/main-pantheon.tf",
+				"terra/bastion/sg-pantheon.tf",
+				"terra/networking/main.tf",
+				"terra/networking/variables.tf",
+				"terra/shared/variables.tf",
+			},
+			File: File{
+				Variables: map[string]interface{}{
+					"network_name": "sidechain-sandbox",
+					"client_name":  "pantheon",
+					"region":       "us-east-2",
+					"profile":      "default",
 				},
+				Body:            StaticPantheon,
+				envVariablesMap: DefaultVariablesMap,
 			},
 		},
 	}
