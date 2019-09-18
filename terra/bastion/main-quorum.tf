@@ -166,6 +166,18 @@ else
   sudo yum -y install jq
 fi
 
+count=30
+inc_num=0
+while [ $count -gt $inc_num ]
+do
+  status=$(aws ecs describe-clusters --clusters ${local.ecs_cluster_name} | jq -r .clusters[].status)
+  if [ $status == "ACTIVE" ]; then
+    inc_num=$count
+  fi
+  sleep 1
+  inc_num=$((inc_num+1))
+done
+
 for t in $(aws ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
 do
   task_metadata=$(aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)

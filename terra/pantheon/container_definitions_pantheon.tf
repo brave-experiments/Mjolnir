@@ -33,7 +33,7 @@ locals {
     "cat toEncode.json",
 
     # replace placeholder by encoded rpl address list in genesis
-    "export rlp=`${local.pantheon_binary} rlp encode --from=toEncode.json`",
+    "export rlp=$(${local.pantheon_binary} rlp encode --from=toEncode.json)",
     "sed -i s/RLP_EXTRA_DATA/$rlp/g ${local.genesis_file}",
     "cat ${local.genesis_file}",
     "cp ${local.pantheon_static_nodes_file} ${local.pantheon_permissioned_nodes_file}",

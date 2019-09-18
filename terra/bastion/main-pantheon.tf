@@ -89,7 +89,7 @@ systemctl start docker
 
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-docker pull ${local.pantheon_docker_image}
+docker pull ${local.quorum_docker_image}
 docker pull prom/prometheus
 docker pull prom/node-exporter:latest
 docker pull grafana/grafana:latest
@@ -162,6 +162,18 @@ else
   sudo yum -y install jq
 fi
 
+count=30
+inc_num=0
+while [ $count -gt $inc_num ]
+do
+  status=$(aws ecs describe-clusters --clusters ${local.ecs_cluster_name} | jq -r .clusters[].status)
+  if [ $status == "ACTIVE" ]; then
+    inc_num=$count
+  fi
+  sleep 1
+  inc_num=$((inc_num+1))
+done
+   
 for t in $(aws ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
 do
   task_metadata=$(aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
@@ -195,7 +207,7 @@ do
   cat <<SS | sudo tee $script
 #!/bin/bash
 
-sudo docker run --rm -it ${local.pantheon_docker_image} attach http://$ip:${local.pantheon_rpc_port} $@
+sudo docker run --rm -it ${local.quorum_docker_image} attach http://$ip:${local.pantheon_rpc_port} $@
 SS
   sudo chmod +x $script
   cat <<SS | sudo tee -a ${local.shared_volume_container_path}/pantheon_metadata
