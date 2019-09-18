@@ -16,15 +16,15 @@ So I have a complete testing environment available.
 ## Business requirements filled
 
 - [x] The number of nodes should be configurable
-- [] Be deployable across multiple regions
+- [x] Be deployable across multiple regions
 - [x] The whole set up should be deployable with one command.
 - [x] Support the following clients:
-   [x] - Quorum (https://github.com/jpmorganchase/quorum)
+- [x] Quorum (https://github.com/jpmorganchase/quorum)
 - [] For each client that is supported, the following consensus engines should be configurable:
     - [] Quorum: 
         - [x] IBFT
         - [x] Raft
-        - [] Clique
+        - [] Clique // Low priority
 - [x] Monitor VM metrics
     - [x] CPU Utilization
     - [x] Memory Utilization
@@ -38,7 +38,7 @@ command line:
     - [x] Blockgaslimit
 - [x] Basic client metrics from relevant exporter
 - [x] Client container logs available though AWS CloudWatch
-- [] Client container logs available though Logging tool
+- [x] Client container logs available though Logging tool
 - [x] Monitor Ethereum specific metrics:
     - [] Should include logs from the client. These should trigger and alert for WARN or ERROR log levels.
     - [] The following RPC endpoints should be polled: 
@@ -61,8 +61,8 @@ command line:
 ## CheckList
 I can:
 - [x] deploy
-- [] modify
-- [] destroy
+- [x] modify
+- [x] destroy
 
 a quorum client cluster 
 with side services: 
@@ -70,11 +70,13 @@ with side services:
 - [] logs
 - [] chaos testing
 
-2. Sprint ​Blockchain Monitoring​ 120h of work 2 weeks @Jerzy @Grzegorz @Błażej ​( from 02.08 to 12.09 )
+2. Sprint ​Blockchain Monitoring​ 120h of work 2 weeks @Jerzy @Grzegorz @Błażej ​( from 02.09 to 25.09 )
 
 ## Goal 
 
-- To extend CLI by adding new clients: Pantheon and POA Network
+### To extend CLI by adding new clients: 
+  - Pantheon [x] 
+  - POA Network []
 
 ## Definition of done:
 - As authenticated user of infrastructure
@@ -85,9 +87,9 @@ so I can extend my testing to next clients.
 ## Business requirements filled
 
 - Support the following clients:
-    - Pantheon (​ https://github.com/PegaSysEng/pantheon​ ) 
-    -  POA Network
+    - Pantheon (​ https://github.com/PegaSysEng/pantheon​ )  [x]
+    -  POA Network []
 (​ https://github.com/poanetwork/parity-ethereum/tree/hbbft​ )
 -  For each client that is supported, the following consensus engines should be configurable:
-    - Pantheon: IBFT 2.0 
+    - Pantheon: IBFT 2.0 [x]
     -  POA Network: HBBFT
