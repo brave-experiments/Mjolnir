@@ -43,6 +43,16 @@ variable "quorum_docker_image_tag" {
   default     = "latest"
 }
 
+variable "pantheon_docker_image" {
+  description = "URL to Pantheon docker image to be used"
+  default     = "pegasyseng/pantheon"
+}
+
+variable "pantheon_docker_image_tag" {
+  description = "Pantheon Docker image tag to be used"
+  default     = "latest"
+}
+
 variable "constellation_docker_image" {
   description = "URL to Constellation docker image to be used. Only needed if tx_privacy_engine is constellation"
   default     = "quorumengineering/constellation"
