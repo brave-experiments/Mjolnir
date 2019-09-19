@@ -1,0 +1,25 @@
+version: '3.6'
+services:
+  node1:
+    image: parity/parity
+    ports:
+      - 30304:30303
+      - 8546:8545
+    volumes:
+      - ./node1:/var/app
+
+  node2:
+    image: parity/parity
+    ports:
+      - 30305:30303
+      - 8547:8545
+    volumes:
+      - ./node2:/var/app
+
+#  cli:
+#    image: ubuntu:18.04
+#    volumes: ./ubuntu:/var/app
+
+networks:
+  parity:
+    driver: bridge
