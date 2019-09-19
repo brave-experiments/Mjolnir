@@ -21,7 +21,8 @@ services:
       - ./node2:/var/app
 
   cli:
-    image: ubuntu:18.04
+    image: apollo-ubuntu
+    build: ./.docker/ubuntu
     networks:
       - parity
     volumes:
