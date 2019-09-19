@@ -2,6 +2,8 @@ version: '3.6'
 services:
   node1:
     image: parity/parity
+    networks:
+      - parity
     ports:
       - 30304:30303
       - 8546:8545
@@ -10,15 +12,20 @@ services:
 
   node2:
     image: parity/parity
+    networks:
+      - parity
     ports:
       - 30305:30303
       - 8547:8545
     volumes:
       - ./node2:/var/app
 
-#  cli:
-#    image: ubuntu:18.04
-#    volumes: ./ubuntu:/var/app
+  cli:
+    image: ubuntu:18.04
+    networks:
+      - parity
+    volumes:
+    - ./ubuntu:/var/app
 
 networks:
   parity:
