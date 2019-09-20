@@ -7,8 +7,11 @@ services:
     ports:
       - 30304:30303
       - 8546:8545
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
     volumes:
       - ./node1:/var/app
+    env_file:
+      - .env
 
   node2:
     image: parity/parity
@@ -17,8 +20,11 @@ services:
     ports:
       - 30305:30303
       - 8547:8545
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
     volumes:
       - ./node2:/var/app
+    env_file:
+      - .env
 
   cli:
     image: apollo-ubuntu
@@ -26,7 +32,9 @@ services:
     networks:
       - parity
     volumes:
-    - ./ubuntu:/var/app
+      - ./ubuntu:/var/app
+    env_file:
+      - .env
 
 networks:
   parity:
