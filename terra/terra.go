@@ -90,12 +90,12 @@ func (client *Client) Apply(file File, destroy bool) (err error) {
 	err = client.platform.Apply(destroy)
 
 	if nil != err {
-		_ = client.WriteStateToFiles()
+		_ = client.WriteStateToFiles(destroy)
 
 		return err
 	}
 
-	err = client.WriteStateToFiles()
+	err = client.WriteStateToFiles(destroy)
 
 	if nil != err {
 		return err
@@ -125,7 +125,7 @@ func (client *Client) PreparePlatform(file File) (err error) {
 	return err
 }
 
-func (client *Client) WriteStateToFiles() (err error) {
+func (client *Client) WriteStateToFiles(destroy bool) (err error) {
 	err = client.guard()
 
 	if nil != err {
@@ -139,23 +139,17 @@ func (client *Client) WriteStateToFiles() (err error) {
 	}
 
 	currentKeyPair := keyPair{}
-	jsonBytes, err := json.Marshal(client.platform.State)
-	currentKeyPair.FromJson(string(jsonBytes))
-	err = currentKeyPair.Save()
 
-	if nil != err {
-		fmt.Println(err.Error())
+	if false == destroy {
+		currentKeyPair = client.keyPairSave(currentKeyPair)
 	}
 
 	consoleOutputsFromTerraState := client.outputsAsString(true)
 	fmt.Println("[FINAL] Summary execution:", consoleOutputsFromTerraState)
 
-	outputFile := File{
-		Location: TempDirPathLocation + "/" + currentKeyPair.DeployName + "/output.log",
-		Body:     consoleOutputsFromTerraState,
+	if false == destroy {
+		client.writeOutputToFile(currentKeyPair, consoleOutputsFromTerraState)
 	}
-	_ = outputFile.WriteFile()
-	fmt.Println("Wrote summarry output to: ", outputFile.Location)
 
 	return err
 }
@@ -244,4 +238,25 @@ func (client *Client) outputsAsString(includeHeader bool) string {
 	stringOutput := outputRecords.FromJsonAsString(string(jsonBytes), true)
 
 	return stringOutput
+}
+
+func (client *Client) keyPairSave(currentKeyPair keyPair) keyPair {
+	jsonBytes, err := json.Marshal(client.platform.State)
+	currentKeyPair.FromJson(string(jsonBytes))
+	err = currentKeyPair.Save()
+
+	if nil != err {
+		fmt.Println(err.Error())
+	}
+
+	return currentKeyPair
+}
+
+func (client *Client) writeOutputToFile(currentKeyPair keyPair, consoleOutputsFromTerraState string) {
+	outputFile := File{
+		Location: TempDirPathLocation + "/" + currentKeyPair.DeployName + "/output.log",
+		Body:     consoleOutputsFromTerraState,
+	}
+	_ = outputFile.WriteFile()
+	fmt.Println("Wrote summarry output to: ", outputFile.Location)
 }
