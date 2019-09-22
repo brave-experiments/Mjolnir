@@ -97,6 +97,8 @@ func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
         exitCode = ExitCodeEnvUnbindingError
     }
 
+    fmt.Printf( "Destroy complete! Resources in network %s destroyed.\n", recipe.Variables["network_name"])
+
     return exitCode
 }
 
