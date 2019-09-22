@@ -13,7 +13,7 @@ services:
     volumes:
       - ./node1:/var/app
       - ./.docker/parity/config:/var/config
-    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE1"]
     env_file:
       - .env
 
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./node1:/var/app
       - ./.docker/parity/config:/var/config
-    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE2"]
     env_file:
       - .env
 

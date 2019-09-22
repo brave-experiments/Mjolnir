@@ -5,7 +5,10 @@
       "params": {
         "stepDuration": "5",
         "validators" : {
-          "list": []
+          "list": [
+            "0x80c79f22b0a4d1dd5fabd2149b0c2d366a41fd84",
+            "0x185f74d0c50a1b2a56c4dc305d723e2a50f816df"
+          ]
         }
       }
     }
@@ -36,6 +39,7 @@
     "0x0000000000000000000000000000000000000001": { "balance": "1", "builtin": { "name": "ecrecover", "pricing": { "linear": { "base": 3000, "word": 0 } } } },
     "0x0000000000000000000000000000000000000002": { "balance": "1", "builtin": { "name": "sha256", "pricing": { "linear": { "base": 60, "word": 12 } } } },
     "0x0000000000000000000000000000000000000003": { "balance": "1", "builtin": { "name": "ripemd160", "pricing": { "linear": { "base": 600, "word": 120 } } } },
-    "0x0000000000000000000000000000000000000004": { "balance": "1", "builtin": { "name": "identity", "pricing": { "linear": { "base": 15, "word": 3 } } } }
+    "0x0000000000000000000000000000000000000004": { "balance": "1", "builtin": { "name": "identity", "pricing": { "linear": { "base": 15, "word": 3 } } } },
+    "0xadd97b160487fce7032d722d8564e287065c155e": { "balance": "10000000000000000000000" }
   }
 }
