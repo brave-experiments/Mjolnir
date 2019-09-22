@@ -2,4 +2,4 @@
 
 cp .env.dist .env
 docker-compose up -d
-docker-compose run cli bash
+docker-compose run cli

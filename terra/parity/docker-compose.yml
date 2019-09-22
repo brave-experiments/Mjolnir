@@ -1,28 +1,36 @@
 version: '3.6'
 services:
   node1:
-    image: parity/parity
+    build: .docker/parity
+    image: apollo-parity
+    user: root
     networks:
       - parity
     ports:
       - 30304:30303
-      - 8546:8545
-    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
+      - 8545:8545
+      - 8550:8546
     volumes:
       - ./node1:/var/app
+      - ./.docker/parity/config:/var/config
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
     env_file:
       - .env
 
   node2:
-    image: parity/parity
+    build: .docker/parity
+    image: apollo-parity
+    user: root
     networks:
       - parity
     ports:
       - 30305:30303
-      - 8547:8545
-    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
+      - 8546:8545
+      - 8551:8546
     volumes:
-      - ./node2:/var/app
+      - ./node1:/var/app
+      - ./.docker/parity/config:/var/config
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES"]
     env_file:
       - .env
 
