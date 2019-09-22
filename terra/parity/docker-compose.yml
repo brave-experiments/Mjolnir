@@ -8,11 +8,11 @@ services:
       - parity
     ports:
       - 30304:30303
-      - 8545:8545
+      - 8540:8545
       - 8550:8546
     volumes:
       - ./.docker/parity/config:/var/config
-    command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE1"]
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE1", "--unsafe-expose"]
     env_file:
       - .env
 
@@ -24,11 +24,11 @@ services:
       - parity
     ports:
       - 30305:30303
-      - 8546:8545
+      - 8541:8545
       - 8551:8546
     volumes:
       - ./.docker/parity/config:/var/config
-    command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE2"]
+    command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE2", "--unsafe-expose"]
     env_file:
       - .env
 
