@@ -9,7 +9,7 @@ apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc
 [websockets]
 port = 8456
 [account]
-password = ["apollo"]
+password = ["/var/config/node.pwds"]
 [mining]
 engine_signer = "0x185f74d0c50a1b2a56c4dc305d723e2a50f816df"
 reseal_on_txs = "none"

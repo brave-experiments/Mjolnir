@@ -11,7 +11,6 @@ services:
       - 8545:8545
       - 8550:8546
     volumes:
-      - ./node1:/var/app
       - ./.docker/parity/config:/var/config
     command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE1"]
     env_file:
@@ -28,7 +27,6 @@ services:
       - 8546:8545
       - 8551:8546
     volumes:
-      - ./node1:/var/app
       - ./.docker/parity/config:/var/config
     command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE2"]
     env_file:
