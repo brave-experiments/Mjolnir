@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
-cp .env.dist .env
-docker-compose up -d
-docker-compose run cli
+function prepare_environment() {
+    cp .env.dist .env
+    docker-compose up -d --no-deps node1 node2 cli
+}
+
+function boot_node() {
+    docker-compose down --remove-orphans
+    # TODO: Consider Foreach (how many times you will run it that many times it will create new account)
+    docker-compose run node0
+    docker-compose run node0
+    docker-compose down --remove-orphans
+}
+
+function run_cli() {
+    docker-compose run cli
+}
+
+function run() {
+    boot_node
+    prepare_environment
+    run_cli
+}
+
+run

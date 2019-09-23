@@ -1,7 +1,7 @@
 version: '3.6'
 services:
-  node1:
-    build: .docker/parity
+  node0:
+    build: .docker
     image: apollo-parity
     user: root
     networks:
@@ -11,13 +11,35 @@ services:
       - 8540:8545
       - 8550:8546
     volumes:
-      - ./.docker/parity/config:/var/config
+      - ./.docker/config:/var/config
+    command: [
+      "$PARITY_BOOTSTRAP_PROPERTIES_NODE0",
+      "--unsafe-expose",
+      "account",
+      "new",
+      "$PARITY_PASSWORD_LOCATION"
+    ]
+    env_file:
+      - .env
+
+  node1:
+    build: .docker
+    image: apollo-parity
+    user: root
+    networks:
+      - parity
+    ports:
+      - 30304:30303
+      - 8540:8545
+      - 8550:8546
+    volumes:
+      - ./.docker/config:/var/config
     command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE1", "--unsafe-expose"]
     env_file:
       - .env
 
   node2:
-    build: .docker/parity
+    build: .docker
     image: apollo-parity
     user: root
     networks:
@@ -27,14 +49,15 @@ services:
       - 8541:8545
       - 8551:8546
     volumes:
-      - ./.docker/parity/config:/var/config
+      - ./.docker/config:/var/config
     command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE2", "--unsafe-expose"]
     env_file:
       - .env
 
   cli:
-    image: apollo-ubuntu
-    build: ./.docker/ubuntu
+    image: apollo-parity
+    build: ./.docker
+    entrypoint: ["/bin/bash"]
     networks:
       - parity
     volumes:
