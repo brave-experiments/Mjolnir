@@ -5,22 +5,22 @@ function prepare_environment() {
     docker-compose up -d --no-deps node1 node2 cli
 }
 
-function boot_node() {
+function create_accounts() {
     docker-compose down --remove-orphans
-    # TODO: Consider Foreach (how many times you will run it that many times it will create new account)
+#     TODO: Consider Foreach (how many times you will run it that many times it will create new account)
     docker-compose run node0
     docker-compose run node0
     docker-compose down --remove-orphans
 }
 
-function run_cli() {
-    docker-compose run cli
+function boot_node() {
+    docker-compose run cli /var/config/bootstrapper
 }
 
 function run() {
-    boot_node
+#    create_accounts
     prepare_environment
-    run_cli
+    boot_node
 }
 
 run

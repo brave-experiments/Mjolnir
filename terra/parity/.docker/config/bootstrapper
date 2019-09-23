@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+bootnode -genkey nodekey
+export NODE_ID=$(bootnode -nodekey nodekey -writeaddress)
+echo "Creating an account for this node: $NODE_ID"
+export ACCOUNT_ADDRESS=$(parity $PARITY_BOOTSTRAP_PROPERTIES_NODE0 account new $PARITY_PASSWORD_LOCATION)
+echo ${ACCOUNT_ADDRESS:2} > acc.addr
+echo $NODE_ID > node.id
+bash

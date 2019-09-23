@@ -57,6 +57,7 @@ services:
   cli:
     image: apollo-parity
     build: ./.docker
+    user: root
     entrypoint: ["/bin/bash"]
     networks:
       - parity
