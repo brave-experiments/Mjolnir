@@ -7,7 +7,7 @@ services:
     networks:
       - parity
     ports:
-      - 30304:30303
+      - 30303:30303
       - 8540:8545
       - 8550:8546
     volumes:
@@ -30,8 +30,8 @@ services:
       - parity
     ports:
       - 30304:30303
-      - 8540:8545
-      - 8550:8546
+      - 8541:8545
+      - 8551:8546
     volumes:
       - ./.docker/config:/var/config
     command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE1", "--unsafe-expose"]
@@ -46,8 +46,8 @@ services:
       - parity
     ports:
       - 30305:30303
-      - 8541:8545
-      - 8551:8546
+      - 8542:8545
+      - 8552:8546
     volumes:
       - ./.docker/config:/var/config
     command: ["$PARITY_BOOTSTRAP_PROPERTIES_NODE2", "--unsafe-expose"]
