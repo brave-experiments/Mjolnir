@@ -164,7 +164,7 @@ EOP
     "${var.consensus_mechanism == "istanbul" ? join("\n", local.istanbul_bootstrap_commands) : ""}",
     "mixHash=\"\\\"${element(local.consensus_config_map["genesis_mixHash"], 0)}\\\"\"",
     "difficulty=\"\\\"${element(local.consensus_config_map["genesis_difficulty"], 0)}\\\"\"",
-    "echo '${replace(jsonencode(local.genesis), "/\"(true|false|[0-9]+)\"/", "$1")}' | jq \". + { alloc : $alloc, extraData: $extraData, mixHash: $mixHash, difficulty: $difficulty}${var.consensus_mechanism == "istanbul" ? " | .config=.config + {istanbul: {epoch: 30000, policy: 0} }" : ""}\" > ${local.genesis_file}",
+    "echo '${replace(jsonencode(local.genesis), "/\"(true|false|[0-9]+)\"/", "$1")}' | jq \". + { alloc : $alloc, extraData: $extraData, mixHash: $mixHash, difficulty: $difficulty}\" > ${local.genesis_file}",
     "cat ${local.genesis_file}",
 
     // Write status

@@ -49,7 +49,7 @@ locals {
     "--discovery-enabled=false",
     "--p2p-port=${local.pantheon_p2p_port}", 
     "--rpc-http-enabled",
-    "--rpc-http-api=WEB3,ETH,NET,IBFT",
+    "--rpc-http-api=WEB3,ETH,NET,IBFT,ADMIN",
     "--rpc-http-host=0.0.0.0",
     "--rpc-http-port=${local.pantheon_rpc_port}", 
     "--rpc-http-cors-origins=*",
