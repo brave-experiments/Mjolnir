@@ -53,6 +53,16 @@ variable "pantheon_docker_image_tag" {
   default     = "latest"
 }
 
+variable "parity_docker_image" {
+  description = "URL to Pantheon docker image to be used"
+  default     = "parity/parity"
+}
+
+variable "parity_docker_image_tag" {
+  description = "Parity Docker image tag to be used"
+  default     = "latest"
+}
+
 variable "constellation_docker_image" {
   description = "URL to Constellation docker image to be used. Only needed if tx_privacy_engine is constellation"
   default     = "quorumengineering/constellation"

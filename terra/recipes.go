@@ -90,6 +90,39 @@ var (
 				envVariablesMap: DefaultVariablesMap,
 			},
 		},
+		"parity": {
+			FilePaths: []string{
+				"terra/parity/asg.tf",
+				"terra/parity/asg_ecs.tf",
+				"terra/parity/container_definition_bootstrap.tf",
+				"terra/parity/container_definitions.tf",
+				"terra/parity/container_definitions_chaos_testing.tf",
+				"terra/parity/container_definitions_parity.tf",
+				"terra/parity/ecs.tf",
+				"terra/parity/iam.tf",
+				"terra/parity/logging.tf",
+				"terra/parity/main.tf",
+				"terra/parity/outputs.tf",
+				"terra/parity/security_groups.tf",
+				"terra/bastion/iam-parity.tf",
+				"terra/bastion/main-parity.tf",
+				"terra/bastion/sg-parity.tf",
+				"terra/networking/main.tf",
+				"terra/networking/variables.tf",
+				"terra/shared/provider.tf",
+				"terra/shared/variables.tf",
+			},
+			File: File{
+				Variables: map[string]interface{}{
+					"network_name": "sidechain-sandbox",
+					"client_name":  "parity",
+					"region":       "us-east-2",
+					"profile":      "default",
+				},
+				Body:            StaticParity,
+				envVariablesMap: DefaultVariablesMap,
+			},
+		},
 	}
 )
 
