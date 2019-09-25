@@ -295,7 +295,7 @@ func TestClient_WriteStateToFilesFailure(t *testing.T) {
 	client := Client{
 		platform: &terranova.Platform{},
 	}
-	err := client.WriteStateToFiles()
+	err := client.WriteStateToFiles(false)
 	assert.Error(t, err)
 	assert.IsType(t, ClientError{}, err)
 	assert.Equal(t, "No state file found", err.Error())
@@ -317,7 +317,7 @@ func TestClient_WriteStateToFiles(t *testing.T) {
 		state:    stateFile,
 	}
 
-	err = client.WriteStateToFiles()
+	err = client.WriteStateToFiles(false)
 	assert.Nil(t, err)
 
 	outputLogFileName := TempDirPathLocation + "/quorum-bastion-cocroaches-attack/output.log"

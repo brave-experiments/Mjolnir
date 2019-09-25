@@ -133,11 +133,6 @@ variable "create_database_nat_gateway_route" {
   default     = false
 }
 
-variable "azs" {
-  description = "A list of availability zones in the region"
-  default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
-}
-
 variable "enable_dns_hostnames" {
   description = "Should be true to enable DNS hostnames in the VPC"
   default     = false

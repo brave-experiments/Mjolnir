@@ -1,6 +1,9 @@
 default: test
 
-generate:
+static-switch:
+	cp terra/static.go.dist terra/static.go
+
+generate: static-switch
 	go run builder/main.go
 
 test: clean generate

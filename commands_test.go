@@ -120,6 +120,7 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 }
 
 func TestDestroyCmd_RunInvalid(t *testing.T) {
+	terra.TempDirPathLocation = ".apolloTest"
 	command, err := DestroyCmdFactory()
 	expectedEnvKey := ExpectedEnvKey
 	expectedOldEnvValue := os.Getenv(expectedEnvKey)
@@ -129,12 +130,16 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 	// DestroyCmd has no arguments
 	exitCode := command.Run([]string{})
 	assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
+	_, err = os.Stat(terra.TempDirPathLocation)
+	assert.True(t, os.IsNotExist(err))
 
 	// DestroyCmd has no Recipes
 	invalidCmd := DestroyCmd{}
 	dummyArgs := []string{"dummy", "dummy.yml"}
 	exitCode = invalidCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	_, err = os.Stat(terra.TempDirPathLocation)
+	assert.True(t, os.IsNotExist(err))
 
 	// DestroyCmd has no Elements in Recipes
 	recipes := terra.Recipes{}
@@ -145,10 +150,14 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 	}
 	exitCode = invalidDestroyCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	_, err = os.Stat(terra.TempDirPathLocation)
+	assert.True(t, os.IsNotExist(err))
 
 	// DestroyCmd has no matching key
 	exitCode = command.Run(dummyArgs)
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	_, err = os.Stat(terra.TempDirPathLocation)
+	assert.True(t, os.IsNotExist(err))
 
 	// Should return error because there is no .yml variable file
 	keyName := "dummy"
@@ -193,9 +202,12 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 	exitCode = command.Run(dummyArgs)
 	assert.Equal(t, ExitCodeTerraformError, exitCode)
 	assert.Equal(t, expectedOldEnvValue, os.Getenv(expectedEnvKey))
+	_, err = os.Stat(terra.TempDirPathLocation)
+	assert.True(t, os.IsNotExist(err))
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, yamlFileName)
 	terra.DefaultRecipes = oldRecipes
+	terra.TempDirPathLocation = terra.TempDirPath
 }
 
 func TestApplyCmd_Run(t *testing.T) {
@@ -211,12 +223,13 @@ func TestApplyCmd_Run(t *testing.T) {
 	}
 	assert.IsType(t, ApplyCmd{}, command)
 	exitCode := command.Run([]string{keyName, schemaFilePath})
-	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	assert.Equal(t, ExitCodeSuccess, exitCode)
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, schemaFilePath)
 }
 
 func TestDestroyCmd_Run(t *testing.T) {
+	terra.TempDirPathLocation = ".apolloTest"
 	keyName := "dummy"
 	filePath := "dummy.tf"
 	schemaFilePath := "dummy.yml"
@@ -231,8 +244,11 @@ func TestDestroyCmd_Run(t *testing.T) {
 	assert.IsType(t, DestroyCmd{}, commandDestroy)
 	exitCode := commandDestroy.Run([]string{keyName, schemaFilePath})
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
+	_, err := os.Stat(terra.TempDirPathLocation)
+	assert.True(t, os.IsNotExist(err))
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, schemaFilePath)
+	terra.TempDirPathLocation = terra.TempDirPath
 }
 
 func TestApplyCmd_Help(t *testing.T) {

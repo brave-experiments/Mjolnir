@@ -3,13 +3,16 @@ data "aws_security_group" "default" {
   vpc_id = "${aws_vpc.this.id}"
 }
 
+# Initialize availability zone data from AWS
+data "aws_availability_zones" "available" {}
+
 terraform {
   required_version = ">= 0.10.3" # introduction of Local Values configuration language feature
 }
 
 locals {
   max_subnet_length = "${max(length(var.private_subnets), length(var.elasticache_subnets), length(var.database_subnets), length(var.redshift_subnets))}"
-  nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(var.azs) : local.max_subnet_length)}"
+  nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(data.aws_availability_zones.available.names) : local.max_subnet_length)}"
 
   # Use "local.vpc_id" to give a hint to Terraform that subnets should be deleted before secondary CIDR blocks can be free!
   vpc_id = "${aws_vpc.this.id}"
@@ -106,7 +109,7 @@ resource "aws_route_table" "private" {
 
   vpc_id = "${local.vpc_id}"
 
-  tags = "${merge(map("Name", (var.single_nat_gateway ? "${var.name}-${var.private_subnet_suffix}" : format("%s-${var.private_subnet_suffix}-%s", var.name, element(var.azs, count.index)))), var.tags, var.private_route_table_tags)}"
+  tags = "${merge(map("Name", (var.single_nat_gateway ? "${var.name}-${var.private_subnet_suffix}" : format("%s-${var.private_subnet_suffix}-%s", var.name, data.aws_availability_zones.available.names[count.index]))), var.tags, var.private_route_table_tags)}"
 
   lifecycle {
     # When attaching VPN gateways it is common to define aws_vpn_gateway_route_propagation
@@ -120,14 +123,14 @@ resource "aws_route_table" "private" {
 # Public subnet
 ################
 resource "aws_subnet" "public" {
-  count = "${var.create_vpc && length(var.public_subnets) > 0 && (! var.one_nat_gateway_per_az || length(var.public_subnets) >= length(var.azs)) ? length(var.public_subnets) : 0}"
+  count = "${var.create_vpc && length(var.public_subnets) > 0 && (! var.one_nat_gateway_per_az || length(var.public_subnets) >= length(data.aws_availability_zones.available.names)) ? length(var.public_subnets) : 0}"
 
   vpc_id                  = "${local.vpc_id}"
   cidr_block              = "${element(concat(var.public_subnets, list("")), count.index)}"
-  availability_zone       = "${element(var.azs, count.index)}"
+  availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 
-  tags = "${merge(map("Name", format("%s-${var.public_subnet_suffix}-%s", var.name, element(var.azs, count.index))), var.tags, var.public_subnet_tags)}"
+  tags = "${merge(map("Name", format("%s-${var.public_subnet_suffix}-%s", var.name, data.aws_availability_zones.available.names[count.index])), var.tags, var.public_subnet_tags)}"
 }
 
 #################
@@ -138,9 +141,9 @@ resource "aws_subnet" "private" {
 
   vpc_id            = "${local.vpc_id}"
   cidr_block        = "${var.private_subnets[count.index]}"
-  availability_zone = "${element(var.azs, count.index)}"
+  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
 
-  tags = "${merge(map("Name", format("%s-${var.private_subnet_suffix}-%s", var.name, element(var.azs, count.index))), var.tags, var.private_subnet_tags)}"
+  tags = "${merge(map("Name", format("%s-${var.private_subnet_suffix}-%s", var.name, data.aws_availability_zones.available.names[count.index])), var.tags, var.private_subnet_tags)}"
 }
 
 
