@@ -34,10 +34,6 @@ output "bucket_name" {
   value = "${aws_s3_bucket.parity.bucket}"
 }
 
-output "ethstats_host_url" {
-  value = "http://${aws_instance.bastion.public_ip}:3000"
-}
-
 output "grafana_host_url" {
   value = "http://${aws_instance.bastion.public_ip}:3001"
 }
