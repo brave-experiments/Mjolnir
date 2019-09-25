@@ -14,20 +14,6 @@ locals {
   s3_libfaketime_file = "${local.bastion_bucket}/libs/libfaketime.so"
   normalized_host_ip = "ip_$(echo $HOST_IP | sed -e 's/\\./_/g')"
 
-/*  node_key_bootstrap_commands = [
-    "mkdir -p ${local.parity_data_dir}/parity",
-    "echo \"\" > ${local.parity_password_file}",
-
-    "bootnode -genkey ${local.parity_data_dir}/parity/nodekey",
-    "export NODE_ID=$(bootnode -nodekey ${local.parity_data_dir}/parity/nodekey -writeaddress)",
-    "echo Creating an account for this node",
-    "export ACCOUNT_ADDRESS=$(parity --base-path=${local.parity_data_dir} account new --password ${local.parity_password_file} | sed 's/^0x//')",
-    "echo Writing account address $ACCOUNT_ADDRESS to ${local.account_address_file}",
-    "echo $ACCOUNT_ADDRESS > ${local.account_address_file}",
-    "echo Writing Node Id [$NODE_ID] to ${local.node_id_file}",
-    "echo $NODE_ID > ${local.node_id_file}",
-  ]
-*/
   node_key_bootstrap_commands = [
     "mkdir -p ${local.parity_data_dir}/parity",
     "echo \"\" > ${local.parity_password_file}",
