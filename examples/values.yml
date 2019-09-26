@@ -16,7 +16,7 @@ variables:
   genesis_nonce:              "0"          ## Used to set genesis nonce
 #  consensus_mechanism:       "instanbul"    ## Used to set consensus mechanism
 #  chaos_testing_run_command: ["netem", "--duration", "5m", "--interface", "eth0", "delay", "--time", "3000", "--jitter", "30", "--correlation", "20", "re2:^ecs-quorum*"]
-#  faketime:                   ["+2d", "-3h", "+120", "0", "0"]  ## You need to fill all values for existing number of nodes for now.
+#  faketime:                   ["+2d", "-3h", "+120", "0", "0"]  ## All values should start from -/+ signs, allowed time units  s, m, h, d, y ( seconds are default if no unit provided)
 #  asg_instance_type:          "t2.xlarge" ## instance type user for ethereum nodes
 #  tf_log:                     "" ## If other than empty string, tf output is enabled
 
