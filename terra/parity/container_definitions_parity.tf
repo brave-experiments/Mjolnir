@@ -10,6 +10,7 @@ locals {
   node_ids_folder                = "${local.shared_volume_container_path}/nodeids"
   accounts_folder                = "${local.shared_volume_container_path}/accounts"
   privacy_addresses_folder       = "${local.shared_volume_container_path}/privacyaddresses"
+  chain_name                     = "ApolloPOA"
 
   # store Tessera pub keys
 
@@ -25,7 +26,10 @@ locals {
   ]
   additional_args = "${local.consensus_config_map["parity_args"]}"
   parity_args = [
+    "--chain ${local.genesis_file}",
     "--base-path ${local.parity_data_dir}",
+    "--keys-path ${local.parity_data_dir}/keystore",
+    "--interface 0.0.0.0",
     "--jsonrpc-interface 0.0.0.0",
     "--jsonrpc-apis eth,net,shh,personal,web3,parity,parity_set,parity_accounts,traces,rpc",
     "--jsonrpc-port ${local.parity_rpc_port}",
@@ -34,8 +38,7 @@ locals {
     "--no-discovery",
     "--reserved-only",
     "--reserved-peers ${local.parity_static_nodes_file}",
-    "--network-id ${random_integer.network_id.result}",
-    "--identity $IDENTITY",
+    "--engine-signer 0x$(cat ${local.account_address_file})",
     "--unsafe-expose",
   ]
   parity_args_combined = "${join(" ", concat(local.parity_args, local.additional_args))}"
@@ -121,7 +124,7 @@ locals {
   }
 
   genesis = {
-    "name" = "ApolloPOA",
+    "name" = "${local.chain_name}",
     "engine" = {
       "authorityRound" = {
         "params" = {
