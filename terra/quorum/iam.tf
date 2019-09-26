@@ -52,7 +52,8 @@ data "aws_iam_policy_document" "ecs_task" {
 
     actions = [
       "ecs:DescribeTasks",
-      "ecs:ListTagsForResource"
+      "ecs:ListTagsForResource",
+      "ecs:DescribeClusters"
     ]
 
     resources = [
@@ -70,6 +71,18 @@ data "aws_iam_policy_document" "ecs_task" {
     resources = [
       "arn:aws:s3:::${local.bastion_bucket}",
       "arn:aws:s3:::${local.bastion_bucket}/*",
+    ]
+  }
+
+  statement {
+    sid = "AllowSQS"
+
+    actions = [
+      "sqs:*",
+    ]
+
+    resources = [
+      "${aws_sqs_queue.faketime_queue.arn}",
     ]
   }
 }

@@ -82,6 +82,18 @@ data "aws_iam_policy_document" "bastion" {
       "*",
     ]
   }
+
+  statement {
+    sid = "AllowSQS"
+
+    actions = [
+      "sqs:*",
+    ]
+
+    resources = [
+      "${aws_sqs_queue.faketime_queue.arn}",
+    ]
+  }
 }
 
 resource "aws_iam_instance_profile" "bastion" {

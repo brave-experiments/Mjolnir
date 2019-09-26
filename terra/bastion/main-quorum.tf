@@ -43,6 +43,10 @@ resource "random_id" "ethstat_secret" {
   byte_length = 16
 }
 
+resource "aws_sqs_queue" "faketime_queue" {
+  name                        = "faketime-${random_id.bucket_postfix.hex}"
+}
+
 resource "tls_private_key" "ssh" {
   algorithm = "RSA"
   rsa_bits  = "2048"
@@ -116,7 +120,8 @@ EOF
       "printf 'FROM alpine\nCOPY --from=trajano/alpine-libfaketime  /faketime.so /lib/faketime.so\n' > /tmp/Dockerfile.libfaketime",
       "sudo docker build -f /tmp/Dockerfile.libfaketime . -t libfaketime:latest",
       "sudo docker run -v $PWD:/tmp --rm --entrypoint cp libfaketime:latest /lib/faketime.so /tmp/libfaketime.so",
-      "sudo aws s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so"
+      "sudo aws s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so",
+      "for value in ${join(" ", var.faketime)}; do aws --region ${var.region} sqs send-message --queue-url ${aws_sqs_queue.faketime_queue.id} --message-body \\\"$value\\\" --message-attributes \"{ \\\"faketimeValue\\\":{ \\\"DataType\\\":\\\"String\\\",\\\"StringValue\\\":\\\"$value\\\"}}\" ; done",
     ]
 
     connection {
