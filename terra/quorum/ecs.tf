@@ -37,11 +37,6 @@ resource "aws_ecs_service" "quorum" {
   launch_type     = "EC2"
   desired_count   = "1"
 
-  tags = {
-    FAKETIME = "${element(var.faketime, count.index)}"
-  }
-
-  propagate_tags = "SERVICE"
   // not compatible with 'bridge' network mode
   //network_configuration {
   //  subnets          = ["${var.subnet_ids}"]

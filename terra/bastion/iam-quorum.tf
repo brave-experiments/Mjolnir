@@ -94,7 +94,6 @@ data "aws_iam_policy_document" "bastion" {
       "${aws_sqs_queue.faketime_queue.arn}",
     ]
   }
-
 }
 
 resource "aws_iam_instance_profile" "bastion" {

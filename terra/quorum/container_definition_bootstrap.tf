@@ -147,7 +147,7 @@ EOP
     "mkdir -p ${local.node_ids_folder}",
     "mkdir -p ${local.accounts_folder}",
     "mkdir -p ${local.libfaketime_folder}",
-    "aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
+    "count=0; while [ $count -lt 1 ]; do count=$(ls ${local.libfaketime_folder} | grep libfaketime.so | wc -l); aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so > /dev/null 2>&1 | echo \"Wait for libfaketime to appear on S3 ... \"; sleep 1; done",
     "touch ${local.libfaketime_file}",
     "aws sqs --region $REGION receive-message --queue-url ${aws_sqs_queue.faketime_queue.id} --visibility-timeout=300 | jq .Messages[].Body | tr -d '\\\"' > ${local.libfaketime_file}",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
