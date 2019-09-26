@@ -36,6 +36,7 @@ locals {
     "--reserved-peers ${local.parity_static_nodes_file}",
     "--network-id ${random_integer.network_id.result}",
     "--identity $IDENTITY",
+    "--unsafe-expose",
   ]
   parity_args_combined = "${join(" ", concat(local.parity_args, local.additional_args))}"
   parity_run_commands = [
@@ -77,7 +78,7 @@ locals {
 
       command = [
         "CMD-SHELL",
-        "[ -S ${local.parity_data_dir}/parity.ipc ];",
+        "[ -S ${local.parity_data_dir}/jsonrpc.ipc ];",
       ]
     }
 
@@ -136,7 +137,7 @@ locals {
       "gasLimitBoundDivisor" = "0x400",
       "maximumExtraDataSize" = "0x20",
       "minGasLimit" = "0x1388",
-      "networkID" = "0x2323",
+      "networkID" = "RANDOM_NETWORK_ID",
       "eip155Transition" = 0,
       "validateChainIdTransition" = 0,
       "eip140Transition" = 0,
