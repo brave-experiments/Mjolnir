@@ -15,14 +15,14 @@ locals {
   normalized_host_ip = "ip_$(echo $HOST_IP | sed -e 's/\\./_/g')"
 
   node_key_bootstrap_commands = [
-    "mkdir -p ${local.parity_data_dir}/parity",
+    "mkdir -p ${local.parity_data_dir}/network",
     "echo \"\" > ${local.parity_password_file}",
-    "bootnode -genkey ${local.parity_data_dir}/parity/nodekey",
-    "export NODE_ID=$(bootnode -nodekey ${local.parity_data_dir}/parity/nodekey -writeaddress)",
+    "bootnode -genkey ${local.parity_data_dir}/network/key",
+    "export NODE_ID=$(bootnode -nodekey ${local.parity_data_dir}/network/key -writeaddress)",
     "echo Creating an account for this node",
-    "geth --datadir ${local.parity_data_dir} account new --password ${local.parity_password_file}",
-    "export KEYSTORE_FILE=$(ls ${local.parity_data_dir}/keystore/ | head -n1)",
-    "export ACCOUNT_ADDRESS=$(cat ${local.parity_data_dir}/keystore/$KEYSTORE_FILE | sed 's/^.*\"address\":\"\\([^\"]*\\)\".*$/\\1/g')",
+    "geth --datadir ${local.parity_data_dir} account new --password ${local.parity_password_file} --keystore ${local.parity_data_dir}/keystore/${local.chain_name}",
+    "export KEYSTORE_FILE=$(ls ${local.parity_data_dir}/keystore/${local.chain_name} | head -n1)",
+    "export ACCOUNT_ADDRESS=$(cat ${local.parity_data_dir}/keystore/${local.chain_name}/$KEYSTORE_FILE | sed 's/^.*\"address\":\"\\([^\"]*\\)\".*$/\\1/g')",
     "echo Writing account address $ACCOUNT_ADDRESS to ${local.account_address_file}",
     "echo $ACCOUNT_ADDRESS > ${local.account_address_file}",
     "echo Writing Node Id [$NODE_ID] to ${local.node_id_file}",
