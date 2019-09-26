@@ -149,7 +149,7 @@ EOP
     "mkdir -p ${local.libfaketime_folder}",
     "aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so",
     "touch ${local.libfaketime_file}",
-    "aws ecs --region $REGION list-tags-for-resource --resource-arn $TASK_ARN | jq -r '.tags[0] | .value' > ${local.libfaketime_file}",
+    "aws sqs --region $REGION receive-message --queue-url ${aws_sqs_queue.faketime_queue.id} --visibility-timeout=300 | jq .Messages[].Body | tr -d '\\\"' > ${local.libfaketime_file}",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",

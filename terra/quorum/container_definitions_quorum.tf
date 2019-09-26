@@ -125,6 +125,10 @@ locals {
         name  = "LD_PRELOAD"
         value = "${local.libfaketime_folder}/libfaketime.so FAKETIME_NO_CACHE=1"
       },
+      {
+        name  = "FAKETIME_TIMESTAMP_FILE"
+        value = "${local.libfaketime_file}"
+      },
     ]
 
     entrypoint = [
