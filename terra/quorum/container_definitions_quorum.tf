@@ -46,7 +46,6 @@ locals {
   geth_args_combined = "${join(" ", concat(local.geth_args, local.additional_args))}"
   quorum_run_commands = [
     "set -e",
-    //"cat ${local.libfaketime_file} > /etc/faketimerc",
     "echo Wait until metadata bootstrap completed ...",
     "while [ ! -f \"${local.metadata_bootstrap_container_status_file}\" ]; do sleep 1; done",
     "echo Wait until ${var.tx_privacy_engine} is ready ...",
@@ -120,6 +119,14 @@ locals {
       {
         name  = "PRIVATE_CONFIG"
         value = "${local.tx_privacy_engine_socket_file}"
+      },
+      {
+        name  = "LD_PRELOAD"
+        value = "${local.libfaketime_folder}/libfaketime.so"
+      },
+      {
+        name  = "FAKETIME_TIMESTAMP_FILE"
+        value = "${local.libfaketime_file}"
       },
     ]
 
