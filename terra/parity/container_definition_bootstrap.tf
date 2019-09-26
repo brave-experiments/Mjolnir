@@ -160,6 +160,7 @@ EOP
     "validators=\"[ $${validators:1} ]\"",
     "accounts=\"{ $${accounts:1} }\"",
     "echo '${replace(jsonencode(local.genesis), "/\"(true|false|[0-9]+)\"/", "$1")}' | jq \".engine.authorityRound.params.validators.list=$validators\" | jq \".accounts=$accounts\"  > ${local.genesis_file}",
+    "sed -i s'/RANDOM_NETWORK_ID/${random_integer.network_id.result}/' ${local.genesis_file}",
     "cat ${local.genesis_file}",
 
     // Write status
