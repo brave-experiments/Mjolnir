@@ -38,24 +38,24 @@ resource "aws_security_group_rule" "ethstats-bastion" {
   description       = "ethstats traffic"
 }
 
-resource "aws_security_group_rule" "geth_p2p" {
+resource "aws_security_group_rule" "parity_p2p" {
   from_port         = "${local.parity_p2p_port}"
   protocol          = "tcp"
   security_group_id = "${aws_security_group.parity.id}"
   to_port           = "${local.parity_p2p_port}"
   type              = "ingress"
   self              = true
-  description       = "Geth P2P traffic"
+  description       = "Parity P2P traffic"
 }
 
-resource "aws_security_group_rule" "geth_admin_rpc" {
+resource "aws_security_group_rule" "parity_admin_rpc" {
   from_port         = "${local.parity_rpc_port}"
   protocol          = "tcp"
   security_group_id = "${aws_security_group.parity.id}"
   to_port           = "${local.parity_rpc_port}"
   type              = "ingress"
   self              = "true"
-  description       = "Geth Admin RPC traffic"
+  description       = "Parity Admin RPC traffic"
 }
 
 
