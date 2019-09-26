@@ -39,6 +39,7 @@ locals {
     "--reserved-only",
     "--reserved-peers ${local.parity_static_nodes_file}",
     "--engine-signer 0x$(cat ${local.account_address_file})",
+    "--force-sealing",
     "--unsafe-expose",
   ]
   parity_args_combined = "${join(" ", concat(local.parity_args, local.additional_args))}"
