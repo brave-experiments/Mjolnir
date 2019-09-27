@@ -158,10 +158,6 @@ locals {
         name  = "FAKETIME_TIMESTAMP_FILE"
         value = "${local.libfaketime_file}"
       },
-      {
-        name  = "FAKETIME_DONT_FAKE_MONOTONIC"
-        value = "\"1\""
-      },
     ]
 
     entrypoint = [
