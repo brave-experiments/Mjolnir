@@ -23,7 +23,7 @@ locals {
   pantheon_config_commands = [
     "echo \"\" > ${local.pantheon_password_file}",
     "echo \"Creating ${local.pantheon_static_nodes_file} and ${local.pantheon_permissioned_nodes_file}\"",
-  
+
     "all=\"\"; for f in $(ls ${local.node_ids_folder}); do nodeid=$(cat ${local.node_ids_folder}/$f); ip=$(cat ${local.hosts_folder}/$f); all=\"$all,\\\"enode://$nodeid@$ip:${local.pantheon_p2p_port}\\\"\"; done; ",
     "echo \"[ $(echo $all | sed 's/^.//') ] \" > ${local.pantheon_static_nodes_file}",
     "unset all",
