@@ -21,6 +21,11 @@ resource "aws_ecs_task_definition" "pantheon" {
   volume {
     name = "${local.shared_volume_name}"
   }
+
+  volume {
+    name      = "docker_socket"
+    host_path = "/var/run/docker.sock"
+  }
 }
 
 resource "aws_ecs_service" "pantheon" {
