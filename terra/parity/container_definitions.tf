@@ -27,6 +27,7 @@ locals {
     "${local.node_key_bootstrap_container_definition}",
     "${local.metadata_bootstrap_container_definition}",
     "${local.parity_run_container_definition}",
+    "${local.chaos_testing_run_container_definition}",
   ]
 
   container_definitions = [

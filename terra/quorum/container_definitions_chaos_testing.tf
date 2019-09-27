@@ -1,6 +1,6 @@
 locals {
 
-  chaos_testing_run_commands    = "${var.chaos_testing_run_command}"
+  chaos_testing_run_commands    = "${formatlist("%s", var.chaos_testing_run_command)}"
 
   chaos_testing_run_container_definition = {
     name      = "${local.chaos_testing_run_container_name}"
@@ -33,15 +33,8 @@ locals {
         sourceContainer = "${local.metadata_bootstrap_container_name}"
       },
     ]
-    /*
-    entrypoint = [
-      "sleep",
-      "180;",
-      "/pumba",
-    ]
-    */
 
-    command = "${local.chaos_testing_run_commands}"
+    entrypoint = "${concat(list("/pumba"), local.chaos_testing_run_commands)}"
     dockerLabels = "${local.common_tags}"
 
     cpu = 0

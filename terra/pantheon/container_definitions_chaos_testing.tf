@@ -11,7 +11,7 @@ locals {
       logDriver = "awslogs"
 
       options = {
-        awslogs-group         = "${aws_cloudwatch_log_group.parity.name}"
+        awslogs-group         = "${aws_cloudwatch_log_group.pantheon.name}"
         awslogs-region        = "${var.region}"
         awslogs-stream-prefix = "logs"
       }
@@ -33,13 +33,6 @@ locals {
         sourceContainer = "${local.metadata_bootstrap_container_name}"
       },
     ]
-    /*
-    entrypoint = [
-      "sleep",
-      "180;",
-      "/pumba",
-    ]
-    */
 
     entrypoint = "${concat(list("/pumba"), local.chaos_testing_run_commands)}"
     dockerLabels = "${local.common_tags}"

@@ -13,6 +13,8 @@ locals {
   node_ids_folder                = "${local.shared_volume_container_path}/nodeids"
   accounts_folder                = "${local.shared_volume_container_path}/accounts"
   privacy_addresses_folder       = "${local.shared_volume_container_path}/privacyaddresses"
+  faketime_dont_fake_monotonic   = 1
+
 
   # store Tessera pub keys
 
@@ -21,12 +23,13 @@ locals {
   pantheon_config_commands = [
     "echo \"\" > ${local.pantheon_password_file}",
     "echo \"Creating ${local.pantheon_static_nodes_file} and ${local.pantheon_permissioned_nodes_file}\"",
-  
+
     "all=\"\"; for f in $(ls ${local.node_ids_folder}); do nodeid=$(cat ${local.node_ids_folder}/$f); ip=$(cat ${local.hosts_folder}/$f); all=\"$all,\\\"enode://$nodeid@$ip:${local.pantheon_p2p_port}\\\"\"; done; ",
     "echo \"[ $(echo $all | sed 's/^.//') ] \" > ${local.pantheon_static_nodes_file}",
     "unset all",
 
     "echo \"Creating Encode.json Validators list\"",
+    "export FAKETIME_DONT_FAKE_MONOTONIC=1",
     "all=\"\"; for f in $(ls ${local.node_ids_folder}); do address=$(cat ${local.accounts_folder}/$f); all=\"$all,\\\"$address\\\"\"; done;  ",  
     "echo \"[ $(echo $all | sed 's/^.//') ] \" > toEncode.json",
     "cat ${local.pantheon_static_nodes_file}",
@@ -66,6 +69,7 @@ locals {
   pantheon_args_combined = "${join(" ", concat(local.pantheon_args, local.additional_args))}"
   pantheon_run_commands = [
     "set -e",
+    "count=0; while [ $count -lt 1 ]; do count=$(ls ${local.libfaketime_folder} | grep libfaketime.so | wc -l); echo \"Wait for libfaketime to appear on storage ... \"; sleep 10; done",
     "echo Wait until metadata bootstrap completed ...",
     "while [ ! -f \"${local.metadata_bootstrap_container_status_file}\" ]; do sleep 1; done",
     // no need addition engine
@@ -146,7 +150,6 @@ locals {
         name  = "PRIVATE_CONFIG"
         value = "${local.tx_privacy_engine_socket_file}"
       },
-/*
       {
         name  = "LD_PRELOAD"
         value = "${local.libfaketime_folder}/libfaketime.so"
@@ -155,7 +158,6 @@ locals {
         name  = "FAKETIME_TIMESTAMP_FILE"
         value = "${local.libfaketime_file}"
       },
-*/
     ]
 
     entrypoint = [
