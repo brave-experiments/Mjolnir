@@ -26,7 +26,6 @@ resource "aws_ecs_task_definition" "parity" {
     name      = "docker_socket"
     host_path = "/var/run/docker.sock"
   }
-
 }
 
 resource "aws_ecs_service" "parity" {
