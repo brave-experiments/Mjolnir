@@ -14,10 +14,6 @@ locals {
   accounts_folder                = "${local.shared_volume_container_path}/accounts"
   privacy_addresses_folder       = "${local.shared_volume_container_path}/privacyaddresses"
 
-  # store Tessera pub keys
-
-  consensus_config_map = "${local.consensus_config[var.consensus_mechanism]}"
-
   pantheon_config_commands = [
     "echo \"\" > ${local.pantheon_password_file}",
     "echo \"Creating ${local.pantheon_static_nodes_file} and ${local.pantheon_permissioned_nodes_file}\"",
@@ -34,7 +30,8 @@ locals {
 
     # replace placeholder by encoded rpl address list in genesis
     "export rlp=$(${local.pantheon_binary} rlp encode --from=toEncode.json)",
-    "sed -i s/RLP_EXTRA_DATA/$rlp/g ${local.genesis_file}",
+    "echo $rlp",
+    "sed -i s/RLP_EXTRA_DATA/$rlp/ ${local.genesis_file}",
     "cat ${local.genesis_file}",
     "cp ${local.pantheon_static_nodes_file} ${local.pantheon_permissioned_nodes_file}",
     "cp ${local.pantheon_static_nodes_file} static-nodes.json",
@@ -42,7 +39,6 @@ locals {
 
   ]
 
-  additional_args = "${local.consensus_config_map["pantheon_args"]}"
   pantheon_args = [
     "--genesis-file=${local.genesis_file}",
     "--network-id=${random_integer.network_id.result}",
@@ -63,14 +59,12 @@ locals {
     "--host-whitelist=*"
     ]
 
-  pantheon_args_combined = "${join(" ", concat(local.pantheon_args, local.additional_args))}"
+  pantheon_args_combined = "${join(" ", local.pantheon_args)}"
   pantheon_run_commands = [
     "set -e",
     "echo Wait until metadata bootstrap completed ...",
     "while [ ! -f \"${local.metadata_bootstrap_container_status_file}\" ]; do sleep 1; done",
-    // no need addition engine
-    //"echo Wait until ${var.tx_privacy_engine} is ready ...",
-    //"while [ ! -S \"${local.tx_privacy_engine_socket_file}\" ]; do sleep 1; done",
+    "echo Metadata bootstrap completed",
 
     "${local.pantheon_config_commands}",
 
@@ -171,18 +165,17 @@ locals {
       "chainId"                   = "${random_integer.network_id.result}"
       "constantinoplefixblock"    = 0
       "ibft2" = {
-        "blockperiodseconds"      = 2
+        "blockperiodseconds"      = "${var.genesis_block_period_seconds}"
         "epochlength"             = 30000
-        "epochlength"             = 10
+        "requesttimeoutseconds"   = 10
       }
     },
 
     "difficulty" = "${var.genesis_difficulty}"
     "extraData"  = "RLP_EXTRA_DATA"
     "gasLimit"   = "${var.genesis_gas_limit}"
-    "mixHash"    = "0x00000000000000000000000000000000000000647572616c65787365646c6578"
+    "mixHash"    = "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365"
     "nonce"      = "${var.genesis_nonce}"
-    "parentHash" = "0x0000000000000000000000000000000000000000000000000000000000000000"
     "timestamp"  = "${var.genesis_timestamp}"
   }
 }
