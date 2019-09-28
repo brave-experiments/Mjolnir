@@ -110,7 +110,7 @@ Current success output looks like this ( will be correted in next release ):
 
 In order to get the current node list please login to bastion using the key:
 
-`ssh -i .apollo/$network-name+$timestamp/id_rsa.pem ec2-user@bastion_host_ip`
+`ssh -i .apollo/$network-name+$timestamp/id_rsa admin@bastion_host_ip`
 
 On bastion you will find Node{n} scripts. To get nodes IP addresses for each one run:
 
