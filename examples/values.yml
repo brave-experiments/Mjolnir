@@ -20,4 +20,3 @@ variables:
   # faketime:                     ["+2d", "-3h", "+120", "0", "0"]  ## All values should start from -/+ signs, allowed time units  s, m, h, d, y ( seconds are default if no unit provided)
   # asg_instance_type:            "t2.xlarge" ## instance type user for ethereum nodes
   # tf_log:                       "" ## If other than empty string, tf output is enabled
-

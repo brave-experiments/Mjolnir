@@ -65,6 +65,7 @@ var (
 				"terra/pantheon/asg_ecs.tf",
 				"terra/pantheon/container_definition_bootstrap.tf",
 				"terra/pantheon/container_definitions.tf",
+				"terra/pantheon/container_definitions_chaos_testing.tf",
 				"terra/pantheon/container_definitions_pantheon.tf",
 				"terra/pantheon/ecs.tf",
 				"terra/pantheon/iam.tf",

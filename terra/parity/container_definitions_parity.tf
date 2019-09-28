@@ -18,6 +18,7 @@ locals {
   parity_config_commands = [
     "mkdir -p ${local.parity_data_dir}/parity",
     "echo \"\" > ${local.parity_password_file}",
+    "export FAKETIME_DONT_FAKE_MONOTONIC=1",
     "echo \"Creating ${local.parity_static_nodes_file} and ${local.parity_permissioned_nodes_file}\"",
     "for f in $(ls ${local.node_ids_folder}); do nodeid=$(cat ${local.node_ids_folder}/$f); ip=$(cat ${local.hosts_folder}/$f); echo \"enode://$nodeid@$ip:${local.parity_p2p_port}\" >> ${local.parity_static_nodes_file}; done;",
     "cat ${local.parity_static_nodes_file} > ${local.parity_permissioned_nodes_file}",

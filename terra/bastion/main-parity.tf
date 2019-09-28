@@ -12,7 +12,7 @@ data "aws_ami" "this" {
     name = "name"
 
     values = [
-      "amzn2-ami-hvm-*",
+      "debian-stretch-*",
     ]
   }
 
@@ -33,10 +33,8 @@ data "aws_ami" "this" {
   }
 
   owners = [
-    "137112412989",
+    "aws-marketplace",
   ]
-
-  # amazon
 }
 
 resource "random_id" "ethstat_secret" {
@@ -82,49 +80,27 @@ resource "aws_instance" "bastion" {
 
 set -e
 
-# START: added per suggestion from AWS support to mitigate an intermittent failures from yum update
-sleep 20
-yum clean all
-yum repolist
-# END
-
-yum -y update
-yum -y install jq
-amazon-linux-extras install docker -y
-systemctl enable docker
-systemctl start docker
-
-curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-docker pull ${local.quorum_docker_image}
-docker pull prom/prometheus
-docker pull prom/node-exporter:latest
-docker pull grafana/grafana:latest
-docker pull ethereum/client-go:latest
-mkdir -p /opt/prometheus
-mkdir -p /opt/grafana/dashboards
-mkdir -p /opt/grafana/provisioning/dashboards
-mkdir -p /opt/grafana/provisioning/datasources
-curl -L https://gist.githubusercontent.com/karalabe/e7ca79abdec54755ceae09c08bd090cd/raw/3a400ab90f9402f2233280afd086cb9d6aac2111/dashboard.json -o /opt/grafana/dashboards/dashboard-geth.json
-curl -L https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
-docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
 EOF
 
   provisioner "remote-exec" {
     inline = [
-      "sudo yum -y update",
-      "sudo yum -y install jq",
-      "sudo amazon-linux-extras install docker -y",
-      "sudo systemctl enable docker",
+      "sudo apt-get update",
+      "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common jq",
+      "sudo curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -",
+      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable\"",
+      "sudo apt-get update",
+      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io jq python3-pip",
+      "sudo pip3 install awscli --upgrade",
       "sudo systemctl start docker",
+      "sudo gpasswd -a admin docker",
       "sudo docker run -v $PWD:/tmp --rm --entrypoint cp jkopacze/libfaketime-deb:latest /faketime.so /tmp/libfaketime.so",
-      "sudo aws s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so",
+      "sudo aws --region ${var.region} s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so",
       "for value in ${join(" ", var.faketime)}; do aws --region ${var.region} sqs send-message --queue-url ${aws_sqs_queue.faketime_queue.id} --message-body \\\"$value\\\" --message-attributes \"{ \\\"faketimeValue\\\":{ \\\"DataType\\\":\\\"String\\\",\\\"StringValue\\\":\\\"$value\\\"}}\" ; done",
     ]
 
     connection {
       host        = "${aws_instance.bastion.public_ip}"
-      user        = "ec2-user"
+      user        = "admin"
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
@@ -147,6 +123,21 @@ resource "local_file" "bootstrap" {
 
 set -e
 
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo docker pull ${local.quorum_docker_image}
+sudo docker pull prom/prometheus
+sudo docker pull prom/node-exporter:latest
+sudo docker pull grafana/grafana:latest
+sudo docker pull ethereum/client-go:latest
+sudo mkdir -p /opt/prometheus
+sudo mkdir -p /opt/grafana/dashboards
+sudo mkdir -p /opt/grafana/provisioning/dashboards
+sudo mkdir -p /opt/grafana/provisioning/datasources
+sudo curl -L https://gist.githubusercontent.com/karalabe/e7ca79abdec54755ceae09c08bd090cd/raw/3a400ab90f9402f2233280afd086cb9d6aac2111/dashboard.json -o /opt/grafana/dashboards/dashboard-geth.json
+sudo curl -L https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
+sudo docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
+
 export AWS_DEFAULT_REGION=${var.region}
 export TASK_REVISION=${aws_ecs_task_definition.parity.revision}
 sudo rm -rf ${local.shared_volume_container_path}
@@ -157,7 +148,7 @@ count=0
 while [ $count -lt ${var.number_of_nodes} ]
 do
   count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
-  sudo aws s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
     | echo Wait for nodes in parity network being up ... $count/${var.number_of_nodes}
   sleep 1
 done
@@ -166,14 +157,14 @@ if which jq >/dev/null; then
   echo "Found jq"
 else
   echo "jq not found. Instaling ..."
-  sudo yum -y install jq
+  sudo apt-get -y install jq
 fi
 
 count=30
 inc_num=0
 while [ $count -gt $inc_num ]
 do
-  status=$(aws ecs describe-clusters --clusters ${local.ecs_cluster_name} | jq -r .clusters[].status)
+  status=$(aws --region ${var.region} ecs describe-clusters --clusters ${local.ecs_cluster_name} | jq -r .clusters[].status)
   if [ $status == "ACTIVE" ]; then
     inc_num=$count
   fi
@@ -181,15 +172,14 @@ do
   inc_num=$((inc_num+1))
 done
 
-for t in $(aws ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
+for t in $(aws --region ${var.region} ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
 do
-  task_metadata=$(aws ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
-  HOST_IP=$(echo $task_metadata | jq -r '.tasks[0] | .containers[] | select(.name == "${local.parity_run_container_name}") | .networkInterfaces[] | .privateIpv4Address')
+  task_metadata=$(aws --region ${var.region} ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
   if [ "${var.ecs_mode}" == "EC2" ]
   then
-    CONTAINER_INSTANCE_ARN=$(aws ecs describe-tasks --tasks $t --cluster ${local.ecs_cluster_name} | jq -r '.tasks[] | .containerInstanceArn')
-    EC2_INSTANCE_ID=$(aws ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster ${local.ecs_cluster_name} |jq -r '.containerInstances[] | .ec2InstanceId')
-    HOST_IP=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID | jq -r '.Reservations[0] | .Instances[] | .PublicIpAddress')
+    CONTAINER_INSTANCE_ARN=$(aws --region ${var.region} ecs describe-tasks --tasks $t --cluster ${local.ecs_cluster_name} | jq -r '.tasks[] | .containerInstanceArn')
+    EC2_INSTANCE_ID=$(aws --region ${var.region} ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster ${local.ecs_cluster_name} |jq -r '.containerInstances[] | .ec2InstanceId')
+    HOST_IP=$(aws --region ${var.region} ec2 describe-instances --instance-ids $EC2_INSTANCE_ID | jq -r '.Reservations[0] | .Instances[] | .PublicIpAddress')
   fi
   group=$(echo $task_metadata | jq -r '.tasks[0] | .group')
   taskArn=$(echo $task_metadata | jq -r '.tasks[0] | .taskDefinitionArn')
@@ -346,7 +336,7 @@ resource "null_resource" "bastion_remote_exec" {
 
     connection {
       host        = "${aws_instance.bastion.public_ip}"
-      user        = "ec2-user"
+      user        = "admin"
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
