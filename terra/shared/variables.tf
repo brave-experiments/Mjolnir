@@ -138,6 +138,11 @@ variable "genesis_nonce" {
   default = "0x0"
 }
 
+variable "genesis_block_period_seconds" {
+  description = "blockperiodseconds used for pantheon genesis file"
+  default = "2"
+}
+
 //TODO remove
 /*
 variable "quorum_bucket" {
