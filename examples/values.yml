@@ -10,11 +10,13 @@ variables:
   quorum_docker_image_tag:      '2.2.5'
   # aws_access_key_id:            'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
   # aws_secret_access_key:        'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
-  # genesis_gas_limit:            "28"   ## Used to set genesis gas limit
+  # genesis_gas_limit:            "0xE0000000" ## Used to set genesis gas limit
   # genesis_timestamp:            "30"         ## Used to set genesis timestamp
-  # genesis_difficulty:           "12"          ## Used to set genesis difficulty
+  # genesis_difficulty:           "0"          ## Used to set genesis difficulty
   # genesis_nonce:                "0"          ## Used to set genesis nonce
   # genesis_block_period_seconds: "2"          ## Used to set pantheon genesis blockperiodseconds
+  # genesis_step_duration:        "5"          ## Used to set parity genesis stepDuration
+  # genesis_min_gas_limit:        "5000"       ## Used to set parity genesis minGasLimit
   # consensus_mechanism:          "instanbul"    ## Used to set consensus mechanism
   # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2","--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-quorum*"]     #quorum
   # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2", "--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-pantheon*"]   #pantheon

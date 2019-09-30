@@ -12,9 +12,6 @@ locals {
   privacy_addresses_folder       = "${local.shared_volume_container_path}/privacyaddresses"
   chain_name                     = "ApolloPOA"
 
-  # store Tessera pub keys
-
-  consensus_config_map = "${local.consensus_config["poa"]}"
   parity_config_commands = [
     "mkdir -p ${local.parity_data_dir}/parity",
     "echo \"\" > ${local.parity_password_file}",
@@ -25,7 +22,6 @@ locals {
     "echo Permissioned Nodes: $(cat ${local.parity_permissioned_nodes_file})",
     "export IDENTITY=$(cat ${local.service_file} | awk -F: '{print $2}')",
   ]
-  additional_args = "${local.consensus_config_map["parity_args"]}"
   parity_args = [
     "--chain ${local.genesis_file}",
     "--base-path ${local.parity_data_dir}",
@@ -43,7 +39,7 @@ locals {
     "--force-sealing",
     "--unsafe-expose",
   ]
-  parity_args_combined = "${join(" ", concat(local.parity_args, local.additional_args))}"
+  parity_args_combined = "${join(" ", local.parity_args)}"
   parity_run_commands = [
     "set -e",
     //"cat ${local.libfaketime_file} > /etc/faketimerc",
@@ -109,10 +105,6 @@ locals {
 
     environment = [
       {
-        name  = "PRIVATE_CONFIG"
-        value = "${local.tx_privacy_engine_socket_file}"
-      },
-      {
         name  = "LD_PRELOAD"
         value = "${local.libfaketime_folder}/libfaketime.so"
       },
@@ -138,7 +130,7 @@ locals {
     "engine" = {
       "authorityRound" = {
         "params" = {
-          "stepDuration" = "5",
+          "stepDuration" = "${var.genesis_step_duration}",
           "validators" = {
             "list" = [
             ]
@@ -149,7 +141,7 @@ locals {
     "params" = {
       "gasLimitBoundDivisor" = "0x400",
       "maximumExtraDataSize" = "0x20",
-      "minGasLimit" = "0x1388",
+      "minGasLimit" = "${var.genesis_min_gas_limit}",
       "networkID" = "RANDOM_NETWORK_ID",
       "eip155Transition" = 0,
       "validateChainIdTransition" = 0,
@@ -165,8 +157,9 @@ locals {
           "signature" = "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
         }
       },
-      "difficulty" = "0x20000",
-      "gasLimit" = "0x5B8D80"
+      "difficulty" = "${var.genesis_difficulty}",
+      "gasLimit"   = "${var.genesis_gas_limit}",
+      "timestamp"  = "${var.genesis_timestamp}"
     },
     "accounts" = {
     }

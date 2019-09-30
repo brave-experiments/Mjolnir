@@ -80,39 +80,6 @@ locals {
     cpu = 0
   }
 
-  // this is very BADDDDDD but for now i don't have any other better option
-  validator_address_program = <<EOP
-package main
-
-import (
-	"encoding/hex"
-	"fmt"
-	"os"
-
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-)
-
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("missing enode value")
-		os.Exit(1)
-	}
-	enode := os.Args[1]
-	nodeId, err := discover.HexID(enode)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	pub, err := nodeId.Pubkey()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	fmt.Printf("0x%s\n", hex.EncodeToString(crypto.PubkeyToAddress(*pub).Bytes()))
-}
-EOP
-
   metadata_bootstrap_commands = [
     "set -e",
     "echo Wait until Node Key is ready ...",
@@ -156,7 +123,6 @@ EOP
     "echo \"All nodes have registered their IDs\"",
 
     // Prepare Genesis file
-    "alloc=\"\"; for f in $(ls ${local.accounts_folder}); do address=$(cat ${local.accounts_folder}/$f); alloc=\"$alloc,\\\"$address\\\": { \"balance\": \"\\\"1000000000000000000000000000\\\"\"}\"; done",
     "validators=\"\"; for f in $(ls ${local.accounts_folder}); do address=$(cat ${local.accounts_folder}/$f); validators=\"$validators,\\\"$address\\\" \"; done",
     "accounts=\"\"; for f in $(ls ${local.accounts_folder}); do address=$(cat ${local.accounts_folder}/$f); accounts=\"$accounts,\\\"$address\\\": { \"\\\"balance\\\"\": \"\\\"1000000000000000000000000000\\\"\"}\"; done",
 
