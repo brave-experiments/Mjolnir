@@ -131,12 +131,12 @@ sudo docker pull ${local.quorum_docker_image}
 sudo docker pull prom/prometheus
 sudo docker pull prom/node-exporter:latest
 sudo docker pull grafana/grafana:latest
-sudo docker pull ethereum/client-go:latest
+sudo docker pull hunterlong/gethexporter:latest
 sudo mkdir -p /opt/prometheus
 sudo mkdir -p /opt/grafana/dashboards
 sudo mkdir -p /opt/grafana/provisioning/dashboards
 sudo mkdir -p /opt/grafana/provisioning/datasources
-sudo curl -L https://gist.githubusercontent.com/karalabe/e7ca79abdec54755ceae09c08bd090cd/raw/3a400ab90f9402f2233280afd086cb9d6aac2111/dashboard.json -o /opt/grafana/dashboards/dashboard-geth.json
+sudo curl -L https://grafana.com/api/dashboards/6976/revisions/3/download -o /opt/grafana/dashboards/dashboard-geth.json
 sudo curl -L https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
 sudo docker run -d -e "WS_SECRET=${random_id.ethstat_secret.hex}" -p ${local.ethstats_port}:${local.ethstats_port} ${local.ethstats_docker_image}
 
@@ -231,14 +231,11 @@ global:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-- job_name: geth
-  metrics_path: /debug/metrics/prometheus
-  scheme: http
+- job_name: gethexporter
   static_configs:
   - targets:
-    - geth:6060
+    - gethexporter:9090
 - job_name: 'node'
-  static_configs:
   - targets: [ node-exporter:9100 ]
   file_sd_configs:
   - files:
@@ -274,12 +271,10 @@ services:
             - prometheus
         ports:
             - '3001:3000'
-    geth:
-        image: ethereum/client-go:latest
-        ports:
-            - '6060:6060'
-        command: --goerli --metrics --metrics.expensive --pprof --pprofaddr=0.0.0.0
-
+    gethexporter:
+        image: hunterlong/gethexporter
+        environment:
+            - GETH=http://$ip:${local.quorum_rpc_port}
 SS
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
