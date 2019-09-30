@@ -143,6 +143,16 @@ variable "genesis_block_period_seconds" {
   default = "2"
 }
 
+variable "genesis_step_duration" {
+  description = "stepDuration used for parity genesis file"
+  default = "5"
+}
+
+variable "genesis_min_gas_limit" {
+  description = "minGasLimit used for parity genesis file"
+  default = "0x1388"
+}
+
 //TODO remove
 /*
 variable "quorum_bucket" {
