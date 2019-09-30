@@ -87,7 +87,7 @@ EOF
       "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable\"",
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce docker-ce-cli containerd.io jq python3-pip",
-      "sudo pip3 install awscli --upgrade",
+      "sudo pip3 install awscli --upgrade > /dev/null",
       "sudo systemctl start docker",
       "sudo gpasswd -a admin docker",
       "sudo docker run -v $PWD:/tmp --rm --entrypoint cp jkopacze/libfaketime-deb:latest /faketime.so /tmp/libfaketime.so",
@@ -120,18 +120,22 @@ resource "local_file" "bootstrap" {
 
 set -e
 
-sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -Ls "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-sudo docker pull ${local.quorum_docker_image}
-sudo docker pull prom/prometheus
-sudo docker pull prom/node-exporter:latest
-sudo docker pull grafana/grafana:latest
+echo "Pull docker images ..."
+sudo docker pull ${local.quorum_docker_image} > /dev/null
+sudo docker pull prom/prometheus > /dev/null
+sudo docker pull prom/node-exporter:latest > /dev/null
+sudo docker pull grafana/grafana:latest > /dev/null
+sudo docker pull hunterlong/gethexporter:latest > /dev/null
+echo "Done"
 sudo mkdir -p /opt/prometheus
 sudo mkdir -p /opt/grafana/dashboards
 sudo mkdir -p /opt/grafana/provisioning/dashboards
 sudo mkdir -p /opt/grafana/provisioning/datasources
-sudo curl -L https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
-sudo curl -L https://grafana.com/api/dashboards/10273/revisions/4/download -o /opt/grafana/dashboards/dashboard-pantheon.json
+sudo curl -Ls https://grafana.com/api/dashboards/6976/revisions/3/download -o /opt/grafana/dashboards/dashboard-geth.json
+sudo curl -Ls https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
+sudo curl -Ls https://grafana.com/api/dashboards/10273/revisions/4/download -o /opt/grafana/dashboards/dashboard-pantheon.json
 
 export AWS_DEFAULT_REGION=${var.region}
 export TASK_REVISION=${aws_ecs_task_definition.pantheon.revision}
@@ -221,6 +225,10 @@ global:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
+- job_name: gethexporter
+  static_configs:
+  - targets:
+    - gethexporter:9090
 - job_name: 'node'
   static_configs:
   - targets: [ node-exporter:9100 ]
@@ -258,6 +266,10 @@ services:
             - prometheus
         ports:
             - '3001:3000'
+    gethexporter:
+        image: hunterlong/gethexporter
+        environment:
+            - GETH=http://$ip:${local.pantheon_rpc_port}
 
 SS
 
@@ -302,7 +314,7 @@ cat <<SS | sudo tee /opt/grafana/provisioning/dashboards/all.yml
     folder: '/var/lib/grafana/dashboards'
 SS
 
-#sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
+sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
 sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-node-exporter.json
 sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-pantheon.json
 sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
