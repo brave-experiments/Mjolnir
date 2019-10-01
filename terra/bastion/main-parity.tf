@@ -274,6 +274,7 @@ services:
         image: hunterlong/gethexporter
         environment:
             - GETH=http://$ip:${local.parity_rpc_port}
+
     monitor:
       image: buythewhale/ethstats_monitor
       volumes:
