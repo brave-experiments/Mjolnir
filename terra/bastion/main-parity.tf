@@ -137,6 +137,7 @@ sudo mkdir -p /opt/prometheus
 sudo mkdir -p /opt/grafana/dashboards
 sudo mkdir -p /opt/grafana/provisioning/dashboards
 sudo mkdir -p /opt/grafana/provisioning/datasources
+sudo mkdir -p /opt/ethstats
 sudo curl -Ls https://grafana.com/api/dashboards/6976/revisions/3/download -o /opt/grafana/dashboards/dashboard-geth.json
 sudo curl -Ls https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
 
@@ -274,6 +275,17 @@ services:
         environment:
             - GETH=http://$ip:${local.parity_rpc_port}
 
+    monitor:
+      image: buythewhale/ethstats_monitor
+      volumes:
+        - /opt/ethstats/app.json:/home/ethnetintel/eth-net-intelligence-api/app.json:ro
+    dashboard:
+      image: buythewhale/ethstats
+      volumes:
+        - /opt/ethstats/ws_secret.json:/eth-netstats/ws_secret.json:ro
+      ports:
+        - 3000:3000
+
 SS
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
@@ -293,6 +305,41 @@ do
 done
 echo ']' >> $target_file
 sudo mv $target_file /opt/prometheus/
+
+count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+target_file=/tmp/app.json
+i=0
+echo '[' > $target_file
+for idx in "$${!nodes[@]}"
+do
+  f=$(grep -l $${nodes[$idx]} *)
+  ip=$(cat ${local.hosts_folder}/$f)
+  i=$(($i+1))
+    echo '{ "name"            : "Node'$i'",' >> $target_file
+    echo '"script"            : "app.js",' >> $target_file
+    echo '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' >> $target_file
+    echo '"merge_logs"        : false,' >> $target_file
+    echo '"watch"             : true,' >> $target_file
+    echo '"max_restarts"      : 10,' >> $target_file
+    echo '"exec_interpreter"  : "node",' >> $target_file
+    echo '"exec_mode"         : "fork_mode",' >> $target_file
+    echo '"env": {' >> $target_file
+    echo '"NODE_ENV"        : "production",' >> $target_file
+    echo '"RPC_HOST"        : "'$ip'",' >> $target_file
+    echo '"LISTENING_PORT"  : "'${local.parity_rpc_port}'",' >> $target_file
+    echo '"INSTANCE_NAME"   : "Node'$i'",' >> $target_file
+    echo '"WS_SERVER"       : "ws://dashboard:3000",' >> $target_file
+    echo '"WS_SECRET"       : "'${random_id.ethstat_secret.hex}'", ' >> $target_file
+    echo '"VERBOSITY"       : 3 }' >> $target_file
+    if [ $i -lt "$count" ]; then
+      echo '},' >> $target_file
+    else
+      echo '}' >> $target_file
+    fi
+done
+echo ']' >> $target_file
+sudo mv $target_file /opt/ethstats/
+echo '["'${random_id.ethstat_secret.hex}'"]' |  sudo tee -a /opt/ethstats/ws_secret.json
 
 cat <<SS | sudo tee /opt/grafana/provisioning/datasources/all.yml
 datasources:
