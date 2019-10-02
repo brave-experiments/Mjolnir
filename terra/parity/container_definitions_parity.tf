@@ -36,6 +36,7 @@ locals {
     "--reserved-only",
     "--reserved-peers ${local.parity_static_nodes_file}",
     "--engine-signer 0x$(cat ${local.account_address_file})",
+    "--gas-floor-target ${var.genesis_gas_limit}",
     "--force-sealing",
     "--unsafe-expose",
   ]
@@ -130,7 +131,7 @@ locals {
     "engine" = {
       "authorityRound" = {
         "params" = {
-          "stepDuration" = "${var.genesis_step_duration}",
+          "stepDuration" = "${var.genesis_blocktime}",
           "validators" = {
             "list" = [
             ]

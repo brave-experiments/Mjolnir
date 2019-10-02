@@ -169,7 +169,7 @@ locals {
       "chainId"                   = "${random_integer.network_id.result}"
       "constantinoplefixblock"    = 0
       "ibft2" = {
-        "blockperiodseconds"      = "${var.genesis_block_period_seconds}"
+        "blockperiodseconds"      = "${var.genesis_blocktime}"
         "epochlength"             = 30000
         "requesttimeoutseconds"   = 10
       }

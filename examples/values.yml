@@ -14,7 +14,7 @@ variables:
   # genesis_timestamp:            "30"         ## Used to set genesis timestamp
   # genesis_difficulty:           "0"          ## Used to set genesis difficulty
   # genesis_nonce:                "0"          ## Used to set genesis nonce
-  # genesis_block_period_seconds: "2"          ## Used to set pantheon genesis blockperiodseconds
+  # genesis_blocktime:            "10"         ## Used to set Quorum --istanbul.blockperiod  (cli option), Patheon: blockperiodseconds (genesis ), Parity : stepDuration (genesis )
   # genesis_step_duration:        "5"          ## Used to set parity genesis stepDuration
   # genesis_min_gas_limit:        "5000"       ## Used to set parity genesis minGasLimit
   # consensus_mechanism:          "instanbul"    ## Used to set consensus mechanism

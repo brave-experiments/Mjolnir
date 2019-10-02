@@ -16,6 +16,7 @@ locals {
       geth_args = [
         "--raft",
         "--raftport ${local.raft_port}",
+        "--raftblocktime ${var.genesis_blocktime}",
       ]
 
       enode_params = [
@@ -30,7 +31,7 @@ locals {
 
     istanbul = {
       geth_args = [
-        "--istanbul.blockperiod 1",
+        "--istanbul.blockperiod ${var.genesis_blocktime}",
         "--emitcheckpoints",
         "--syncmode full",
         "--mine",
