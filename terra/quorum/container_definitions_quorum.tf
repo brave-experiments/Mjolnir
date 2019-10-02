@@ -41,6 +41,8 @@ locals {
     "--verbosity 5",
     "--debug",
     "--identity $IDENTITY",
+    "--miner.gastarget ${var.genesis_gas_limit}",
+    "--miner.gaslimit ${var.genesis_gas_limit}",
     "--ethstats \"$IDENTITY:${random_id.ethstat_secret.hex}@${aws_instance.bastion.private_ip}:${local.ethstats_port}\"",
   ]
   geth_args_combined = "${join(" ", concat(local.geth_args, local.additional_args))}"

@@ -119,7 +119,7 @@ variable "tx_privacy_engine" {
 }
 
 variable "genesis_gas_limit" {
-  description = "Gas limit used for genesis file"
+  description = "Gas limit parameter across all clients"
   default = "0xE0000000"
 }
 
@@ -138,13 +138,8 @@ variable "genesis_nonce" {
   default = "0x0"
 }
 
-variable "genesis_block_period_seconds" {
-  description = "blockperiodseconds used for pantheon genesis file"
-  default = "2"
-}
-
-variable "genesis_step_duration" {
-  description = "stepDuration used for parity genesis file"
+variable "genesis_blocktime" {
+  description = "Blocktime parameter across all clients"
   default = "5"
 }
 
