@@ -52,6 +52,9 @@ func TestConvertInterfaceToHex(t *testing.T) {
 	hex = ConvertInterfaceToHex(string(intValue))
 	assert.Equal(t, "0x0", hex)
 
+	hex = ConvertInterfaceToHex("0xE0000000")
+	assert.Equal(t, "0xE0000000", hex)
+
 	hex = ConvertInterfaceToHex("two")
 	assert.Equal(t, "0x0", hex)
 
