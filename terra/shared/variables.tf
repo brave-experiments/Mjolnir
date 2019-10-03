@@ -181,3 +181,8 @@ variable "faketime" {
   default = []
 
 }
+
+variable "chainhammer_repo_url" {
+   description = "TPS measurements of parity aura, geth clique, quorum, tobalaba, etc"
+   default = "https://github.com/drandreaskrueger/chainhammer.git"
+}
