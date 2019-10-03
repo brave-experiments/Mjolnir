@@ -14,8 +14,7 @@ variables:
   # genesis_timestamp:            "30"         ## Used to set genesis timestamp
   # genesis_difficulty:           "0"          ## Used to set genesis difficulty
   # genesis_nonce:                "0"          ## Used to set genesis nonce
-  # genesis_blocktime:            "10"         ## Used to set Quorum --istanbul.blockperiod  (cli option), Patheon: blockperiodseconds (genesis ), Parity : stepDuration (genesis )
-  # genesis_step_duration:        "5"          ## Used to set parity genesis stepDuration
+  # genesis_blocktime:            "5"          ## Used to set Quorum --istanbul.blockperiod  (cli option), Patheon: blockperiodseconds (genesis ), Parity : stepDuration (genesis )
   # genesis_min_gas_limit:        "5000"       ## Used to set parity genesis minGasLimit
   # consensus_mechanism:          "instanbul"    ## Used to set consensus mechanism
   # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2","--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-quorum*"]     #quorum
