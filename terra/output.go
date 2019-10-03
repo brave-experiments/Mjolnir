@@ -233,7 +233,7 @@ func (currentKeyPair *keyPair) writePrivateKey(location string) (err error) {
 }
 
 func (currentKeyPair *keyPair) writePublicKey(location string) (err error) {
-	publicKeyName := location + "/id_rsa.pub"
+	publicKeyName := location + "/id_rsa.pem"
 
 	publicKeyFile := File{
 		Location: publicKeyName,
