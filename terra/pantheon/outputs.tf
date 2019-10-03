@@ -30,6 +30,10 @@ output "private_key_file" {
   sensitive = true
 }
 
+output "ethstats_host_url" {
+  value = "http://${aws_instance.bastion.public_ip}:3000"
+}
+
 output "bucket_name" {
   value = "${aws_s3_bucket.pantheon.bucket}"
 }
