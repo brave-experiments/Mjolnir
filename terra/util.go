@@ -4,6 +4,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"strconv"
+	"strings"
 )
 
 func ConvertIntToHex(value int64) (hexInt string) {
@@ -40,8 +41,10 @@ func ConvertInterfaceToHex(variable interface{}) (hexInt string) {
 	case uint:
 		return ConvertIntToHex(int64(variable.(uint)))
 	case string:
+		if strings.HasPrefix(valueInterface, "0x") {
+			return string(valueInterface)
+		}
 		float64Value, err := strconv.ParseFloat(valueInterface, 64)
-
 		if nil != err {
 			return ConvertIntToHex(int64(0))
 		}
