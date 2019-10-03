@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"math/rand"
 	"path"
+	"strconv"
 	"time"
 )
 
@@ -32,6 +33,7 @@ type variablesModel struct {
 const (
 	CurrentVersion = float64(0.2)
 	NetworkNameKey = "network_name"
+	ClockSkewNameKey = "faketime"
 	SchemaV02      = `version: 0.2
 resourceType: variables
 variables:
@@ -74,10 +76,17 @@ variables:
 var (
 	SupportedFileTypes     = []string{".yml", ".yaml"}
 	SupportedResourceTypes = []string{"variables"}
+	SupportedSigns 		   = []string{"+", "-"}
 )
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateClockSkewVariable()
 
 	if nil != err {
 		return err
@@ -219,6 +228,29 @@ func (variablesModel *variablesModel) guardVariables() (err error) {
 
 	if nil == variables {
 		return ClientError{"No variables found"}
+	}
+
+	return
+}
+
+func (variablesSchema *VariablesSchema) validateClockSkewVariable() (err error) {
+	if nil != variablesSchema.Variables[ClockSkewNameKey] {
+		for _, variable := range variablesSchema.Variables[ClockSkewNameKey].([]interface{}) {
+			if false == contains(SupportedSigns, string(variable.(string)[0])) {
+				return ClientError{fmt.Sprintf(
+						"%s is not in supported faketime variable sign. Valid are: %s",
+						variable,
+						SupportedSigns,
+					),
+				}
+			}
+
+			integerVariable, _ := strconv.ParseInt(variable.(string), 10, 0)
+
+			if 0 == integerVariable {
+				continue
+			}
+		}
 	}
 
 	return
