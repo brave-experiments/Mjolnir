@@ -12,6 +12,9 @@ test: clean generate
 test-silent: clean-build generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./... > dist/${CLI_VERSION}/unit.log
 
+test-silent-connection: clean-build generate
+	go test -cover -covermode=count -coverprofile=coverage.out ./connect/... > dist/${CLI_VERSION}/unit.log
+
 clean-build: clean
 	rm -rf dist/${CLI_VERSION}/unix
 	mkdir -p dist/${CLI_VERSION}/unix

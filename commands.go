@@ -21,6 +21,7 @@ var (
     RegisteredCommands = map[string]cli.CommandFactory{
         "apply": ApplyCmdFactory,
         "destroy": DestroyCmdFactory,
+        "ssh": SshCmdFactory,
     }
 )
 
@@ -31,6 +32,14 @@ type ApplyCmd struct {
 
 type DestroyCmd struct {
     ApplyCmd
+}
+
+type SshCmd struct {
+    cli.Command
+}
+
+func SshCmdFactory() (command cli.Command, err error) {
+    return SshCmd{}, nil
 }
 
 func ApplyCmdFactory() (command cli.Command, err error) {

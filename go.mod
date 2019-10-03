@@ -21,6 +21,7 @@ require (
 	github.com/terraform-providers/terraform-provider-template v1.0.0
 	github.com/terraform-providers/terraform-provider-tls v1.2.0
 	github.com/tidwall/gjson v1.3.2
+	golang.org/x/crypto v0.0.0-20180211211603-9de5f2eaf759
 	golang.org/x/net v0.0.0-20171024115130-4b14673ba32b
 	golang.org/x/sys v0.0.0-20190502175342-a43fa875dd82 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
