@@ -2,6 +2,7 @@ package connect
 
 import (
 	"fmt"
+	"github.com/brave-experiments/apollo-devops/terra"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
@@ -33,10 +34,18 @@ func TestSshClient_New(t *testing.T) {
 }
 
 func TestSshClient_DialFailure(t *testing.T) {
+	terra.TempDirPathLocation = "dummyPath"
 	client := SshClient{}
 	dialClient, err := client.Dial()
 	assert.Error(t, err)
 	assert.Nil(t, dialClient)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
+
+func TestDialError_Error(t *testing.T) {
+	message := "dummyMessage"
+	dialError := DialError{Message: message}
+	assert.Equal(t, message, dialError.Error())
 }
 
 func createPrivKey(t *testing.T, keyBody string) {

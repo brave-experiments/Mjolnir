@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/brave-experiments/apollo-devops/terra"
     "github.com/mitchellh/cli"
+    "io/ioutil"
     "os"
 )
 
@@ -15,6 +16,7 @@ const (
     ExitCodeTerraformError = 4
     ExitCodeYamlBindingError = 5
     ExitCodeEnvUnbindingError = 6
+    ExitCodeNoTempDirectory = 7
 )
 
 var (
@@ -63,6 +65,19 @@ func DestroyCmdFactory() (command cli.Command, err error) {
     }
 
     return command, err
+}
+
+func (sshCmd SshCmd) Run(args []string) (exitCode int) {
+    //desiredBastionKey := "bastion_host_ip"
+    directoryLocator := terra.TempDirPathLocation
+    directoriesList, err := ioutil.ReadDir(directoryLocator)
+
+    if nil != err || len(directoriesList) < 1 {
+       fmt.Printf("%s temp directory not present \n", directoryLocator)
+       return ExitCodeNoTempDirectory
+    }
+
+    return ExitCodeSuccess
 }
 
 func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
@@ -167,6 +182,10 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
     return exitCode
 }
 
+func (sshCmd SshCmd) Help() (helpMessage string) {
+    return "Ssh into bastion. .apollo directory must be present (previous deploy must complete)"
+}
+
 func (applyCmd ApplyCmd) Help() (helpMessage string) {
     helpMessage = "\nThis is apply command. Usage: apollo apply [recipe] [yamlFilePath]\n"
 
@@ -198,6 +217,11 @@ func (applyCmd ApplyCmd) Synopsis() (synopsis string) {
 
 func (destroyCmd DestroyCmd) Synopsis() (synopsis string) {
     synopsis = "destroy [yamlSchemaPath]"
+    return synopsis
+}
+
+func (sshCmd SshCmd) Synopsis() (synopsis string) {
+    synopsis = "ssh"
     return synopsis
 }
 

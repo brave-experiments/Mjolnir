@@ -11,27 +11,17 @@ type SshClient struct {
 	network  string
 }
 
+type DialError struct {
+	Message string
+}
+
 type privateKey struct {
 	location string
 	signer   ssh.Signer
 }
 
-func (key *privateKey) method() (err error, method ssh.AuthMethod) {
-	priv, err := ioutil.ReadFile(key.location)
-
-	if nil != err {
-		return err, nil
-	}
-
-	signer, err := ssh.ParsePrivateKey(priv)
-
-	if nil != err {
-		return err, nil
-	}
-
-	key.signer = signer
-
-	return err, ssh.PublicKeys(signer)
+func (err DialError) Error() (message string) {
+	return err.Message
 }
 
 func (sshClient *SshClient) New(user string, hostname string, keyPath string) (err error) {
@@ -57,9 +47,26 @@ func (sshClient *SshClient) New(user string, hostname string, keyPath string) (e
 
 func (sshClient *SshClient) Dial() (client *ssh.Client, err error) {
 	if nil == sshClient.Config {
-		// Validate here
-		return nil, nil
+		return nil, DialError{Message: "Config not present"}
 	}
 
 	return ssh.Dial(sshClient.network, sshClient.hostname, sshClient.Config)
+}
+
+func (key *privateKey) method() (err error, method ssh.AuthMethod) {
+	priv, err := ioutil.ReadFile(key.location)
+
+	if nil != err {
+		return err, nil
+	}
+
+	signer, err := ssh.ParsePrivateKey(priv)
+
+	if nil != err {
+		return err, nil
+	}
+
+	key.signer = signer
+
+	return err, ssh.PublicKeys(signer)
 }
