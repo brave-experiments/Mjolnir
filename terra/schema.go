@@ -31,9 +31,9 @@ type variablesModel struct {
 }
 
 const (
-	CurrentVersion = float64(0.2)
+	CurrentVersion = float64(0.3)
 	NetworkNameKey = "network_name"
-	ClockSkewNameKey = "faketime"
+	ClockSkewKey   = "faketime"
 	SchemaV02      = `version: 0.2
 resourceType: variables
 variables:
@@ -74,19 +74,14 @@ variables:
 )
 
 var (
-	SupportedFileTypes     = []string{".yml", ".yaml"}
-	SupportedResourceTypes = []string{"variables"}
-	SupportedSigns 		   = []string{"+", "-"}
+	SupportedFileTypes      = []string{".yml", ".yaml"}
+	SupportedResourceTypes  = []string{"variables"}
+	SupportedClockSkewSigns = []string{"+", "-"}
+	SupportedClockSkewUnits = []string{"s", "m", "h", "d", "y"}
 )
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
-
-	if nil != err {
-		return err
-	}
-
-	err = variablesSchema.validateClockSkewVariable()
 
 	if nil != err {
 		return err
@@ -156,6 +151,8 @@ func (variablesSchema *VariablesSchema) guard() (err error) {
 	variablesSchema.Variables = varsModel.Variables
 	variablesSchema.Type = varsModel.ResourceType
 	variablesSchema.Version = varsModel.Version
+
+	err = variablesSchema.validateClockSkewVariable()
 
 	return err
 }
@@ -234,21 +231,61 @@ func (variablesModel *variablesModel) guardVariables() (err error) {
 }
 
 func (variablesSchema *VariablesSchema) validateClockSkewVariable() (err error) {
-	if nil != variablesSchema.Variables[ClockSkewNameKey] {
-		for _, variable := range variablesSchema.Variables[ClockSkewNameKey].([]interface{}) {
-			if false == contains(SupportedSigns, string(variable.(string)[0])) {
+	if nil != variablesSchema.Variables[ClockSkewKey] {
+		clockSkewVariables := variablesSchema.Variables[ClockSkewKey].([]interface{})
+
+		for index, variable := range clockSkewVariables {
+			variableString := variable.(string)
+			variableLength := len(variableString)
+			sign := variableString[:1]
+			unit := variableString[variableLength-1:]
+
+			if false == contains(SupportedClockSkewUnits, unit) {
+				if "" != unit && "0" != unit {
+					return ClientError{fmt.Sprintf(
+							"%s is not in supported faketime variable units. Valid are: %s",
+							variable,
+							SupportedClockSkewUnits,
+						),
+					}
+				}
+			}
+
+			if false == contains(SupportedClockSkewSigns, sign) {
+				if "" != variableString[:variableLength-1] {
+					if _, err := strconv.ParseInt(variableString,10,64); nil != err {
+						variableString = variableString[:variableLength-1]
+					}
+				}
+
+				intVariable, err := strconv.ParseInt(variableString, 10, 0)
+
+				if nil != err {
+					return err
+				}
+
+				if 0 == intVariable {
+					continue
+				}
+
+				if 0 < intVariable {
+					variable = SupportedClockSkewSigns[0] + variableString
+					variablesSchema.Variables[ClockSkewKey].([]interface{})[index] = variable
+					continue
+				}
+
 				return ClientError{fmt.Sprintf(
-						"%s is not in supported faketime variable sign. Valid are: %s",
+						"%s is not in supported faketime variable signs. Valid are: %s",
 						variable,
-						SupportedSigns,
+						SupportedClockSkewSigns,
 					),
 				}
 			}
 
-			integerVariable, _ := strconv.ParseInt(variable.(string), 10, 0)
+			_, err := strconv.ParseInt(variableString[1:variableLength-1], 10, 0)
 
-			if 0 == integerVariable {
-				continue
+			if nil != err {
+				return err
 			}
 		}
 	}
