@@ -253,12 +253,12 @@ func (variablesSchema *VariablesSchema) validateClockSkewVariable() (err error) 
 
 			if false == contains(SupportedClockSkewSigns, sign) {
 				if "" != variableString[:variableLength-1] {
-					if _, err := strconv.ParseInt(variableString,10,64); nil != err {
+					if intVariable, err := strconv.ParseInt(variableString,10,64); nil != err {
 						variableString = variableString[:variableLength-1]
 					}
 				}
 
-				intVariable, err := strconv.ParseInt(variableString, 10, 0)
+				intVariable, err := strconv.ParseInt(variableString, 10, 64)
 
 				if nil != err {
 					return err
