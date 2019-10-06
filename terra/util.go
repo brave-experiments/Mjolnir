@@ -57,7 +57,22 @@ func ConvertInterfaceToHex(variable interface{}) (hexInt string) {
 }
 
 func ReadOutputLogVar(keyToRead string) (err error, readKey string) {
-	file, err := os.Open(TempDirPathLocation + "/output.log")
+	tempDir, err := os.Open(TempDirPathLocation)
+
+	if nil != err {
+		return err, readKey
+	}
+
+	dirNames, err := tempDir.Readdir(0)
+
+	if len(dirNames) < 1 {
+		return ClientError{fmt.Sprintf("%s dir is empty", tempDir.Name())},
+			readKey
+	}
+
+	deployDir := dirNames[0]
+	deployDirNameLocator := TempDirPathLocation + "/" + deployDir.Name()
+	file, err := os.Open(deployDirNameLocator + "/output.log")
 
 	if nil != err {
 		return err, readKey

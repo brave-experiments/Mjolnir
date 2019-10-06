@@ -67,21 +67,30 @@ func TestConvertInterfaceToHex(t *testing.T) {
 
 func TestReadOutputLogVarFailure(t *testing.T) {
 	TempDirPathLocation = ".apolloTest"
-	fullFilePath := TempDirPathLocation + "/output.log"
+	deployName := "dummyDeploy"
+	deployNameLocator := TempDirPathLocation + "/" + deployName
+	fullFilePath := deployNameLocator + "/output.log"
 	invalidKey := "hello"
+
 	// It fails when no output dir
 	err, foundKey := ReadOutputLogVar(invalidKey)
 	assert.Error(t, err)
-	assert.Equal(t, fmt.Sprintf("open %s: no such file or directory", fullFilePath), err.Error())
+	assert.Equal(t, fmt.Sprintf("open %s: no such file or directory", TempDirPathLocation), err.Error())
 	assert.Equal(t, len(foundKey), 0)
 
-	// It fails when no output file
+	// It fails when no directory present
 	err = os.MkdirAll(TempDirPathLocation, 0777)
 	assert.Nil(t, err)
 	err, foundKey = ReadOutputLogVar(invalidKey)
 	assert.Error(t, err)
-	assert.Equal(t, fmt.Sprintf("open %s: no such file or directory", fullFilePath), err.Error())
+	assert.Equal(t, fmt.Sprintf("%s dir is empty", TempDirPathLocation), err.Error())
 	assert.Equal(t, len(foundKey), 0)
+
+	// It fails when there is no output file
+	err = os.MkdirAll(deployNameLocator, 0777)
+	assert.Nil(t, err)
+	err, foundKey = ReadOutputLogVar(invalidKey)
+	assert.Equal(t, fmt.Sprintf("open %s: no such file or directory", fullFilePath), err.Error())
 
 	// It fails when no key within file
 	file := File{
@@ -108,8 +117,10 @@ func TestReadOutputLogVarFailure(t *testing.T) {
 
 func TestReadOutputLogVar(t *testing.T) {
 	TempDirPathLocation = ".apolloTest"
-	fullFilePath := TempDirPathLocation + "/output.log"
-	err := os.MkdirAll(TempDirPathLocation, 0777)
+	deployName := "dummyDeploy"
+	deployNameDirLocator := TempDirPathLocation + "/" + deployName
+	fullFilePath := deployNameDirLocator + "/output.log"
+	err := os.MkdirAll(deployNameDirLocator, 0777)
 	assert.Nil(t, err)
 	file := File{
 		Location: fullFilePath,

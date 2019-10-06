@@ -62,10 +62,11 @@ func TestSshCmd_RunInvalid(t *testing.T) {
 func TestSshCmd_Run(t *testing.T) {
 	terra.TempDirPathLocation = ".dummyApollo"
 	dummyFileName := "output.log"
-	dummyDeployName := terra.TempDirPathLocation + "/" + "dummy"
+	deployName := "dummyDeployName"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName + "/" + "dummy"
 	err := os.MkdirAll(dummyDeployName, 0777)
 	assert.Nil(t, err)
-	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringFromMultipleValueTypes)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
 
 	command, err := SshCmdFactory()
 	assert.Nil(t, err)
