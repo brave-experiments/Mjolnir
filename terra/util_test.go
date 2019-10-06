@@ -1,7 +1,9 @@
 package terra
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
@@ -61,4 +63,40 @@ func TestConvertInterfaceToHex(t *testing.T) {
 	dummyValue := map[string]int{"key": intValue}
 	hex = ConvertInterfaceToHex(dummyValue)
 	assert.Equal(t, "0x0", hex)
+}
+
+func TestReadOutputLogVarFailure(t *testing.T) {
+	TempDirPathLocation = ".apolloTest"
+	fullFilePath := TempDirPathLocation + "/output.log"
+	invalidKey := "hello"
+	// It fails when no output dir
+	err, foundKey := ReadOutputLogVar(invalidKey)
+	assert.Error(t, err)
+	assert.Equal(t, fmt.Sprintf("open %s: no such file or directory", fullFilePath), err.Error())
+	assert.Equal(t, len(foundKey), 0)
+
+	// It fails when no output file
+	err = os.MkdirAll(TempDirPathLocation, 0777)
+	assert.Nil(t, err)
+	err, foundKey = ReadOutputLogVar(invalidKey)
+	assert.Error(t, err)
+	assert.Equal(t, fmt.Sprintf("open %s: no such file or directory", fullFilePath), err.Error())
+	assert.Equal(t, len(foundKey), 0)
+
+	// It fails when no key within file
+	file := File{
+		Location: fullFilePath,
+		Body:     OutputAsAStringFromMultipleValueTypes,
+	}
+	err = file.WriteFile()
+	assert.Nil(t, err)
+	err, foundKey = ReadOutputLogVar(invalidKey)
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{fmt.Sprintf("%s not found in outout", invalidKey)}, err)
+	assert.Equal(t, len(foundKey), 0)
+
+	err = os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
+
+	TempDirPathLocation = TempDirPath
 }

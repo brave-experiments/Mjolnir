@@ -59,6 +59,27 @@ func TestSshCmd_RunInvalid(t *testing.T) {
 	assert.Equal(t, ExitCodeNoTempDirectory, exitCode)
 }
 
+func TestSshCmd_Run(t *testing.T) {
+	terra.TempDirPathLocation = ".dummyApollo"
+	dummyFileName := "output.log"
+	dummyDeployName := terra.TempDirPathLocation + "/" + "dummy"
+	err := os.MkdirAll(dummyDeployName, 0777)
+	assert.Nil(t, err)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringFromMultipleValueTypes)
+
+	command, err := SshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, SshCmd{}, command)
+
+	runArgs := []string{""}
+	exitCode := command.Run(runArgs)
+	assert.Equal(t, ExitCodeSuccess, exitCode)
+
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
+
 func TestApplyCmd_RunInvalid(t *testing.T) {
 	command, err := ApplyCmdFactory()
 	expectedEnvKey := ExpectedEnvKey

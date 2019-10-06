@@ -1,9 +1,13 @@
 package terra
 
 import (
+	"bufio"
+	"fmt"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
+	"os"
 	"strconv"
+	"strings"
 )
 
 func ConvertIntToHex(value int64) (hexInt string) {
@@ -50,4 +54,30 @@ func ConvertInterfaceToHex(variable interface{}) (hexInt string) {
 	default:
 		return ConvertIntToHex(int64(0))
 	}
+}
+
+func ReadOutputLogVar(keyToRead string) (err error, readKey string) {
+	file, err := os.Open(TempDirPathLocation + "/output.log")
+
+	if nil != err {
+		return err, readKey
+	}
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		text := scanner.Text()
+
+		if strings.Contains(text, keyToRead) {
+			readKey = text
+		}
+	}
+
+	if len(readKey) > 0 {
+		return err, readKey
+	}
+
+	err = ClientError{fmt.Sprintf("%s not found in outout", keyToRead)}
+
+	return err, readKey
 }
