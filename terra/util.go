@@ -57,21 +57,12 @@ func ConvertInterfaceToHex(variable interface{}) (hexInt string) {
 }
 
 func ReadOutputLogVar(keyToRead string) (err error, readKey string) {
-	tempDir, err := os.Open(TempDirPathLocation)
+	err, deployDirNameLocator := fetchDeployDir()
 
 	if nil != err {
 		return err, readKey
 	}
 
-	dirNames, err := tempDir.Readdir(0)
-
-	if len(dirNames) < 1 {
-		return ClientError{fmt.Sprintf("%s dir is empty", tempDir.Name())},
-			readKey
-	}
-
-	deployDir := dirNames[0]
-	deployDirNameLocator := TempDirPathLocation + "/" + deployDir.Name()
 	file, err := os.Open(deployDirNameLocator + "/output.log")
 
 	if nil != err {
@@ -101,4 +92,36 @@ func ReadOutputLogVar(keyToRead string) (err error, readKey string) {
 	}
 
 	return err, readKey
+}
+
+func ReadSshLocation() (err error, sshKey string) {
+	err, deployDirNameLocator := fetchDeployDir()
+
+	if nil != err {
+		return err, sshKey
+	}
+
+	fileLocator := deployDirNameLocator + "/id_rsa"
+
+	return nil, fileLocator
+}
+
+func fetchDeployDir() (err error, deployNameLocator string) {
+	tempDir, err := os.Open(TempDirPathLocation)
+
+	if nil != err {
+		return err, deployNameLocator
+	}
+
+	dirNames, err := tempDir.Readdir(0)
+
+	if len(dirNames) < 1 {
+		return ClientError{fmt.Sprintf("%s dir is empty", tempDir.Name())},
+			deployNameLocator
+	}
+
+	deployDir := dirNames[0]
+	deployNameLocator = TempDirPathLocation + "/" + deployDir.Name()
+
+	return err, deployNameLocator
 }

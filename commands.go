@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/brave-experiments/apollo-devops/connect"
 	"github.com/brave-experiments/apollo-devops/terra"
 	"github.com/mitchellh/cli"
 	"io/ioutil"
@@ -18,6 +19,9 @@ const (
 	ExitCodeEnvUnbindingError = 6
 	ExitCodeNoTempDirectory   = 7
 	ExitCodeNoBastionIp       = 8
+	ExitCodeSshKeyNotPresent  = 9
+	ExitCodeSshError          = 10
+	ExitCodeSshDialError      = 11
 )
 
 var (
@@ -84,7 +88,26 @@ func (sshCmd SshCmd) Run(args []string) (exitCode int) {
 		return ExitCodeNoBastionIp
 	}
 
-	fmt.Println(bastionIp)
+	sshClient := connect.SshClient{}
+	adminUser := "admin"
+
+	err, certLocation := terra.ReadSshLocation()
+
+	if nil != err {
+		return ExitCodeSshKeyNotPresent
+	}
+
+	err = sshClient.New(adminUser, bastionIp, certLocation)
+
+	if nil != err {
+		return ExitCodeSshError
+	}
+
+	_, err = sshClient.Dial()
+
+	if nil != err {
+		return ExitCodeSshDialError
+	}
 
 	return ExitCodeSuccess
 }

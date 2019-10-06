@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/brave-experiments/apollo-devops/connect"
 	"github.com/brave-experiments/apollo-devops/terra"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/assert"
@@ -63,7 +64,7 @@ func TestSshCmd_Run(t *testing.T) {
 	terra.TempDirPathLocation = ".dummyApollo"
 	dummyFileName := "output.log"
 	deployName := "dummyDeployName"
-	dummyDeployName := terra.TempDirPathLocation + "/" + deployName + "/" + "dummy"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
 	err := os.MkdirAll(dummyDeployName, 0777)
 	assert.Nil(t, err)
 	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
@@ -72,6 +73,8 @@ func TestSshCmd_Run(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, SshCmd{}, command)
 
+	sshKeyFileLocator := dummyDeployName + "/id_rsa"
+	PrepareDummyFile(t, sshKeyFileLocator, connect.ProperPrivateKey)
 	runArgs := []string{""}
 	exitCode := command.Run(runArgs)
 	assert.Equal(t, ExitCodeSuccess, exitCode)
