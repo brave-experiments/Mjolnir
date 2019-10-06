@@ -40,17 +40,17 @@ command line:
 - [x] Client container logs available though AWS CloudWatch
 - [x] Client container logs available though Logging tool
 - [x] Monitor Ethereum specific metrics:
-    - [] Should include logs from the client. These should trigger and alert for WARN or ERROR log levels.
-    - [] The following RPC endpoints should be polled: 
-        - [] Block Number
-        - [] Number of Connected Peers 
-        - [] Transactions Time
-        - [] Transaction Pool
-        - [] Block Processing
-        - [] Transaction Propagation 
-        - [] Data Rate
-- [] Clock Skew
-- [] Chaos Testing (Dropped packets , network latency, etc)
+    - [x] Should include logs from the client. These should trigger and alert for WARN or ERROR log levels.
+    - [x] The following RPC endpoints should be polled: 
+        - [x] Block Number
+        - [x] Number of Connected Peers 
+        - [x] Transactions Time
+        - [x] Transaction Pool
+        - [x] Block Processing
+        - [x] Transaction Propagation 
+        - [x] Data Rate
+- [x] Clock Skew
+- [x] Chaos Testing (Dropped packets , network latency, etc)
 
 
 ## Knowledge to gather:
@@ -67,8 +67,8 @@ I can:
 a quorum client cluster 
 with side services: 
 - [x] monitoring
-- [] logs
-- [] chaos testing
+- [x] logs
+- [x] chaos testing
 
 2. Sprint ​Blockchain Monitoring​ 120h of work 2 weeks @Jerzy @Grzegorz @Błażej ​( from 02.09 to 25.09 )
 
@@ -76,7 +76,7 @@ with side services:
 
 ### To extend CLI by adding new clients: 
   - Pantheon [x] 
-  - POA Network []
+  - POA Network [x]
 
 ## Definition of done:
 - As authenticated user of infrastructure
@@ -88,7 +88,7 @@ so I can extend my testing to next clients.
 
 - Support the following clients:
     - Pantheon (​ https://github.com/PegaSysEng/pantheon​ )  [x]
-    -  POA Network []
+    -  POA Network [x]
 (​ https://github.com/poanetwork/parity-ethereum/tree/hbbft​ )
 -  For each client that is supported, the following consensus engines should be configurable:
     - Pantheon: IBFT 2.0 [x]
