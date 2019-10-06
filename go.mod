@@ -5,8 +5,6 @@ go 1.12
 require (
 	github.com/dustinkirkland/golang-petname v0.0.0-20190613200456-11339a705ed2 // indirect
 	github.com/ethereum/go-ethereum v1.9.2
-	github.com/hashicorp/hcl2 v0.0.0-20180308163058-5f8ed954abd8
-	github.com/hashicorp/hil v0.0.0-20170627220502-fa9f258a9250
 	github.com/hashicorp/terraform v0.11.13
 	github.com/johandry/terranova v0.0.0-20190422213246-704ed6ce88e7
 	github.com/kr/pretty v0.1.0 // indirect

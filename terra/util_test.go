@@ -95,10 +95,10 @@ func TestReadOutputLogVarFailure(t *testing.T) {
 	assert.Equal(t, ClientError{fmt.Sprintf("%s not found in output", invalidKey)}, err)
 	assert.Equal(t, len(foundKey), 0)
 
-	// It fails when no value is present within found key
-	//err, foundKey = ReadOutputLogVar("network_name")
-	//assert.Error(t, err)
-	//assert.Equal(t, ClientError{"Value not present"}, err)
+	//It fails when no value is present within found key
+	err, foundKey = ReadOutputLogVar("bastion_host_ip")
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{"Value not present"}, err)
 
 	err = os.RemoveAll(TempDirPathLocation)
 	assert.Nil(t, err)

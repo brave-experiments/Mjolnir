@@ -75,11 +75,9 @@ func ReadOutputLogVar(keyToRead string) (err error, readKey string) {
 		}
 
 		if len(text) < valueWithoutSpacesLocator {
-			err = ClientError{"Value not present"}
-			break
+			return ClientError{"Value not present"}, readKey
 		}
 
-		fmt.Println("yup", text)
 		readKey = text[valueWithoutSpacesLocator:]
 	}
 
