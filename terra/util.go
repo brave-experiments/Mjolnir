@@ -67,17 +67,25 @@ func ReadOutputLogVar(keyToRead string) (err error, readKey string) {
 
 	for scanner.Scan() {
 		text := scanner.Text()
+		// whole key plus 3 signs (two spaces and one equal sign)
+		valueWithoutSpacesLocator := len(keyToRead) + 3
 
-		if strings.Contains(text, keyToRead) {
-			readKey = text
+		if false == strings.Contains(text, keyToRead) {
+			continue
 		}
+
+		if len(text) < valueWithoutSpacesLocator {
+			err = ClientError{"Value not present"}
+			break
+		}
+
+		fmt.Println("yup", text)
+		readKey = text[valueWithoutSpacesLocator:]
 	}
 
-	if len(readKey) > 0 {
-		return err, readKey
+	if len(readKey) < 1 {
+		err = ClientError{fmt.Sprintf("%s not found in output", keyToRead)}
 	}
-
-	err = ClientError{fmt.Sprintf("%s not found in outout", keyToRead)}
 
 	return err, readKey
 }

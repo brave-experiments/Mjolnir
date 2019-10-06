@@ -86,17 +86,39 @@ func TestReadOutputLogVarFailure(t *testing.T) {
 	// It fails when no key within file
 	file := File{
 		Location: fullFilePath,
-		Body:     OutputAsAStringFromMultipleValueTypes,
+		Body:     OutputAsAStringWithInvalidValues,
 	}
 	err = file.WriteFile()
 	assert.Nil(t, err)
 	err, foundKey = ReadOutputLogVar(invalidKey)
 	assert.Error(t, err)
-	assert.Equal(t, ClientError{fmt.Sprintf("%s not found in outout", invalidKey)}, err)
+	assert.Equal(t, ClientError{fmt.Sprintf("%s not found in output", invalidKey)}, err)
 	assert.Equal(t, len(foundKey), 0)
+
+	// It fails when no value is present within found key
+	//err, foundKey = ReadOutputLogVar("network_name")
+	//assert.Error(t, err)
+	//assert.Equal(t, ClientError{"Value not present"}, err)
 
 	err = os.RemoveAll(TempDirPathLocation)
 	assert.Nil(t, err)
 
 	TempDirPathLocation = TempDirPath
+}
+
+func TestReadOutputLogVar(t *testing.T) {
+	TempDirPathLocation = ".apolloTest"
+	fullFilePath := TempDirPathLocation + "/output.log"
+	err := os.MkdirAll(TempDirPathLocation, 0777)
+	assert.Nil(t, err)
+	file := File{
+		Location: fullFilePath,
+		Body:     OutputAsAStringWithoutHeaderFixture,
+	}
+	err = file.WriteFile()
+	assert.Nil(t, err)
+	keyToSeek := "bastion_host_ip"
+	err, foundKey := ReadOutputLogVar(keyToSeek)
+	assert.Nil(t, err)
+	assert.Equal(t, "3.15.144.150", foundKey)
 }
