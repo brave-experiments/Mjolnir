@@ -85,6 +85,7 @@ func (sshCmd SshCmd) Run(args []string) (exitCode int) {
 	err, bastionIp := terra.ReadOutputLogVar(desiredBastionKey)
 
 	if nil != err {
+		fmt.Println(err)
 		return ExitCodeNoBastionIp
 	}
 
@@ -94,20 +95,27 @@ func (sshCmd SshCmd) Run(args []string) (exitCode int) {
 	err, certLocation := terra.ReadSshLocation()
 
 	if nil != err {
+		fmt.Println(err)
 		return ExitCodeSshKeyNotPresent
 	}
 
 	err = sshClient.New(adminUser, bastionIp, certLocation)
 
 	if nil != err {
+		fmt.Println(err)
 		return ExitCodeSshError
 	}
 
-	_, err = sshClient.Dial()
+	connection, err := sshClient.Dial()
 
 	if nil != err {
+		fmt.Println(err)
 		return ExitCodeSshDialError
 	}
+
+	defer func() {
+		_ = connection.Close()
+	}()
 
 	return ExitCodeSuccess
 }
