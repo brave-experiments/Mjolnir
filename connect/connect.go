@@ -92,11 +92,19 @@ func (sshClient *SshClient) attachPipes() (client *ssh.Client, err error) {
 		return client, err
 	}
 
-	err = attachStdIn(*session)
+	defer func() {
+		err = session.Close()
+
+		if nil != err {
+			fmt.Println(err)
+		}
+	}()
 
 	if err != nil {
 		return client, err
 	}
+
+	session.Stdin = os.Stdin
 
 	err = attachStdOut(*session)
 
@@ -106,26 +114,34 @@ func (sshClient *SshClient) attachPipes() (client *ssh.Client, err error) {
 
 	err = attachStdErr(*session)
 
+	modes := ssh.TerminalModes{
+		ssh.ECHO:          0,
+		ssh.TTY_OP_ISPEED: 14400,
+		ssh.TTY_OP_OSPEED: 14400,
+	}
+
+	err = session.RequestPty("xterm", 80, 40, modes)
+
+	if err != nil {
+		return client, err
+	}
+
+	err = session.Shell()
+
+	if err != nil {
+		return client, err
+	}
+
+	err = session.Wait()
+
 	return client, err
 }
 
-func attachStdIn(session ssh.Session) (err error) {
-	stdin, err := session.StdinPipe()
-
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		_, err = io.Copy(stdin, os.Stdin)
-
-		if nil != err {
-			panic(err)
-		}
-	}()
-
-	return nil
-}
+//func attachStdIn(session ssh.Session) (err error) {
+//	session.Stdin = os.Stdin
+//
+//	return nil
+//}
 
 func attachStdOut(session ssh.Session) (err error) {
 	stdOut, err := session.StdoutPipe()

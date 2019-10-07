@@ -3,6 +3,7 @@ module github.com/brave-experiments/apollo-devops
 go 1.12
 
 require (
+	github.com/aws/aws-sdk-go v1.14.31
 	github.com/dustinkirkland/golang-petname v0.0.0-20190613200456-11339a705ed2 // indirect
 	github.com/ethereum/go-ethereum v1.9.2
 	github.com/hashicorp/terraform v0.11.13
