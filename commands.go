@@ -106,16 +106,12 @@ func (sshCmd SshCmd) Run(args []string) (exitCode int) {
 		return ExitCodeSshError
 	}
 
-	connection, err := sshClient.Dial()
+	err = sshClient.Dial()
 
 	if nil != err {
 		fmt.Println(err)
 		return ExitCodeSshDialError
 	}
-
-	defer func() {
-		_ = connection.Close()
-	}()
 
 	return ExitCodeSuccess
 }
