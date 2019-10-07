@@ -3,7 +3,6 @@ package connect
 import (
 	"fmt"
 	"golang.org/x/crypto/ssh"
-	"io"
 	"io/ioutil"
 	"os"
 )
@@ -105,14 +104,8 @@ func (sshClient *SshClient) attachPipes() (client *ssh.Client, err error) {
 	}
 
 	session.Stdin = os.Stdin
-
-	err = attachStdOut(*session)
-
-	if err != nil {
-		return client, err
-	}
-
-	err = attachStdErr(*session)
+	session.Stderr = os.Stderr
+	session.Stdout = os.Stdout
 
 	modes := ssh.TerminalModes{
 		ssh.ECHO:          0,
@@ -135,46 +128,4 @@ func (sshClient *SshClient) attachPipes() (client *ssh.Client, err error) {
 	err = session.Wait()
 
 	return client, err
-}
-
-//func attachStdIn(session ssh.Session) (err error) {
-//	session.Stdin = os.Stdin
-//
-//	return nil
-//}
-
-func attachStdOut(session ssh.Session) (err error) {
-	stdOut, err := session.StdoutPipe()
-
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		_, err = io.Copy(os.Stdin, stdOut)
-
-		if nil != err {
-			panic(err)
-		}
-	}()
-
-	return nil
-}
-
-func attachStdErr(session ssh.Session) (err error) {
-	stdErr, err := session.StderrPipe()
-
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		_, err = io.Copy(os.Stderr, stdErr)
-
-		if nil != err {
-			panic(err)
-		}
-	}()
-
-	return nil
 }
