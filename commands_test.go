@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/brave-experiments/apollo-devops/connect"
 	"github.com/brave-experiments/apollo-devops/terra"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/assert"
@@ -53,14 +52,6 @@ func TestDestroyCmdFactory(t *testing.T) {
 }
 
 func TestSshCmd_RunInvalid(t *testing.T) {
-	command, err := SshCmdFactory()
-	assert.Nil(t, err)
-	assert.IsType(t, SshCmd{}, command)
-	exitCode := command.Run([]string{})
-	assert.Equal(t, ExitCodeNoTempDirectory, exitCode)
-}
-
-func TestSshCmd_Run(t *testing.T) {
 	terra.TempDirPathLocation = ".dummyApollo"
 	dummyFileName := "output.log"
 	deployName := "dummyDeployName"
@@ -73,11 +64,15 @@ func TestSshCmd_Run(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, SshCmd{}, command)
 
+	// Should throw an sshDialError when no key present
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
 	sshKeyFileLocator := dummyDeployName + "/id_rsa"
-	PrepareDummyFile(t, sshKeyFileLocator, connect.ProperPrivateKey)
+	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
 	runArgs := []string{""}
-	exitCode := command.Run(runArgs)
-	assert.Equal(t, ExitCodeSuccess, exitCode)
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
 
 	err = os.RemoveAll(terra.TempDirPathLocation)
 	assert.Nil(t, err)
