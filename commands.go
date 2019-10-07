@@ -99,7 +99,7 @@ func (sshCmd SshCmd) Run(args []string) (exitCode int) {
 		return ExitCodeSshKeyNotPresent
 	}
 
-	err = sshClient.New(adminUser, bastionIp, certLocation)
+	sshClient.New(adminUser, bastionIp, certLocation)
 
 	if nil != err {
 		fmt.Println(err)
