@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"runtime"
+	"strconv"
 )
 
 const (
@@ -29,7 +30,8 @@ var (
 	RegisteredCommands = map[string]cli.CommandFactory{
 		"apply":   ApplyCmdFactory,
 		"destroy": DestroyCmdFactory,
-		"ssh":     SshCmdFactory,
+		"bastion": SshCmdFactory,
+		"node":    NodeSshCmdFactory,
 	}
 )
 
@@ -44,6 +46,14 @@ type DestroyCmd struct {
 
 type SshCmd struct {
 	cli.Command
+}
+
+type NodeSshCmd struct {
+	SshCmd
+}
+
+func NodeSshCmdFactory() (command cli.Command, err error) {
+	return NodeSshCmd{}, nil
 }
 
 func SshCmdFactory() (command cli.Command, err error) {
@@ -71,6 +81,35 @@ func DestroyCmdFactory() (command cli.Command, err error) {
 	}
 
 	return command, err
+}
+
+func (nodeSshCmd NodeSshCmd) Run(args []string) (exitCode int) {
+	desiredArgsLen := 1
+
+	if len(args) < desiredArgsLen {
+		fmt.Println("Please provide node number to attach to")
+		return ExitCodeInvalidNumOfArgs
+	}
+
+	nodeNumber, err := strconv.ParseInt(args[0], 10, 64)
+
+	if err != nil {
+		fmt.Println(err)
+		return ExitCodeInvalidArgument
+	}
+
+	bastionSshScriptLocator := fmt.Sprintf("/usr/local/bin/NodeSsh%v", nodeNumber)
+	additionalSshCmdArgs := []string{bastionSshScriptLocator}
+	sshCmd, err := SshCmdFactory()
+
+	if nil != err {
+		fmt.Println(err)
+		return ExitCodeInvalidSetup
+	}
+
+	exitCode = sshCmd.Run(additionalSshCmdArgs)
+
+	return exitCode
 }
 
 func (sshCmd SshCmd) Run(args []string) (exitCode int) {
@@ -111,7 +150,7 @@ func (sshCmd SshCmd) Run(args []string) (exitCode int) {
 		return ExitCodeSshError
 	}
 
-	err = sshClient.Dial()
+	err = sshClient.Dial(args)
 
 	if nil != err {
 		fmt.Println(err)
@@ -253,6 +292,14 @@ func (destroyCmd DestroyCmd) Help() (helpMessage string) {
 	return helpMessage
 }
 
+func (nodeSshCmd NodeSshCmd) Help() (helpMessage string) {
+	helpMessage = "\n This command let you attach via ssh to certain node\n"
+	helpMessage = helpMessage + "You must provide node number as argument. If number is out of range, ssh will fail\n"
+	helpMessage = helpMessage + "Example: apollo node 1"
+
+	return helpMessage
+}
+
 func (applyCmd ApplyCmd) Synopsis() (synopsis string) {
 	synopsis = "apply [recipe] [yamlSchemaPath]"
 	return synopsis
@@ -264,7 +311,12 @@ func (destroyCmd DestroyCmd) Synopsis() (synopsis string) {
 }
 
 func (sshCmd SshCmd) Synopsis() (synopsis string) {
-	synopsis = "ssh"
+	synopsis = "bastion [arguments]"
+	return synopsis
+}
+
+func (nodeSshCmd NodeSshCmd) Synopsis() (synopsis string) {
+	synopsis = "node [number]"
 	return synopsis
 }
 

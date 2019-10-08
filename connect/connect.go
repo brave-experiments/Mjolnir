@@ -27,10 +27,11 @@ func (sshClient *SshClient) New(user string, hostname string, keyPath string) {
 	sshClient.keyPath = keyPath
 }
 
-func (sshClient *SshClient) Dial() (err error) {
+func (sshClient *SshClient) Dial(args []string) (err error) {
 	userAndHost := sshClient.user + "@" + sshClient.hostname
 
-	cmdArgs := []string{userAndHost, "-i", sshClient.keyPath}
+	cmdArgs := []string{userAndHost, "-i", sshClient.keyPath, "-t"}
+	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Command("ssh", cmdArgs...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout

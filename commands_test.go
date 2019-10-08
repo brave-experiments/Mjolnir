@@ -30,6 +30,13 @@ variables:
 	ExpectedEnvKey = "APP_DEFAULT_KEY"
 )
 
+func TestNodeSshCmdFactory(t *testing.T) {
+	command, err := NodeSshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, NodeSshCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
+}
+
 func TestSshCmdFactory(t *testing.T) {
 	command, err := SshCmdFactory()
 	assert.Nil(t, err)
