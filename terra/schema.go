@@ -89,8 +89,9 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 
 	variablesSchema.mapGenesisVariables()
 	variablesSchema.mapNetworkName()
+	err = variablesSchema.ValidateSchemaVariables()
 
-	return
+	return err
 }
 
 func (variablesSchema *VariablesSchema) ValidateSchemaVariables() (err error) {
