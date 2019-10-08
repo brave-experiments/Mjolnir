@@ -30,6 +30,13 @@ variables:
 	ExpectedEnvKey = "APP_DEFAULT_KEY"
 )
 
+func TestSshCmdFactory(t *testing.T) {
+	command, err := SshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, SshCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
+}
+
 func TestApplyCmdFactory(t *testing.T) {
 	command, err := ApplyCmdFactory()
 	assert.Nil(t, err)
@@ -42,6 +49,34 @@ func TestDestroyCmdFactory(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, DestroyCmd{}, command)
 	testThatCommandHasWholeInterface(t, command)
+}
+
+func TestSshCmd_RunInvalid(t *testing.T) {
+	terra.TempDirPathLocation = ".dummyApollo"
+	dummyFileName := "output.log"
+	deployName := "dummyDeployName"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
+	err := os.MkdirAll(dummyDeployName, 0777)
+	assert.Nil(t, err)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
+
+	command, err := SshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, SshCmd{}, command)
+
+	// Should throw an sshDialError when no key present
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
+	sshKeyFileLocator := dummyDeployName + "/id_rsa"
+	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
+	runArgs := []string{""}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
 }
 
 func TestApplyCmd_RunInvalid(t *testing.T) {
