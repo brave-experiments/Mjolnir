@@ -161,6 +161,47 @@ func TestVariablesSchema_Read_WithHexUtil(t *testing.T) {
 	RemoveDummyFile(t, dummyFilePath)
 }
 
+func TestVariablesSchema_ValidateSchemaVariables(t *testing.T) {
+	variablesSchema := VariablesSchema{}
+	dummyFilePath := "dummy.yml"
+	PrepareDummyFile(t, dummyFilePath, YamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err := variablesSchema.Read()
+	assert.Nil(t, err)
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Nil(t, err)
+
+	RemoveDummyFile(t, dummyFilePath)
+}
+
+func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
+	variablesSchema := VariablesSchema{}
+	dummyFilePath := "dummy.yml"
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectSignYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err := variablesSchema.Read()
+	assert.Nil(t, err)
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectUnitYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	assert.Nil(t, err)
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectValueYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	assert.Nil(t, err)
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+
+	RemoveDummyFile(t, dummyFilePath)
+}
+
 func configureYaml(version float64, resourceType string) (fileBody string) {
 	return fmt.Sprintf(
 		YamlFixtureConfigurable,
