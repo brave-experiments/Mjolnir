@@ -184,6 +184,7 @@ func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
 	assert.Nil(t, err)
 	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "@2s is not in supported faketime variable signs. Valid are: [+ -]"}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectUnitYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
@@ -191,6 +192,7 @@ func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
 	assert.Nil(t, err)
 	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "+2x is not in supported faketime variable units. Valid are: [s m h d y]"}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectValueYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
@@ -198,6 +200,7 @@ func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
 	assert.Nil(t, err)
 	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "Invalid value, should be integer between sign and faketime unit"}, err)
 
 	RemoveDummyFile(t, dummyFilePath)
 }
