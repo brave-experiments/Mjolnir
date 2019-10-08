@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/brave-experiments/apollo-devops/terra"
 	"github.com/mitchellh/cli"
 	"log"
@@ -29,6 +30,10 @@ func main() {
 
 	if nil != err {
 		log.Println(err)
+	}
+
+	if exitStatus > ExitCodeSuccess {
+		fmt.Printf("\nError occured: %v\n", exitStatus)
 	}
 
 	os.Exit(exitStatus)

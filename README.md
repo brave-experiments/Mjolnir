@@ -1,3 +1,6 @@
+#WARNING
+Some key features may not be compatible in Windows environment
+
 ## Getting started
 
 ### Development mode
