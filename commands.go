@@ -7,6 +7,7 @@ import (
 	"github.com/mitchellh/cli"
 	"io/ioutil"
 	"os"
+	"runtime"
 )
 
 const (
@@ -73,6 +74,10 @@ func DestroyCmdFactory() (command cli.Command, err error) {
 }
 
 func (sshCmd SshCmd) Run(args []string) (exitCode int) {
+	if runtime.GOOS == "windows" {
+		panic("Cannot run ssh command on Windows")
+	}
+
 	desiredBastionKey := "bastion_host_ip"
 	directoryLocator := terra.TempDirPathLocation
 	directoriesList, err := ioutil.ReadDir(directoryLocator)
