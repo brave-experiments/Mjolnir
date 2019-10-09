@@ -4279,12 +4279,41 @@ variables:
 	YamlV03Fixture = `version: 0.3
 resourceType: variables
 variables: 
+  region: "dummy-region2"
+  network_name: "dum-net"
+  number_of_nodes: '5'
+  quorum_docker_image_tag: '2.2.5'
   faketime: ["+2d", "-30h", "+120", "-120", "120", "44", "-44", "+44", "+0", "-0", "+0s", "-0h"]`
 
 	IncorrectSignYamlV03Fixture = `version: 0.3
 resourceType: variables
 variables: 
   faketime: ["@2s"]`
+
+	IncorrectNodesNumberYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  number_of_nodes: 'Abc'`
+
+	IncorrectQuorumDockerImageTagYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  quorum_docker_image_tag: '2.X.5'`
+
+	IncorrectNetworkNameStringYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  network_name: "d$#sa!"`
+
+	IncorrectNetworkNameLengthYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  network_name: 'dummy-network-dummy-network'`
+
+	IncorrectStringVariablesYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  region: 'dummy region 2'`
 
 	IncorrectUnitYamlV03Fixture = `version: 0.3
 resourceType: variables

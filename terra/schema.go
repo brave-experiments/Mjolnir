@@ -5,8 +5,11 @@ import (
 	"gopkg.in/yaml.v2"
 	"math/rand"
 	"path"
+	"regexp"
 	"strconv"
+	"strings"
 	"time"
+	"unicode"
 )
 
 var (
@@ -32,8 +35,12 @@ type variablesModel struct {
 
 const (
 	CurrentVersion = float64(0.3)
-	NetworkNameKey = "network_name"
-	ClockSkewKey   = "faketime"
+	MaxNetworkNameVarLength      = 20
+	NetworkNameKey               = "network_name"
+	ClockSkewKey                 = "faketime"
+	NodeNumbersKey               = "number_of_nodes"
+	QuorumDockerImageTagKey      = "quorum_docker_image_tag"
+	NetworkNameTerraRegExp		 = "[a-z]([-a-z0-9]*[a-z0-9])?"
 	SchemaV02      = `version: 0.2
 resourceType: variables
 variables:
@@ -41,7 +48,7 @@ variables:
   region:                     'us-east-2'     ## You can set region for deployment here
   default_region:             'us-east-2'     ## If key region is not present it is default region setter
   profile:                    'default'       ## It chooses profile from your ~/.aws config. If not present, profile is "default"
-  network_name:               'sidechain-example'
+  network_name:               'sidechain'
   number_of_nodes:            '5'
   quorum_docker_image_tag:    '2.2.5'
   aws_access_key_id:          'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
@@ -74,10 +81,11 @@ variables:
 )
 
 var (
-	SupportedFileTypes      = []string{".yml", ".yaml"}
-	SupportedResourceTypes  = []string{"variables"}
-	SupportedClockSkewSigns = []string{"+", "-"}
-	SupportedClockSkewUnits = []string{"s", "m", "h", "d", "y"}
+	SupportedFileTypes        = []string{".yml", ".yaml"}
+	SupportedResourceTypes    = []string{"variables"}
+	SupportedClockSkewSigns   = []string{"+", "-"}
+	SupportedClockSkewUnits   = []string{"s", "m", "h", "d", "y"}
+	StringVariablesToValidate = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
 )
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
@@ -97,7 +105,35 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 func (variablesSchema *VariablesSchema) ValidateSchemaVariables() (err error) {
 	err = variablesSchema.validateClockSkewVariable()
 
-	return err
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateNodeNumbersVariable()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateQuorumDockerImageTagVariable()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateNetworkNameVariable()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateNonSpacesStringVariable()
+
+	if nil != err {
+		return err
+	}
+
+	return nil
 }
 
 func (variablesSchema *VariablesSchema) mapNetworkName() {
@@ -301,6 +337,101 @@ func validateClockSkewVariable(variable interface{}) (err error) {
 
 	if nil != err {
 		return ClientError{"Invalid value, should be integer between sign and faketime unit"}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateNodeNumbersVariable() (err error) {
+	if nil == variablesSchema.Variables[NodeNumbersKey] {
+		return nil
+	}
+
+	nodeNumbersVariable := variablesSchema.Variables[NodeNumbersKey].(string)
+
+	if _, err := strconv.ParseInt(nodeNumbersVariable,10,64); nil != err {
+		return ClientError{fmt.Sprintf(
+				"%s is not in supported node of numbers variable value type.",
+				nodeNumbersVariable,
+			),
+		}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateQuorumDockerImageTagVariable() (err error) {
+	if nil == variablesSchema.Variables[QuorumDockerImageTagKey] {
+		return nil
+	}
+
+	nodeNumbersVariable := variablesSchema.Variables[QuorumDockerImageTagKey].(string)
+
+	versionIntegers := strings.Split(nodeNumbersVariable, ".")
+
+	for _, intVal := range versionIntegers {
+		if _, err := strconv.ParseInt(intVal,10,64); nil != err {
+			return ClientError{"Invalid value, should be integer docker image tag version between dots"}
+		}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateNetworkNameVariable() (err error) {
+	if nil == variablesSchema.Variables[NetworkNameKey] {
+		return nil
+	}
+
+	networkNameVariable := variablesSchema.Variables[NetworkNameKey].(string)
+
+	if MaxNetworkNameVarLength < len(networkNameVariable) {
+		return ClientError{
+			fmt.Sprintf(
+				"Network name is too long. Maximum allowed characters are %d",
+				MaxNetworkNameVarLength,
+			),
+		}
+	}
+
+	variableDeclarationRegex := regexp.MustCompile(NetworkNameTerraRegExp)
+	variableDeclarations := variableDeclarationRegex.FindString(networkNameVariable)
+
+	if networkNameVariable != variableDeclarations {
+		return ClientError{"Network name is invalid"}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateNonSpacesStringVariable() (err error) {
+	if nil == variablesSchema.Variables {
+		return nil
+	}
+
+	for key, variable := range variablesSchema.Variables {
+		if false != contains(StringVariablesToValidate, key) {
+			err = validateNonSpacesStringVariable(variable)
+
+			if nil != err {
+				return ClientError{
+					fmt.Sprintf(
+						"Variable with key: %s contains white space which is not allowed",
+						key,
+					),
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
+func validateNonSpacesStringVariable(variable interface{}) (err error) {
+	for _, v := range variable.(string) {
+		if unicode.IsSpace(v) {
+			return ClientError{}
+		}
 	}
 
 	return nil

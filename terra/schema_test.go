@@ -199,6 +199,41 @@ func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "Invalid value, should be integer between sign and faketime unit"}, err)
 
+	PrepareDummyFile(t, dummyFilePath, IncorrectNodesNumberYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "Abc is not in supported node of numbers variable value type."}, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectQuorumDockerImageTagYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "Invalid value, should be integer docker image tag version between dots"}, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectNetworkNameLengthYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "Network name is too long. Maximum allowed characters are 20"}, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectNetworkNameStringYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "Network name is invalid"}, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectStringVariablesYamlV03Fixture)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Error(t, err)
+	assert.Equal(t, ClientError{Message: "Variable with key: region contains white space which is not allowed"}, err)
+
 	RemoveDummyFile(t, dummyFilePath)
 }
 
