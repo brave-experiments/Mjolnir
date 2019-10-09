@@ -143,6 +143,7 @@ func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
 	err := recipe.BindYamlWithVars(yamlFilePath)
 
 	if nil != err {
+		fmt.Println(err)
 		return ExitCodeYamlBindingError
 	}
 
@@ -196,6 +197,7 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 	err := recipe.BindYamlWithVars(yamlFilePath)
 
 	if nil != err {
+		fmt.Println(err)
 		return ExitCodeYamlBindingError
 	}
 
