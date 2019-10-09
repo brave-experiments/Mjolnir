@@ -124,6 +124,10 @@ resource "local_file" "bootstrap" {
 
 set -e
 
+# Kill all running containers
+sudo docker stop $(docker ps -a -q)
+sudo docker rm $(docker ps -a -q)
+
 sudo curl -Ls "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 echo "Pull docker images ..."

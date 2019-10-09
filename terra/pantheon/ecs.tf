@@ -1,5 +1,5 @@
 locals {
-  service_name_fmt = "node-%0${min(length(format("%d", var.number_of_nodes)), length(format("%s", var.number_of_nodes))) + 1}d-%s"
+  service_name_fmt = "node-%0${min(length(format("%d", var.number_of_nodes)), length(format("%s", var.number_of_nodes))) + 1}d-%s-%s"
   ecs_cluster_name = "pantheon-network-${var.network_name}"
   pantheon_bucket    = "${var.region}-ecs-${lower(var.network_name)}-${random_id.bucket_postfix.hex}"
 }
@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "pantheon" {
 
 resource "aws_ecs_service" "pantheon" {
   count           = "${var.number_of_nodes}"
-  name            = "${format(local.service_name_fmt, count.index + 1, var.network_name)}"
+  name            = "${format(local.service_name_fmt, count.index + 1, var.network_name, aws_ecs_task_definition.pantheon.revision)}"
   cluster         = "${aws_ecs_cluster.pantheon.id}"
   task_definition = "${aws_ecs_task_definition.pantheon.arn}"
   launch_type     = "EC2"
