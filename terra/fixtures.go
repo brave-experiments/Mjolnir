@@ -4275,6 +4275,27 @@ variables:
 resourceType: variables
 variables: 
   network_name: variable`
+
+	YamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["+2d", "-30h", "+120", "-120", "120", "44", "-44", "+44", "+0", "-0", "+0s", "-0h"]`
+
+	IncorrectSignYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["@2s"]`
+
+	IncorrectUnitYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["+2x"]`
+
+	IncorrectValueYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["+1A24s"]`
+
 	YamlFixtureConfigurable = `version: %v
 resourceType: %s
 variables:
