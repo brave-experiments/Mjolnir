@@ -214,6 +214,14 @@ SS
       privacy-address: $(cat ${local.privacy_addresses_folder}/$f)
       url: http://$ip:${local.parity_rpc_port}
 SS
+
+  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
+  cat <<SS | sudo tee $sshScript
+#!/bin/bash
+
+ssh ec2-user@$ip -A -t
+SS
+  sudo chmod +x $sshScript
 done
 
 # Prometheus config ============================================

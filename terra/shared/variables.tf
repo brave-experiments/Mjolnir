@@ -148,16 +148,6 @@ variable "genesis_min_gas_limit" {
   default = "0x1388"
 }
 
-//TODO remove
-/*
-variable "quorum_bucket" {
-  description = "This is to store shared data during the bootstrap. 
-}
-
-variable "quorum_bucket_kms_key_arn" {
-  description = "To encrypt/decrypt objects stored in quorum_bucket. 
-}
-*/
 variable "access_bastion_cidr_blocks" {
   type        = "list"
   description = "CIDR blocks that will be added to allow SSH to Bastion Node"

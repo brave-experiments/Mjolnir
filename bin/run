@@ -23,6 +23,13 @@ function run_tests() {
     cp docker-compose.override.test.yml.dist docker-compose.override.yml
     docker-compose up -d --no-deps cli-test
     sleep 2
+    docker-compose exec -T cli-test make test
+}
+
+function run_tests_silent() {
+    cp docker-compose.override.test.yml.dist docker-compose.override.yml
+    docker-compose up -d --no-deps cli-test
+    sleep 2
     docker-compose exec -T cli-test make test-silent
 }
 
@@ -38,6 +45,12 @@ if [[ "$#" -eq  "0" ]]
 fi
 
 if [[ "$1" == "test" ]]
+    then
+        run_tests_silent
+        exit
+fi
+
+if [[ "$1" == "test-ci" ]]
     then
         run_tests
         exit

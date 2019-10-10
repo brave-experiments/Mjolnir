@@ -219,6 +219,14 @@ SS
       url: http://$ip:${local.quorum_rpc_port}
       third-party-url: http://$ip:${local.tessera_thirdparty_port}
 SS
+
+  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
+  cat <<SS | sudo tee $sshScript
+#!/bin/bash
+
+ssh ec2-user@$ip -A -t
+SS
+  sudo chmod +x $sshScript
 done
 
 # Prometheus config ============================================
