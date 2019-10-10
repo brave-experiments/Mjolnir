@@ -33,6 +33,7 @@ var (
 		"destroy": DestroyCmdFactory,
 		"bastion": SshCmdFactory,
 		"node":    NodeSshCmdFactory,
+		"geth":    GethCmdFactory,
 	}
 )
 
