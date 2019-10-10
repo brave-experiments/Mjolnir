@@ -7,65 +7,78 @@ import (
 	"testing"
 )
 
-func TestConvertIntToHex(t *testing.T) {
-	valueToTest := int64(2)
-	hex := ConvertIntToHex(valueToTest)
-	assert.Equal(t, "0x2", hex)
+func TestConvertInterfaceToHexFailure(t *testing.T) {
+	hex, err := ConvertInterfaceToHex("two")
+	assert.Equal(t, "0x0", hex)
+	assert.Error(t, err)
+
+	hex, err = ConvertInterfaceToHex("dummy")
+	assert.Equal(t, "0x0", hex)
+	assert.Error(t, err)
+
+	dummyValue := map[string]int{"key": 4}
+	hex, err = ConvertInterfaceToHex(dummyValue)
+	assert.Equal(t, "0x0", hex)
+	assert.Error(t, err)
+
+	hex, err = ConvertInterfaceToHex(string(4))
+	assert.Equal(t, "0x0", hex)
+	assert.Error(t, err)
 }
 
 func TestConvertInterfaceToHex(t *testing.T) {
 	intValue := 2
-	hex := ConvertInterfaceToHex(float64(intValue))
+	hex, err := ConvertInterfaceToHex(float64(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(float32(intValue))
+	hex, err = ConvertInterfaceToHex(float32(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(int64(intValue))
+	hex, err = ConvertInterfaceToHex(int64(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(int32(intValue))
+	hex, err = ConvertInterfaceToHex(int32(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(int16(intValue))
+	hex, err = ConvertInterfaceToHex(int16(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(int8(intValue))
+	hex, err = ConvertInterfaceToHex(int8(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(intValue)
+	hex, err = ConvertInterfaceToHex(intValue)
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(uint64(intValue))
+	hex, err = ConvertInterfaceToHex(uint64(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(uint32(intValue))
+	hex, err = ConvertInterfaceToHex(uint32(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(uint16(intValue))
+	hex, err = ConvertInterfaceToHex(uint16(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(uint8(intValue))
+	hex, err = ConvertInterfaceToHex(uint8(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(uint(intValue))
+	hex, err = ConvertInterfaceToHex(uint(intValue))
 	assert.Equal(t, "0x2", hex)
+	assert.Nil(t, err)
 
-	hex = ConvertInterfaceToHex(string(intValue))
-	assert.Equal(t, "0x0", hex)
-
-	hex = ConvertInterfaceToHex("0xE0000000")
+	hex, err = ConvertInterfaceToHex("0xE0000000")
 	assert.Equal(t, "0xE0000000", hex)
-
-	hex = ConvertInterfaceToHex("two")
-	assert.Equal(t, "0x0", hex)
-
-	hex = ConvertInterfaceToHex("dummy")
-	assert.Equal(t, "0x0", hex)
-
-	dummyValue := map[string]int{"key": intValue}
-	hex = ConvertInterfaceToHex(dummyValue)
-	assert.Equal(t, "0x0", hex)
+	assert.Nil(t, err)
 }
 
 func TestReadOutputLogVarFailure(t *testing.T) {

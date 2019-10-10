@@ -147,7 +147,7 @@ func TestVariablesSchema_Read_v02(t *testing.T) {
 func TestVariablesSchema_Read_WithHexUtil(t *testing.T) {
 	variablesSchema := VariablesSchema{}
 	dummyFilePath := "dummy.yml"
-	PrepareDummyFile(t, dummyFilePath, YamlFixtureWithHexUtils)
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureWithInvalidHexUtils)
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Nil(t, err)
@@ -159,6 +159,10 @@ func TestVariablesSchema_Read_WithHexUtil(t *testing.T) {
 	assert.Equal(t, "0x0", variablesSchema.Variables[VariablesKeyToHex[3]])
 
 	RemoveDummyFile(t, dummyFilePath)
+}
+
+func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
+
 }
 
 func TestVariablesSchema_ValidateSchemaVariables(t *testing.T) {

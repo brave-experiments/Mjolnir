@@ -10,51 +10,46 @@ import (
 	"strings"
 )
 
-func ConvertIntToHex(value int64) (hexInt string) {
-	bigInt := big.NewInt(value)
-	hexInt = hexutil.EncodeBig(bigInt)
-
-	return hexInt
-}
-
-func ConvertInterfaceToHex(variable interface{}) (hexInt string) {
+func ConvertInterfaceToHex(variable interface{}) (hexInt string, err error) {
 	switch valueInterface := variable.(type) {
 	case float64:
-		return ConvertIntToHex(int64(variable.(float64)))
+		return convertIntToHex(int64(variable.(float64))), err
 	case float32:
-		return ConvertIntToHex(int64(variable.(float32)))
+		return convertIntToHex(int64(variable.(float32))), err
 	case int64:
-		return ConvertIntToHex(variable.(int64))
+		return convertIntToHex(variable.(int64)), err
 	case int32:
-		return ConvertIntToHex(int64(variable.(int32)))
+		return convertIntToHex(int64(variable.(int32))), err
 	case int16:
-		return ConvertIntToHex(int64(variable.(int16)))
+		return convertIntToHex(int64(variable.(int16))), err
 	case int8:
-		return ConvertIntToHex(int64(variable.(int8)))
+		return convertIntToHex(int64(variable.(int8))), err
 	case int:
-		return ConvertIntToHex(int64(variable.(int)))
+		return convertIntToHex(int64(variable.(int))), err
 	case uint64:
-		return ConvertIntToHex(int64(variable.(uint64)))
+		return convertIntToHex(int64(variable.(uint64))), err
 	case uint32:
-		return ConvertIntToHex(int64(variable.(uint32)))
+		return convertIntToHex(int64(variable.(uint32))), err
 	case uint16:
-		return ConvertIntToHex(int64(variable.(uint16)))
+		return convertIntToHex(int64(variable.(uint16))), err
 	case uint8:
-		return ConvertIntToHex(int64(variable.(uint8)))
+		return convertIntToHex(int64(variable.(uint8))), err
 	case uint:
-		return ConvertIntToHex(int64(variable.(uint)))
+		return convertIntToHex(int64(variable.(uint))), err
 	case string:
 		if strings.HasPrefix(valueInterface, "0x") {
-			return string(valueInterface)
-		}
-		float64Value, err := strconv.ParseFloat(valueInterface, 64)
-		if nil != err {
-			return ConvertIntToHex(int64(0))
+			return string(valueInterface), err
 		}
 
-		return ConvertIntToHex(int64(float64Value))
+		float64Value, err := strconv.ParseInt(valueInterface, 10, 64)
+
+		if nil != err {
+			return convertIntToHex(0), err
+		}
+
+		return convertIntToHex(int64(float64Value)), err
 	default:
-		return ConvertIntToHex(int64(0))
+		return convertIntToHex(int64(0)), ClientError{Message: "Invalid interface"}
 	}
 }
 
@@ -126,4 +121,11 @@ func fetchDeployDir() (err error, deployNameLocator string) {
 	deployNameLocator = TempDirPathLocation + "/" + deployDir.Name()
 
 	return err, deployNameLocator
+}
+
+func convertIntToHex(value int64) (hexInt string) {
+	bigInt := big.NewInt(value)
+	hexInt = hexutil.EncodeBig(bigInt)
+
+	return hexInt
 }

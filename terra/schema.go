@@ -34,14 +34,14 @@ type variablesModel struct {
 }
 
 const (
-	CurrentVersion = float64(0.3)
-	MaxNetworkNameVarLength      = 20
-	NetworkNameKey               = "network_name"
-	ClockSkewKey                 = "faketime"
-	NodeNumbersKey               = "number_of_nodes"
-	QuorumDockerImageTagKey      = "quorum_docker_image_tag"
-	NetworkNameTerraRegExp		 = "[a-z]([-a-z0-9]*[a-z0-9])?"
-	SchemaV02      = `version: 0.2
+	CurrentVersion          = float64(0.3)
+	MaxNetworkNameVarLength = 20
+	NetworkNameKey          = "network_name"
+	ClockSkewKey            = "faketime"
+	NodeNumbersKey          = "number_of_nodes"
+	QuorumDockerImageTagKey = "quorum_docker_image_tag"
+	NetworkNameTerraRegExp  = "[a-z]([-a-z0-9]*[a-z0-9])?"
+	SchemaV02               = `version: 0.2
 resourceType: variables
 variables:
   simpleKey: variable
@@ -95,7 +95,12 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 		return err
 	}
 
-	variablesSchema.mapGenesisVariables()
+	err = variablesSchema.mapGenesisVariables()
+
+	if nil != err {
+		return err
+	}
+
 	variablesSchema.mapNetworkName()
 	err = variablesSchema.ValidateSchemaVariables()
 
@@ -154,14 +159,19 @@ func (variablesSchema *VariablesSchema) mapNetworkName() {
 	variablesSchema.Variables[NetworkNameKey] = fmt.Sprintf("%s-%v", networkName, randomString[0:8])
 }
 
-func (variablesSchema *VariablesSchema) mapGenesisVariables() {
+func (variablesSchema *VariablesSchema) mapGenesisVariables() (err error) {
 	for key, variable := range variablesSchema.Variables {
 		if false == contains(VariablesKeyToHex, key) {
 			continue
 		}
 
-		variablesSchema.Variables[key] = ConvertInterfaceToHex(variable)
+		hexValue, err := ConvertInterfaceToHex(variable)
+		variablesSchema.Variables[key] = hexValue
+
+		return err
 	}
+
+	return nil
 }
 
 func (variablesSchema *VariablesSchema) guard() (err error) {
@@ -349,11 +359,11 @@ func (variablesSchema *VariablesSchema) validateNodeNumbersVariable() (err error
 
 	nodeNumbersVariable := variablesSchema.Variables[NodeNumbersKey].(string)
 
-	if _, err := strconv.ParseInt(nodeNumbersVariable,10,64); nil != err {
+	if _, err := strconv.ParseInt(nodeNumbersVariable, 10, 64); nil != err {
 		return ClientError{fmt.Sprintf(
-				"%s is not in supported node of numbers variable value type.",
-				nodeNumbersVariable,
-			),
+			"%s is not in supported node of numbers variable value type.",
+			nodeNumbersVariable,
+		),
 		}
 	}
 
@@ -370,7 +380,7 @@ func (variablesSchema *VariablesSchema) validateQuorumDockerImageTagVariable() (
 	versionIntegers := strings.Split(nodeNumbersVariable, ".")
 
 	for _, intVal := range versionIntegers {
-		if _, err := strconv.ParseInt(intVal,10,64); nil != err {
+		if _, err := strconv.ParseInt(intVal, 10, 64); nil != err {
 			return ClientError{"Invalid value, should be integer docker image tag version between dots"}
 		}
 	}
