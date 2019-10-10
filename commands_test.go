@@ -267,29 +267,29 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 	terra.TempDirPathLocation = terra.TempDirPath
 }
 
-//func TestApplyCmd_Run(t *testing.T) {
-//	terra.TempDirPathLocation = ".apolloApplyEnd"
-//	err := os.RemoveAll(terra.TempDirPathLocation)
-//	assert.Nil(t, err)
-//	// We want to end with ExitCodeTerraformError without actual e2e calls
-//	keyName := "dummy"
-//	filePath := "dummy.tf"
-//	schemaFilePath := "dummy.yml"
-//	yamlFileSchema := terra.SchemaV02
-//	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
-//	recipes := GetMockedRecipes(t, keyName, filePath, "", map[string]string{})
-//	command := ApplyCmd{
-//		Recipes: recipes,
-//	}
-//	assert.IsType(t, ApplyCmd{}, command)
-//	exitCode := command.Run([]string{keyName, schemaFilePath})
-//	assert.Equal(t, ExitCodeSuccess, exitCode)
-//	RemoveDummyFile(t, filePath)
-//	RemoveDummyFile(t, schemaFilePath)
-//	err = os.RemoveAll(terra.TempDirPathLocation)
-//	assert.Nil(t, err)
-//	terra.TempDirPathLocation = terra.TempDirPath
-//}
+func TestApplyCmd_Run(t *testing.T) {
+	terra.TempDirPathLocation = ".apolloApplyEnd"
+	err := os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	// We want to end with ExitCodeTerraformError without actual e2e calls
+	keyName := "dummy"
+	filePath := "dummy.tf"
+	schemaFilePath := "dummy.yml"
+	yamlFileSchema := terra.SchemaV02
+	PrepareDummyFile(t, schemaFilePath, yamlFileSchema)
+	recipes := GetMockedRecipes(t, keyName, filePath, "", map[string]string{})
+	command := ApplyCmd{
+		Recipes: recipes,
+	}
+	assert.IsType(t, ApplyCmd{}, command)
+	exitCode := command.Run([]string{keyName, schemaFilePath})
+	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	RemoveDummyFile(t, filePath)
+	RemoveDummyFile(t, schemaFilePath)
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
 
 func TestDestroyCmd_Run(t *testing.T) {
 	terra.TempDirPathLocation = ".apolloTestTemp"
