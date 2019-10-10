@@ -4279,7 +4279,7 @@ variables:
 	YamlV03Fixture = `version: 0.3
 resourceType: variables
 variables: 
-  region: "dummy-region2"
+  region: "us-east-1"
   network_name: "dum-net"
   number_of_nodes: '5'
   quorum_docker_image_tag: '2.2.5'
@@ -4314,6 +4314,21 @@ variables:
 resourceType: variables
 variables: 
   region: 'dummy region 2'`
+
+	IncorrectAwsRegionType = `version: 0.3
+resourceType: variables
+variables: 
+  region: 'kaz-uk-2'`
+
+	IncorrectAwsInstanceType = `version: 0.3
+resourceType: variables
+variables: 
+  asg_instance_type: 'someInvalid-instance-type.large'`
+
+	IncorrectConsensusMechanismType = `version: 0.3
+resourceType: variables
+variables: 
+  consensus_mechanism: 'brambory'`
 
 	IncorrectUnitYamlV03Fixture = `version: 0.3
 resourceType: variables

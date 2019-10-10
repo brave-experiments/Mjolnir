@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"path"
+	"strconv"
 	"testing"
 )
 
@@ -168,7 +169,7 @@ func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Error(t, err)
-	assert.Equal(t, "strconv.ParseInt: parsing \"invalidVal\": invalid syntax", err.Error())
+	assert.IsType(t, &strconv.NumError{}, err)
 	RemoveDummyFile(t, dummyFilePath)
 }
 
@@ -185,49 +186,43 @@ func TestVariablesSchema_ValidateSchemaVariables(t *testing.T) {
 	RemoveDummyFile(t, dummyFilePath)
 }
 
-func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
+func TestVariablesSchema_Readv03Failure(t *testing.T) {
 	variablesSchema := VariablesSchema{}
 	dummyFilePath := "dummy.yml"
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectSignYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "@2s is not in supported faketime variable signs. Valid are: [+ -]"}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectUnitYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "+2x is not in supported faketime variable units. Valid are: [s m h d y]"}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectValueYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "Invalid value, should be integer between sign and faketime unit"}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectNodesNumberYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "Abc is not in supported node of numbers variable value type."}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectQuorumDockerImageTagYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "Invalid value, should be integer docker image tag version between dots"}, err)
 
 	PrepareDummyFile(t, dummyFilePath, IncorrectNetworkNameLengthYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "Network name is too long. Maximum allowed characters are 20"}, err)
 
@@ -241,9 +236,47 @@ func TestVariablesSchema_ValidateSchemaVariablesFailure(t *testing.T) {
 	PrepareDummyFile(t, dummyFilePath, IncorrectStringVariablesYamlV03Fixture)
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
-	err = variablesSchema.ValidateSchemaVariables()
 	assert.Error(t, err)
 	assert.Equal(t, ClientError{Message: "Variable with key: region contains white space which is not allowed"}, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectAwsRegionType)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	assert.Error(t, err)
+	expectedError := ClientError{
+		Message: fmt.Sprintf(
+			"kaz-uk-2 is not valid AWS region. Valid are: %s",
+			ValidRegions,
+		),
+	}
+	assert.Equal(t, expectedError, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectAwsInstanceType)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	assert.Error(t, err)
+	expectedError = ClientError{
+		Message: fmt.Sprintf(
+			"%s is not valid %s, valid are: %s",
+			"someInvalid-instance-type.large",
+			"asg_instance_type",
+			ValidInstanceTypes,
+		),
+	}
+	assert.Equal(t, expectedError, err)
+
+	PrepareDummyFile(t, dummyFilePath, IncorrectConsensusMechanismType)
+	variablesSchema.Location = dummyFilePath
+	err = variablesSchema.Read()
+	assert.Error(t, err)
+	expectedError = ClientError{
+		Message: fmt.Sprintf(
+			"Invalid %s, valid are: %s",
+			"consensus_mechanism",
+			ValidConsensusMechanisms,
+		),
+	}
+	assert.Equal(t, expectedError, err)
 
 	RemoveDummyFile(t, dummyFilePath)
 }
