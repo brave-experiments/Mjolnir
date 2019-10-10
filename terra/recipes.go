@@ -7,16 +7,18 @@ import (
 )
 
 const (
-	AwsDefaultRegion   = "AWS_DEFAULT_REGION"
-	AwsRegion          = "AWS_REGION"
-	AwsProfile         = "AWS_PROFILE"
-	AwsAccessKeyId     = "AWS_ACCESS_KEY_ID"
-	AwsSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
-	OutputLog          = "TF_LOG"
+	AwsDefaultRegion     = "AWS_DEFAULT_REGION"
+	AwsRegion            = "AWS_REGION"
+	AwsProfile           = "AWS_PROFILE"
+	AwsAccessKeyId       = "AWS_ACCESS_KEY_ID"
+	AwsSecretAccessKey   = "AWS_SECRET_ACCESS_KEY"
+	OutputLog            = "TF_LOG"
+	DestroyDefaultRecipe = "quorum"
 )
 
 var (
-	DefaultVariablesMap = map[string]string{
+	DestroyDefaultRecipeVar = DestroyDefaultRecipe
+	DefaultVariablesMap     = map[string]string{
 		"region":                AwsRegion,
 		"profile":               AwsProfile,
 		"default_region":        AwsDefaultRegion,

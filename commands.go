@@ -12,18 +12,19 @@ import (
 )
 
 const (
-	ExitCodeSuccess           = 0
-	ExitCodeInvalidNumOfArgs  = 1
-	ExitCodeInvalidSetup      = 2
-	ExitCodeInvalidArgument   = 3
-	ExitCodeTerraformError    = 4
-	ExitCodeYamlBindingError  = 5
-	ExitCodeEnvUnbindingError = 6
-	ExitCodeNoTempDirectory   = 7
-	ExitCodeNoBastionIp       = 8
-	ExitCodeSshKeyNotPresent  = 9
-	ExitCodeSshError          = 10
-	ExitCodeSshDialError      = 11
+	ExitCodeSuccess               = 0
+	ExitCodeInvalidNumOfArgs      = 1
+	ExitCodeInvalidSetup          = 2
+	ExitCodeInvalidArgument       = 3
+	ExitCodeTerraformError        = 4
+	ExitCodeYamlBindingError      = 5
+	ExitCodeEnvUnbindingError     = 6
+	ExitCodeNoTempDirectory       = 7
+	ExitCodeNoBastionIp           = 8
+	ExitCodeSshKeyNotPresent      = 9
+	ExitCodeSshError              = 10
+	ExitCodeSshDialError          = 11
+	ExitCodeTerraformDestroyError = 12
 )
 
 var (
@@ -173,7 +174,7 @@ func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
 	}
 
 	yamlFilePath := args[0]
-	recipe, exitCode := destroyCmd.getRecipe("quorum")
+	recipe, exitCode := destroyCmd.getRecipe(terra.DestroyDefaultRecipeVar)
 
 	if exitCode != ExitCodeSuccess {
 		fmt.Printf("Exited with code: %v, recipe not found", exitCode)
@@ -191,7 +192,7 @@ func (destroyCmd DestroyCmd) Run(args []string) (exitCode int) {
 
 	if nil != err {
 		fmt.Println(err)
-		exitCode = ExitCodeTerraformError
+		exitCode = ExitCodeTerraformDestroyError
 	}
 
 	fmt.Println("Restoring env variables.")
@@ -341,7 +342,7 @@ func (applyCmd *ApplyCmd) executeTerra(recipe terra.CombinedRecipe, destroy bool
 	err = terraClient.ApplyCombined(recipe, destroy)
 
 	if true == destroy {
-		_ = os.RemoveAll(terra.TempDirPathLocation)
+		err = os.RemoveAll(terra.TempDirPathLocation)
 	}
 
 	return err
