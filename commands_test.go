@@ -58,6 +58,38 @@ func TestDestroyCmdFactory(t *testing.T) {
 	testThatCommandHasWholeInterface(t, command)
 }
 
+func TestNodeSshCmd_RunInvalid(t *testing.T) {
+	terra.TempDirPathLocation = ".dummyApolloNode"
+	dummyFileName := "output.log"
+	deployName := "dummyDeployName"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
+	err := os.MkdirAll(dummyDeployName, 0777)
+	assert.Nil(t, err)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
+
+	command, err := NodeSshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, NodeSshCmd{}, command)
+
+	// Should throw an sshDialError when no node number present
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
+
+	sshKeyFileLocator := dummyDeployName + "/id_rsa"
+	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
+	runArgs := []string{"a"}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeInvalidArgument, exitCode)
+
+	runArgs = []string{"1"}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
+
 func TestSshCmd_RunInvalid(t *testing.T) {
 	terra.TempDirPathLocation = ".dummyApollo"
 	dummyFileName := "output.log"
