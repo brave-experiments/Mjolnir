@@ -19,6 +19,32 @@ var (
 		"genesis_difficulty",
 		"genesis_nonce",
 	}
+	ValidRegions = []string{
+		"us-east-1",
+		"us-east-2",
+		"us-west-1",
+		"us-west-2",
+		"ca-central-1",
+		"eu-central-1",
+		"eu-west-1",
+		"eu-west-2",
+		"eu-west-3",
+		"eu-north-1",
+		"ap-east-1",
+		"ap-northeast-1",
+		"ap-northeast-2",
+		"ap-northeast-3",
+		"ap-southeast-1",
+		"ap-southeast-2",
+		"ap-south-1",
+		"me-south-1",
+		"sa-east-1",
+	}
+	SupportedFileTypes        = []string{".yml", ".yaml"}
+	SupportedResourceTypes    = []string{"variables"}
+	SupportedClockSkewSigns   = []string{"+", "-"}
+	SupportedClockSkewUnits   = []string{"s", "m", "h", "d", "y"}
+	StringVariablesToValidate = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
 )
 
 type VariablesSchema struct {
@@ -78,14 +104,6 @@ variables:
   genesis_nonce:          0              ## Used to set genesis nonce it converts to hex
   consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
-)
-
-var (
-	SupportedFileTypes        = []string{".yml", ".yaml"}
-	SupportedResourceTypes    = []string{"variables"}
-	SupportedClockSkewSigns   = []string{"+", "-"}
-	SupportedClockSkewUnits   = []string{"s", "m", "h", "d", "y"}
-	StringVariablesToValidate = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
 )
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
@@ -438,6 +456,43 @@ func (variablesSchema *VariablesSchema) validateNonSpacesStringVariable() (err e
 	}
 
 	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateAwsProperties() (err error) {
+	if nil == variablesSchema.Variables {
+		return nil
+	}
+
+	for key, variable := range variablesSchema.Variables {
+		err = validateAwsRegions(key, variable)
+
+		if nil != err {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func validateAwsRegions(key string, variable interface{}) (err error) {
+	stringVariable := variable.(string)
+	desiredKeys := []string{"region", "default_region"}
+
+	if false == contains(desiredKeys, key) {
+		return nil
+	}
+
+	if contains(ValidRegions, stringVariable) {
+		return nil
+	}
+
+	return ClientError{
+		fmt.Sprintf(
+			"%s is not valid AWS region. Valid are: %s",
+			stringVariable,
+			ValidRegions,
+		),
+	}
 }
 
 func validateNonSpacesStringVariable(variable interface{}) (err error) {
