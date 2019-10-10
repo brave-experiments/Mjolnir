@@ -21,8 +21,9 @@ func TestSshClient_New(t *testing.T) {
 func TestSshClient_DialFailure(t *testing.T) {
 	terra.TempDirPathLocation = "dummyPath"
 	client := SshClient{}
-	err := client.Dial([]string{})
+	err := client.Dial([]string{"-i", "dummyFile"})
 	assert.Error(t, err)
+	assert.Equal(t, "exit status 255", err.Error())
 	terra.TempDirPathLocation = terra.TempDirPath
 }
 

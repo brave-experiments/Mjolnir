@@ -214,7 +214,7 @@ SS
   cat <<SS | sudo tee $sshScript
 #!/bin/bash
 
-ssh admin@$ip -i ${local_file.private_key.filename}
+ssh ec2-user@$ip -A -t
 SS
   sudo chmod +x $sshScript
 

@@ -77,7 +77,7 @@ func TestSshCmd_RunInvalid(t *testing.T) {
 
 	sshKeyFileLocator := dummyDeployName + "/id_rsa"
 	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
-	runArgs := []string{""}
+	runArgs := []string{"-i", "dummyFile"}
 	exitCode = command.Run(runArgs)
 	assert.Equal(t, ExitCodeSshDialError, exitCode)
 
