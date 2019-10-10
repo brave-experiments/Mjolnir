@@ -156,6 +156,12 @@ func (variablesSchema *VariablesSchema) ValidateSchemaVariables() (err error) {
 		return err
 	}
 
+	err = variablesSchema.validateAwsProperties()
+
+	if nil != err {
+		return err
+	}
+
 	return nil
 }
 
