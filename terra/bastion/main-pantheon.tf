@@ -208,6 +208,15 @@ do
 sudo docker run --rm -it ${local.quorum_docker_image} attach http://$ip:${local.pantheon_rpc_port} $@
 SS
   sudo chmod +x $script
+
+  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
+  cat <<SS | sudo tee $sshScript
+#!/bin/bash
+
+ssh ec2-user@$ip -A -t
+SS
+  sudo chmod +x $sshScript
+
   cat <<SS | sudo tee -a ${local.shared_volume_container_path}/pantheon_metadata
     Node$nodeIdx:
       privacy-address: $(cat ${local.privacy_addresses_folder}/$f)
