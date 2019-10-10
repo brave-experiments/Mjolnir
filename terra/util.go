@@ -49,7 +49,7 @@ func ConvertInterfaceToHex(variable interface{}) (hexInt string, err error) {
 
 		return convertIntToHex(int64(float64Value)), err
 	default:
-		return convertIntToHex(int64(0)), ClientError{Message: "Invalid interface"}
+		return convertIntToHex(int64(0)), ClientError{Message: "Invalid interface to hex conversion"}
 	}
 }
 

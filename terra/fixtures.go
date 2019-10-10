@@ -4350,7 +4350,7 @@ variables:
   consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 
-	YamlFixtureWithInvalidHexUtils = `version: 0.1
+	YamlFixtureWithInvalidHexUtils = `version: 0.3
 resourceType: variables
 variables:
   simpleKey: variable
@@ -4360,7 +4360,7 @@ variables:
   aws_access_key_id:     'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
   aws_secret_access_key: 'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
   genesis_gas_limit:     'invalidVal'    ## Used to set genesis gas limit
-  genesis_timestamp:     '3n8''	         ## Used to set genesis timestamp
+  genesis_timestamp:     '3n8'	         ## Used to set genesis timestamp
   genesis_difficulty:     ['12']         ## Used to set genesis difficulty
   genesis_nonce:          {}	         ## Used to set genesis nonce
   consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul

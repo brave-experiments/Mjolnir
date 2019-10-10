@@ -166,9 +166,12 @@ func (variablesSchema *VariablesSchema) mapGenesisVariables() (err error) {
 		}
 
 		hexValue, err := ConvertInterfaceToHex(variable)
-		variablesSchema.Variables[key] = hexValue
 
-		return err
+		if nil != err {
+			return err
+		}
+
+		variablesSchema.Variables[key] = hexValue
 	}
 
 	return nil
