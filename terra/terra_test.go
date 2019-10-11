@@ -368,7 +368,7 @@ func TestClient_DefaultClient(t *testing.T) {
 	assert.True(t, ok)
 	assert.IsType(t, aws.Provider(), provider)
 
-	provisioner, ok = provisioners["remote-exec"]
+	provisioner, ok := provisioners["remote-exec"]
 	assert.True(t, ok)
 	assert.IsType(t, remoteexec.Provisioner(), provisioner)
 }
