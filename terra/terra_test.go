@@ -2,7 +2,6 @@ package terra
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform/builtin/provisioners/local-exec"
 	"github.com/hashicorp/terraform/builtin/provisioners/remote-exec"
 	"github.com/johandry/terranova"
 	"github.com/stretchr/testify/assert"
@@ -369,11 +368,7 @@ func TestClient_DefaultClient(t *testing.T) {
 	assert.True(t, ok)
 	assert.IsType(t, aws.Provider(), provider)
 
-	provisioner, ok := provisioners["local-exec"]
-	assert.True(t, ok)
-	assert.IsType(t, localexec.Provisioner(), provisioner)
-
-	provisioner, ok = provisioners["remote-exec"]
+	provisioner, ok := provisioners["remote-exec"]
 	assert.True(t, ok)
 	assert.IsType(t, remoteexec.Provisioner(), provisioner)
 }

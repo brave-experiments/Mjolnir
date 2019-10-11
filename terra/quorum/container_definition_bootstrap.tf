@@ -6,6 +6,7 @@ locals {
   hosts_folder         = "${local.shared_volume_container_path}/hosts"
   libfaketime_folder   = "${local.shared_volume_container_path}/lib"
   libfaketime_file     = "${local.shared_volume_container_path}/lib/libfaketime_value"
+  node_info_folder     = "${local.shared_volume_container_path}/nodeinfo"
 
   metadata_bootstrap_container_status_file = "${local.shared_volume_container_path}/metadata_bootstrap_container_status"
 
@@ -142,14 +143,19 @@ EOP
     "echo $HOST_IP > ${local.host_ip_file}",
     "export TASK_ARN=$(curl -s $ECS_CONTAINER_METADATA_URI/task | jq -r '.TaskARN')",
     "export REGION=$(echo $TASK_ARN | awk -F: '{ print $4}')",
-    "aws ecs describe-tasks --region $REGION --cluster ${local.ecs_cluster_name} --tasks $TASK_ARN | jq -r '.tasks[0] | .group' > ${local.service_file}",
+    "export SERVICE_GROUP=$(aws ecs describe-tasks --region $REGION --cluster ${local.ecs_cluster_name} --tasks $TASK_ARN | jq -r '.tasks[0] | .group')",
+    "echo $SERVICE_GROUP > ${local.service_file}",
     "mkdir -p ${local.hosts_folder}",
     "mkdir -p ${local.node_ids_folder}",
+    "mkdir -p ${local.node_info_folder}",
     "mkdir -p ${local.accounts_folder}",
     "mkdir -p ${local.libfaketime_folder}",
     "count=0; while [ $count -lt 1 ]; do count=$(ls ${local.libfaketime_folder} | grep libfaketime.so | wc -l); aws s3 cp s3://${local.s3_libfaketime_file} ${local.libfaketime_folder}/libfaketime.so > /dev/null 2>&1 | echo \"Wait for libfaketime to appear on S3 ... \"; sleep 1; done",
     "touch ${local.libfaketime_file}",
-    "aws sqs --region $REGION receive-message --queue-url ${aws_sqs_queue.faketime_queue.id} --visibility-timeout=300 | jq .Messages[].Body | tr -d '\\\"' > ${local.libfaketime_file}",
+    "export CLOCK_SKEW=$(aws sqs --region $REGION receive-message --queue-url ${aws_sqs_queue.faketime_queue.id} --visibility-timeout=300 | jq .Messages[].Body | tr -d '\\\"')",
+    "echo $CLOCK_SKEW > ${local.libfaketime_file}",
+    "echo \"$(echo $SERVICE_GROUP | sed 's/.*://')  ip=$HOST_IP  clock_skew=$CLOCK_SKEW chaos_testing_command=${join(" ", var.chaos_testing_run_command)}\" > ${local.node_info_folder}/${local.normalized_host_ip}",
+    "aws s3 cp ${local.node_info_folder}/${local.normalized_host_ip} s3://${local.s3_revision_folder}/nodeinfo/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.node_id_file} s3://${local.s3_revision_folder}/nodeids/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.host_ip_file} s3://${local.s3_revision_folder}/hosts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
     "aws s3 cp ${local.account_address_file} s3://${local.s3_revision_folder}/accounts/${local.normalized_host_ip} --sse aws:kms --sse-kms-key-id ${aws_kms_key.bucket.arn}",
