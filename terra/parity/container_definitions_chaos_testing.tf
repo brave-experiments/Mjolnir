@@ -8,12 +8,10 @@ locals {
     essential = "false"
 
     logConfiguration = {
-      logDriver = "awslogs"
+      logDriver = "fluentd"
 
       options = {
-        awslogs-group         = "${aws_cloudwatch_log_group.parity.name}"
-        awslogs-region        = "${var.region}"
-        awslogs-stream-prefix = "logs"
+        fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
       }
     }
 

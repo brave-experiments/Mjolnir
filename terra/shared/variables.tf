@@ -176,3 +176,8 @@ variable "chainhammer_repo_url" {
    description = "TPS measurements of parity aura, geth clique, quorum, tobalaba, etc"
    default = "https://github.com/drandreaskrueger/chainhammer.git"
 }
+
+variable "bastion_volume_size" {
+  description = "Bastion root volume size in GB"
+  default = 32
+}

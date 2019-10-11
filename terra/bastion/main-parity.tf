@@ -74,6 +74,10 @@ resource "aws_instance" "bastion" {
   key_name                    = "${aws_key_pair.ssh.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.bastion.name}"
 
+  root_block_device {
+    volume_size = "${var.bastion_volume_size}"
+  }
+
   user_data = <<EOF
 #!/bin/bash
 
@@ -92,7 +96,7 @@ EOF
       "sudo pip3 install awscli --upgrade > /dev/null",
       "sudo systemctl start docker",
       "sudo gpasswd -a admin docker",
-      "sudo docker run -v $PWD:/tmp --rm --entrypoint cp jkopacze/libfaketime-deb:latest /faketime.so /tmp/libfaketime.so",
+      "sudo docker run -v $PWD:/tmp --rm --entrypoint cp jkopacze/libfaketime-deb:latest /faketime.so /tmp/libfaketime.so > /dev/null",
       "sudo aws --region ${var.region} s3 cp libfaketime.so s3://${local.bastion_bucket}/libs/libfaketime.so",
       "for value in ${join(" ", var.faketime)}; do aws --region ${var.region} sqs send-message --queue-url ${aws_sqs_queue.faketime_queue.id} --message-body \\\"$value\\\" --message-attributes \"{ \\\"faketimeValue\\\":{ \\\"DataType\\\":\\\"String\\\",\\\"StringValue\\\":\\\"$value\\\"}}\" ; done",
     ]
@@ -130,19 +134,15 @@ fi
 sudo curl -Ls "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 echo "Pull docker images ..."
-sudo docker pull ${local.quorum_docker_image} > /dev/null
-sudo docker pull prom/prometheus > /dev/null
-sudo docker pull prom/node-exporter:latest > /dev/null
-sudo docker pull grafana/grafana:latest > /dev/null
-sudo docker pull hunterlong/gethexporter:latest > /dev/null
-sudo docker pull buythewhale/ethstats > /dev/null
-sudo docker pull buythewhale/ethstats_monitor > /dev/null
+sudo docker pull grafana/loki:latest > /dev/null
+sudo docker pull grafana/fluent-plugin-grafana-loki:master > /dev/null
 echo "Done"
 sudo mkdir -p /opt/prometheus
 sudo mkdir -p /opt/grafana/dashboards
 sudo mkdir -p /opt/grafana/provisioning/dashboards
 sudo mkdir -p /opt/grafana/provisioning/datasources
 sudo mkdir -p /opt/ethstats
+sudo mkdir -p /opt/fluentd/conf
 sudo curl -Ls https://grafana.com/api/dashboards/6976/revisions/3/download -o /opt/grafana/dashboards/dashboard-geth.json
 sudo curl -Ls https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
 
@@ -151,84 +151,7 @@ export TASK_REVISION=${aws_ecs_task_definition.parity.revision}
 sudo rm -rf ${local.shared_volume_container_path}
 sudo mkdir -p ${local.shared_volume_container_path}/mappings
 sudo mkdir -p ${local.privacy_addresses_folder}
-
-count=0
-while [ $count -lt ${var.number_of_nodes} ]
-do
-  count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
-  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
-    | echo Wait for nodes in parity network being up ... $count/${var.number_of_nodes}
-  sleep 1
-done
-
-if which jq >/dev/null; then
-  echo "Found jq"
-else
-  echo "jq not found. Instaling ..."
-  sudo apt-get -y install jq
-fi
-
-count=30
-inc_num=0
-while [ $count -gt $inc_num ]
-do
-  status=$(aws --region ${var.region} ecs describe-clusters --clusters ${local.ecs_cluster_name} | jq -r .clusters[].status)
-  if [ $status == "ACTIVE" ]; then
-    inc_num=$count
-  fi
-  sleep 1
-  inc_num=$((inc_num+1))
-done
-
-for t in $(aws --region ${var.region} ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
-do
-  task_metadata=$(aws --region ${var.region} ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
-  if [ "${var.ecs_mode}" == "EC2" ]
-  then
-    CONTAINER_INSTANCE_ARN=$(aws --region ${var.region} ecs describe-tasks --tasks $t --cluster ${local.ecs_cluster_name} | jq -r '.tasks[] | .containerInstanceArn')
-    EC2_INSTANCE_ID=$(aws --region ${var.region} ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster ${local.ecs_cluster_name} |jq -r '.containerInstances[] | .ec2InstanceId')
-    HOST_IP=$(aws --region ${var.region} ec2 describe-instances --instance-ids $EC2_INSTANCE_ID | jq -r '.Reservations[0] | .Instances[] | .PublicIpAddress')
-  fi
-  group=$(echo $task_metadata | jq -r '.tasks[0] | .group')
-  taskArn=$(echo $task_metadata | jq -r '.tasks[0] | .taskDefinitionArn')
-  # only care about new task
-  if [[ "$taskArn" == *:$TASK_REVISION ]]; then
-     echo $group | sudo tee ${local.shared_volume_container_path}/mappings/${local.normalized_host_ip}
-  fi
-done
-
-cat <<SS | sudo tee ${local.shared_volume_container_path}/parity_metadata
-parity:
-  nodes:
-SS
-nodes=(${join(" ", aws_ecs_service.parity.*.name)})
-cd ${local.shared_volume_container_path}/mappings
-for idx in "$${!nodes[@]}"
-do
-  f=$(grep -l $${nodes[$idx]} *)
-  ip=$(cat ${local.hosts_folder}/$f)
-  nodeIdx=$((idx+1))
-  script="/usr/local/bin/Node$nodeIdx"
-  cat <<SS | sudo tee $script
-#!/bin/bash
-
-sudo docker run --rm -it ${local.quorum_docker_image} attach http://$ip:${local.parity_rpc_port} $@
-SS
-  sudo chmod +x $script
-  cat <<SS | sudo tee -a ${local.shared_volume_container_path}/parity_metadata
-    Node$nodeIdx:
-      privacy-address: $(cat ${local.privacy_addresses_folder}/$f)
-      url: http://$ip:${local.parity_rpc_port}
-SS
-
-  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
-  cat <<SS | sudo tee $sshScript
-#!/bin/bash
-
-ssh ec2-user@$ip -A -t
-SS
-  sudo chmod +x $sshScript
-done
+sudo mkdir -p ${local.hosts_folder}
 
 # Prometheus config ============================================
 cat <<SS | sudo tee /opt/prometheus/prometheus.yml
@@ -253,6 +176,38 @@ scrape_configs:
   file_sd_configs:
   - files:
     - 'targets.json'
+SS
+
+# Fluent config ================================================
+cat <<SS | sudo tee /opt/fluentd/conf/fluent.conf
+<source>
+  @type  forward
+  @id    input1
+  port  24224
+</source>
+
+@include loki.conf
+SS
+
+
+cat <<SS | sudo tee /opt/fluentd/conf/loki.conf
+<filter **>
+  type record_transformer
+  remove_keys source,container_id
+</filter>
+
+<match **>
+  @type loki
+  url "#{ENV['LOKI_URL']}"
+  username "#{ENV['LOKI_USERNAME']}"
+  password "#{ENV['LOKI_PASSWORD']}"
+  #extra_labels {"env":"dev"}
+  label_keys "instance,level,container_name"
+  drop_single_key true
+  flush_interval 10s
+  flush_at_shutdown true
+  buffer_chunk_limit 1m
+</match>
 SS
 
 # docker-compose ===============================================
@@ -288,8 +243,7 @@ services:
     gethexporter:
         image: hunterlong/gethexporter
         environment:
-            - GETH=http://$ip:${local.parity_rpc_port}
-
+            - GETH=http://gethexporter_ip:${local.parity_rpc_port}
     monitor:
       image: buythewhale/ethstats_monitor
       volumes:
@@ -300,11 +254,120 @@ services:
         - /opt/ethstats/ws_secret.json:/eth-netstats/ws_secret.json:ro
       ports:
         - 3000:3000
+    loki:
+      image: grafana/loki:latest
+      ports:
+          - '3100:3100'
+      command: -config.file=/etc/loki/local-config.yaml
+    fluentd:
+      image: grafana/fluent-plugin-grafana-loki:master
+      environment:
+        LOKI_URL: http://loki:3100
+        LOKI_USERNAME:
+        LOKI_PASSWORD:
+        FLUENTD_CONF: /fluentd/etc/fluent.conf
+      ports:
+        - "24224:24224"
+      volumes:
+        - /opt/fluentd/conf:/fluentd/etc
 
 SS
 
+# Grafana provisioning =========================================
+cat <<SS | sudo tee /opt/grafana/provisioning/datasources/all.yml
+datasources:
+- name: 'prometheus'
+  type: 'prometheus'
+  access: 'proxy'
+  org_id: 1
+  url: 'http://prometheus:9090'
+  version: 1
+  is_default: true
+  editable: true
+- name: 'loki'
+  type: 'loki'
+  access: proxy
+  url: 'http://loki:3100'
+  is_default: false
+  editable: true
+SS
+
+cat <<SS | sudo tee /opt/grafana/provisioning/dashboards/all.yml
+- name: 'default'
+  org_id: 1
+  folder: ''
+  type: 'file'
+  options:
+    folder: '/var/lib/grafana/dashboards'
+SS
+
+sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
+sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-node-exporter.json
+sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate loki fluentd
+
+echo "Pull other docker images ..."
+sudo docker pull ${local.quorum_docker_image} > /dev/null
+sudo docker pull prom/prometheus > /dev/null
+sudo docker pull prom/node-exporter:latest > /dev/null
+sudo docker pull grafana/grafana:latest > /dev/null
+sudo docker pull hunterlong/gethexporter:latest > /dev/null
+sudo docker pull buythewhale/ethstats > /dev/null
+sudo docker pull buythewhale/ethstats_monitor > /dev/null
+echo "Done"
+
 # Prometheus targets ===========================================
-count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+count=0
+while [ $count -lt ${var.number_of_nodes} ]
+do
+  count=$(ls ${local.hosts_folder} | grep ^ip | wc -l)
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+    | echo Wait for nodes IP being up ... $count/${var.number_of_nodes}
+  sleep 1
+done
+# ==============================================================
+if which jq >/dev/null; then
+  echo "Found jq"
+else
+  echo "jq not found. Instaling ..."
+  sudo apt-get -y install jq
+fi
+
+# Waiting for ECS  =============================================
+echo Waiting for ECS ....
+count=30
+inc_num=0
+while [ $count -gt $inc_num ]
+do
+  status=$(aws --region ${var.region} ecs describe-clusters --clusters ${local.ecs_cluster_name} | jq -r .clusters[].status)
+  if [ $status == "ACTIVE" ]; then
+    inc_num=$count
+  fi
+  sleep 1
+  inc_num=$((inc_num+1))
+done
+echo ECS is Active
+
+for t in $(aws --region ${var.region} ecs list-tasks --cluster ${local.ecs_cluster_name} | jq -r .taskArns[])
+do
+  task_metadata=$(aws --region ${var.region} ecs describe-tasks --cluster ${local.ecs_cluster_name} --tasks $t)
+  if [ "${var.ecs_mode}" == "EC2" ]
+  then
+    CONTAINER_INSTANCE_ARN=$(aws --region ${var.region} ecs describe-tasks --tasks $t --cluster ${local.ecs_cluster_name} | jq -r '.tasks[] | .containerInstanceArn')
+    EC2_INSTANCE_ID=$(aws --region ${var.region} ecs  describe-container-instances --container-instances $CONTAINER_INSTANCE_ARN --cluster ${local.ecs_cluster_name} |jq -r '.containerInstances[] | .ec2InstanceId')
+    HOST_IP=$(aws --region ${var.region} ec2 describe-instances --instance-ids $EC2_INSTANCE_ID | jq -r '.Reservations[0] | .Instances[] | .PublicIpAddress')
+  fi
+  group=$(echo $task_metadata | jq -r '.tasks[0] | .group')
+  taskArn=$(echo $task_metadata | jq -r '.tasks[0] | .taskDefinitionArn')
+  # only care about new task
+  if [[ "$taskArn" == *:$TASK_REVISION ]]; then
+     echo $group | sudo tee ${local.shared_volume_container_path}/mappings/${local.normalized_host_ip}
+  fi
+done
+
+nodes=(${join(" ", aws_ecs_service.parity.*.name)})
+cd ${local.shared_volume_container_path}/mappings
+
+count=$(ls ${local.hosts_folder} | grep ^ip | wc -l)
 target_file=/tmp/targets.json
 i=0
 echo '[' > $target_file
@@ -321,9 +384,10 @@ do
 done
 echo ']' >> $target_file
 sudo mv $target_file /opt/prometheus/
-
+sudo sed -i s"/gethexporter_ip/$ip/" /opt/prometheus/docker-compose.yml
+  
 # Ethstats =====================================================
-count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+count=$(ls ${local.hosts_folder} | grep ^ip | wc -l)
 target_file=/tmp/app.json
 i=0
 echo '[' > $target_file
@@ -358,6 +422,50 @@ echo ']' >> $target_file
 sudo mv $target_file /opt/ethstats/
 echo '["'${random_id.ethstat_secret.hex}'"]' |  sudo tee /opt/ethstats/ws_secret.json
 
+sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate prometheus grafana gethexporter monitor dashboard node-exporter
+
+#===================================================
+count=0
+while [ $count -lt ${var.number_of_nodes} ]
+do
+  count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+    | echo Wait for nodes in parity network being up ... $count/${var.number_of_nodes}
+  sleep 1
+done
+
+cat <<SS | sudo tee ${local.shared_volume_container_path}/parity_metadata
+parity:
+  nodes:
+SS
+cd ${local.shared_volume_container_path}/mappings
+for idx in "$${!nodes[@]}"
+do
+  f=$(grep -l $${nodes[$idx]} *)
+  ip=$(cat ${local.hosts_folder}/$f)
+  nodeIdx=$((idx+1))
+  script="/usr/local/bin/Node$nodeIdx"
+  cat <<SS | sudo tee $script
+#!/bin/bash
+
+sudo docker run --rm -it ${local.quorum_docker_image} attach http://$ip:${local.parity_rpc_port} $@
+SS
+  sudo chmod +x $script
+  cat <<SS | sudo tee -a ${local.shared_volume_container_path}/parity_metadata
+    Node$nodeIdx:
+      privacy-address: $(cat ${local.privacy_addresses_folder}/$f)
+      url: http://$ip:${local.parity_rpc_port}
+SS
+
+  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
+  cat <<SS | sudo tee $sshScript
+#!/bin/bash
+
+ssh ec2-user@$ip -A -t
+SS
+  sudo chmod +x $sshScript
+done
+
 # Chainhammer ==================================================
 WORKDIR=/home/admin/chainhammer
 rm -rf $WORKDIR
@@ -380,36 +488,9 @@ do
       continue
     fi
 done
-TMPDIR=$PWD
 cd $WORKDIR
 $WORKDIR/scripts/install.sh nodocker
-cd $TMPDIR
 
-# Grafana dashboards ===========================================
-cat <<SS | sudo tee /opt/grafana/provisioning/datasources/all.yml
-datasources:
-- name: 'prometheus'
-  type: 'prometheus'
-  access: 'proxy'
-  org_id: 1
-  url: 'http://prometheus:9090'
-  is_default: true
-  version: 1
-  editable: true
-SS
-
-cat <<SS | sudo tee /opt/grafana/provisioning/dashboards/all.yml
-- name: 'default'
-  org_id: 1
-  folder: ''
-  type: 'file'
-  options:
-    folder: '/var/lib/grafana/dashboards'
-SS
-
-sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
-sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-node-exporter.json
-sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
 EOF
 }
 
