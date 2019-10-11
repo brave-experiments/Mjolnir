@@ -4279,12 +4279,56 @@ variables:
 	YamlV03Fixture = `version: 0.3
 resourceType: variables
 variables: 
+  region: "us-east-1"
+  network_name: "dum-net"
+  number_of_nodes: '5'
+  quorum_docker_image_tag: '2.2.5'
   faketime: ["+2d", "-30h", "+120", "-120", "120", "44", "-44", "+44", "+0", "-0", "+0s", "-0h"]`
 
 	IncorrectSignYamlV03Fixture = `version: 0.3
 resourceType: variables
 variables: 
   faketime: ["@2s"]`
+
+	IncorrectNodesNumberYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  number_of_nodes: 'Abc'`
+
+	IncorrectQuorumDockerImageTagYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  quorum_docker_image_tag: '2.X.5'`
+
+	IncorrectNetworkNameStringYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  network_name: "d$#sa!"`
+
+	IncorrectNetworkNameLengthYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  network_name: 'dummy-network-dummy-network'`
+
+	IncorrectStringVariablesYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  region: 'dummy region 2'`
+
+	IncorrectAwsRegionType = `version: 0.3
+resourceType: variables
+variables: 
+  region: 'kaz-uk-2'`
+
+	IncorrectAwsInstanceType = `version: 0.3
+resourceType: variables
+variables: 
+  asg_instance_type: 'someInvalid-instance-type.large'`
+
+	IncorrectConsensusMechanismType = `version: 0.3
+resourceType: variables
+variables: 
+  consensus_mechanism: 'brambory'`
 
 	IncorrectUnitYamlV03Fixture = `version: 0.3
 resourceType: variables
@@ -4318,6 +4362,22 @@ variables:
   genesis_timestamp:      38	         ## Used to set genesis timestamp
   genesis_difficulty:     12             ## Used to set genesis difficulty
   genesis_nonce:          0              ## Used to set genesis nonce
+  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
+`
+
+	YamlFixtureWithInvalidHexUtils = `version: 0.3
+resourceType: variables
+variables:
+  simpleKey: variable
+  region:                'us-east-1'     ## You can set region for deployment here
+  default_region:        'us-west-1'     ## If key region is not present it is default region setter
+  profile:               'default'       ## It chooses profile from your ~/.aws config. If not present, profile is "default"
+  aws_access_key_id:     'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
+  aws_secret_access_key: 'dummyValue'    ## It overrides secret access key env variable. If omitted system env is used
+  genesis_gas_limit:     'invalidVal'    ## Used to set genesis gas limit
+  genesis_timestamp:     '3n8'	         ## Used to set genesis timestamp
+  genesis_difficulty:     ['12']         ## Used to set genesis difficulty
+  genesis_nonce:          {}	         ## Used to set genesis nonce
   consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 
