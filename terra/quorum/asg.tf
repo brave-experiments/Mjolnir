@@ -13,6 +13,7 @@ data "template_file" "user_data" {
     tar -xvf node_exporter-0.18.1.linux-amd64.tar.gz
     mv node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
     useradd -rs /bin/false node_exporter
+    echo "ECS_AVAILABLE_LOGGING_DRIVERS=[\"awslogs\",\"fluentd\"]" >> /etc/ecs/ecs.config
 
 
     tee -a /etc/init.d/node_exporter << END

@@ -125,3 +125,15 @@ Additional tools you will find under links
 * eth-stats: http://bastion_host_ip:3000
 * Grafana: http://bastion_host_ip:3001
 * Prometheus: http://bastion_host_ip:9090
+
+## Moitoring and logs
+
+### Grafana logs
+
+For infrastructure monitoring and incident response, you no longer need to switch to other tools to debug what went wrong. Explore allows you to dig deeper into your metrics and logs to find the cause. Grafana’s new logging data source, Loki is tightly integrated into Explore and allows you to correlate metrics and logs by viewing them side-by-side
+More info: https://grafana.com/docs/features/explore/
+
+### Dashboard JSON
+
+A dashboard in Grafana is represented by a JSON object, which stores metadata of its dashboard. Dashboard metadata includes dashboard properties, metadata from panels, template variables, panel queries, etc.
+More info: https://grafana.com/docs/reference/dashboard/
