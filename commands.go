@@ -29,11 +29,12 @@ const (
 
 var (
 	RegisteredCommands = map[string]cli.CommandFactory{
-		"apply":   ApplyCmdFactory,
-		"destroy": DestroyCmdFactory,
-		"bastion": SshCmdFactory,
-		"node":    NodeSshCmdFactory,
-		"geth":    GethCmdFactory,
+		"apply":    ApplyCmdFactory,
+		"destroy":  DestroyCmdFactory,
+		"bastion":  SshCmdFactory,
+		"node":     NodeSshCmdFactory,
+		"nodeinfo": NodeInfoSshCmdFactory,
+		"geth":     GethCmdFactory,
 	}
 )
 
@@ -54,6 +55,10 @@ type NodeSshCmd struct {
 	SshCmd
 }
 
+type NodeInfoSshCmd struct {
+	SshCmd
+}
+
 type GethCmd struct {
 	SshCmd
 }
@@ -64,6 +69,10 @@ func GethCmdFactory() (command cli.Command, err error) {
 
 func NodeSshCmdFactory() (command cli.Command, err error) {
 	return NodeSshCmd{}, nil
+}
+
+func NodeInfoSshCmdFactory() (command cli.Command, err error) {
+	return NodeInfoSshCmd{}, nil
 }
 
 func SshCmdFactory() (command cli.Command, err error) {
@@ -103,6 +112,12 @@ func (gethCmd GethCmd) Run(args []string) (exitCode int) {
 func (nodeSshCmd NodeSshCmd) Run(args []string) (exitCode int) {
 	bastionScriptName := "NodeSsh"
 	exitCode = nodeSshCmd.runWithScriptLocation(bastionScriptName, args)
+
+	return exitCode
+}
+
+func (nodeSshCmd NodeInfoSshCmd) Run(args []string) (exitCode int) {
+	exitCode = nodeSshCmd.getNodeInfo()
 
 	return exitCode
 }
@@ -295,6 +310,14 @@ func (nodeSshCmd NodeSshCmd) Help() (helpMessage string) {
 	return helpMessage
 }
 
+func (nodeSshCmd NodeInfoSshCmd) Help() (helpMessage string) {
+	helpMessage = "\n This command let you to get detailed info about runing nodes\n"
+	helpMessage = helpMessage + "You must not provide any arguments. There are not arguments in this command\n"
+	helpMessage = helpMessage + "Example: apollo nodeinfo"
+
+	return helpMessage
+}
+
 func (gethCmd GethCmd) Help() (helpMessage string) {
 	helpMessage = "\n This command let you attach via rpc (geth) to certain node\n"
 	helpMessage = helpMessage + "You must provide node number as argument. If number is out of range, ssh will fail\n"
@@ -320,6 +343,11 @@ func (sshCmd SshCmd) Synopsis() (synopsis string) {
 
 func (nodeSshCmd NodeSshCmd) Synopsis() (synopsis string) {
 	synopsis = "node [number]"
+	return synopsis
+}
+
+func (nodeSshCmd NodeInfoSshCmd) Synopsis() (synopsis string) {
+	synopsis = "nodeinfo"
 	return synopsis
 }
 
@@ -393,6 +421,21 @@ func (sshCmd *SshCmd) runWithScriptLocation(scriptName string, args []string) (e
 
 	bastionSshScriptLocator := fmt.Sprintf("/usr/local/bin/%s%v", scriptName, nodeNumber)
 	additionalSshCmdArgs := []string{bastionSshScriptLocator}
+	coreCmd, err := SshCmdFactory()
+
+	if nil != err {
+		fmt.Println(err)
+		return ExitCodeInvalidSetup
+	}
+
+	exitCode = coreCmd.Run(additionalSshCmdArgs)
+
+	return exitCode
+}
+
+func (sshCmd *SshCmd) getNodeInfo() (exitCode int) {
+	bastionSshNodeInfoLocator := "cat /qdata/nodeinfo/ip_* | sort"
+	additionalSshCmdArgs := []string{bastionSshNodeInfoLocator}
 	coreCmd, err := SshCmdFactory()
 
 	if nil != err {
