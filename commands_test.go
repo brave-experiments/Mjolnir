@@ -37,6 +37,13 @@ func TestNodeSshCmdFactory(t *testing.T) {
 	testThatCommandHasWholeInterface(t, command)
 }
 
+func TestNodeInfoSshCmdFactory(t *testing.T) {
+	command, err := NodeInfoSshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, NodeInfoSshCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
+}
+
 func TestSshCmdFactory(t *testing.T) {
 	command, err := SshCmdFactory()
 	assert.Nil(t, err)
@@ -122,6 +129,27 @@ func TestNodeSshCmd_RunInvalid(t *testing.T) {
 
 	runArgs = []string{"1"}
 	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
+
+func TestNodeInfoSshCmd_RunInvalid(t *testing.T) {
+	terra.TempDirPathLocation = ".dummyApolloNodeInfo"
+	dummyFileName := "output.log"
+	deployName := "dummyDeployName"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
+	err := os.MkdirAll(dummyDeployName, 0777)
+	assert.Nil(t, err)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
+
+	command, err := NodeInfoSshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, NodeInfoSshCmd{}, command)
+
+	exitCode := command.Run([]string{})
 	assert.Equal(t, ExitCodeSshDialError, exitCode)
 
 	err = os.RemoveAll(terra.TempDirPathLocation)

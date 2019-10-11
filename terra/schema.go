@@ -3,10 +3,11 @@ package terra
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
-	"math/rand"
 	"path"
+	"regexp"
 	"strconv"
-	"time"
+	"strings"
+	"unicode"
 )
 
 var (
@@ -16,6 +17,99 @@ var (
 		"genesis_difficulty",
 		"genesis_nonce",
 	}
+	ValidRegions = []string{
+		"us-east-1",
+		"us-east-2",
+		"us-west-1",
+		"us-west-2",
+		"ca-central-1",
+		"eu-central-1",
+		"eu-west-1",
+		"eu-west-2",
+		"eu-west-3",
+		"eu-north-1",
+		"ap-east-1",
+		"ap-northeast-1",
+		"ap-northeast-2",
+		"ap-northeast-3",
+		"ap-southeast-1",
+		"ap-southeast-2",
+		"ap-south-1",
+		"me-south-1",
+		"sa-east-1",
+	}
+	ValidInstanceTypes = []string{
+		"a1.medium",
+		"a1.large",
+		"a1.xlarge",
+		"a1.2xlarge",
+		"a1.4xlarge",
+		"t3.nano",
+		"t3.micro",
+		"t3.small",
+		"t3.medium",
+		"t3.large",
+		"t3.xlarge",
+		"t3.2xlarge",
+		"t3a.nano",
+		"t3a.micro",
+		"t3a.small",
+		"t3a.medium",
+		"t3a.large",
+		"t3a.xlarge",
+		"t3a.2xlarge",
+		"t2.nano",
+		"t2.micro",
+		"t2.small",
+		"t2.medium",
+		"t2.large",
+		"t2.xlarge",
+		"t2.2xlarge",
+		"m5.large",
+		"m5.xlarge",
+		"m5.2xlarge",
+		"m5.4xlarge",
+		"m5.8xlarge",
+		"m5.12xlarge",
+		"m5.16xlarge",
+		"m5.24xlarge",
+		"m5.metal",
+		"m5d.large",
+		"m5d.xlarge",
+		"m5d.2xlarge",
+		"m5d.4xlarge",
+		"m5d.8xlarge",
+		"m5d.12xlarge",
+		"m5d.16xlarge",
+		"m5d.24xlarge",
+		"m5d.metal",
+		"m5a.large",
+		"m5a.xlarge",
+		"m5a.2xlarge",
+		"m5a.4xlarge",
+		"m5a.8xlarge",
+		"m5a.12xlarge",
+		"m5a.16xlarge",
+		"m5a.24xlarge",
+		"m5ad.large",
+		"m5ad.xlarge",
+		"m5ad.2xlarge",
+		"m5ad.4xlarge",
+		"m5ad.12xlarge",
+		"m5ad.24xlarge",
+		"m4.large",
+		"m4.xlarge",
+		"m4.2xlarge",
+		"m4.4xlarge",
+		"m4.10xlarge",
+		"m4.16xlarge",
+	}
+	ValidConsensusMechanisms  = []string{"raft", "instanbul"}
+	SupportedFileTypes        = []string{".yml", ".yaml"}
+	SupportedResourceTypes    = []string{"variables"}
+	SupportedClockSkewSigns   = []string{"+", "-"}
+	SupportedClockSkewUnits   = []string{"s", "m", "h", "d", "y"}
+	StringVariablesToValidate = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
 )
 
 type VariablesSchema struct {
@@ -31,17 +125,21 @@ type variablesModel struct {
 }
 
 const (
-	CurrentVersion = float64(0.3)
-	NetworkNameKey = "network_name"
-	ClockSkewKey   = "faketime"
-	SchemaV02      = `version: 0.2
+	CurrentVersion          = float64(0.3)
+	MaxNetworkNameVarLength = 20
+	NetworkNameKey          = "network_name"
+	ClockSkewKey            = "faketime"
+	NodeNumbersKey          = "number_of_nodes"
+	QuorumDockerImageTagKey = "quorum_docker_image_tag"
+	NetworkNameTerraRegExp  = "[a-z]([-a-z0-9]*[a-z0-9])?"
+	SchemaV02               = `version: 0.2
 resourceType: variables
 variables:
   simpleKey: variable
   region:                     'us-east-2'     ## You can set region for deployment here
   default_region:             'us-east-2'     ## If key region is not present it is default region setter
   profile:                    'default'       ## It chooses profile from your ~/.aws config. If not present, profile is "default"
-  network_name:               'sidechain-example'
+  network_name:               'sidechain'
   number_of_nodes:            '5'
   quorum_docker_image_tag:    '2.2.5'
   aws_access_key_id:          'dummyValue'    ## It overrides access key id env variable. If omitted system env is used
@@ -73,13 +171,6 @@ variables:
 `
 )
 
-var (
-	SupportedFileTypes      = []string{".yml", ".yaml"}
-	SupportedResourceTypes  = []string{"variables"}
-	SupportedClockSkewSigns = []string{"+", "-"}
-	SupportedClockSkewUnits = []string{"s", "m", "h", "d", "y"}
-)
-
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
 
@@ -87,8 +178,12 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 		return err
 	}
 
-	variablesSchema.mapGenesisVariables()
-	variablesSchema.mapNetworkName()
+	err = variablesSchema.mapGenesisVariables()
+
+	if nil != err {
+		return err
+	}
+
 	err = variablesSchema.ValidateSchemaVariables()
 
 	return err
@@ -97,35 +192,65 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 func (variablesSchema *VariablesSchema) ValidateSchemaVariables() (err error) {
 	err = variablesSchema.validateClockSkewVariable()
 
-	return err
-}
-
-func (variablesSchema *VariablesSchema) mapNetworkName() {
-	variables := variablesSchema.Variables
-
-	if nil == variables {
-		return
+	if nil != err {
+		return err
 	}
 
-	networkName := variables[NetworkNameKey]
+	err = variablesSchema.validateNodeNumbersVariable()
 
-	if nil == networkName {
-		return
+	if nil != err {
+		return err
 	}
 
-	fixedSalt := rand.New(rand.NewSource(time.Now().UnixNano()))
-	randomString := fmt.Sprintf("%v", fixedSalt.Int())
-	variablesSchema.Variables[NetworkNameKey] = fmt.Sprintf("%s-%v", networkName, randomString[0:8])
+	err = variablesSchema.validateQuorumDockerImageTagVariable()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateNetworkNameVariable()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateNonSpacesStringVariable()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateAwsProperties()
+
+	if nil != err {
+		return err
+	}
+
+	err = variablesSchema.validateConsensus()
+
+	if nil != err {
+		return err
+	}
+
+	return nil
 }
 
-func (variablesSchema *VariablesSchema) mapGenesisVariables() {
+func (variablesSchema *VariablesSchema) mapGenesisVariables() (err error) {
 	for key, variable := range variablesSchema.Variables {
 		if false == contains(VariablesKeyToHex, key) {
 			continue
 		}
 
-		variablesSchema.Variables[key] = ConvertInterfaceToHex(variable)
+		hexValue, err := ConvertInterfaceToHex(variable)
+
+		if nil != err {
+			return err
+		}
+
+		variablesSchema.Variables[key] = hexValue
 	}
+
+	return nil
 }
 
 func (variablesSchema *VariablesSchema) guard() (err error) {
@@ -166,15 +291,16 @@ func guardExtension(filePath string) (err error) {
 	fileExtension := path.Ext(filePath)
 
 	if false == contains(SupportedFileTypes, fileExtension) {
-		return ClientError{fmt.Sprintf(
-			"%s is not in supported file types. Valid are: %s",
-			fileExtension,
-			SupportedFileTypes,
-		),
+		return ClientError{
+			fmt.Sprintf(
+				"%s is not in supported file types. Valid are: %s",
+				fileExtension,
+				SupportedFileTypes,
+			),
 		}
 	}
 
-	return
+	return nil
 }
 
 func (variablesModel *variablesModel) guard() (err error) {
@@ -207,7 +333,7 @@ func (variablesModel *variablesModel) guardVersion() (err error) {
 		}
 	}
 
-	return
+	return nil
 }
 
 func (variablesModel *variablesModel) guardResourceType() (err error) {
@@ -222,7 +348,7 @@ func (variablesModel *variablesModel) guardResourceType() (err error) {
 		}
 	}
 
-	return
+	return nil
 }
 
 func (variablesModel *variablesModel) guardVariables() (err error) {
@@ -232,7 +358,7 @@ func (variablesModel *variablesModel) guardVariables() (err error) {
 		return ClientError{"No variables found"}
 	}
 
-	return
+	return nil
 }
 
 func (variablesSchema *VariablesSchema) validateClockSkewVariable() (err error) {
@@ -251,6 +377,24 @@ func (variablesSchema *VariablesSchema) validateClockSkewVariable() (err error) 
 	}
 
 	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateConsensus() (err error) {
+	desiredKey := "consensus_mechanism"
+
+	value, ok := variablesSchema.Variables[desiredKey]
+
+	if false == ok {
+		return nil
+	}
+
+	if contains(ValidConsensusMechanisms, value.(string)) {
+		return nil
+	}
+
+	return ClientError{
+		fmt.Sprintf("Invalid %s, valid are: %s", desiredKey, ValidConsensusMechanisms),
+	}
 }
 
 func validateClockSkewVariable(variable interface{}) (err error) {
@@ -301,6 +445,172 @@ func validateClockSkewVariable(variable interface{}) (err error) {
 
 	if nil != err {
 		return ClientError{"Invalid value, should be integer between sign and faketime unit"}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateNodeNumbersVariable() (err error) {
+	if nil == variablesSchema.Variables[NodeNumbersKey] {
+		return nil
+	}
+
+	nodeNumbersVariable := variablesSchema.Variables[NodeNumbersKey].(string)
+	_, err = strconv.ParseInt(nodeNumbersVariable, 10, 64)
+
+	if nil != err {
+		return ClientError{
+			fmt.Sprintf(
+				"%s is not in supported node of numbers variable value type.",
+				nodeNumbersVariable,
+			),
+		}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateQuorumDockerImageTagVariable() (err error) {
+	if nil == variablesSchema.Variables[QuorumDockerImageTagKey] {
+		return nil
+	}
+
+	nodeNumbersVariable := variablesSchema.Variables[QuorumDockerImageTagKey].(string)
+
+	versionIntegers := strings.Split(nodeNumbersVariable, ".")
+
+	for _, intVal := range versionIntegers {
+		_, err = strconv.ParseInt(intVal, 10, 64)
+
+		if nil != err {
+			return ClientError{"Invalid value, should be integer docker image tag version between dots"}
+		}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateNetworkNameVariable() (err error) {
+	if nil == variablesSchema.Variables[NetworkNameKey] {
+		return nil
+	}
+
+	networkNameVariable := variablesSchema.Variables[NetworkNameKey].(string)
+
+	if MaxNetworkNameVarLength < len(networkNameVariable) {
+		return ClientError{
+			fmt.Sprintf(
+				"Network name is too long. Maximum allowed characters are %d",
+				MaxNetworkNameVarLength,
+			),
+		}
+	}
+
+	variableDeclarationRegex := regexp.MustCompile(NetworkNameTerraRegExp)
+	variableDeclarations := variableDeclarationRegex.FindString(networkNameVariable)
+
+	if networkNameVariable != variableDeclarations {
+		return ClientError{"Network name is invalid"}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateNonSpacesStringVariable() (err error) {
+	if nil == variablesSchema.Variables {
+		return nil
+	}
+
+	for key, variable := range variablesSchema.Variables {
+		if false != contains(StringVariablesToValidate, key) {
+			err = validateNonSpacesStringVariable(variable)
+
+			if nil != err {
+				return ClientError{
+					fmt.Sprintf(
+						"Variable with key: %s contains white space which is not allowed",
+						key,
+					),
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
+func (variablesSchema *VariablesSchema) validateAwsProperties() (err error) {
+	if nil == variablesSchema.Variables {
+		return nil
+	}
+
+	for key, variable := range variablesSchema.Variables {
+		err = validateAwsRegions(key, variable)
+
+		if nil != err {
+			return err
+		}
+
+		err = validateAwsInstanceType(key, variable)
+
+		if nil != err {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func validateAwsRegions(key string, variable interface{}) (err error) {
+	desiredKeys := []string{"region", "default_region"}
+
+	if false == contains(desiredKeys, key) {
+		return nil
+	}
+
+	stringVariable := fmt.Sprintf("%v", variable)
+
+	if contains(ValidRegions, stringVariable) {
+		return nil
+	}
+
+	return ClientError{
+		fmt.Sprintf(
+			"%s is not valid AWS region. Valid are: %s",
+			stringVariable,
+			ValidRegions,
+		),
+	}
+}
+
+func validateAwsInstanceType(key string, variable interface{}) (err error) {
+	desiredKey := "asg_instance_type"
+
+	if key != desiredKey {
+		return nil
+	}
+
+	stringVariable := fmt.Sprintf("%v", variable)
+
+	if contains(ValidInstanceTypes, stringVariable) {
+		return nil
+	}
+
+	return ClientError{
+		fmt.Sprintf(
+			"%s is not valid %s, valid are: %s",
+			stringVariable,
+			desiredKey,
+			ValidInstanceTypes,
+		),
+	}
+}
+
+func validateNonSpacesStringVariable(variable interface{}) (err error) {
+	for _, v := range variable.(string) {
+		if unicode.IsSpace(v) {
+			return ClientError{}
+		}
 	}
 
 	return nil

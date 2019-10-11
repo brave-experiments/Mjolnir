@@ -202,7 +202,6 @@ func (client *Client) addDependencies() {
 	client.platform.AddProvider(TemplateProvider("template"))
 	client.platform.AddProvider(TlsProvider("tls"))
 
-	client.platform.AddProvisioner(LocalProvisioner("local-exec"))
 	client.platform.AddProvisioner(RemoteProvisioner("remote-exec"))
 }
 
