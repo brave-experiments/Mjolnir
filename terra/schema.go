@@ -3,10 +3,8 @@ package terra
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
-	"math/rand"
 	"path"
 	"strconv"
-	"time"
 )
 
 var (
@@ -88,7 +86,6 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 	}
 
 	variablesSchema.mapGenesisVariables()
-	variablesSchema.mapNetworkName()
 	err = variablesSchema.ValidateSchemaVariables()
 
 	return err
@@ -98,24 +95,6 @@ func (variablesSchema *VariablesSchema) ValidateSchemaVariables() (err error) {
 	err = variablesSchema.validateClockSkewVariable()
 
 	return err
-}
-
-func (variablesSchema *VariablesSchema) mapNetworkName() {
-	variables := variablesSchema.Variables
-
-	if nil == variables {
-		return
-	}
-
-	networkName := variables[NetworkNameKey]
-
-	if nil == networkName {
-		return
-	}
-
-	fixedSalt := rand.New(rand.NewSource(time.Now().UnixNano()))
-	randomString := fmt.Sprintf("%v", fixedSalt.Int())
-	variablesSchema.Variables[NetworkNameKey] = fmt.Sprintf("%s-%v", networkName, randomString[0:8])
 }
 
 func (variablesSchema *VariablesSchema) mapGenesisVariables() {

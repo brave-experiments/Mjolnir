@@ -140,7 +140,7 @@ func TestVariablesSchema_Read_v02(t *testing.T) {
 	variables := variablesSchema.Variables
 	// Network name should look like `variable-[8-length-random-integer]`
 	newNetworkName := variables["network_name"].(string)
-	assert.Equal(t, 17, len(newNetworkName))
+	assert.Equal(t, 8, len(newNetworkName))
 	RemoveDummyFile(t, dummyFilePath)
 }
 
