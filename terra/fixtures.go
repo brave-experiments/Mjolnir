@@ -26,7 +26,7 @@ const (
                 "bastion_host_ip": {
                     "sensitive": false,
                     "type": "string",
-                    "value": "3.15.144.150"
+                    "value": "invalid.ip.666"
                 },
                 "bucket_name": {
                     "sensitive": false,
@@ -46,7 +46,7 @@ const (
                 "grafana_host_url": {
                     "sensitive": false,
                     "type": "string",
-                    "value": "http://3.15.144.150:3001"
+                    "value": "http://invalid.ip.666:3001"
                 },
                 "grafana_password": {
                     "sensitive": false,
@@ -547,7 +547,7 @@ const (
                             "private_dns": "ip-10-0-0-239.us-east-2.compute.internal",
                             "private_ip": "10.0.0.239",
                             "public_dns": "",
-                            "public_ip": "3.15.144.150",
+                            "public_ip": "invalid.ip.666",
                             "root_block_device.#": "1",
                             "root_block_device.0.delete_on_termination": "true",
                             "root_block_device.0.iops": "100",
@@ -2158,7 +2158,7 @@ const (
                 "bastion_host_ip": {
                     "sensitive": false,
                     "type": "map",
-                    "value": {"ip": "3.15.144.150"}
+                    "value": {"ip": "invalid.ip.666"}
                 },
                 "bucket_name": {
                     "sensitive": false,
@@ -2178,7 +2178,7 @@ const (
                 "grafana_host_url": {
                     "sensitive": false,
                     "type": "string",
-                    "value": "http://3.15.144.150:3001"
+                    "value": "http://invalid.ip.666:3001"
                 },
                 "grafana_password": {
                     "sensitive": false,
@@ -2679,7 +2679,7 @@ const (
                             "private_dns": "ip-10-0-0-239.us-east-2.compute.internal",
                             "private_ip": "10.0.0.239",
                             "public_dns": "",
-                            "public_ip": "3.15.144.150",
+                            "public_ip": "invalid.ip.666",
                             "root_block_device.#": "1",
                             "root_block_device.0.delete_on_termination": "true",
                             "root_block_device.0.iops": "100",
@@ -4275,6 +4275,27 @@ variables:
 resourceType: variables
 variables: 
   network_name: variable`
+
+	YamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["+2d", "-30h", "+120", "-120", "120", "44", "-44", "+44", "+0", "-0", "+0s", "-0h"]`
+
+	IncorrectSignYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["@2s"]`
+
+	IncorrectUnitYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["+2x"]`
+
+	IncorrectValueYamlV03Fixture = `version: 0.3
+resourceType: variables
+variables: 
+  faketime: ["+1A24s"]`
+
 	YamlFixtureConfigurable = `version: %v
 resourceType: %s
 variables:
@@ -4314,9 +4335,9 @@ variables:
     count         = "${var.count}"
     key_name      = "${var.key_name}"
   }`
-	OutputAsAStringWithoutHeaderFixture   = "_status = Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n\nbastion_host_dns = \nbastion_host_ip = 3.15.144.150\nbucket_name = us-east-2-ecs-cocroaches-attack-e8c6b6c6766602b1\nchain_id = 4856\necs_cluster_name = quorum-network-cocroaches-attack\ngrafana_host_url = http://3.15.144.150:3001\ngrafana_password = -<ND{!FA)tLFDoGB\nnetwork_name = cocroaches-attack\nprivate_key_file = /tmp/.terranova273240257/quorum-cocroaches-attack.pem"
-	OutputAsAStringFromMultipleValueTypes = "_status = Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n\nbastion_host_dns = [\"\", \"\"]\nbastion_host_ip = {\"ip\": \"3.15.144.150\"}\nbucket_name = us-east-2-ecs-cocroaches-attack-e8c6b6c6766602b1\nchain_id = 4856\necs_cluster_name = quorum-network-cocroaches-attack\ngrafana_host_url = http://3.15.144.150:3001\ngrafana_password = -<ND{!FA)tLFDoGB\nnetwork_name = cocroaches-attack\nprivate_key_file = /tmp/.terranova273240257/quorum-cocroaches-attack.pem"
-	OutputAsAStringWithInvalidValues      = "_status = Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n\nbastion_host_dns = [\"\", \"\"]\nbastion_host_ip =\nbucket_name = us-east-2-ecs-cocroaches-attack-e8c6b6c6766602b1\nchain_id = 4856\necs_cluster_name = quorum-network-cocroaches-attack\ngrafana_host_url = http://3.15.144.150:3001\ngrafana_password = -<ND{!FA)tLFDoGB\nnetwork_name = \nprivate_key_file = /tmp/.terranova273240257/quorum-cocroaches-attack.pem"
+	OutputAsAStringWithoutHeaderFixture   = "_status = Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n\nbastion_host_dns = \nbastion_host_ip = invalid.ip.666\nbucket_name = us-east-2-ecs-cocroaches-attack-e8c6b6c6766602b1\nchain_id = 4856\necs_cluster_name = quorum-network-cocroaches-attack\ngrafana_host_url = http://invalid.ip.666:3001\ngrafana_password = -<ND{!FA)tLFDoGB\nnetwork_name = cocroaches-attack\nprivate_key_file = /tmp/.terranova273240257/quorum-cocroaches-attack.pem"
+	OutputAsAStringFromMultipleValueTypes = "_status = Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n\nbastion_host_dns = [\"\", \"\"]\nbastion_host_ip = {\"ip\": \"invalid.ip.666\"}\nbucket_name = us-east-2-ecs-cocroaches-attack-e8c6b6c6766602b1\nchain_id = 4856\necs_cluster_name = quorum-network-cocroaches-attack\ngrafana_host_url = http://invalid.ip.666:3001\ngrafana_password = -<ND{!FA)tLFDoGB\nnetwork_name = cocroaches-attack\nprivate_key_file = /tmp/.terranova273240257/quorum-cocroaches-attack.pem"
+	OutputAsAStringWithInvalidValues      = "_status = Completed!\n\nQuorum Docker Image         = quorumengineering/quorum:latest\nPrivacy Engine Docker Image = quorumengineering/tessera:latest\nNumber of Quorum Nodes      = 0\nECS Task Revision           = 2\nCloudWatch Log Group        = /ecs/quorum/cocroaches-attack\n\nbastion_host_dns = [\"\", \"\"]\nbastion_host_ip =\nbucket_name = us-east-2-ecs-cocroaches-attack-e8c6b6c6766602b1\nchain_id = 4856\necs_cluster_name = quorum-network-cocroaches-attack\ngrafana_host_url = http://invalid.ip.666:3001\ngrafana_password = -<ND{!FA)tLFDoGB\nnetwork_name = \nprivate_key_file = /tmp/.terranova273240257/quorum-cocroaches-attack.pem"
 	PrivateKeyPairBody                    = "---DUMMY PRIVATE KEY---"
 	PublicKeyPairBody                     = "---DUMMY PUBLIC KEY---"
 	OpenSshKeyBody                        = "dummyKeySsh"

@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"math/rand"
 	"path"
+	"strconv"
 	"time"
 )
 
@@ -30,8 +31,9 @@ type variablesModel struct {
 }
 
 const (
-	CurrentVersion = float64(0.2)
+	CurrentVersion = float64(0.3)
 	NetworkNameKey = "network_name"
+	ClockSkewKey   = "faketime"
 	SchemaV02      = `version: 0.2
 resourceType: variables
 variables:
@@ -72,8 +74,10 @@ variables:
 )
 
 var (
-	SupportedFileTypes     = []string{".yml", ".yaml"}
-	SupportedResourceTypes = []string{"variables"}
+	SupportedFileTypes      = []string{".yml", ".yaml"}
+	SupportedResourceTypes  = []string{"variables"}
+	SupportedClockSkewSigns = []string{"+", "-"}
+	SupportedClockSkewUnits = []string{"s", "m", "h", "d", "y"}
 )
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
@@ -85,8 +89,15 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 
 	variablesSchema.mapGenesisVariables()
 	variablesSchema.mapNetworkName()
+	err = variablesSchema.ValidateSchemaVariables()
 
-	return
+	return err
+}
+
+func (variablesSchema *VariablesSchema) ValidateSchemaVariables() (err error) {
+	err = variablesSchema.validateClockSkewVariable()
+
+	return err
 }
 
 func (variablesSchema *VariablesSchema) mapNetworkName() {
@@ -222,6 +233,77 @@ func (variablesModel *variablesModel) guardVariables() (err error) {
 	}
 
 	return
+}
+
+func (variablesSchema *VariablesSchema) validateClockSkewVariable() (err error) {
+	if nil == variablesSchema.Variables[ClockSkewKey] {
+		return nil
+	}
+
+	clockSkewVariables := variablesSchema.Variables[ClockSkewKey].([]interface{})
+
+	for _, variable := range clockSkewVariables {
+		err = validateClockSkewVariable(variable)
+
+		if nil != err {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func validateClockSkewVariable(variable interface{}) (err error) {
+	variableString := variable.(string)
+	sign := variableString[:1]
+	_, err = strconv.ParseInt(sign, 10, 64)
+
+	if nil == err {
+		variableString = "+" + variableString
+	}
+
+	isProperSign := contains(SupportedClockSkewSigns, variableString[:1])
+
+	if false == isProperSign {
+		return ClientError{
+			fmt.Sprintf(
+				"%s is not in supported faketime variable signs. Valid are: %s",
+				variable,
+				SupportedClockSkewSigns,
+			),
+		}
+	}
+
+	variableLength := len(variableString)
+	possibleUnit := variableString[variableLength-1:]
+	isUnit := contains(SupportedClockSkewUnits, possibleUnit)
+	_, err = strconv.ParseInt(possibleUnit, 10, 64)
+
+	if nil != err && false == isUnit {
+		return ClientError{
+			fmt.Sprintf(
+				"%s is not in supported faketime variable units. Valid are: %s",
+				variable,
+				SupportedClockSkewUnits,
+			),
+		}
+	}
+
+	endIndex := variableLength
+
+	if isUnit {
+		endIndex = variableLength - 1
+	}
+
+	shouldBeInteger := variableString[1:endIndex]
+
+	_, err = strconv.ParseInt(shouldBeInteger, 10, 64)
+
+	if nil != err {
+		return ClientError{"Invalid value, should be integer between sign and faketime unit"}
+	}
+
+	return nil
 }
 
 func contains(haystack []string, needle string) bool {

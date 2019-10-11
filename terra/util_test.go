@@ -69,7 +69,9 @@ func TestConvertInterfaceToHex(t *testing.T) {
 }
 
 func TestReadOutputLogVarFailure(t *testing.T) {
-	TempDirPathLocation = ".apolloTest"
+	TempDirPathLocation = ".apolloTestOutput"
+	err := os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
 	deployName := "dummyDeploy"
 	deployNameLocator := TempDirPathLocation + "/" + deployName
 	fullFilePath := deployNameLocator + "/output.log"
@@ -119,11 +121,13 @@ func TestReadOutputLogVarFailure(t *testing.T) {
 }
 
 func TestReadOutputLogVar(t *testing.T) {
-	TempDirPathLocation = ".apolloTest"
+	TempDirPathLocation = ".apolloTestOutputLog"
+	err := os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
 	deployName := "dummyDeploy"
 	deployNameDirLocator := TempDirPathLocation + "/" + deployName
 	fullFilePath := deployNameDirLocator + "/output.log"
-	err := os.MkdirAll(deployNameDirLocator, 0777)
+	err = os.MkdirAll(deployNameDirLocator, 0777)
 	assert.Nil(t, err)
 	file := File{
 		Location: fullFilePath,
@@ -134,5 +138,9 @@ func TestReadOutputLogVar(t *testing.T) {
 	keyToSeek := "bastion_host_ip"
 	err, foundKey := ReadOutputLogVar(keyToSeek)
 	assert.Nil(t, err)
-	assert.Equal(t, "3.15.144.150", foundKey)
+	assert.Equal(t, "invalid.ip.666", foundKey)
+	err = os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
+
+	TempDirPathLocation = TempDirPath
 }

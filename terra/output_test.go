@@ -83,7 +83,7 @@ func TestOutputRecords_FromJsonAsString(t *testing.T) {
 	assert.Equal(t, "map", thirdOutputRecord.Type)
 	assert.Equal(
 		t,
-		"{\"ip\": \"3.15.144.150\"}",
+		"{\"ip\": \"invalid.ip.666\"}",
 		thirdOutputRecord.Value,
 	)
 	assert.Equal(
@@ -121,9 +121,11 @@ func TestKeyPair_FromJson(t *testing.T) {
 
 func TestKeyPair_SaveFailure(t *testing.T) {
 	// Should fail when no deploy name
-	TempDirPathLocation = ".apolloTest"
+	TempDirPathLocation = ".apolloTestHash"
+	err := os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
 	keyPairToTest := keyPair{}
-	err := keyPairToTest.Save()
+	err = keyPairToTest.Save()
 	assert.IsType(t, ClientError{}, err)
 	assert.Equal(t, "Deploy Name not present", err.Error())
 
@@ -163,7 +165,9 @@ func TestKeyPair_SaveFailure(t *testing.T) {
 
 func TestKeyPair_Save(t *testing.T) {
 	// Should succeed when both keys are present
-	TempDirPathLocation = ".apolloTest"
+	TempDirPathLocation = ".apolloTestSave"
+	err := os.RemoveAll(TempDirPathLocation)
+	assert.Nil(t, err)
 	deploymentName := "dummy-deploy"
 	privateKeyBody := "dummyKey"
 	publicKeyBody := "dummyKeyPub"
@@ -172,7 +176,7 @@ func TestKeyPair_Save(t *testing.T) {
 		PrivateKey: privateKeyBody,
 		PublicKey:  publicKeyBody,
 	}
-	err := keyPairToTest.Save()
+	err = keyPairToTest.Save()
 	assert.Nil(t, err)
 
 	assert.Equal(t, privateKeyBody, keyPairToTest.privateKeyFile.Body)

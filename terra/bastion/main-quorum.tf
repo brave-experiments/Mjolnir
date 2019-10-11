@@ -108,7 +108,6 @@ EOF
     }
   }
 
-
   tags = "${merge(local.common_tags, map("Name", local.default_bastion_resource_name))}"
 }
 
@@ -226,8 +225,17 @@ SS
       url: http://$ip:${local.quorum_rpc_port}
       third-party-url: http://$ip:${local.tessera_thirdparty_port}
 SS
+
+  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
+  cat <<SS | sudo tee $sshScript
+#!/bin/bash
+
+ssh ec2-user@$ip -A -t
+SS
+  sudo chmod +x $sshScript
 done
 
+# Prometheus config ============================================
 cat <<SS | sudo tee /opt/prometheus/prometheus.yml
 global:
   scrape_interval:     15s # By default, scrape targets every 15 seconds.
@@ -252,6 +260,7 @@ scrape_configs:
     - 'targets.json'
 SS
 
+# docker-compose ===============================================
 cat <<SS | sudo tee /opt/prometheus/docker-compose.yml
 # docker-compose.yml
 version: '2'
@@ -287,6 +296,7 @@ services:
             - GETH=http://$ip:${local.quorum_rpc_port}
 SS
 
+# Prometheus targets ===========================================
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
 target_file=/tmp/targets.json
 i=0
@@ -305,6 +315,34 @@ done
 echo ']' >> $target_file
 sudo mv $target_file /opt/prometheus/
 
+# Chainhammer ==================================================
+WORKDIR=/home/admin/chainhammer
+rm -rf $WORKDIR
+git clone ${var.chainhammer_repo_url} $WORKDIR
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install-{solc,geth,virtualenv}.sh
+
+count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+i=0
+for idx in "$${!nodes[@]}"
+do
+  f=$(grep -l $${nodes[$idx]} *)
+  ip=$(cat ${local.hosts_folder}/$f)
+  i=$(($i+1))
+    if [ $i -eq 1 ]; then
+      sed -i s"/^RPCaddress=.*/RPCaddress=\'http:\/\/$ip:${local.quorum_rpc_port}\'/"   $WORKDIR/hammer/config.py
+    elif [ $i -eq 2 ]; then
+      sed -i s"/^RPCaddress2=.*/RPCaddress2=\'http:\/\/$ip:${local.quorum_rpc_port}\'/" $WORKDIR/hammer/config.py
+    elif [ $i -gt 2 ]; then
+      continue
+    fi
+done
+TMPDIR=$PWD
+cd $WORKDIR
+$WORKDIR/scripts/install.sh nodocker
+cd $TMPDIR
+
+# Grafana dashboards ===========================================
 cat <<SS | sudo tee /opt/grafana/provisioning/datasources/all.yml
 datasources:
 - name: 'prometheus'

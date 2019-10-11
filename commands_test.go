@@ -30,6 +30,13 @@ variables:
 	ExpectedEnvKey = "APP_DEFAULT_KEY"
 )
 
+func TestNodeSshCmdFactory(t *testing.T) {
+	command, err := NodeSshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, NodeSshCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
+}
+
 func TestSshCmdFactory(t *testing.T) {
 	command, err := SshCmdFactory()
 	assert.Nil(t, err)
@@ -51,6 +58,77 @@ func TestDestroyCmdFactory(t *testing.T) {
 	testThatCommandHasWholeInterface(t, command)
 }
 
+func TestGethCmdFactory(t *testing.T) {
+	command, err := GethCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, GethCmd{}, command)
+	testThatCommandHasWholeInterface(t, command)
+}
+
+func TestGethCmd_Run(t *testing.T) {
+	terra.TempDirPathLocation = ".dummyApolloGeth"
+	dummyFileName := "output.log"
+	deployName := "dummyDeployName"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
+	err := os.MkdirAll(dummyDeployName, 0777)
+	assert.Nil(t, err)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
+
+	command, err := GethCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, GethCmd{}, command)
+
+	// Should throw an sshDialError when no node number present
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
+
+	sshKeyFileLocator := dummyDeployName + "/id_rsa"
+	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
+	runArgs := []string{"a"}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeInvalidArgument, exitCode)
+
+	runArgs = []string{"1"}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
+
+func TestNodeSshCmd_RunInvalid(t *testing.T) {
+	terra.TempDirPathLocation = ".dummyApolloNode"
+	dummyFileName := "output.log"
+	deployName := "dummyDeployName"
+	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
+	err := os.MkdirAll(dummyDeployName, 0777)
+	assert.Nil(t, err)
+	PrepareDummyFile(t, dummyDeployName+"/"+dummyFileName, terra.OutputAsAStringWithoutHeaderFixture)
+
+	command, err := NodeSshCmdFactory()
+	assert.Nil(t, err)
+	assert.IsType(t, NodeSshCmd{}, command)
+
+	// Should throw an sshDialError when no node number present
+	exitCode := command.Run([]string{})
+	assert.Equal(t, ExitCodeInvalidNumOfArgs, exitCode)
+
+	sshKeyFileLocator := dummyDeployName + "/id_rsa"
+	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
+	runArgs := []string{"a"}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeInvalidArgument, exitCode)
+
+	runArgs = []string{"1"}
+	exitCode = command.Run(runArgs)
+	assert.Equal(t, ExitCodeSshDialError, exitCode)
+
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
+}
+
 func TestSshCmd_RunInvalid(t *testing.T) {
 	terra.TempDirPathLocation = ".dummyApollo"
 	dummyFileName := "output.log"
@@ -65,12 +143,12 @@ func TestSshCmd_RunInvalid(t *testing.T) {
 	assert.IsType(t, SshCmd{}, command)
 
 	// Should throw an sshDialError when no key present
-	exitCode := command.Run([]string{})
+	exitCode := command.Run([]string{"-i", "dummyFile"})
 	assert.Equal(t, ExitCodeSshDialError, exitCode)
 
 	sshKeyFileLocator := dummyDeployName + "/id_rsa"
 	PrepareDummyFile(t, sshKeyFileLocator, "dummyBody")
-	runArgs := []string{""}
+	runArgs := []string{"-i", "dummyFile"}
 	exitCode = command.Run(runArgs)
 	assert.Equal(t, ExitCodeSshDialError, exitCode)
 
@@ -80,6 +158,9 @@ func TestSshCmd_RunInvalid(t *testing.T) {
 }
 
 func TestApplyCmd_RunInvalid(t *testing.T) {
+	terra.TempDirPathLocation = ".apolloApplyTemp"
+	err := os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
 	command, err := ApplyCmdFactory()
 	expectedEnvKey := ExpectedEnvKey
 	expectedOldEnvValue := os.Getenv(expectedEnvKey)
@@ -152,10 +233,16 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, yamlFileName)
 	terra.DefaultRecipes = oldRecipes
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
 }
 
 func TestDestroyCmd_RunInvalid(t *testing.T) {
-	terra.TempDirPathLocation = ".apolloTest"
+	terra.TempDirPathLocation = ".apolloTestDir"
+	err := os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+
 	command, err := DestroyCmdFactory()
 	expectedEnvKey := ExpectedEnvKey
 	expectedOldEnvValue := os.Getenv(expectedEnvKey)
@@ -170,7 +257,7 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 
 	// DestroyCmd has no Recipes
 	invalidCmd := DestroyCmd{}
-	dummyArgs := []string{"dummy", "dummy.yml"}
+	dummyArgs := []string{"dummy.yml"}
 	exitCode = invalidCmd.Run(dummyArgs)
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
 	_, err = os.Stat(terra.TempDirPathLocation)
@@ -217,7 +304,9 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 	terra.DefaultRecipes = oldRecipes
 
 	// Since it is not mocked we want to end our testing process here
-	yamlFileName := dummyArgs[1]
+	err = os.MkdirAll(terra.TempDirPathLocation, 0777)
+	assert.Nil(t, err)
+	yamlFileName := dummyArgs[0]
 	PrepareDummyFile(t, yamlFileName, YamlV1Fixture)
 	envRecipesMapping := map[string]string{
 		"simpleKey": expectedEnvKey,
@@ -231,21 +320,28 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 	)
 	oldRecipes = terra.DefaultRecipes
 	terra.DefaultRecipes = recipes.Elements
-	command = ApplyCmd{
-		Recipes: recipes,
+	terra.DestroyDefaultRecipeVar = "dummy"
+	command = DestroyCmd{
+		ApplyCmd{Recipes: recipes},
 	}
 	exitCode = command.Run(dummyArgs)
-	assert.Equal(t, ExitCodeTerraformError, exitCode)
+	assert.Equal(t, ExitCodeSuccess, exitCode)
 	assert.Equal(t, expectedOldEnvValue, os.Getenv(expectedEnvKey))
+	terra.DestroyDefaultRecipeVar = terra.DestroyDefaultRecipe
 	_, err = os.Stat(terra.TempDirPathLocation)
 	assert.True(t, os.IsNotExist(err))
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, yamlFileName)
 	terra.DefaultRecipes = oldRecipes
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
 	terra.TempDirPathLocation = terra.TempDirPath
 }
 
 func TestApplyCmd_Run(t *testing.T) {
+	terra.TempDirPathLocation = ".apolloApplyEnd"
+	err := os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
 	// We want to end with ExitCodeTerraformError without actual e2e calls
 	keyName := "dummy"
 	filePath := "dummy.tf"
@@ -261,10 +357,15 @@ func TestApplyCmd_Run(t *testing.T) {
 	assert.Equal(t, ExitCodeSuccess, exitCode)
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, schemaFilePath)
+	err = os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
+	terra.TempDirPathLocation = terra.TempDirPath
 }
 
 func TestDestroyCmd_Run(t *testing.T) {
-	terra.TempDirPathLocation = ".apolloTest"
+	terra.TempDirPathLocation = ".apolloTestTemp"
+	err := os.RemoveAll(terra.TempDirPathLocation)
+	assert.Nil(t, err)
 	keyName := "dummy"
 	filePath := "dummy.tf"
 	schemaFilePath := "dummy.yml"
@@ -279,7 +380,7 @@ func TestDestroyCmd_Run(t *testing.T) {
 	assert.IsType(t, DestroyCmd{}, commandDestroy)
 	exitCode := commandDestroy.Run([]string{keyName, schemaFilePath})
 	assert.Equal(t, ExitCodeYamlBindingError, exitCode)
-	_, err := os.Stat(terra.TempDirPathLocation)
+	_, err = os.Stat(terra.TempDirPathLocation)
 	assert.True(t, os.IsNotExist(err))
 	RemoveDummyFile(t, filePath)
 	RemoveDummyFile(t, schemaFilePath)

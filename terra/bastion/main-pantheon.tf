@@ -103,7 +103,6 @@ EOF
     }
   }
 
-
   tags = "${merge(local.common_tags, map("Name", local.default_bastion_resource_name))}"
 }
 
@@ -215,6 +214,15 @@ do
 sudo docker run --rm -it ${local.quorum_docker_image} attach http://$ip:${local.pantheon_rpc_port} $@
 SS
   sudo chmod +x $script
+
+  sshScript="/usr/local/bin/NodeSsh$nodeIdx"
+  cat <<SS | sudo tee $sshScript
+#!/bin/bash
+
+ssh ec2-user@$ip -A -t
+SS
+  sudo chmod +x $sshScript
+
   cat <<SS | sudo tee -a ${local.shared_volume_container_path}/pantheon_metadata
     Node$nodeIdx:
       privacy-address: $(cat ${local.privacy_addresses_folder}/$f)
@@ -222,6 +230,7 @@ SS
 SS
 done
 
+# Prometheus config ============================================
 cat <<SS | sudo tee /opt/prometheus/prometheus.yml
 global:
   scrape_interval:     15s # By default, scrape targets every 15 seconds.
@@ -246,6 +255,7 @@ scrape_configs:
     - 'targets.json'
 SS
 
+# docker-compose ===============================================
 cat <<SS | sudo tee /opt/prometheus/docker-compose.yml
 # docker-compose.yml
 version: '2'
@@ -292,6 +302,7 @@ services:
 
 SS
 
+# Prometheus targets ===========================================
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
 target_file=/tmp/targets.json
 i=0
@@ -312,6 +323,7 @@ done
 echo ']' >> $target_file
 sudo mv $target_file /opt/prometheus/
 
+# Ethstats =====================================================
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
 target_file=/tmp/app.json
 i=0
@@ -347,6 +359,34 @@ echo ']' >> $target_file
 sudo mv $target_file /opt/ethstats/
 echo '["'${random_id.ethstat_secret.hex}'"]' |  sudo tee /opt/ethstats/ws_secret.json
 
+# Chainhammer ==================================================
+WORKDIR=/home/admin/chainhammer
+rm -rf $WORKDIR
+git clone ${var.chainhammer_repo_url} $WORKDIR
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install-{solc,geth,virtualenv}.sh
+
+count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+i=0
+for idx in "$${!nodes[@]}"
+do
+  f=$(grep -l $${nodes[$idx]} *)
+  ip=$(cat ${local.hosts_folder}/$f)
+  i=$(($i+1))
+    if [ $i -eq 1 ]; then
+      sed -i s"/^RPCaddress=.*/#RPCaddress=\'http:\/\/$ip:${local.pantheon_rpc_port}\'\n&/"   $WORKDIR/hammer/config.py
+    elif [ $i -eq 2 ]; then
+      sed -i s"/^RPCaddress2=.*/#RPCaddress2=\'http:\/\/$ip:${local.pantheon_rpc_port}\'\n&/" $WORKDIR/hammer/config.py
+    elif [ $i -gt 2 ]; then
+      continue
+    fi
+done
+TMPDIR=$PWD
+cd $WORKDIR
+$WORKDIR/scripts/install.sh nodocker
+cd $TMPDIR
+
+# Grafana dashboards ===========================================
 cat <<SS | sudo tee /opt/grafana/provisioning/datasources/all.yml
 datasources:
 - name: 'prometheus'
@@ -371,6 +411,7 @@ SS
 sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-geth.json
 sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-node-exporter.json
 sudo sed -i s'/datasource":.*/datasource" :"prometheus",/' /opt/grafana/dashboards/dashboard-pantheon.json
+
 sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate
 EOF
 }

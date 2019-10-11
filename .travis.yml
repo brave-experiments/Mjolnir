@@ -12,7 +12,7 @@ before_install:
   - sudo mv --force docker-compose /usr/local/bin
 
 script:
-- ./bin/run test
+- ./bin/run test-ci
 
 after_script:
   - sleep 10
