@@ -185,7 +185,7 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.mapGenesisVariables()
 
 	if nil != err {
-		return err
+		return yamlValidationError(err.Error())
 	}
 
 	err = variablesSchema.ValidateSchemaVariables()
