@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"path"
-	"strconv"
 	"testing"
 )
 
@@ -169,7 +168,6 @@ func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Error(t, err)
-	assert.IsType(t, &strconv.NumError{}, err)
 	RemoveDummyFile(t, dummyFilePath)
 }
 
