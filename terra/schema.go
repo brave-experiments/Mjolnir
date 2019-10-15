@@ -179,7 +179,7 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
 
 	if nil != err {
-		return err
+		return yamlValidationError(err.Error())
 	}
 
 	err = variablesSchema.mapGenesisVariables()
@@ -657,4 +657,10 @@ func contains(haystack []string, needle string) bool {
 	}
 
 	return false
+}
+
+func yamlValidationError(body string) (clientError ClientError) {
+	return ClientError{
+		Message: fmt.Sprintf("\n[ERR] Yaml Validation error: %s", body),
+	}
 }

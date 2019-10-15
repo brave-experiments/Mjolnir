@@ -4399,8 +4399,8 @@ variables:
   consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 
-	NoSuchFileOrDirectoryMsg = "open %s: no such file or directory"
-	NotValidExtMsg           = "%s is not in supported file types. Valid are: [.yml .yaml]"
+	NoSuchFileOrDirectoryMsg = "\n[ERR] Yaml Validation error: open %s: no such file or directory"
+	NotValidExtMsg           = "\n[ERR] Yaml Validation error: %s is not in supported file types. Valid are: [.yml .yaml]"
 	DummyRecipeBodyFail      = `variable "count"    { default = 2 }
   variable "key_name" {}
   variable "region" {}

@@ -46,7 +46,7 @@ func TestVariablesSchema_ReadFailure(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
 	assert.Error(t, err)
-	assert.Equal(t, "yaml: line 1: did not find expected ',' or '}'", err.Error())
+	assert.Equal(t, "\n[ERR] Yaml Validation error: yaml: line 1: did not find expected ',' or '}'", err.Error())
 	RemoveDummyFile(t, dummyFilePath)
 
 	// It fails on invalid file path
@@ -56,7 +56,7 @@ func TestVariablesSchema_ReadFailure(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("open %s: no such file or directory", dummyFilePath),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: open %s: no such file or directory", dummyFilePath),
 		err.Error(),
 	)
 }
@@ -69,7 +69,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Error(t, err)
-	assert.Equal(t, "yaml: line 1: did not find expected ',' or '}'", err.Error())
+	assert.Equal(t, "\n[ERR] Yaml Validation error: yaml: line 1: did not find expected ',' or '}'", err.Error())
 	RemoveDummyFile(t, dummyFilePath)
 
 	// It fails on invalid resource version
@@ -81,7 +81,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("%v version is not supported. Current version: %v", version, CurrentVersion),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: %v version is not supported. Current version: %v", version, CurrentVersion),
 		err.Error(),
 	)
 
@@ -93,7 +93,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("%s is not in supported resource types. Valid are: %s", resource, SupportedResourceTypes),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: %s is not in supported resource types. Valid are: %s", resource, SupportedResourceTypes),
 		err.Error(),
 	)
 	RemoveDummyFile(t, dummyFilePath)
@@ -105,7 +105,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		"No variables found",
+		"\n[ERR] Yaml Validation error: No variables found",
 		err.Error(),
 	)
 	RemoveDummyFile(t, dummyFilePath)
