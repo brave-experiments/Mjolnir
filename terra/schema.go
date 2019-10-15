@@ -16,6 +16,8 @@ var (
 		"genesis_timestamp",
 		"genesis_difficulty",
 		"genesis_nonce",
+		"genesis_blocktime",
+		"genesis_min_gas_limit",
 	}
 	ValidRegions = []string{
 		"us-east-1",

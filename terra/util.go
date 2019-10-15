@@ -6,8 +6,13 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
+)
+
+var (
+	ValidationHexPattern = `^(0x){1}[0-9a-fA-F]{0,128}$`
 )
 
 func ConvertInterfaceToHex(variable interface{}) (hexInt string, err error) {
@@ -37,7 +42,13 @@ func ConvertInterfaceToHex(variable interface{}) (hexInt string, err error) {
 	case uint:
 		return convertIntToHex(int64(variable.(uint))), err
 	case string:
-		if strings.HasPrefix(valueInterface, "0x") {
+		matchesPattern, err := regexp.MatchString(ValidationHexPattern, valueInterface)
+
+		if nil != err {
+			return convertIntToHex(0), err
+		}
+
+		if matchesPattern {
 			return string(valueInterface), err
 		}
 
