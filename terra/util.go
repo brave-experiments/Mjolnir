@@ -140,3 +140,17 @@ func convertIntToHex(value int64) (hexInt string) {
 
 	return hexInt
 }
+
+func isHexGreaterThanOrEqual(hex1 interface{}, hex2 interface{}) (isGreater bool) {
+	hexString1, err := ConvertInterfaceToHex(hex1)
+	hexString2, err := ConvertInterfaceToHex(hex2)
+
+	if nil != err {
+		return false
+	}
+
+	val1 := hexutil.MustDecodeUint64(hexString1)
+	val2 := hexutil.MustDecodeUint64(hexString2)
+
+	return val1 >= val2
+}
