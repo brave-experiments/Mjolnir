@@ -153,7 +153,7 @@ func TestVariablesSchema_Read_WithHexUtil(t *testing.T) {
 	err := variablesSchema.Read()
 	assert.Nil(t, err)
 
-	assert.Equal(t, 4, len(VariablesKeyToHex))
+	assert.Equal(t, 6, len(VariablesKeyToHex))
 	assert.Equal(t, "0x19", variablesSchema.Variables[VariablesKeyToHex[0]])
 	assert.Equal(t, "0x26", variablesSchema.Variables[VariablesKeyToHex[1]])
 	assert.Equal(t, "0xc", variablesSchema.Variables[VariablesKeyToHex[2]])
