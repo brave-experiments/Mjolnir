@@ -4355,6 +4355,17 @@ variables:
   genesis_min_gas_limit: 20
   genesis_gas_limit: 21
 `
+	YamlFixtureGasLimitWithoutMinGas = `version: 0.3
+resourceType: variables
+variables: 
+  genesis_gas_limit: '0x58f7'
+`
+	YamlFixtureGasLimitLowetHanMinGasLimit = `version: 0.3
+resourceType: variables
+variables: 
+  genesis_min_gas_limit: 21
+  genesis_gas_limit: 20
+`
 
 	YamlFixtureWithHexUtils = `version: 0.1
 resourceType: variables

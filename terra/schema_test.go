@@ -159,6 +159,18 @@ func TestVariablesSchema_Read_WithHexUtil(t *testing.T) {
 	assert.Equal(t, "0x0", variablesSchema.Variables[VariablesKeyToHex[3]])
 
 	RemoveDummyFile(t, dummyFilePath)
+
+	// Should throw no error when only one of the genesis comparision are present
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitWithoutMinGas)
+	err = variablesSchema.Read()
+	assert.Nil(t, err)
+	RemoveDummyFile(t, dummyFilePath)
+
+	// should not fail if one is higher than another
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitLowetHanMinGasLimit)
+	err = variablesSchema.Read()
+	assert.Nil(t, err)
+	RemoveDummyFile(t, dummyFilePath)
 }
 
 func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
@@ -170,6 +182,7 @@ func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
 	assert.Error(t, err)
 	RemoveDummyFile(t, dummyFilePath)
 
+	// should fail 'cos gas limit cannot be higher than min gas limit
 	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitGreaterThanMinGasLimit)
 	err = variablesSchema.Read()
 	assert.Error(t, err)
