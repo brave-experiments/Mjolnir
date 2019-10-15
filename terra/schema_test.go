@@ -169,6 +169,12 @@ func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
 	err := variablesSchema.Read()
 	assert.Error(t, err)
 	RemoveDummyFile(t, dummyFilePath)
+
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitGreaterThanMinGasLimit)
+	err = variablesSchema.Read()
+	assert.Error(t, err)
+	assert.Equal(t, "genesis_min_gas_limit must be greater than genesis_gas_limit", err.Error())
+	RemoveDummyFile(t, dummyFilePath)
 }
 
 func TestVariablesSchema_ValidateSchemaVariables(t *testing.T) {

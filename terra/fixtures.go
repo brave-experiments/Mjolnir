@@ -4349,6 +4349,13 @@ variables:
 	YamlFixtureNoVariables = `version: 0.1
 resourceType: variables
 `
+	YamlFixtureGasLimitGreaterThanMinGasLimit = `version: 0.3
+resourceType: variables
+variables: 
+  genesis_min_gas_limit: 20
+  genesis_gas_limit: 21
+`
+
 	YamlFixtureWithHexUtils = `version: 0.1
 resourceType: variables
 variables:
