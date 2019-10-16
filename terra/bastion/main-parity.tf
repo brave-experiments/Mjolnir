@@ -142,6 +142,7 @@ sudo mkdir -p /opt/grafana/dashboards
 sudo mkdir -p /opt/grafana/provisioning/dashboards
 sudo mkdir -p /opt/grafana/provisioning/datasources
 sudo mkdir -p /opt/ethstats
+sudo mkdir -p /opt/loki/storage
 sudo mkdir -p /opt/fluentd/conf
 sudo curl -Ls https://grafana.com/api/dashboards/6976/revisions/3/download -o /opt/grafana/dashboards/dashboard-geth.json
 sudo curl -Ls https://grafana.com/api/dashboards/1860/revisions/14/download -o /opt/grafana/dashboards/dashboard-node-exporter.json
@@ -184,6 +185,7 @@ cat <<SS | sudo tee /opt/fluentd/conf/fluent.conf
   @type  forward
   @id    input1
   port  24224
+  source_address_key ip
 </source>
 
 @include loki.conf
@@ -201,8 +203,7 @@ cat <<SS | sudo tee /opt/fluentd/conf/loki.conf
   url "#{ENV['LOKI_URL']}"
   username "#{ENV['LOKI_USERNAME']}"
   password "#{ENV['LOKI_PASSWORD']}"
-  #extra_labels {"env":"dev"}
-  label_keys "instance,level,container_name"
+  label_keys "container_name,ip"
   drop_single_key true
   flush_interval 10s
   flush_at_shutdown true
@@ -214,63 +215,70 @@ SS
 cat <<SS | sudo tee /opt/prometheus/docker-compose.yml
 # docker-compose.yml
 version: '2'
-services:
-    prometheus:
-        image: prom/prometheus:latest
-        volumes:
-            - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-            - /opt/prometheus/targets.json:/etc/prometheus/targets.json
-        command:
-            - '--config.file=/etc/prometheus/prometheus.yml'
-        ports:
-            - '9090:9090'
-    node-exporter:
-        image: prom/node-exporter:latest
-        ports:
-            - '9100:9100'
-    grafana:
-        image: grafana/grafana:latest
-        volumes:
-            - /opt/grafana/dashboards:/var/lib/grafana/dashboards
-            - /opt/grafana/provisioning/dashboards/all.yml:/etc/grafana/provisioning/dashboards/all.yml
-            - /opt/grafana/provisioning/datasources/all.yml:/etc/grafana/provisioning/datasources/all.yml
-        environment:
-            - GF_SECURITY_ADMIN_PASSWORD=${random_string.random.result}
-        depends_on:
-            - prometheus
-        ports:
-            - '3001:3000'
-    gethexporter:
-        image: hunterlong/gethexporter
-        environment:
-            - GETH=http://gethexporter_ip:${local.parity_rpc_port}
-    monitor:
-      image: buythewhale/ethstats_monitor
-      volumes:
-        - /opt/ethstats/app.json:/home/ethnetintel/eth-net-intelligence-api/app.json:ro
-    dashboard:
-      image: buythewhale/ethstats
-      volumes:
-        - /opt/ethstats/ws_secret.json:/eth-netstats/ws_secret.json:ro
-      ports:
-        - 3000:3000
-    loki:
-      image: grafana/loki:latest
-      ports:
-          - '3100:3100'
-      command: -config.file=/etc/loki/local-config.yaml
-    fluentd:
-      image: grafana/fluent-plugin-grafana-loki:master
-      environment:
-        LOKI_URL: http://loki:3100
-        LOKI_USERNAME:
-        LOKI_PASSWORD:
-        FLUENTD_CONF: /fluentd/etc/fluent.conf
-      ports:
-        - "24224:24224"
-      volumes:
-        - /opt/fluentd/conf:/fluentd/etc
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
 
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /opt/prometheus/targets.json:/etc/prometheus/targets.json
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - '9090:9090'
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - '9100:9100'
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - /opt/grafana/dashboards:/var/lib/grafana/dashboards
+      - /opt/grafana/provisioning/dashboards/all.yml:/etc/grafana/provisioning/dashboards/all.yml
+      - /opt/grafana/provisioning/datasources/all.yml:/etc/grafana/provisioning/datasources/all.yml
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${random_string.random.result}
+    depends_on:
+      - prometheus
+    ports:
+      - '3001:3000'
+  gethexporter:
+    image: hunterlong/gethexporter
+    environment:
+      - GETH=http://gethexporter_ip:${local.parity_rpc_port}
+  monitor:
+    image: buythewhale/ethstats_monitor
+    volumes:
+      - /opt/ethstats/app.json:/home/ethnetintel/eth-net-intelligence-api/app.json:ro
+  dashboard:
+    image: buythewhale/ethstats
+    volumes:
+      - /opt/ethstats/ws_secret.json:/eth-netstats/ws_secret.json:ro
+    ports:
+      - "${local.ethstats_port}:${local.ethstats_port}"
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - '3100:3100'
+    volumes:
+      - /opt/loki/storage/:/tmp/loki/chunks/
+    command: -config.file=/etc/loki/local-config.yaml
+  fluentd:
+    image: grafana/fluent-plugin-grafana-loki:master
+    environment:
+      LOKI_URL: http://loki:3100
+      LOKI_USERNAME:
+      LOKI_PASSWORD:
+      FLUENTD_CONF: /fluentd/etc/fluent.conf
+    ports:
+      - "24224:24224"
+    volumes:
+      - /opt/fluentd/conf:/fluentd/etc
 SS
 
 # Grafana provisioning =========================================
@@ -409,7 +417,7 @@ do
     echo '"RPC_HOST"        : "'$ip'",' >> $target_file
     echo '"LISTENING_PORT"  : "'${local.parity_rpc_port}'",' >> $target_file
     echo '"INSTANCE_NAME"   : "Node'$i'",' >> $target_file
-    echo '"WS_SERVER"       : "ws://dashboard:3000",' >> $target_file
+    echo '"WS_SERVER"       : "ws://dashboard:'${local.ethstats_port}'",' >> $target_file
     echo '"WS_SECRET"       : "'${random_id.ethstat_secret.hex}'", ' >> $target_file
     echo '"VERBOSITY"       : 3 }' >> $target_file
     if [ $i -lt "$count" ]; then
@@ -422,8 +430,7 @@ echo ']' >> $target_file
 sudo mv $target_file /opt/ethstats/
 echo '["'${random_id.ethstat_secret.hex}'"]' |  sudo tee /opt/ethstats/ws_secret.json
 
-sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate prometheus grafana gethexporter monitor dashboard node-exporter
-
+sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate prometheus grafana node-exporter
 #===================================================
 count=0
 while [ $count -lt ${var.number_of_nodes} ]
@@ -433,6 +440,8 @@ do
     | echo Wait for nodes in parity network being up ... $count/${var.number_of_nodes}
   sleep 1
 done
+
+sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate gethexporter monitor dashboard
 
 cat <<SS | sudo tee ${local.shared_volume_container_path}/parity_metadata
 parity:
