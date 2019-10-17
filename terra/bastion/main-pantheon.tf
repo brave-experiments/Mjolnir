@@ -479,6 +479,7 @@ rm -rf $WORKDIR
 git clone ${var.chainhammer_repo_url} $WORKDIR
 sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
 sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install-{solc,geth,virtualenv}.sh
+sed -i '/install_chapter.*scripts\/install-initialize.sh/ s/^/#/' $WORKDIR/scripts/install.sh
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
 i=0
@@ -488,9 +489,9 @@ do
   ip=$(cat ${local.hosts_folder}/$f)
   i=$(($i+1))
     if [ $i -eq 1 ]; then
-      sed -i s"/^RPCaddress=.*/#RPCaddress=\'http:\/\/$ip:${local.pantheon_rpc_port}\'\n&/"   $WORKDIR/hammer/config.py
+      sed -i s"/^RPCaddress=.*/RPCaddress=\'http:\/\/$ip:${local.pantheon_rpc_port}\'/"   $WORKDIR/hammer/config.py
     elif [ $i -eq 2 ]; then
-      sed -i s"/^RPCaddress2=.*/#RPCaddress2=\'http:\/\/$ip:${local.pantheon_rpc_port}\'\n&/" $WORKDIR/hammer/config.py
+      sed -i s"/^RPCaddress2=.*/RPCaddress2=\'http:\/\/$ip:${local.pantheon_rpc_port}\'/" $WORKDIR/hammer/config.py
     elif [ $i -gt 2 ]; then
       continue
     fi
