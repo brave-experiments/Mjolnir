@@ -309,7 +309,7 @@ func TestCombinedRecipe_BindYamlWithVarsFailure(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("open %s: no such file or directory", dummyYamlFilePath),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: open %s: no such file or directory", dummyYamlFilePath),
 		err.Error(),
 	)
 }

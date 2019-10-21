@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"path"
-	"strconv"
 	"testing"
 )
 
@@ -47,7 +46,7 @@ func TestVariablesSchema_ReadFailure(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err = variablesSchema.Read()
 	assert.Error(t, err)
-	assert.Equal(t, "yaml: line 1: did not find expected ',' or '}'", err.Error())
+	assert.Equal(t, "\n[ERR] Yaml Validation error: yaml: line 1: did not find expected ',' or '}'", err.Error())
 	RemoveDummyFile(t, dummyFilePath)
 
 	// It fails on invalid file path
@@ -57,7 +56,7 @@ func TestVariablesSchema_ReadFailure(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("open %s: no such file or directory", dummyFilePath),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: open %s: no such file or directory", dummyFilePath),
 		err.Error(),
 	)
 }
@@ -70,7 +69,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Error(t, err)
-	assert.Equal(t, "yaml: line 1: did not find expected ',' or '}'", err.Error())
+	assert.Equal(t, "\n[ERR] Yaml Validation error: yaml: line 1: did not find expected ',' or '}'", err.Error())
 	RemoveDummyFile(t, dummyFilePath)
 
 	// It fails on invalid resource version
@@ -82,7 +81,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("%v version is not supported. Current version: %v", version, CurrentVersion),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: %v version is not supported. Current version: %v", version, CurrentVersion),
 		err.Error(),
 	)
 
@@ -94,7 +93,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		fmt.Sprintf("%s is not in supported resource types. Valid are: %s", resource, SupportedResourceTypes),
+		fmt.Sprintf("\n[ERR] Yaml Validation error: %s is not in supported resource types. Valid are: %s", resource, SupportedResourceTypes),
 		err.Error(),
 	)
 	RemoveDummyFile(t, dummyFilePath)
@@ -106,7 +105,7 @@ func TestVariablesSchema_ReadFailure_BodyParsing(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(
 		t,
-		"No variables found",
+		"\n[ERR] Yaml Validation error: No variables found",
 		err.Error(),
 	)
 	RemoveDummyFile(t, dummyFilePath)
@@ -153,12 +152,24 @@ func TestVariablesSchema_Read_WithHexUtil(t *testing.T) {
 	err := variablesSchema.Read()
 	assert.Nil(t, err)
 
-	assert.Equal(t, 4, len(VariablesKeyToHex))
+	assert.Equal(t, 6, len(VariablesKeyToHex))
 	assert.Equal(t, "0x19", variablesSchema.Variables[VariablesKeyToHex[0]])
 	assert.Equal(t, "0x26", variablesSchema.Variables[VariablesKeyToHex[1]])
 	assert.Equal(t, "0xc", variablesSchema.Variables[VariablesKeyToHex[2]])
 	assert.Equal(t, "0x0", variablesSchema.Variables[VariablesKeyToHex[3]])
 
+	RemoveDummyFile(t, dummyFilePath)
+
+	// Should throw no error when only one of the genesis comparision are present
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitWithoutMinGas)
+	err = variablesSchema.Read()
+	assert.Nil(t, err)
+	RemoveDummyFile(t, dummyFilePath)
+
+	// should not fail if one is higher than another
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitLowetHanMinGasLimit)
+	err = variablesSchema.Read()
+	assert.Nil(t, err)
 	RemoveDummyFile(t, dummyFilePath)
 }
 
@@ -169,7 +180,13 @@ func TestVariablesSchema_Read_WithHexUtil_Failure(t *testing.T) {
 	variablesSchema.Location = dummyFilePath
 	err := variablesSchema.Read()
 	assert.Error(t, err)
-	assert.IsType(t, &strconv.NumError{}, err)
+	RemoveDummyFile(t, dummyFilePath)
+
+	// should fail 'cos gas limit cannot be higher than min gas limit
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureGasLimitGreaterThanMinGasLimit)
+	err = variablesSchema.Read()
+	assert.Error(t, err)
+	assert.Equal(t, "\n[ERR] Yaml Validation error: genesis_min_gas_limit must be greater than genesis_gas_limit", err.Error())
 	RemoveDummyFile(t, dummyFilePath)
 }
 

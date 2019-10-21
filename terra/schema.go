@@ -12,10 +12,12 @@ import (
 
 var (
 	VariablesKeyToHex = []string{
-		"genesis_gas_limit",
+		GenesisGasLimitKey,
 		"genesis_timestamp",
 		"genesis_difficulty",
 		"genesis_nonce",
+		"genesis_blocktime",
+		GenesisMinGasLimitKey,
 	}
 	ValidRegions = []string{
 		"us-east-1",
@@ -127,6 +129,8 @@ type variablesModel struct {
 const (
 	CurrentVersion          = float64(0.3)
 	MaxNetworkNameVarLength = 20
+	GenesisMinGasLimitKey   = "genesis_min_gas_limit"
+	GenesisGasLimitKey      = "genesis_gas_limit"
 	NetworkNameKey          = "network_name"
 	ClockSkewKey            = "faketime"
 	NodeNumbersKey          = "number_of_nodes"
@@ -175,13 +179,13 @@ func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
 
 	if nil != err {
-		return err
+		return yamlValidationError(err.Error())
 	}
 
 	err = variablesSchema.mapGenesisVariables()
 
 	if nil != err {
-		return err
+		return yamlValidationError(err.Error())
 	}
 
 	err = variablesSchema.ValidateSchemaVariables()
@@ -248,6 +252,35 @@ func (variablesSchema *VariablesSchema) mapGenesisVariables() (err error) {
 		}
 
 		variablesSchema.Variables[key] = hexValue
+	}
+
+	err = variablesSchema.guardMinBlockGasLimit()
+
+	return err
+}
+
+func (variablesSchema *VariablesSchema) guardMinBlockGasLimit() (err error) {
+	variables := variablesSchema.Variables
+
+	if nil == variables {
+		return nil
+	}
+
+	genesisGasLimit, gasLimitFound := variables[GenesisGasLimitKey]
+	genesisMinGasLimit, minGasLimitFound := variables[GenesisMinGasLimitKey]
+
+	if false == gasLimitFound || false == minGasLimitFound {
+		return nil
+	}
+
+	if isHexGreaterThanOrEqual(genesisGasLimit, genesisMinGasLimit) {
+		errorMessage := fmt.Sprintf(
+			"%s must be greater than %s",
+			GenesisMinGasLimitKey,
+			GenesisGasLimitKey,
+		)
+
+		return ClientError{Message: errorMessage}
 	}
 
 	return nil
@@ -624,4 +657,10 @@ func contains(haystack []string, needle string) bool {
 	}
 
 	return false
+}
+
+func yamlValidationError(body string) (clientError ClientError) {
+	return ClientError{
+		Message: fmt.Sprintf("\n[ERR] Yaml Validation error: %s", body),
+	}
 }

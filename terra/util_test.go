@@ -24,6 +24,10 @@ func TestConvertInterfaceToHexFailure(t *testing.T) {
 	hex, err = ConvertInterfaceToHex(string(4))
 	assert.Equal(t, "0x0", hex)
 	assert.Error(t, err)
+
+	hex, err = ConvertInterfaceToHex("0xWsA")
+	assert.Equal(t, "0x0", hex)
+	assert.Error(t, err)
 }
 
 func TestConvertInterfaceToHex(t *testing.T) {
@@ -79,6 +83,9 @@ func TestConvertInterfaceToHex(t *testing.T) {
 	hex, err = ConvertInterfaceToHex("0xE0000000")
 	assert.Equal(t, "0xE0000000", hex)
 	assert.Nil(t, err)
+
+	hex, err = ConvertInterfaceToHex("0xEfAAA")
+	assert.Equal(t, "0xEfAAA", hex)
 }
 
 func TestReadOutputLogVarFailure(t *testing.T) {

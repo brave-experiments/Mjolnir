@@ -4349,6 +4349,24 @@ variables:
 	YamlFixtureNoVariables = `version: 0.1
 resourceType: variables
 `
+	YamlFixtureGasLimitGreaterThanMinGasLimit = `version: 0.3
+resourceType: variables
+variables: 
+  genesis_min_gas_limit: 20
+  genesis_gas_limit: 21
+`
+	YamlFixtureGasLimitWithoutMinGas = `version: 0.3
+resourceType: variables
+variables: 
+  genesis_gas_limit: '0x58f7'
+`
+	YamlFixtureGasLimitLowetHanMinGasLimit = `version: 0.3
+resourceType: variables
+variables: 
+  genesis_min_gas_limit: 21
+  genesis_gas_limit: 20
+`
+
 	YamlFixtureWithHexUtils = `version: 0.1
 resourceType: variables
 variables:
@@ -4381,8 +4399,8 @@ variables:
   consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 
-	NoSuchFileOrDirectoryMsg = "open %s: no such file or directory"
-	NotValidExtMsg           = "%s is not in supported file types. Valid are: [.yml .yaml]"
+	NoSuchFileOrDirectoryMsg = "\n[ERR] Yaml Validation error: open %s: no such file or directory"
+	NotValidExtMsg           = "\n[ERR] Yaml Validation error: %s is not in supported file types. Valid are: [.yml .yaml]"
 	DummyRecipeBodyFail      = `variable "count"    { default = 2 }
   variable "key_name" {}
   variable "region" {}
