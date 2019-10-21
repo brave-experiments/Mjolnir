@@ -442,6 +442,7 @@ rm -rf $WORKDIR
 git clone ${var.chainhammer_repo_url} $WORKDIR
 sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
 sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install-{solc,geth,virtualenv}.sh
+sed -i '/install_chapter.*scripts\/install-initialize.sh/ s/^/#/' $WORKDIR/scripts/install.sh
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
 i=0
