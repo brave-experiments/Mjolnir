@@ -1,3 +1,4 @@
+
 #WARNING
 Some key features may not be compatible in Windows environment
 
@@ -137,3 +138,7 @@ More info: https://grafana.com/docs/features/explore/
 
 A dashboard in Grafana is represented by a JSON object, which stores metadata of its dashboard. Dashboard metadata includes dashboard properties, metadata from panels, template variables, panel queries, etc.
 More info: https://grafana.com/docs/reference/dashboard/
+
+### Error handling
+When you are running command through CLI it should end with exit code status. Statuses are present in:
+`commands.go`
