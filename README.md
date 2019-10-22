@@ -216,7 +216,7 @@ We use [SemVer](https://semver.org/) for versioning.
 
 ## License 
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the Mozilla Public License 2.0- see the LICENSE.txt file for details
 
 ## Acknowledgements
 
