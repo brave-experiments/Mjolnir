@@ -37,6 +37,9 @@ At this moment, Mjolnir supports the following clients:
    - `quorum`
    - `pantheon`
    - `parity`
+- {cmdName} : Binary's sub command. 
+
+
 - Step 1 : Deploy Infrastructure
    - Clone this repo
    - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
@@ -46,7 +49,9 @@ At this moment, Mjolnir supports the following clients:
 
 - Step 2: Fire Transactions 
    - Once this is complete, enter `./dist/{cli-version}/{arch}/apollo bastion` to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
-   - 
+   - Move in the `chainhammer` directory by entering `cd chainhammer`
+   - To send transactions, ` CH_TXS=40000 CH_THREADING="threaded2 300" ./run.sh "{TESTNAME}"`; Where `CH_TXS` is the number of transactions to be send, `CH_THREADING` is the threading algorithm, and `{TESTNAME}` is the name that the run will be save under.
+   - If all goes well, 
 
 
 ### Development mode
