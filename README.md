@@ -2,7 +2,7 @@
 # Mjölnir 
 ## ...the hammer of Thor. 
 
-### *N.B.* 
+###  *N.B.* 
 - Some key features may not be compatible in Windows environment
 - Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
 
@@ -216,7 +216,7 @@ We use [SemVer](https://semver.org/) for versioning.
 
 ## License 
 
-This project is licensed under the Mozilla Public License 2.0- see the LICENSE.txt file for details
+This project is licensed under the Mozilla Public License 2.0- see the LICENSE file for details
 
 ## Acknowledgements
 
