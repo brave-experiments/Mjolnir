@@ -1,8 +1,64 @@
 
-#WARNING
-Some key features may not be compatible in Windows environment
+# Mjölnir 
+## ...the hammer of Thor. 
+
+###  *N.B.* 
+- Some key features may not be compatible in Windows environment
+- Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
+
+```
+|"  \    /"  |     |"  |  /    " \  |"  |    (\"   \|"  \  |" \    /"      \  
+ \   \  //   |     ||  | // ____  \ ||  |    |.\\   \    | ||  |  |:        | 
+ /\\  \/.    |     |:  |/  /    ) :)|:  |    |: \.   \\  | |:  |  |_____/   ) 
+|: \.        |  ___|  /(: (____/ //  \  |___ |.  \    \. | |.  |   //      /  
+|.  \    /:  | /  :|_/ )\        /  ( \_|:  \|    \    \ | /\  |\ |:  __   \  
+|___|\__/|___|(_______/  \"_____/    \_______)\___|\____\)(__\_|_)|__|  \___)
+```
+Mjolnir is a tool for rapidly deploying and testing Ethereum Clients. We felt the need to carry out this body of work as we needed to benchmark the performance of different clients, and there was a tool out their the deployed both infrastructure and carried out tests. 
+
+The tool currently allows users to test the through put of Ethereum Clients both on its own, and under adverse network conditions (i.e. Clock Skew , dropped tcp packets, jitters, etc.)
+
+At this moment, Mjolnir supports the following clients:
+
+- Quorum
+- Patheon (now Hyperledger Besu)
+- Parity (Honey Badger / POSDAO version)
+
 
 ## Getting started
+./dist/{cli-version}/{arch}/{binaryName}
+
+### Terminology
+
+- {cli-version} : Semantic version of binary 
+- {arch}: The OS architecture. Currently supported are 
+   - `osx` 
+   - `unix`
+- {binaryName}: `apollo`
+- {client}: The Ethereum client been tested. Currently supported are:
+   - `quorum`
+   - `pantheon`
+   - `parity`
+- {cmdName} : Binary's sub command. 
+
+
+- Step 1 : Deploy Infrastructure
+   - Clone this repo
+   - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
+   - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml`
+   - Update `examples/values-local.yaml`
+   - enter `./dist/{cli-version}/{arch}/apollo apply {client} examples/values-local.yml `. This will deploy the requsite infrastrucure on your AWS account.
+
+- Step 2: Fire Transactions 
+   - Once this is complete, enter `./dist/{cli-version}/{arch}/apollo bastion` to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
+   - Move in the `chainhammer` directory by entering `cd chainhammer`
+   - Run `scripts/install-initialize.sh` to intialize chainhammer. 
+   - To send transactions, ` CH_TXS=40000 CH_THREADING="threaded2 300" ./run.sh "{TESTNAME}"`; Where `CH_TXS` is the number of transactions to be send, `CH_THREADING` is the threading algorithm, and `{TESTNAME}` is the name that the run will be save under.
+   - If all goes well, files will be saved under:
+      - ../results/runs/{client}_{date}-{time}_{no_of_transactions_sent}.md
+      - ../results/runs/{client}_{date}-{time}_{no_of_transactions_sent}.html
+      - ..reader/img/{TESTNAME}-{date}-{time}_blks.pgn
+
 
 ### Development mode
 To run project locally type:
@@ -23,15 +79,15 @@ To run test watcher type:
 To build from source:
 `bin/run ci`
 
-After success built files will lay within ./dist/{arch}/{binaryName}
+After success built files will lay within `./dist/{cli-version}/{arch}/{binaryName}`
 
 To execute apollo binary file:
-try `./apollo` to see all commands that are registered
-try `./apollo {cmdName} --help` to see help from command
+try `./dist/{cli-version}/{arch}/apollo` to see all commands that are registered
+try `./dist/{cli-version}/{arch}/apollo {cmdName} --help` to see help from command
 
-### Quorum execution
+### Example : Quorum execution
 to build
-`./apollo apply quorum {values.yml}`
+`../dist/{cli-version}/{arch}/apollo apply quorum {values.yml}`
 
 ### Providing values
 See `example/values.yml` that shows how to attach values to apply execution. 
@@ -47,7 +103,7 @@ After execution of `apply` command certain files will be created on your host:
 - `variables.log` at root of execution dir, which contains last executed variables in recipe
 - `.apollo` dir which contains necessary files like ssh key pair to bastion
 - `.apollo/$network-name+$timestamp/` is a dir where should end private and public key pair
-> Also see CONTRIBUTING.md
+
 
 
 ## Manually running deploy build
@@ -94,12 +150,10 @@ Wrote summarry output to:  .apollo/quorum-bastion-jkopacze-n3-66790866/output.lo
 Restoring env variables.
 ```
 
-
-
 ## Manually destroying deploy
 
 to destroy run:
-`./apollo destroy {values.yml}`
+`./dist/{cli-version}/{arch}/apollo destroy {values-local.yml}`
 
 Current success output looks like this ( will be correted in next release ):
 ```Deploy Name not present
@@ -127,7 +181,7 @@ Additional tools you will find under links
 * Grafana: http://bastion_host_ip:3001
 * Prometheus: http://bastion_host_ip:9090
 
-## Moitoring and logs
+## Monitoring and logs
 
 ### Grafana logs
 
@@ -142,3 +196,32 @@ More info: https://grafana.com/docs/reference/dashboard/
 ### Error handling
 When you are running command through CLI it should end with exit code status. Statuses are present in:
 `commands.go`
+
+## Built with
+
+- Chainhammer : https://github.com/drandreaskrueger/chainhammer
+
+- Quorum Cloud: https://github.com/jpmorganchase/quorum-cloud
+
+- Terraform: https://www.terraform.io/
+
+## Contributing 
+
+Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning 
+
+We use [SemVer](https://semver.org/) for versioning.
+
+
+## License 
+
+This project is licensed under the Mozilla Public License 2.0- see the LICENSE file for details
+
+## Acknowledgements
+
+We would like to thank the following teams for their contributions to the project:
+
+- [binarapps](https://binarapps.com) for their ability to dive into both the infrastructure and software and deliver on our requirements. 
+- Dr Andreas Krueger for [chainhammer](https://github.com/drandreaskrueger/chainhammer/tree/master/hammer). The name is inspired by his project, and much of the code for firing the transactions is mostly his.
+- The JP Morgan Team for [quorum-cloud](https://github.com/jpmorganchase/quorum-cloud). This was the boiler plate for the deployments of other clients. 
