@@ -5,7 +5,7 @@ services:
     build: .
     image: brave-experiments/apollo-go:latest
     volumes:
-      - ./:/usr/local/go/src/github.com/brave-experiments/apollo-devops
+      - ./:/usr/local/go/src/github.com/brave-experiments/Mjolnir
     env_file:
       - .env
     command: >
