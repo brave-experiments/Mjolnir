@@ -1,4 +1,4 @@
-module github.com/brave-experiments/apollo-devops
+module github.com/brave-experiments/Mjolnir
 
 go 1.12
 
