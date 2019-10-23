@@ -30,7 +30,6 @@ At this moment, Mjolnir supports the following clients:
 
 
 ## Getting started
-./dist/{cli-version}/{arch}/{binaryName}
 
 ### Terminology
 
