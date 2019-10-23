@@ -2,17 +2,18 @@ package terra
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform/builtin/provisioners/remote-exec"
+	"os"
+	"testing"
+
+	remoteexec "github.com/hashicorp/terraform/builtin/provisioners/remote-exec"
 	"github.com/johandry/terranova"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-providers/terraform-provider-aws/aws"
 	"github.com/terraform-providers/terraform-provider-random/random"
-	"os"
-	"testing"
 )
 
 func TestClient_CreateDirInTempFailure(t *testing.T) {
-	TempDirPathLocation = ".apolloTest"
+	TempDirPathLocation = ".mjolnirTest"
 	client := Client{}
 	tempDirName := "dummy/invalid"
 	fullTempDirPath := TempDirPathLocation + "/" + tempDirName
@@ -303,7 +304,7 @@ func TestClient_WriteStateToFilesFailure(t *testing.T) {
 func TestClient_WriteStateToFiles(t *testing.T) {
 	StateFileName = "dummy.tfstate"
 	StateFileBody = ProperOutputFixture
-	TempDirPathLocation = ".apolloTest"
+	TempDirPathLocation = ".mjolnirTest"
 	stateFile, err := DefaultStateFile()
 	assert.Nil(t, err)
 

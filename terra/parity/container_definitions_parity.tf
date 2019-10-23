@@ -10,7 +10,7 @@ locals {
   node_ids_folder                = "${local.shared_volume_container_path}/nodeids"
   accounts_folder                = "${local.shared_volume_container_path}/accounts"
   privacy_addresses_folder       = "${local.shared_volume_container_path}/privacyaddresses"
-  chain_name                     = "ApolloPOA"
+  chain_name                     = "MjolnirPOA"
 
   parity_config_commands = [
     "mkdir -p ${local.parity_data_dir}/parity",

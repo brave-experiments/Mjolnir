@@ -30,12 +30,12 @@ build: build-unix build-mac
 	ls -la dist/${CLI_VERSION}/
 
 build-unix: generate clean-build
-	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo
+	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir
 
 build-mac: generate clean-build-mac
-	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/apollo
-	ls -la dist/${CLI_VERSION}/osx/apollo
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/mjolnir
+	ls -la dist/${CLI_VERSION}/osx/mjolnir
 
 test-and-build: clean clean-build generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
-	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo
+	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir

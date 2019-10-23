@@ -2,7 +2,7 @@
 docker-compose.override.yml
 terra/static.go
 .env
-apollo
+mjolnir
 default.tfstate
 **/.terraform/
 coverage.out
@@ -19,6 +19,6 @@ variables.log
 terraform.tfstate
 terraform.tfstate*
 out.log
-.apollo
-.apollo*
+.mjolnir
+.mjolnir*
 .DS_Store

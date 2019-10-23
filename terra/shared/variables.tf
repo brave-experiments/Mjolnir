@@ -5,7 +5,7 @@ variable "region" {
 
 variable "network_name" {
   description = "Identify the Quorum network from multiple deployments"
-  default = "apollo"
+  default = "mjolnir"
 }
 
 variable "number_of_nodes" {

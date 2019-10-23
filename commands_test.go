@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/brave-experiments/Mjolnir/terra"
-	"github.com/mitchellh/cli"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/brave-experiments/Mjolnir/terra"
+	"github.com/mitchellh/cli"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -73,7 +74,7 @@ func TestGethCmdFactory(t *testing.T) {
 }
 
 func TestGethCmd_Run(t *testing.T) {
-	terra.TempDirPathLocation = ".dummyApolloGeth"
+	terra.TempDirPathLocation = ".dummyMjolnirGeth"
 	dummyFileName := "output.log"
 	deployName := "dummyDeployName"
 	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
@@ -105,7 +106,7 @@ func TestGethCmd_Run(t *testing.T) {
 }
 
 func TestNodeSshCmd_RunInvalid(t *testing.T) {
-	terra.TempDirPathLocation = ".dummyApolloNode"
+	terra.TempDirPathLocation = ".dummyMjolnirNode"
 	dummyFileName := "output.log"
 	deployName := "dummyDeployName"
 	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
@@ -137,7 +138,7 @@ func TestNodeSshCmd_RunInvalid(t *testing.T) {
 }
 
 func TestNodeInfoSshCmd_RunInvalid(t *testing.T) {
-	terra.TempDirPathLocation = ".dummyApolloNodeInfo"
+	terra.TempDirPathLocation = ".dummyMjolnirNodeInfo"
 	dummyFileName := "output.log"
 	deployName := "dummyDeployName"
 	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
@@ -158,7 +159,7 @@ func TestNodeInfoSshCmd_RunInvalid(t *testing.T) {
 }
 
 func TestSshCmd_RunInvalid(t *testing.T) {
-	terra.TempDirPathLocation = ".dummyApollo"
+	terra.TempDirPathLocation = ".dummyMjolnir"
 	dummyFileName := "output.log"
 	deployName := "dummyDeployName"
 	dummyDeployName := terra.TempDirPathLocation + "/" + deployName
@@ -186,7 +187,7 @@ func TestSshCmd_RunInvalid(t *testing.T) {
 }
 
 func TestApplyCmd_RunInvalid(t *testing.T) {
-	terra.TempDirPathLocation = ".apolloApplyTemp"
+	terra.TempDirPathLocation = ".mjolnirApplyTemp"
 	err := os.RemoveAll(terra.TempDirPathLocation)
 	assert.Nil(t, err)
 	command, err := ApplyCmdFactory()
@@ -267,7 +268,7 @@ func TestApplyCmd_RunInvalid(t *testing.T) {
 }
 
 func TestDestroyCmd_RunInvalid(t *testing.T) {
-	terra.TempDirPathLocation = ".apolloTestDir"
+	terra.TempDirPathLocation = ".mjolnirTestDir"
 	err := os.RemoveAll(terra.TempDirPathLocation)
 	assert.Nil(t, err)
 
@@ -367,7 +368,7 @@ func TestDestroyCmd_RunInvalid(t *testing.T) {
 }
 
 func TestApplyCmd_Run(t *testing.T) {
-	terra.TempDirPathLocation = ".apolloApplyEnd"
+	terra.TempDirPathLocation = ".mjolnirApplyEnd"
 	err := os.RemoveAll(terra.TempDirPathLocation)
 	assert.Nil(t, err)
 	// We want to end with ExitCodeTerraformError without actual e2e calls
@@ -391,7 +392,7 @@ func TestApplyCmd_Run(t *testing.T) {
 }
 
 func TestDestroyCmd_Run(t *testing.T) {
-	terra.TempDirPathLocation = ".apolloTestTemp"
+	terra.TempDirPathLocation = ".mjolnirTestTemp"
 	err := os.RemoveAll(terra.TempDirPathLocation)
 	assert.Nil(t, err)
 	keyName := "dummy"

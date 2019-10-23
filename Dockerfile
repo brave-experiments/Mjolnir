@@ -1,5 +1,5 @@
-# Build Apollo in a stock Go builder container
-FROM golang:1.12-alpine3.10 as apollo-builder
+# Build Mjolnir in a stock Go builder container
+FROM golang:1.12-alpine3.10 as mjolnir-builder
 
 RUN apk add --no-cache make \
     gcc \
@@ -19,4 +19,4 @@ ADD . .
 RUN make generate
 RUN ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 
-CMD CompileDaemon -log-prefix=false -build="CGO_ENABLED=0 go build -a -installsuffix cgo -o apollo" -command="./apollo"
+CMD CompileDaemon -log-prefix=false -build="CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir" -command="./mjolnir"

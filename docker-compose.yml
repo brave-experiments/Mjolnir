@@ -2,8 +2,8 @@ version: '3.6'
 
 services:
   cli:
-    image: brave-experiments/apollo-go:latest
+    image: brave-experiments/mjolnir-go:latest
 
 networks:
-  apollo:
+  mjolnir:
     driver: bridge

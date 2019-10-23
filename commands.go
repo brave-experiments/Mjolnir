@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/brave-experiments/Mjolnir/connect"
-	"github.com/brave-experiments/Mjolnir/terra"
-	"github.com/mitchellh/cli"
 	"io/ioutil"
 	"os"
 	"runtime"
 	"strconv"
+
+	"github.com/brave-experiments/Mjolnir/connect"
+	"github.com/brave-experiments/Mjolnir/terra"
+	"github.com/mitchellh/cli"
 )
 
 const (
@@ -275,11 +276,11 @@ func (applyCmd ApplyCmd) Run(args []string) (exitCode int) {
 }
 
 func (sshCmd SshCmd) Help() (helpMessage string) {
-	return "Ssh into bastion. .apollo directory must be present (previous deploy must complete)"
+	return "Ssh into bastion. .mjolnir directory must be present (previous deploy must complete)"
 }
 
 func (applyCmd ApplyCmd) Help() (helpMessage string) {
-	helpMessage = "\nThis is apply command. Usage: apollo apply [recipe] [yamlFilePath]\n"
+	helpMessage = "\nThis is apply command. Usage: mjolnir apply [recipe] [yamlFilePath]\n"
 
 	if nil != &applyCmd.Recipes {
 		helpMessage = helpMessage + "\nAvailable Recipes: \n"
@@ -296,7 +297,7 @@ func (applyCmd ApplyCmd) Help() (helpMessage string) {
 }
 
 func (destroyCmd DestroyCmd) Help() (helpMessage string) {
-	helpMessage = "\nThis is destroy command. Usage: apollo destroy [yamlFilePath]"
+	helpMessage = "\nThis is destroy command. Usage: mjolnir destroy [yamlFilePath]"
 	helpMessage = helpMessage + "\nThere must be a valid terraform.tfstate file at root of execution"
 
 	return helpMessage
@@ -305,7 +306,7 @@ func (destroyCmd DestroyCmd) Help() (helpMessage string) {
 func (nodeSshCmd NodeSshCmd) Help() (helpMessage string) {
 	helpMessage = "\n This command let you attach via ssh to certain node\n"
 	helpMessage = helpMessage + "You must provide node number as argument. If number is out of range, ssh will fail\n"
-	helpMessage = helpMessage + "Example: apollo node 1"
+	helpMessage = helpMessage + "Example: mjolnir node 1"
 
 	return helpMessage
 }
@@ -313,7 +314,7 @@ func (nodeSshCmd NodeSshCmd) Help() (helpMessage string) {
 func (nodeSshCmd NodeInfoSshCmd) Help() (helpMessage string) {
 	helpMessage = "\n This command let you to get detailed info about runing nodes\n"
 	helpMessage = helpMessage + "You must not provide any arguments. There are not arguments in this command\n"
-	helpMessage = helpMessage + "Example: apollo nodeinfo"
+	helpMessage = helpMessage + "Example: mjolnir nodeinfo"
 
 	return helpMessage
 }
@@ -321,7 +322,7 @@ func (nodeSshCmd NodeInfoSshCmd) Help() (helpMessage string) {
 func (gethCmd GethCmd) Help() (helpMessage string) {
 	helpMessage = "\n This command let you attach via rpc (geth) to certain node\n"
 	helpMessage = helpMessage + "You must provide node number as argument. If number is out of range, ssh will fail\n"
-	helpMessage = helpMessage + "Example: apollo geth 1"
+	helpMessage = helpMessage + "Example: mjolnir geth 1"
 
 	return helpMessage
 }
