@@ -33,21 +33,33 @@ At this moment, Mjolnir supports the following clients:
 
 
 ## Table of Content
-
+- [Architecture](tbd)
 - [Terminology](https://github.com/brave-experiments/Mjolnir#terminology)
 - [Requirements](https://github.com/brave-experiments/Mjolnir#requirements)
-- [Getting-Started] (https://github.com/brave-experiments/Mjolnir#requirements)
+- [Getting-Started](https://github.com/brave-experiments/Mjolnir#requirements)
    - [Development-Mode](https://github.com/brave-experiments/Mjolnir#development-mode)
    - [Test](https://github.com/brave-experiments/Mjolnir#test)
    - [Test-Watch](https://github.com/brave-experiments/Mjolnir#test-watch)
    - [Build](https://github.com/brave-experiments/Mjolnir#build)
-   - [Providing-Values]
-   - [Debugging]
-- [Build-Details]
-- [Usage]
-- [Cleaning-Up]
+   - [Providing-Values](https://github.com/brave-experiments/Mjolnir#providing-values)
+   - [Debugging](https://github.com/brave-experiments/Mjolnir#debugging)
+- [Build-Details](https://github.com/brave-experiments/Mjolnir#build-details)
+- [Subcommands](https://github.com/brave-experiments/Mjolnir#subcommands)
+- [Cleaning-Up](https://github.com/brave-experiments/Mjolnir#cleaning-up)
+- [Monitoring-and-Logs](https://github.com/brave-experiments/Mjolnir#monitoring-and-logs)
+   - [Grafana-Logs](https://github.com/brave-experiments/Mjolnir#grafana-logs)
+   - [Dashboard-JSON](https://github.com/brave-experiments/Mjolnir#dashboard-json)
+- [Error-Handling](https://github.com/brave-experiments/Mjolnir#error-handling)
+- [Limitations](https://github.com/brave-experiments/Mjolnir#limitations)
+-[Built-With](https://github.com/brave-experiments/Mjolnir#built-with)
+- [Conributing](https://github.com/brave-experiments/Mjolnir#contributing)
+- [License](https://github.com/brave-experiments/Mjolnir#license)
+
+- [Acknowledgements](https://github.com/brave-experiments/Mjolnir#license)
 
 
+
+## Architecture
 
 
 
@@ -175,23 +187,29 @@ private_key_file = <sensitive>
 Wrote summarry output to:  .apollo/quorum-bastion-jkopacze-n3-66790866/output.log
 Restoring env variables.
 ```
-## Usage
+## Subcommands
+
+- SSH into the bastion :
+   
+   `./dist/{cli-version}/{arch}/apollo bastion`
+
+- SSH into an Ethereum node:
+
+   `./dist/{cli-version}/{arch}/apollo node n`
+
+    where `n` is the node number. 
 
 
-In order to get the current node list login to bastion using the key:
+- To attach an interactive geth console to any node: 
 
-`ssh -i .apollo/$network-name+$timestamp/id_rsa admin@bastion_host_ip`
+   `./dist/{cli-version}/{arch}/apollo geth n` 
 
-On bastion you will find Node{n} scripts. To get nodes IP addresses for each one run:
+   where `n` is the node number. 
 
-`cat /usr/local/bin/Node*`
 
-You can then connect to each node from your workstation using the same key like for bastion.
+- Get information on currently deployed nodes
 
-Additional tools you will find under links
-* eth-stats: http://bastion_host_ip:3000
-* Grafana: http://bastion_host_ip:3001
-* Prometheus: http://bastion_host_ip:9090
+   `./dist/{cli-version}/{arch}/apollo node-info` 
 
 ## Cleaning Up
 
@@ -214,19 +232,27 @@ Current success output looks like this ( will be correted in next release ):
 For infrastructure monitoring and incident response, you no longer need to switch to other tools to debug what went wrong. Explore allows you to dig deeper into your metrics and logs to find the cause. Grafana’s new logging data source, Loki is tightly integrated into Explore and allows you to correlate metrics and logs by viewing them side-by-side
 More info: https://grafana.com/docs/features/explore/
 
+
+To access tools to visualise your cluster's performance visit:
+
+* eth-stats: http://bastion_host_ip:3000
+* Grafana: http://bastion_host_ip:3001
+* Prometheus: http://bastion_host_ip:9090
+
 ### Dashboard JSON
 
 A dashboard in Grafana is represented by a JSON object, which stores metadata of its dashboard. Dashboard metadata includes dashboard properties, metadata from panels, template variables, panel queries, etc.
 More info: https://grafana.com/docs/reference/dashboard/
 
-### Error handling
+## Error handling
 When you are running command through CLI it should end with exit code status. Statuses are present in:
 `commands.go`
 
 ##  Limitations
+- **This tool is meant for benchmarking alone and should not be used to deploy production instances.** 
 - Some features may not be compatible in Windows environment
 - Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
-- This tool is meant for benchmarking alone and should not be used to deploy production instances. 
+
 
 ## Built with
 
@@ -251,7 +277,11 @@ We subscribe to a strict code of conduct. For more information visit our [CODE_O
 
 ## License 
 
-This project is licensed under the Mozilla Public License 2.0- see the [LICENSE]() file for details
+This project is licensed under the Mozilla Public License 2.0- see the [LICENSE](https://github.com/brave-experiments/Mjolnir/blob/master/LICENSE) file for details
+
+## Frequently Asked Questions
+
+
 
 ## Acknowledgements
 
