@@ -121,7 +121,7 @@ func TestKeyPair_FromJson(t *testing.T) {
 
 func TestKeyPair_SaveFailure(t *testing.T) {
 	// Should fail when no deploy name
-	TempDirPathLocation = ".apolloTestHash"
+	TempDirPathLocation = ".mjolnirTestHash"
 	err := os.RemoveAll(TempDirPathLocation)
 	assert.Nil(t, err)
 	keyPairToTest := keyPair{}
@@ -165,7 +165,7 @@ func TestKeyPair_SaveFailure(t *testing.T) {
 
 func TestKeyPair_Save(t *testing.T) {
 	// Should succeed when both keys are present
-	TempDirPathLocation = ".apolloTestSave"
+	TempDirPathLocation = ".mjolnirTestSave"
 	err := os.RemoveAll(TempDirPathLocation)
 	assert.Nil(t, err)
 	deploymentName := "dummy-deploy"

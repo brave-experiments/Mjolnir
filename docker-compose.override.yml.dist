@@ -3,7 +3,7 @@ version: '3.6'
 services:
   cli:
     build: .
-    image: brave-experiments/apollo-go:latest
+    image: brave-experiments/mjolnir-go:latest
     volumes:
       - ./:/usr/local/go/src/github.com/brave-experiments/Mjolnir
     env_file:
@@ -11,10 +11,10 @@ services:
     command: >
       sh -c "CompileDaemon -log-prefix=false -build=\"echo acquired change\" "
     networks:
-      apollo:
+      mjolnir:
         aliases:
-          - apollo.local
+          - mjolnir.local
 
 networks:
-  apollo:
+  mjolnir:
     driver: bridge

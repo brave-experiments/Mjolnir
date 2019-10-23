@@ -3,19 +3,19 @@ version: '3.6'
 services:
   cli-test:
     build: .
-    image: brave-experiments/apollo-go:latest
+    image: brave-experiments/mjolnir-go:latest
     volumes:
       - ./:/usr/local/go/src/github.com/brave-experiments/Mjolnir
     env_file:
       - .env.test
     command: >
-      sh -c "CompileDaemon -log-prefix=false -build=\"go build -a -installsuffix cgo -o apollo\" -command=\"go test ./...\" "
+      sh -c "CompileDaemon -log-prefix=false -build=\"go build -a -installsuffix cgo -o mjolnir\" -command=\"go test ./...\" "
 
     networks:
-      apollo:
+      mjolnir:
         aliases:
-          - test.apollo.local
+          - test.mjolnir.local
 
 networks:
-  apollo:
+  mjolnir:
     driver: bridge
