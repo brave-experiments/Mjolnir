@@ -264,7 +264,7 @@ When you are running command through CLI it should end with exit code status. St
 
 ## Contributing 
 
-Refer to [CONTRIBUTING.md](https://github.com/brave-experiments/Mjolnir/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Refer to [CONTRIBUTING.md](https://github.com/brave-experiments/Mjolnir/blob/master/docs/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning 
 
@@ -272,7 +272,7 @@ We use [SemVer](https://semver.org/) for versioning.
 
 ## Code of Conduct
 
-We subscribe to a strict code of conduct. For more information visit our [CODE_OF_CONDUCT](https://github.com/brave-experiments/Mjolnir/blob/master/docs/CODE_OF_CONDUCT.md) page
+We subscribe to a strict code of conduct. For more information visit our [CODE_OF_CONDUCT](https://github.com/brave-experiments/Mjolnir/blob/master/CODE_OF_CONDUCT.md) page
 
 
 ## License 
