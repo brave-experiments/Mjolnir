@@ -61,7 +61,7 @@ At this moment, Mjolnir supports the following clients:
 
 ## Architecture
 
-
+<a href="https://ibb.co/ZSSpLpB"><img src="https://i.ibb.co/5kkgMgr/Mjolnir.png" alt="Mjolnir" border="0"></a>
 
 ## Terminology
 
@@ -281,6 +281,16 @@ This project is licensed under the Mozilla Public License 2.0- see the [LICENSE]
 
 ## Frequently Asked Questions
 
+- **Why did my deployment fail?:** Although we have made efforts to provide descriptive error codes, there are times when a deployment can fail due to random faults (i.e. connectivity issues). Should this happen to you, clean up the resources and start the process again.
+
+- **When I try to log in to the bastion, it get rejected stating that there have been too many attempts:** Mjolnir registers an identity everytime you deploy new infrastructure. Unfortunately, this is not deleted after the instance is destroyed. As more as more instances are brought up, this leads to too many registers identities. Eventually when you try to log in, it fails as it iterates through all the old ones and times out. The solution is:
+   - run `ssh-add -l` to list all the identities
+   - Flush them with `ssh-add -D`
+   - After doing this, you should be able to log into the bastion. 
+
+
+
+
 
 
 ## Acknowledgements
@@ -288,5 +298,5 @@ This project is licensed under the Mozilla Public License 2.0- see the [LICENSE]
 We would like to thank the following teams for their contributions to the project:
 
 - [binarapps](https://binarapps.com) for their ability to dive into both the infrastructure and software and deliver on our requirements. 
-- Dr Andreas Krueger for [chainhammer](https://github.com/drandreaskrueger/chainhammer/tree/master/hammer). The name is inspired by his project, and much of the code for firing the transactions is mostly his.
+- Dr Andreas Krueger for [chainhammer](https://github.com/drandreaskrueger/chainhammer/tree/master/hammer). Mjolnir inspired by his project, and much of the code for firing the transactions is mostly his.
 - The JP Morgan Team for [quorum-cloud](https://github.com/jpmorganchase/quorum-cloud). This was the boiler plate for the deployments of other clients. 
