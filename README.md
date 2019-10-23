@@ -61,7 +61,7 @@ At this moment, Mjolnir supports the following clients:
 
 ## Architecture
 
-<a href="https://ibb.co/ZSSpLpB"><img src="https://i.ibb.co/5kkgMgr/Mjolnir.png" alt="Mjolnir" border="0"></a>
+<a href="https://ibb.co/1L5LbVc"><img src="https://i.ibb.co/56y62DZ/M.png" alt="M" border="0"></a>
 
 ## Terminology
 
