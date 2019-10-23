@@ -269,10 +269,6 @@ Refer to [CONTRIBUTING.md](https://github.com/brave-experiments/Mjolnir/blob/mas
 
 We use [SemVer](https://semver.org/) for versioning.
 
-## Code of Conduct
-
-We subscribe to a strict code of conduct. For more information visit our [CODE_OF_CONDUCT](https://github.com/brave-experiments/Mjolnir/blob/master/CODE_OF_CONDUCT.md) page
-
 
 ## License 
 
