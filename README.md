@@ -70,7 +70,7 @@ At this moment, Mjolnir supports the following clients:
 - **{arch}**: The OS architecture. Currently supported are 
    - `osx` 
    - `unix`
-- **{binaryName}**: `apollo`
+- **{binaryName}**: `mjolnir`
 - **{client}**: The Ethereum client been tested. Currently supported are:
    - `quorum`
    - `pantheon`
@@ -90,10 +90,10 @@ At this moment, Mjolnir supports the following clients:
    - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
    - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml`
    - Update `examples/values-local.yaml`
-   - enter `./dist/{cli-version}/{arch}/apollo apply {client} examples/values-local.yml `. This will deploy the requsite infrastrucure on your AWS account.
+   - enter `./dist/{cli-version}/{arch}/mjolnir apply {client} examples/values-local.yml `. This will deploy the requsite infrastrucure on your AWS account.
 
 - **Step 2: Fire Transactions**
-   - Once this is complete, enter `./dist/{cli-version}/{arch}/apollo bastion` to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
+   - Once this is complete, enter `./dist/{cli-version}/{arch}/mjolnir bastion` to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
    - Move in the `chainhammer` directory by entering `cd chainhammer`
    - Run `scripts/install-initialize.sh` to intialize chainhammer. 
    - To send transactions, ` CH_TXS=40000 CH_THREADING="threaded2 300" ./run.sh "{TESTNAME}"`; Where `CH_TXS` is the number of transactions to be send, `CH_THREADING` is the threading algorithm, and `{TESTNAME}` is the name that the run will be save under.
@@ -124,9 +124,9 @@ To build from source:
 
 After success built files will lay within `./dist/{cli-version}/{arch}/{binaryName}`
 
-To execute apollo binary file:
-try `./dist/{cli-version}/{arch}/apollo` to see all commands that are registered
-try `./dist/{cli-version}/{arch}/apollo {cmdName} --help` to see help from command
+To execute mjolnir binary file:
+try `./dist/{cli-version}/{arch}/mjolnir` to see all commands that are registered
+try `./dist/{cli-version}/{arch}/mjolnir {cmdName} --help` to see help from command
 
 ### Providing values
 See `example/values.yml` that shows how to attach values to apply execution. 
@@ -140,8 +140,8 @@ After execution of `apply` command certain files will be created on your host:
 - `temp.tf` at root of execution dir, which contains whole terraform code that has been executed
 - `terraform.tfstate` at root of execution dir, which contains state of execution
 - `variables.log` at root of execution dir, which contains last executed variables in recipe
-- `.apollo` dir which contains necessary files like ssh key pair to bastion
-- `.apollo/$network-name+$timestamp/` is a dir where should end private and public key pair
+- `.mjolnir` dir which contains necessary files like ssh key pair to bastion
+- `.mjolnir/$network-name+$timestamp/` is a dir where should end private and public key pair
 
 
 
@@ -151,9 +151,9 @@ To manually test build run
 
 `bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
 
-To execute apollo CLI run:
+To execute mjolnir CLI run:
 
-`./apollo apply quorum values.yml`  - with previosly prepared values.yml taken from `examples/` folder in repo
+`./mjolnir apply quorum values.yml`  - with previosly prepared values.yml taken from `examples/` folder in repo
 
 After successful you will find following files in your working directory:
 * terraform.tfstate   - current terraform object state
@@ -163,7 +163,7 @@ After successful you will find following files in your working directory:
 On successful run on the output you will see following example information:
 
 ```
-Created output dir:  .apollo/network-name-12345678
+Created output dir:  .mjolnir/network-name-12345678
 [FINAL] Summary execution: [reset][bold][green]
 Outputs:
 
@@ -185,42 +185,42 @@ grafana_username = admin
 grafana_password = XXXXXXXXX
 network_name = network-name
 private_key_file = <sensitive>
-Wrote summarry output to:  .apollo/quorum-bastion-jkopacze-n3-66790866/output.log
+Wrote summarry output to:  .mjolnir/quorum-bastion-jkopacze-n3-66790866/output.log
 Restoring env variables.
 ```
 ## Subcommands
 
 - SSH into the bastion:
    
-   `./dist/{cli-version}/{arch}/apollo bastion`
+   `./dist/{cli-version}/{arch}/mjolnir bastion`
 
 - SSH into an Ethereum node:
 
-   `./dist/{cli-version}/{arch}/apollo node n`
+   `./dist/{cli-version}/{arch}/mjolnir node n`
 
     where `n` is the node number. 
 
 
 - To attach an interactive geth console to any node: 
 
-   `./dist/{cli-version}/{arch}/apollo geth n` 
+   `./dist/{cli-version}/{arch}/mjolnir geth n` 
 
    where `n` is the node number. 
 
 
 - Get information on currently deployed nodes
 
-   `./dist/{cli-version}/{arch}/apollo node-info` 
+   `./dist/{cli-version}/{arch}/mjolnir node-info` 
 
 ## Cleaning Up
 
 to destroy run:
-`./dist/{cli-version}/{arch}/apollo destroy {values-local.yml}`
+`./dist/{cli-version}/{arch}/mjolnir destroy {values-local.yml}`
 
 Current success output looks like this ( will be correted in next release ):
 ```Deploy Name not present
    [FINAL] Summary execution: 
-   Wrote summarry output to:  .apollo//output.log
+   Wrote summarry output to:  .mjolnir//output.log
    Deploy Name not present
    Restoring env variables.
 ```

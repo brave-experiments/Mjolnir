@@ -2,9 +2,10 @@ package terra
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestConvertInterfaceToHexFailure(t *testing.T) {
@@ -89,7 +90,7 @@ func TestConvertInterfaceToHex(t *testing.T) {
 }
 
 func TestReadOutputLogVarFailure(t *testing.T) {
-	TempDirPathLocation = ".apolloTestOutput"
+	TempDirPathLocation = ".mjolnirTestOutput"
 	err := os.RemoveAll(TempDirPathLocation)
 	assert.Nil(t, err)
 	deployName := "dummyDeploy"
@@ -141,7 +142,7 @@ func TestReadOutputLogVarFailure(t *testing.T) {
 }
 
 func TestReadOutputLogVar(t *testing.T) {
-	TempDirPathLocation = ".apolloTestOutputLog"
+	TempDirPathLocation = ".mjolnirTestOutputLog"
 	err := os.RemoveAll(TempDirPathLocation)
 	assert.Nil(t, err)
 	deployName := "dummyDeploy"

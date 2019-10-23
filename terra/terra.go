@@ -13,7 +13,7 @@ import (
 const (
 	CombinedRecipeDefaultFileName = "temp.tf"
 	LastExecutedVariablesFileName = "variables.log"
-	TempDirPath                   = ".apollo"
+	TempDirPath                   = ".mjolnir"
 )
 
 var (
