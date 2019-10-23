@@ -2,10 +2,6 @@
 # Mjölnir 
 ## ...the hammer of Thor. 
 
-###  *N.B.* 
-- Some key features may not be compatible in Windows environment
-- Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
-
 ```
 |"  \    /"  |     |"  |  /    " \  |"  |    (\"   \|"  \  |" \    /"      \  
  \   \  //   |     ||  | // ____  \ ||  |    |.\\   \    | ||  |  |:        | 
@@ -20,7 +16,9 @@
             !     `--------------'           ) (      | !
                                          mn  '-'      !
 ```
-Mjolnir is a tool for rapidly deploying and testing Ethereum Clients. We felt the need to carry out this body of work as we needed to benchmark the performance of different clients, and there was a tool out their the deployed both infrastructure and carried out tests. 
+We needed DevOps tooling to enable the Brave team rapidly deploy Ethereum Proof of Authority (PoA) clusters across different Ethereum Clients for benchmarking.
+
+As there was no tool out there that fulfilled this requirement,this gap gave birth to Mjolnir ...  a tool for rapidly deploying and testing Ethereum Clients. 
 
 The tool currently allows users to test the through put of Ethereum Clients both on its own, and under adverse network conditions (i.e. Clock Skew , dropped tcp packets, jitters, etc.)
 
@@ -202,6 +200,10 @@ More info: https://grafana.com/docs/reference/dashboard/
 ### Error handling
 When you are running command through CLI it should end with exit code status. Statuses are present in:
 `commands.go`
+
+##  Limitations
+- Some features may not be compatible in Windows environment
+- Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
 
 ## Built with
 
