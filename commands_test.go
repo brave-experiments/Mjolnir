@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/brave-experiments/apollo-devops/terra"
+	"github.com/brave-experiments/Mjolnir/terra"
 	"github.com/mitchellh/cli"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"

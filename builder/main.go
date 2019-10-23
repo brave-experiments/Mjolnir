@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/brave-experiments/apollo-devops/terra"
+	"github.com/brave-experiments/Mjolnir/terra"
 	"golang.org/x/net/html"
 	"log"
 	"os"

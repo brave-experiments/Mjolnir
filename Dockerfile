@@ -12,8 +12,8 @@ RUN apk add --no-cache make \
 
 RUN go get github.com/githubnemo/CompileDaemon
 
-VOLUME /usr/local/go/src/github.com/brave-experiments/apollo-devops
-WORKDIR /usr/local/go/src/github.com/brave-experiments/apollo-devops
+VOLUME /usr/local/go/src/github.com/brave-experiments/Mjolnir
+WORKDIR /usr/local/go/src/github.com/brave-experiments/Mjolnir
 
 ADD . .
 RUN make generate

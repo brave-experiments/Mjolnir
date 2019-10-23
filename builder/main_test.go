@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/brave-experiments/apollo-devops/terra"
+	"github.com/brave-experiments/Mjolnir/terra"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/net/html"
 	"os"

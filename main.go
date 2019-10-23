@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/brave-experiments/apollo-devops/terra"
+	"github.com/brave-experiments/Mjolnir/terra"
 	"github.com/mitchellh/cli"
 	"log"
 	"os"
