@@ -53,7 +53,7 @@ At this moment, Mjolnir supports the following clients:
 - [Error-Handling](https://github.com/brave-experiments/Mjolnir#error-handling)
 - [Limitations](https://github.com/brave-experiments/Mjolnir#limitations)
 - [Built-With](https://github.com/brave-experiments/Mjolnir#built-with)
-- [Conributing](https://github.com/brave-experiments/Mjolnir#contributing)
+- [Contributing](https://github.com/brave-experiments/Mjolnir#contributing)
 - [License](https://github.com/brave-experiments/Mjolnir#license)
 - [Acknowledgements](https://github.com/brave-experiments/Mjolnir#license)
 
