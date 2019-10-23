@@ -32,8 +32,26 @@ At this moment, Mjolnir supports the following clients:
 
 
 
+## Table of Content
 
-### Terminology
+- [Terminology](https://github.com/brave-experiments/Mjolnir#terminology)
+- [Requirements](https://github.com/brave-experiments/Mjolnir#requirements)
+- [Getting-Started] (https://github.com/brave-experiments/Mjolnir#requirements)
+   - [Development-Mode](https://github.com/brave-experiments/Mjolnir#development-mode)
+   - [Test](https://github.com/brave-experiments/Mjolnir#test)
+   - [Test-Watch](https://github.com/brave-experiments/Mjolnir#test-watch)
+   - [Build](https://github.com/brave-experiments/Mjolnir#build)
+   - [Providing-Values]
+   - [Debugging]
+- [Build-Details]
+- [Usage]
+- [Cleaning-Up]
+
+
+
+
+
+## Terminology
 
 - **{cli-version}** : Semantic version of binary 
 - **{arch}**: The OS architecture. Currently supported are 
@@ -46,7 +64,7 @@ At this moment, Mjolnir supports the following clients:
    - `parity`
 - **{cmdName}** : Binary's sub command. 
 
-### Requirements
+## Requirements
 - A UNIX based machine.
 - Go (>= v 1.12.7)
 - Docker Engine Community (>= v 19.03.1)
@@ -72,7 +90,7 @@ At this moment, Mjolnir supports the following clients:
       - ..reader/img/{TESTNAME}-{date}-{time}_blks.pgn
 
 
-### Development mode
+### Development Mode
 To run project locally type:
 
 `bin/run`
@@ -104,7 +122,7 @@ you should copy `example/values.yml` to `values-local.yml` and provide values th
 
 In test mode cli runs with isolated scope with predefined variables and constants.
 
-### Further debugging
+### Debugging
 After execution of `apply` command certain files will be created on your host:
 - `temp.tf` at root of execution dir, which contains whole terraform code that has been executed
 - `terraform.tfstate` at root of execution dir, which contains state of execution
@@ -114,7 +132,7 @@ After execution of `apply` command certain files will be created on your host:
 
 
 
-## Manually running deploy build
+## Build Details
 
 To manually test build run 
 
@@ -157,21 +175,7 @@ private_key_file = <sensitive>
 Wrote summarry output to:  .apollo/quorum-bastion-jkopacze-n3-66790866/output.log
 Restoring env variables.
 ```
-
-## Manually destroying deploy
-
-to destroy run:
-`./dist/{cli-version}/{arch}/apollo destroy {values-local.yml}`
-
-Current success output looks like this ( will be correted in next release ):
-```Deploy Name not present
-   [FINAL] Summary execution: 
-   Wrote summarry output to:  .apollo//output.log
-   Deploy Name not present
-   Restoring env variables.
-```
-
-## Deploy usage
+## Usage
 
 
 In order to get the current node list login to bastion using the key:
@@ -188,6 +192,20 @@ Additional tools you will find under links
 * eth-stats: http://bastion_host_ip:3000
 * Grafana: http://bastion_host_ip:3001
 * Prometheus: http://bastion_host_ip:9090
+
+## Cleaning Up
+
+to destroy run:
+`./dist/{cli-version}/{arch}/apollo destroy {values-local.yml}`
+
+Current success output looks like this ( will be correted in next release ):
+```Deploy Name not present
+   [FINAL] Summary execution: 
+   Wrote summarry output to:  .apollo//output.log
+   Deploy Name not present
+   Restoring env variables.
+```
+
 
 ## Monitoring and logs
 
