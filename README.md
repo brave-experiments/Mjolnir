@@ -24,25 +24,25 @@ The tool currently allows users to test the through put of Ethereum Clients both
 
 At this moment, Mjolnir supports the following clients:
 
-- Quorum
-- Patheon (now Hyperledger Besu)
-- Parity (Honey Badger / POSDAO version)
+- [Quorum](https://github.com/jpmorganchase/quorum)
+- [Patheon](https://github.com/hyperledger/besu) (now Hyperledger Besu)
+- [Parity](https://github.com/poanetwork/hbbft) (Honey Badger / POSDAO version)
 
 
 
 
 ### Terminology
 
-- {cli-version} : Semantic version of binary 
-- {arch}: The OS architecture. Currently supported are 
+- **{cli-version}** : Semantic version of binary 
+- **{arch}**: The OS architecture. Currently supported are 
    - `osx` 
    - `unix`
-- {binaryName}: `apollo`
-- {client}: The Ethereum client been tested. Currently supported are:
+- **{binaryName}**: `apollo`
+- **{client}**: The Ethereum client been tested. Currently supported are:
    - `quorum`
    - `pantheon`
    - `parity`
-- {cmdName} : Binary's sub command. 
+- **{cmdName}** : Binary's sub command. 
 
 ### Requirements
 - A UNIX based machine.
@@ -53,7 +53,7 @@ At this moment, Mjolnir supports the following clients:
 
 ## Getting started
 - **Step 1 : Deploy Infrastructure**
-   - Clone this repo
+   - Clone this repo - ` git clone git@github.com:brave-experiments/Mjolnir.git`
    - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
    - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml`
    - Update `examples/values-local.yaml`
@@ -94,10 +94,6 @@ After success built files will lay within `./dist/{cli-version}/{arch}/{binaryNa
 To execute apollo binary file:
 try `./dist/{cli-version}/{arch}/apollo` to see all commands that are registered
 try `./dist/{cli-version}/{arch}/apollo {cmdName} --help` to see help from command
-
-### Example : Quorum execution
-to build
-`../dist/{cli-version}/{arch}/apollo apply quorum {values.yml}`
 
 ### Providing values
 See `example/values.yml` that shows how to attach values to apply execution. 
@@ -210,6 +206,7 @@ When you are running command through CLI it should end with exit code status. St
 ##  Limitations
 - Some features may not be compatible in Windows environment
 - Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
+- This tool is meant for benchmarking alone and should not be used to deploy production instances. 
 
 ## Built with
 
@@ -227,10 +224,14 @@ Please read [CONTRIBUTING.md](https://github.com/brave-experiments/Mjolnir/blob/
 
 We use [SemVer](https://semver.org/) for versioning.
 
+## Code of Conduct
+
+We subscribe to a strict code of conduct. For more information please visit our [CODE_OF_CONDUCT](https://github.com/brave-experiments/Mjolnir/blob/master/docs/CODE_OF_CONDUCT.md) page
+
 
 ## License 
 
-This project is licensed under the Mozilla Public License 2.0- see the LICENSE file for details
+This project is licensed under the Mozilla Public License 2.0- see the [LICENSE]() file for details
 
 ## Acknowledgements
 
