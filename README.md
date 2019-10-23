@@ -4,20 +4,20 @@
 
 [![Build Status](https://travis-ci.com/brave-experiments/Mjolnir.svg?token=KboonuECWJN5n1otaykj&branch=master)](https://travis-ci.com/brave-experiments/Mjolnir) <!--[![Coverage Status](https://coveralls.io/repos/github/<github username>/<repo name>/badge.svg?branch=master)](https://coveralls.io/github/<github username>/<repo name>?branch=master)-->
 
-         ```
-         |"  \    /"  |     |"  |  /    " \  |"  |    (\"   \|"  \  |" \    /"      \  
-         \   \  //   |     ||  | // ____  \ ||  |    |.\\   \    | ||  |  |:        | 
-         /\\  \/.    |     |:  |/  /    ) :)|:  |    |: \.   \\  | |:  |  |_____/   ) 
-         |: \.        |  ___|  /(: (____/ //  \  |___ |.  \    \. | |.  |   //      /  
-         |.  \    /:  | /  :|_/ )\        /  ( \_|:  \|    \    \ | /\  |\ |:  __   \  
-         |___|\__/|___|(_______/  \"_____/    \_______)\___|\____\)(__\_|_)|__|  \___)
+         
+                  |"  \    /"  |     |"  |  /    " \  |"  |    (\"   \|"  \  |" \    /"      \  
+                  \   \  //   |     ||  | // ____  \ ||  |    |.\\   \    | ||  |  |:        | 
+                  /\\  \/.    |     |:  |/  /    ) :)|:  |    |: \.   \\  | |:  |  |_____/   ) 
+                  |: \.        |  ___|  /(: (____/ //  \  |___ |.  \    \. | |.  |   //      /  
+                  |.  \    /:  | /  :|_/ )\        /  ( \_|:  \|    \    \ | /\  |\ |:  __   \  
+                  |___|\__/|___|(_______/  \"_____/    \_______)\___|\____\)(__\_|_)|__|  \___)
 
-         T                                    \`.    T
-               |    T     .--------------.___________) \   |    T
-               !    |     |//////////////|___________[ ]   !  T |
-                     !     `--------------'           ) (      | !
-                                                mn  '-'      !
-         ```
+                  T                                    \`.    T
+                        |    T     .--------------.___________) \   |    T
+                        !    |     |//////////////|___________[ ]   !  T |
+                              !     `--------------'           ) (      | !
+                                                         mn  '-'      !
+         
 We needed DevOps tooling to enable the Brave team rapidly deploy Ethereum Proof of Authority (PoA) clusters across different Ethereum Clients for benchmarking.
 
 As there was no tool out there that fulfilled this requirement,this gap gave birth to Mjolnir ...  a tool for rapidly deploying and testing Ethereum Clients. 
