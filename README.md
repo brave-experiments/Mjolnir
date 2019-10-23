@@ -148,7 +148,7 @@ After execution of `apply` command certain files will be created on your host:
 
 To manually test build run 
 
-`bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/apollo-devops/releases 
+`bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
 
 To execute apollo CLI run:
 

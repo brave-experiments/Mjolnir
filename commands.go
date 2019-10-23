@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/brave-experiments/apollo-devops/connect"
-	"github.com/brave-experiments/apollo-devops/terra"
+	"github.com/brave-experiments/Mjolnir/connect"
+	"github.com/brave-experiments/Mjolnir/terra"
 	"github.com/mitchellh/cli"
 	"io/ioutil"
 	"os"
