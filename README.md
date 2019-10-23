@@ -1,8 +1,9 @@
 
 # Mjölnir 
-## ...the hammer of Thor. 
+## ...[the hammer of Thor](https://en.wikipedia.org/wiki/Mj%C3%B6lnir). 
 
-[![Build Status](https://travis-ci.com/brave-experiments/Mjolnir.svg?token=KboonuECWJN5n1otaykj&branch=master)](https://travis-ci.com/brave-experiments/Mjolnir) <!--[![Coverage Status](https://coveralls.io/repos/github/<github username>/<repo name>/badge.svg?branch=master)](https://coveralls.io/github/<github username>/<repo name>?branch=master)-->
+[![Build Status](https://travis-ci.com/brave-experiments/Mjolnir.svg?token=KboonuECWJN5n1otaykj&branch=master)](https://travis-ci.com/brave-experiments/Mjolnir)
+<!--[![Coverage Status](https://coveralls.io/repos/github/<github username>/<repo name>/badge.svg?branch=master)](https://coveralls.io/github/<github username>/<repo name>?branch=master)-->
 
          
                   |"  \    /"  |     |"  |  /    " \  |"  |    (\"   \|"  \  |" \    /"      \  
@@ -32,7 +33,7 @@ At this moment, Mjolnir supports the following clients:
 
 
 
-## Table of Content
+## Table of Contents
 - [Architecture](tbd)
 - [Terminology](https://github.com/brave-experiments/Mjolnir#terminology)
 - [Requirements](https://github.com/brave-experiments/Mjolnir#requirements)
@@ -51,7 +52,7 @@ At this moment, Mjolnir supports the following clients:
    - [Dashboard-JSON](https://github.com/brave-experiments/Mjolnir#dashboard-json)
 - [Error-Handling](https://github.com/brave-experiments/Mjolnir#error-handling)
 - [Limitations](https://github.com/brave-experiments/Mjolnir#limitations)
-- [Built-With](https://github.com/brave-experiments/Mjolnir#built-with)
+-[Built-With](https://github.com/brave-experiments/Mjolnir#built-with)
 - [Conributing](https://github.com/brave-experiments/Mjolnir#contributing)
 - [License](https://github.com/brave-experiments/Mjolnir#license)
 
@@ -65,7 +66,7 @@ At this moment, Mjolnir supports the following clients:
 
 ## Terminology
 
-- **{cli-version}** : Semantic version of binary 
+- **{cli-version}**: Semantic version of binary 
 - **{arch}**: The OS architecture. Currently supported are 
    - `osx` 
    - `unix`
@@ -74,7 +75,7 @@ At this moment, Mjolnir supports the following clients:
    - `quorum`
    - `pantheon`
    - `parity`
-- **{cmdName}** : Binary's sub command. 
+- **{cmdName}**: Binary's sub command. 
 
 ## Requirements
 - A UNIX based machine.
@@ -84,7 +85,7 @@ At this moment, Mjolnir supports the following clients:
 
 
 ## Getting started
-- **Step 1 : Deploy Infrastructure**
+- **Step 1: Deploy Infrastructure**
    - Clone this repo - ` git clone git@github.com:brave-experiments/Mjolnir.git`
    - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
    - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml`
@@ -148,7 +149,7 @@ After execution of `apply` command certain files will be created on your host:
 
 To manually test build run 
 
-`bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/apollo-devops/releases 
+`bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
 
 To execute apollo CLI run:
 
@@ -189,7 +190,7 @@ Restoring env variables.
 ```
 ## Subcommands
 
-- SSH into the bastion :
+- SSH into the bastion:
    
    `./dist/{cli-version}/{arch}/apollo bastion`
 
@@ -249,17 +250,16 @@ When you are running command through CLI it should end with exit code status. St
 `commands.go`
 
 ##  Limitations
+
 - **This tool is meant for benchmarking alone and should not be used to deploy production instances.** 
-- Some features may not be compatible in Windows environment
+- Some features may not be compatible in Windows environment.
 - Only Amazon Web Services (AWS) is supported now. We are however open to PRs for other cloud providers!
 
 
 ## Built with
 
-- Chainhammer : https://github.com/drandreaskrueger/chainhammer
-
+- Chainhammer: https://github.com/drandreaskrueger/chainhammer
 - Quorum Cloud: https://github.com/jpmorganchase/quorum-cloud
-
 - Terraform: https://www.terraform.io/
 
 ## Contributing 
