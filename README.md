@@ -14,7 +14,9 @@
 |.  \    /:  | /  :|_/ )\        /  ( \_|:  \|    \    \ | /\  |\ |:  __   \  
 |___|\__/|___|(_______/  \"_____/    \_______)\___|\____\)(__\_|_)|__|  \___)
 ```
-Mjolnir is a tool for rapidly deploying and testing Ethereum Clients. Tool currently allows users to test the through put of Ethereum Clients both on its own, and under adverse network conditions (i.e. Clock Skew , dropped tcp packets, jitters, etc.)
+Mjolnir is a tool for rapidly deploying and testing Ethereum Clients. We felt the need to carry out this body of work as we needed to benchmark the performance of different clients, and there was a tool out their the deployed both infrastructure and carried out tests. 
+
+The tool currently allows users to test the through put of Ethereum Clients both on its own, and under adverse network conditions (i.e. Clock Skew , dropped tcp packets, jitters, etc.)
 
 At this moment, Mjolnir supports the following clients:
 
@@ -148,8 +150,6 @@ Wrote summarry output to:  .apollo/quorum-bastion-jkopacze-n3-66790866/output.lo
 Restoring env variables.
 ```
 
-
-
 ## Manually destroying deploy
 
 to destroy run:
@@ -222,6 +222,6 @@ This project is licensed under the Mozilla Public License 2.0- see the LICENSE f
 
 We would like to thank the following teams for their contributions to the project:
 
-- [binarapps](https://binarapps.com) for their DevOps expertise
+- [binarapps](https://binarapps.com) for their ability to dive into both the infrastructure and software and deliver on our requirements. 
 - Dr Andreas Krueger for [chainhammer](https://github.com/drandreaskrueger/chainhammer/tree/master/hammer). The name is inspired by his project, and much of the code for firing the transactions is mostly his.
-- The JP Morgan Team for [quorum-cloud](https://github.com/jpmorganchase/quorum-cloud). This formed the boiler plate for the deployments of other clients. 
+- The JP Morgan Team for [quorum-cloud](https://github.com/jpmorganchase/quorum-cloud). This was the boiler plate for the deployments of other clients. 
