@@ -116,7 +116,7 @@ After execution of `apply` command certain files will be created on your host:
 
 ## Manually running deploy build
 
-To manually test build please run 
+To manually test build run 
 
 `bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/apollo-devops/releases 
 
@@ -174,7 +174,7 @@ Current success output looks like this ( will be correted in next release ):
 ## Deploy usage
 
 
-In order to get the current node list please login to bastion using the key:
+In order to get the current node list login to bastion using the key:
 
 `ssh -i .apollo/$network-name+$timestamp/id_rsa admin@bastion_host_ip`
 
@@ -220,7 +220,7 @@ When you are running command through CLI it should end with exit code status. St
 
 ## Contributing 
 
-Please read [CONTRIBUTING.md](https://github.com/brave-experiments/Mjolnir/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Refer to [CONTRIBUTING.md](https://github.com/brave-experiments/Mjolnir/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning 
 
@@ -228,7 +228,7 @@ We use [SemVer](https://semver.org/) for versioning.
 
 ## Code of Conduct
 
-We subscribe to a strict code of conduct. For more information please visit our [CODE_OF_CONDUCT](https://github.com/brave-experiments/Mjolnir/blob/master/docs/CODE_OF_CONDUCT.md) page
+We subscribe to a strict code of conduct. For more information visit our [CODE_OF_CONDUCT](https://github.com/brave-experiments/Mjolnir/blob/master/docs/CODE_OF_CONDUCT.md) page
 
 
 ## License 
