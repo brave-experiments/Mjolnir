@@ -2,6 +2,8 @@
 # Mjölnir 
 ## ...the hammer of Thor. 
 
+[![Build Status](https://travis-ci.org/brave-experiments/Mjolnir.svg?branch=master)](https://travis-ci.org/brave-experiments/Mjolnir) <!--[![Coverage Status](https://coveralls.io/repos/github/<github username>/<repo name>/badge.svg?branch=master)](https://coveralls.io/github/<github username>/<repo name>?branch=master)-->
+
 ```
 |"  \    /"  |     |"  |  /    " \  |"  |    (\"   \|"  \  |" \    /"      \  
  \   \  //   |     ||  | // ____  \ ||  |    |.\\   \    | ||  |  |:        | 
