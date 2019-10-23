@@ -29,7 +29,7 @@ At this moment, Mjolnir supports the following clients:
 - Parity (Honey Badger / POSDAO version)
 
 
-## Getting started
+
 
 ### Terminology
 
@@ -44,15 +44,22 @@ At this moment, Mjolnir supports the following clients:
    - `parity`
 - {cmdName} : Binary's sub command. 
 
+### Requirements
+- A UNIX based machine.
+- Go (>= v 1.12.7)
+- Docker Engine Community (>= v 19.03.1)
+- Terraform (>= v0.12.5)
 
-- Step 1 : Deploy Infrastructure
+
+## Getting started
+- **Step 1 : Deploy Infrastructure**
    - Clone this repo
    - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
    - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml`
    - Update `examples/values-local.yaml`
    - enter `./dist/{cli-version}/{arch}/apollo apply {client} examples/values-local.yml `. This will deploy the requsite infrastrucure on your AWS account.
 
-- Step 2: Fire Transactions 
+- **Step 2: Fire Transactions**
    - Once this is complete, enter `./dist/{cli-version}/{arch}/apollo bastion` to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
    - Move in the `chainhammer` directory by entering `cd chainhammer`
    - Run `scripts/install-initialize.sh` to intialize chainhammer. 
