@@ -216,7 +216,7 @@ const (
                             "path": "/",
                             "role": "quorum-bastion-cocroaches-attack",
                             "roles.#": "0",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -306,7 +306,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-bastion-cocroaches-attack",
                             "path": "/",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -330,7 +330,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "ecsInstanceRole-dccfbe87",
                             "path": "/",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -376,7 +376,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-ecs-task-cocroaches-attack",
                             "path": "/ecs/",
-                            "unique_id": ***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -2348,7 +2348,7 @@ const (
                             "path": "/",
                             "role": "quorum-bastion-cocroaches-attack",
                             "roles.#": "0",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -2372,7 +2372,7 @@ const (
                             "path": "/",
                             "role": "ecsInstanceRole-dccfbe87",
                             "roles.#": "0",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -2438,7 +2438,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-bastion-cocroaches-attack",
                             "path": "/",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -2462,7 +2462,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "ecsInstanceRole-dccfbe87",
                             "path": "/",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -2508,7 +2508,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-ecs-task-cocroaches-attack",
                             "path": "/ecs/",
-                            "unique_id": ***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
