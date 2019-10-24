@@ -240,7 +240,7 @@ const (
                             "path": "/",
                             "role": "ecsInstanceRole-dccfbe87",
                             "roles.#": "0",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -354,7 +354,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "ecsServiceRole-dccfbe87",
                             "path": "/",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -1632,7 +1632,7 @@ const (
                     "primary": {
                         "id": "2019-09-05 10:13:23.699585902 +0000 UTC",
                         "attributes": {
-                            "account_id": "051582052996",
+                            
                             "arn": "arn:aws:iam::051582052996:user/bkrzakala",
                             "id": "2019-09-05 10:13:23.699585902 +0000 UTC",
                             "user_id": "***REMOVED***"
@@ -2486,7 +2486,7 @@ const (
                             "max_session_duration": "3600",
                             "name": "ecsServiceRole-dccfbe87",
                             "path": "/",
-                            "unique_id": "***REMOVED***"
+                            "unique_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -3764,7 +3764,7 @@ const (
                     "primary": {
                         "id": "2019-09-05 10:13:23.699585902 +0000 UTC",
                         "attributes": {
-                            "account_id": "051582052996",
+                           
                             "arn": "arn:aws:iam::051582052996:user/bkrzakala",
                             "id": "2019-09-05 10:13:23.699585902 +0000 UTC",
                             "user_id": "***REMOVED***"
