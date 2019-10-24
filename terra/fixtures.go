@@ -216,7 +216,11 @@ const (
                             "path": "/",
                             "role": "quorum-bastion-cocroaches-attack",
                             "roles.#": "0",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AIPAQYAUHVKCBQGT2KCPU"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -306,7 +310,11 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-bastion-cocroaches-attack",
                             "path": "/",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AROAQYAUHVKCAJ7LHRBMV"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -330,7 +338,11 @@ const (
                             "max_session_duration": "3600",
                             "name": "ecsInstanceRole-dccfbe87",
                             "path": "/",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AROAQYAUHVKCE2Y6TJZVF"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -2348,7 +2360,11 @@ const (
                             "path": "/",
                             "role": "quorum-bastion-cocroaches-attack",
                             "roles.#": "0",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AIPAQYAUHVKCBQGT2KCPU"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -2372,7 +2388,11 @@ const (
                             "path": "/",
                             "role": "ecsInstanceRole-dccfbe87",
                             "roles.#": "0",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AIPAQYAUHVKCKUBH2LKKE"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -2438,7 +2458,11 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-bastion-cocroaches-attack",
                             "path": "/",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AROAQYAUHVKCAJ7LHRBMV"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -2462,7 +2486,11 @@ const (
                             "max_session_duration": "3600",
                             "name": "ecsInstanceRole-dccfbe87",
                             "path": "/",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AROAQYAUHVKCE2Y6TJZVF"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
@@ -2508,7 +2536,11 @@ const (
                             "max_session_duration": "3600",
                             "name": "quorum-ecs-task-cocroaches-attack",
                             "path": "/ecs/",
+<<<<<<< HEAD
                             "unique_id": ""
+=======
+                            "unique_id": "AROAQYAUHVKCH3CYJPZR6"
+>>>>>>> c0d0a771565e9813484c4e6d7719dec5b12dd682
                         },
                         "meta": {},
                         "tainted": false
