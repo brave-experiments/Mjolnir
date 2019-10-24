@@ -1635,7 +1635,7 @@ const (
                             
                             "arn": "arn:aws:iam::051582052996:user/bkrzakala",
                             "id": "2019-09-05 10:13:23.699585902 +0000 UTC",
-                            "user_id": "***REMOVED***"
+                            "user_id": ""
                         },
                         "meta": {},
                         "tainted": false
@@ -3767,7 +3767,7 @@ const (
                            
                             "arn": "arn:aws:iam::051582052996:user/bkrzakala",
                             "id": "2019-09-05 10:13:23.699585902 +0000 UTC",
-                            "user_id": "***REMOVED***"
+                            "user_id": ""
                         },
                         "meta": {},
                         "tainted": false
