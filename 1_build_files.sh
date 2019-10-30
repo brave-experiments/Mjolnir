@@ -33,9 +33,9 @@ do
             sudo mkdir -p ../build/"${NETWORK_NAME}"/examples/
             sudo mkdir -p ../build/"${NETWORK_NAME}"/dist/v0.1.0-alpha/unix/
             sudo chmod -R 777 ../build/"${NETWORK_NAME}"
-            sudo mkdir -p ../results/"${client}"/gas/"${vm}"/snip
-            sudo mkdir -p ../results/"${client}"/gas/"${vm}"/markdown
-            sudo mkdir -p ../results/"${client}"/gas/"${vm}"/img
+            sudo mkdir -p ../results/"${client}"/"${gas}"/"${vm}"/snip
+            sudo mkdir -p ../results/"${client}"/"${gas}"/"${vm}"/markdown
+            sudo mkdir -p ../results/"${client}"/"${gas}"/"${vm}"/img
             sudo chmod -R 777 ../results/
             sudo cp -R ../Mjolnir/examples/*  ../build/"${NETWORK_NAME}"/examples/
             sudo cp  ../Mjolnir/dist/v0.1.0-alpha/unix/mjolnir ../build/"${NETWORK_NAME}"/dist/v0.1.0-alpha/unix/
@@ -61,11 +61,11 @@ do
                 echo KEY=.mjolnir/*/id_rsa >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 echo ssh -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY admin@\$BASTION_IP" "bash -s" < ../../remote_script.sh  "$NETWORK_NAME"" >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 sudo echo wait >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
-                echo scp -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY  admin@\$BASTION_IP:chainhammer/results-*.txt ../../../../results/"${client}"/gas/"${vm}"/snip >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
+                echo scp -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY  admin@\$BASTION_IP:chainhammer/results-*.txt ../../../../results/"${client}"/"${gas}"/"${vm}"/snip >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 sudo echo wait >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
-                echo scp -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY  admin@\$BASTION_IP:chainhammer/results/runs/*.md ../../../../results/"${client}"/gas/"${vm}"/markdown >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
+                echo scp -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY  admin@\$BASTION_IP:chainhammer/results/runs/*.md ../../../../results/"${client}"/"${gas}"/"${vm}"/markdown >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 sudo echo wait >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
-                echo scp -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY  admin@\$BASTION_IP:chainhammer/reader/img/* ../../../../results/"${client}"/gas/"${vm}"/img >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
+                echo scp -o \"StrictHostKeyChecking no\" -o \"IdentitiesOnly=yes\"  -i \$KEY  admin@\$BASTION_IP:chainhammer/reader/img/* ../../../../results/"${client}"/"${gas}"/"${vm}"/img >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 sudo echo wait >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 sudo echo $MJOLNIR destroy ../../examples/values-local-${gas}-${vm}.yaml >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
                 sudo echo wait >> ../build/"${NETWORK_NAME}"/run/"${NETWORK_NAME}"-${gas}-${vm}/"${NETWORK_NAME}"-${gas}-${vm}.sh
