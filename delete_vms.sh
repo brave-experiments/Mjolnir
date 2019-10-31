@@ -22,5 +22,21 @@ do
         --region $region \
         --instance-id {}
 
+    # # Delete Log  Group 
+    # aws logs describe-log-groups --region $region | \
+    # jq  -r .logGroups[].logGroupName 
+
+    # aws logs describe-log-groups --region eu-west-3 | \
+    #     jq  -r .logGroups[].logGroupName | \
+    #         xargs -L 1 -I {}  aws logs delete-log-group --log-group-name {}
+
+    # # Delete ECS
+
+    # aws ecs describe-clusters --cluster default --region eu-central-1
+
+    # # Delete IAM Pol
+
+    # # Delete VPC 
+
     
 done
