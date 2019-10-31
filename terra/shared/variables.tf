@@ -54,8 +54,8 @@ variable "pantheon_docker_image_tag" {
 }
 
 variable "parity_docker_image" {
-  description = "URL to Pantheon docker image to be used"
-  default     = "parity/parity"
+  description = "URL to Parity HBBFT docker image to be used"
+  default     = "brave/honey-badger"
 }
 
 variable "parity_docker_image_tag" {
