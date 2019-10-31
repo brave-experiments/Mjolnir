@@ -1,5 +1,5 @@
 locals {
-  parity_rpc_port                = 8545
+  parity_rpc_port                = 8540
   parity_p2p_port                = 30303
   parity_data_dir                = "${local.shared_volume_container_path}/dd"
   parity_password_file           = "${local.shared_volume_container_path}/passwords.txt"
