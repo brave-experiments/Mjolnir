@@ -13,7 +13,7 @@ MJOLNIR=../../dist/$CLI_VERSION/unix/mjolnir
 # CLIENT=(quorum pantheon parity)
 CLIENT=(quorum)
 # VM_FAMILY_ARRAY=(t2.2xlarge t3a.xlarge t3a.2xlarge m4.xlarge m4.2xlarge m5.4xlarge  m5.8xlarge m5.12xlarge m5.16xlarge m5.24xlarge m5.metal)
-VM_FAMILY_ARRAY=(t2.2xlarge t3a.xlarge t3a.2xlarge )
+VM_FAMILY_ARRAY=(t2.2xlarge t3a.xlarge t3a.2xlarge m4.xlarge m4.2xlarge m5.4xlarge  m5.8xlarge)
 GAS_LIMIT_ARRAY=(8388608 33554432 134217728 536870912 2147483648 8589934592 34359738368 137438953472 549755813888 2199023255552 8796093022208 35184372088832 140737488355328 562949953421312 2251799813685250 9007199254740990)
 BLOCKTIME_ARRAY=(1 2 4 8 15 30 60)
 
@@ -82,7 +82,7 @@ done
 
 cd ../build
 
-quo1342-134217728-t3a.xlarge.sh 
+
 for f in *
 
 do 
@@ -110,7 +110,7 @@ do
     fi
     if 
         [ "$(echo "${f:3:1}")" == "9"  ]; then
-        sudo sed -i "s/ region:.*/ region: \"ca-central-1\"/" $f/examples/*.yaml
+        sudo sed -i "s/ region:.*/ region: \"eu-west-3\"/" $f/examples/*.yaml
     fi
     
 done
