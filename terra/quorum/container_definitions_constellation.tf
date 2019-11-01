@@ -34,6 +34,7 @@ locals {
     name      = "${local.tx_privacy_engine_run_container_name}"
     image     = "${local.tx_privacy_engine_docker_image}"
     essential = "false"
+    memoryReservation = 512
 
     logConfiguration = {
       logDriver = "fluentd"

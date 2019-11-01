@@ -26,9 +26,9 @@ do
     # aws logs describe-log-groups --region $region | \
     # jq  -r .logGroups[].logGroupName 
 
-    # aws logs describe-log-groups --region eu-west-3 | \
-    #     jq  -r .logGroups[].logGroupName | \
-    #         xargs -L 1 -I {}  aws logs delete-log-group --log-group-name {}
+    aws logs describe-log-groups --region eu-west-2 | \
+        jq  -r .logGroups[].logGroupName | \
+            xargs -L 1 -I {}  aws logs delete-log-group --log-group-name {}
 
     # # Delete ECS
 
@@ -37,6 +37,11 @@ do
     # # Delete IAM Pol
 
     # # Delete VPC 
+
+    ## Delete s3 buckets
+
+    for bucket in $(aws s3 ls | awk '{print $3}' | grep us); do  aws s3 rb "s3://${bucket}" --force ; done
+
 
     
 done

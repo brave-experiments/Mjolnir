@@ -34,6 +34,7 @@ locals {
     name      = "${local.node_key_bootstrap_container_name}"
     image     = "${local.quorum_docker_image}"
     essential = "false"
+    memoryReservation = "512"
 
     logConfiguration = {
       logDriver = "fluentd"
@@ -196,6 +197,7 @@ EOP
     name      = "${local.metadata_bootstrap_container_name}"
     image     = "${local.aws_cli_docker_image}"
     essential = "false"
+    memoryReservation = 512,
 
     logConfiguration = {
       logDriver = "fluentd"
