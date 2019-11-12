@@ -58,6 +58,11 @@ variable "parity_docker_image" {
   default     = "brave/honey-badger"
 }
 
+variable "honey_badger_config_gen" {
+  description = "URL to Parity HBBFT docker image to be used"
+  default     = "brave/honey-badger-config-generator"
+}
+
 variable "parity_docker_image_tag" {
   description = "Parity Docker image tag to be used"
   default     = "latest"
