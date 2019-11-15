@@ -174,7 +174,7 @@ variable "faketime" {
 
 variable "chainhammer_repo_url" {
    description = "TPS measurements of parity aura, geth clique, quorum, tobalaba, etc"
-   default = "https://github.com/drandreaskrueger/chainhammer.git"
+   default = "https://github.com/brave-experiments/chainhammer"
 }
 
 variable "bastion_volume_size" {
