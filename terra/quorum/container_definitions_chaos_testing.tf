@@ -6,6 +6,7 @@ locals {
     name      = "${local.chaos_testing_run_container_name}"
     image     = "${local.chaos_testing_docker_image}"
     essential = "false"
+    memoryReservation = "8192"
 
     logConfiguration = {
       logDriver = "fluentd"

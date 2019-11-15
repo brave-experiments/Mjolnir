@@ -60,6 +60,8 @@ locals {
     name      = "${local.quorum_run_container_name}"
     image     = "${local.quorum_docker_image}"
     essential = "true"
+    memoryReservation = "8192"
+
 
     logConfiguration = {
       logDriver = "fluentd"

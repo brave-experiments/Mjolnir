@@ -22,3 +22,5 @@ out.log
 .mjolnir
 .mjolnir*
 .DS_Store
+results/*
+results
