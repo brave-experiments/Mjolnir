@@ -23,6 +23,16 @@ variable "ecs_mode" {
   default     = "EC2"
 }
 
+variable "ecs_memory" {
+  description = "The The amount (in MiB) of memory used by the task terraform.io/docs/providers/aws/r/ecs_task_definition.html#memory"
+  default     = "8196"
+}
+
+variable "ecs_cpu" {
+  description = "The number of cpu units used by the task terraform.io/docs/providers/aws/r/ecs_task_definition.html#cpu"
+  default     = "4096"
+}
+
 variable "ecs_network_mode" {
   description = "ECS network node: awsvpc or bridge"
   default     = "bridge"

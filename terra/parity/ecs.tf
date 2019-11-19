@@ -12,8 +12,8 @@ resource "aws_ecs_task_definition" "parity" {
   family                   = "parity-poa-${var.network_name}"
   container_definitions    = "${replace(element(compact(local.container_definitions), 0), "/\"(true|false|[0-9]+)\"/", "$1")}"
   requires_compatibilities = ["${var.ecs_mode}"]
-  cpu                      = "4096"
-  memory                   = "8192"
+  cpu                      = "${var.ecs_cpu}"
+  memory                   = "${var.ecs_memory}"
   network_mode             = "${var.ecs_network_mode}"
   task_role_arn            = "${aws_iam_role.ecs_task.arn}"
   execution_role_arn       = "${aws_iam_role.ecs_task.arn}"

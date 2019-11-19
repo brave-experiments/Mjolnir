@@ -40,72 +40,73 @@ var (
 		"me-south-1",
 		"sa-east-1",
 	}
-	ValidInstanceTypes = []string{
-		"a1.medium",
-		"a1.large",
-		"a1.xlarge",
-		"a1.2xlarge",
-		"a1.4xlarge",
-		"t3.nano",
-		"t3.micro",
-		"t3.small",
-		"t3.medium",
-		"t3.large",
-		"t3.xlarge",
-		"t3.2xlarge",
-		"t3a.nano",
-		"t3a.micro",
-		"t3a.small",
-		"t3a.medium",
-		"t3a.large",
-		"t3a.xlarge",
-		"t3a.2xlarge",
-		"t2.nano",
-		"t2.micro",
-		"t2.small",
-		"t2.medium",
-		"t2.large",
-		"t2.xlarge",
-		"t2.2xlarge",
-		"m5.large",
-		"m5.xlarge",
-		"m5.2xlarge",
-		"m5.4xlarge",
-		"m5.8xlarge",
-		"m5.12xlarge",
-		"m5.16xlarge",
-		"m5.24xlarge",
-		"m5.metal",
-		"m5d.large",
-		"m5d.xlarge",
-		"m5d.2xlarge",
-		"m5d.4xlarge",
-		"m5d.8xlarge",
-		"m5d.12xlarge",
-		"m5d.16xlarge",
-		"m5d.24xlarge",
-		"m5d.metal",
-		"m5a.large",
-		"m5a.xlarge",
-		"m5a.2xlarge",
-		"m5a.4xlarge",
-		"m5a.8xlarge",
-		"m5a.12xlarge",
-		"m5a.16xlarge",
-		"m5a.24xlarge",
-		"m5ad.large",
-		"m5ad.xlarge",
-		"m5ad.2xlarge",
-		"m5ad.4xlarge",
-		"m5ad.12xlarge",
-		"m5ad.24xlarge",
-		"m4.large",
-		"m4.xlarge",
-		"m4.2xlarge",
-		"m4.4xlarge",
-		"m4.10xlarge",
-		"m4.16xlarge",
+	ValidInstances = map[string]awsInstance{
+		"a1.medium":     awsInstance{Type: "a1.medium", Memory: "8192", Cpu: "4096"},
+		"a1.large":      awsInstance{Type: "a1.large", Memory: "8192", Cpu: "4096"},
+		"a1.xlarge":     awsInstance{Type: "a1.xlarge", Memory: "8192", Cpu: "4096"},
+		"a1.2xlarge":    awsInstance{Type: "a1.2xlarge", Memory: "8192", Cpu: "4096"},
+		"a1.4xlarge":    awsInstance{Type: "a1.4xlarge", Memory: "8192", Cpu: "4096"},
+		"t3.nano":       awsInstance{Type: "t3.nano", Memory: "8192", Cpu: "4096"},
+		"t3.micro":      awsInstance{Type: "t3.micro", Memory: "8192", Cpu: "4096"},
+		"t3.small":      awsInstance{Type: "t3.small", Memory: "8192", Cpu: "4096"},
+		"t3.medium":     awsInstance{Type: "t3.medium", Memory: "8192", Cpu: "4096"},
+		"t3.large":      awsInstance{Type: "t3.large", Memory: "8192", Cpu: "4096"},
+		"t3.xlarge":     awsInstance{Type: "t3.xlarge", Memory: "8192", Cpu: "4096"},
+		"t3.2xlarge":    awsInstance{Type: "t3.2xlarge", Memory: "8192", Cpu: "4096"},
+		"t3a.nano":      awsInstance{Type: "t3a.nano", Memory: "8192", Cpu: "4096"},
+		"t3a.micro":     awsInstance{Type: "t3a.micro", Memory: "8192", Cpu: "4096"},
+		"t3a.small":     awsInstance{Type: "t3a.small", Memory: "8192", Cpu: "4096"},
+		"t3a.medium":    awsInstance{Type: "t3a.medium", Memory: "8192", Cpu: "4096"},
+		"t3a.large":     awsInstance{Type: "t3a.large", Memory: "8192", Cpu: "4096"},
+		"t3a.xlarge":    awsInstance{Type: "t3a.xlarge", Memory: "8192", Cpu: "4096"},
+		"t3a.2xlarge":   awsInstance{Type: "t3a.2xlarge", Memory: "8192", Cpu: "4096"},
+		"t2.nano":       awsInstance{Type: "t2.nano", Memory: "8192", Cpu: "4096"},
+		"t2.micro":      awsInstance{Type: "t2.micro", Memory: "8192", Cpu: "4096"},
+		"t2.small":      awsInstance{Type: "t2.small", Memory: "8192", Cpu: "4096"},
+		"t2.medium":     awsInstance{Type: "t2.medium", Memory: "8192", Cpu: "4096"},
+		"t2.large":      awsInstance{Type: "t2.large", Memory: "8192", Cpu: "4096"},
+		"t2.xlarge":     awsInstance{Type: "t2.xlarge", Memory: "16384", Cpu: "4096"},
+		"t2.2xlarge":    awsInstance{Type: "t2.2xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.large":      awsInstance{Type: "m5.large", Memory: "8192", Cpu: "4096"},
+		"m5.xlarge":     awsInstance{Type: "m5.xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.2xlarge":    awsInstance{Type: "m5.2xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.4xlarge":    awsInstance{Type: "m5.4xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.8xlarge":    awsInstance{Type: "m5.8xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.12xlarge":   awsInstance{Type: "m5.12xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.16xlarge":   awsInstance{Type: "m5.16xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.24xlarge":   awsInstance{Type: "m5.24xlarge", Memory: "8192", Cpu: "4096"},
+		"m5.metal":      awsInstance{Type: "m5.metal", Memory: "8192", Cpu: "4096"},
+		"m5d.large":     awsInstance{Type: "m5d.large", Memory: "8192", Cpu: "4096"},
+		"m5d.xlarge":    awsInstance{Type: "m5d.xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.2xlarge":   awsInstance{Type: "m5d.2xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.4xlarge":   awsInstance{Type: "m5d.4xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.8xlarge":   awsInstance{Type: "m5d.8xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.12xlarge":  awsInstance{Type: "m5d.12xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.16xlarge":  awsInstance{Type: "m5d.16xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.24xlarge":  awsInstance{Type: "m5d.24xlarge", Memory: "8192", Cpu: "4096"},
+		"m5d.metal":     awsInstance{Type: "m5d.metal", Memory: "8192", Cpu: "4096"},
+		"m5a.large":     awsInstance{Type: "m5a.large", Memory: "8192", Cpu: "4096"},
+		"m5a.xlarge":    awsInstance{Type: "m5a.xlarge", Memory: "8192", Cpu: "4096"},
+		"m5a.2xlarge":   awsInstance{Type: "m5a.2xlarge", Memory: "8192", Cpu: "4096"},
+		"m5a.4xlarge":   awsInstance{Type: "m5a.4xlarge", Memory: "8192", Cpu: "4096"},
+		"m5a.8xlarge":   awsInstance{Type: "m5a.8xlarge", Memory: "8192", Cpu: "4096"},
+		"m5a.12xlarge":  awsInstance{Type: "m5a.12xlarge", Memory: "8192", Cpu: "4096"},
+		"m5a.16xlarge":  awsInstance{Type: "m5a.16xlarge", Memory: "8192", Cpu: "4096"},
+		"m5a.24xlarge":  awsInstance{Type: "m5a.24xlarge", Memory: "8192", Cpu: "4096"},
+		"m5ad.large":    awsInstance{Type: "m5ad.large", Memory: "8192", Cpu: "4096"},
+		"m5ad.xlarge":   awsInstance{Type: "m5ad.xlarge", Memory: "8192", Cpu: "4096"},
+		"m5ad.2xlarge":  awsInstance{Type: "m5ad.2xlarge", Memory: "8192", Cpu: "4096"},
+		"m5ad.4xlarge":  awsInstance{Type: "m5ad.4xlarge", Memory: "8192", Cpu: "4096"},
+		"m5ad.12xlarge": awsInstance{Type: "m5ad.12xlarge", Memory: "8192", Cpu: "4096"},
+		"m5ad.24xlarge": awsInstance{Type: "m5ad.24xlarge", Memory: "8192", Cpu: "4096"},
+		"m4.large":      awsInstance{Type: "m4.large", Memory: "8192", Cpu: "4096"},
+		"m4.xlarge":     awsInstance{Type: "m4.xlarge", Memory: "8192", Cpu: "4096"},
+		"m4.2xlarge":    awsInstance{Type: "m4.2xlarge", Memory: "8192", Cpu: "4096"},
+		"m4.4xlarge":    awsInstance{Type: "m4.4xlarge", Memory: "8192", Cpu: "4096"},
+		"m4.10xlarge":   awsInstance{Type: "m4.10xlarge", Memory: "8192", Cpu: "4096"},
+		"m4.16xlarge":   awsInstance{Type: "m4.16xlarge", Memory: "8192", Cpu: "4096"},
 	}
+	ValidInstanceTypes        []string
 	ValidConsensusMechanisms  = []string{"raft", "instanbul"}
 	SupportedFileTypes        = []string{".yml", ".yaml"}
 	SupportedResourceTypes    = []string{"variables"}
@@ -113,6 +114,17 @@ var (
 	SupportedClockSkewUnits   = []string{"s", "m", "h", "d", "y"}
 	StringVariablesToValidate = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
 )
+
+func init() {
+	// Initialize the list of Valid instance types from list of
+	// valid instances
+	ValidInstanceTypes = make([]string, len(ValidInstances))
+	i := 0
+	for key := range ValidInstances {
+		ValidInstanceTypes[i] = key
+		i++
+	}
+}
 
 type VariablesSchema struct {
 	File
@@ -124,6 +136,12 @@ type variablesModel struct {
 	Version      float64                `yaml:"version"`
 	ResourceType string                 `yaml:"resourceType"`
 	Variables    map[string]interface{} `yaml:"variables"`
+}
+
+type awsInstance struct {
+	Type   string
+	Memory string
+	Cpu    string
 }
 
 const (
@@ -177,13 +195,18 @@ variables:
 
 func (variablesSchema *VariablesSchema) Read() (err error) {
 	err = variablesSchema.guard()
-
 	if nil != err {
 		return yamlValidationError(err.Error())
 	}
 
 	err = variablesSchema.mapGenesisVariables()
+	if nil != err {
+		return yamlValidationError(err.Error())
+	}
 
+	// Dynamically calculate and set ecs_cpu and ecs_memory
+	// depending on the asg_instance_type supplied in values yaml
+	err = variablesSchema.mapAwsInstanceMemoryAndCpu()
 	if nil != err {
 		return yamlValidationError(err.Error())
 	}
@@ -257,6 +280,31 @@ func (variablesSchema *VariablesSchema) mapGenesisVariables() (err error) {
 	err = variablesSchema.guardMinBlockGasLimit()
 
 	return err
+}
+
+func (variablesSchema *VariablesSchema) mapAwsInstanceMemoryAndCpu() (err error) {
+	// Look up instance information in the Variables
+	var desiredInstanceType string
+	for key, variable := range variablesSchema.Variables {
+		if key == "asg_instance_type" {
+			desiredInstanceType = variable.(string)
+		}
+	}
+
+	desiredInstance := ValidInstances[desiredInstanceType]
+	if desiredInstance.Memory == "" || desiredInstance.Cpu == "" {
+		// FIXME
+		// errorMessage := fmt.Sprintf("Missing memory and/or CPU information for instance type %v",
+		// 	desiredInstanceType,
+		// )
+		// return ClientError{Message: errorMessage}
+		return nil
+	}
+
+	variablesSchema.Variables["ecs_memory"] = desiredInstance.Memory
+	variablesSchema.Variables["ecs_cpu"] = desiredInstance.Cpu
+
+	return nil
 }
 
 func (variablesSchema *VariablesSchema) guardMinBlockGasLimit() (err error) {
@@ -579,13 +627,11 @@ func (variablesSchema *VariablesSchema) validateAwsProperties() (err error) {
 
 	for key, variable := range variablesSchema.Variables {
 		err = validateAwsRegions(key, variable)
-
 		if nil != err {
 			return err
 		}
 
 		err = validateAwsInstanceType(key, variable)
-
 		if nil != err {
 			return err
 		}
@@ -624,7 +670,7 @@ func validateAwsInstanceType(key string, variable interface{}) (err error) {
 	}
 
 	stringVariable := fmt.Sprintf("%v", variable)
-
+	fmt.Println(ValidInstanceTypes)
 	if contains(ValidInstanceTypes, stringVariable) {
 		return nil
 	}

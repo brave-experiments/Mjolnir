@@ -7,6 +7,10 @@ import (
 	"testing"
 )
 
+func TestValidInstanceTypes(t *testing.T) {
+	assert.Greater(t, len(ValidInstanceTypes), 0)
+}
+
 func TestVariablesSchema_ReadFailure(t *testing.T) {
 	variablesSchema := VariablesSchema{}
 	err := variablesSchema.Read()
