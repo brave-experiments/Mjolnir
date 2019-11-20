@@ -40,7 +40,7 @@ var (
 		"me-south-1",
 		"sa-east-1",
 	}
-	kValidInstances = map[string]awsInstance{
+	ValidInstances = map[string]awsInstance{
 		"a1.medium":     awsInstance{Type: "a1.medium", Memory: "8192", Cpu: "4096"},
 		"a1.large":      awsInstance{Type: "a1.large", Memory: "8192", Cpu: "4096"},
 		"a1.xlarge":     awsInstance{Type: "a1.xlarge", Memory: "8192", Cpu: "4096"},
@@ -106,13 +106,14 @@ var (
 		"m4.10xlarge":   awsInstance{Type: "m4.10xlarge", Memory: "8192", Cpu: "4096"},
 		"m4.16xlarge":   awsInstance{Type: "m4.16xlarge", Memory: "8192", Cpu: "4096"},
 	}
-	ValidInstanceTypes        []string
-	ValidConsensusMechanisms  = []string{"raft", "instanbul"}
-	SupportedFileTypes        = []string{".yml", ".yaml"}
-	SupportedResourceTypes    = []string{"variables"}
-	SupportedClockSkewSigns   = []string{"+", "-"}
-	SupportedClockSkewUnits   = []string{"s", "m", "h", "d", "y"}
-	StringVariablesToValidate = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
+	ValidInstanceTypes         []string
+	ValidConsensusMechanisms   = []string{"raft", "instanbul"}
+	SupportedFileTypes         = []string{".yml", ".yaml"}
+	SupportedResourceTypes     = []string{"variables"}
+	SupportedClockSkewSigns    = []string{"+", "-"}
+	SupportedClockSkewUnits    = []string{"s", "m", "h", "d", "y"}
+	StringVariablesToValidate  = []string{"region", "default_region", "profile", "aws_access_key_id", "aws_secret_access_key"}
+	AwsInstanceUtilizationRate = .9
 )
 
 func init() {
@@ -298,8 +299,21 @@ func (variablesSchema *VariablesSchema) mapAwsInstanceMemoryAndCpu() (err error)
 		return nil
 	}
 
-	variablesSchema.Variables["ecs_memory"] = desiredInstance.Memory
-	variablesSchema.Variables["ecs_cpu"] = desiredInstance.Cpu
+	// Hack to only use percentage of max instance memory and cpu
+	memoryFloat, err := strconv.ParseFloat(desiredInstance.Memory, 64)
+	if err != nil {
+		return err
+	}
+	cpuFloat, err := strconv.ParseFloat(desiredInstance.Cpu, 64)
+	if err != nil {
+		return err
+	}
+
+	adjustedDesiredMemory := strconv.Itoa(int(memoryFloat * AwsInstanceUtilizationRate))
+	adjustedDesiredCpu := strconv.Itoa(int(cpuFloat * AwsInstanceUtilizationRate))
+
+	variablesSchema.Variables["ecs_memory"] = adjustedDesiredMemory
+	variablesSchema.Variables["ecs_cpu"] = adjustedDesiredCpu
 
 	return nil
 }

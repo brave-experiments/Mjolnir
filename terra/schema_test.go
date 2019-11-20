@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"path"
 	"testing"
+  "strconv"
 )
 
 func TestValidInstanceTypes(t *testing.T) {
@@ -302,7 +303,7 @@ func TestVariablesSchema_Readv03Failure(t *testing.T) {
 	RemoveDummyFile(t, dummyFilePath)
 }
 
-func TestMapAwsInstanceMemroyAndCpu(t *testing.T) {
+func TestMapAwsInstanceMemoryAndCpu(t *testing.T) {
 	variablesSchema := VariablesSchema{}
 	dummyFilePath := "dummy.yml"
 	PrepareDummyFile(t, dummyFilePath, YamlFixtureAwsInstanceTypeSet)
@@ -311,10 +312,15 @@ func TestMapAwsInstanceMemroyAndCpu(t *testing.T) {
 	assert.Nil(t, err)
 	err = variablesSchema.ValidateSchemaVariables()
 	assert.Nil(t, err)
+
+	maxEcsMemoryString := ValidInstances["t2.xlarge"].Memory
+	maxMemoryFloat, err := strconv.ParseFloat(maxEcsMemoryString, 64)
+	assert.Nil(t, err)
+	desiredMemory := strconv.Itoa(int(maxMemoryFloat * AwsInstanceUtilizationRate))
 	assert.Equal(
 		t,
 		variablesSchema.Variables["ecs_memory"],
-		ValidInstances["t2.xlarge"].Memory,
+		desiredMemory,
 	)
 
 	RemoveDummyFile(t, dummyFilePath)
