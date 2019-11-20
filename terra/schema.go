@@ -40,7 +40,7 @@ var (
 		"me-south-1",
 		"sa-east-1",
 	}
-	ValidInstances = map[string]awsInstance{
+	kValidInstances = map[string]awsInstance{
 		"a1.medium":     awsInstance{Type: "a1.medium", Memory: "8192", Cpu: "4096"},
 		"a1.large":      awsInstance{Type: "a1.large", Memory: "8192", Cpu: "4096"},
 		"a1.xlarge":     awsInstance{Type: "a1.xlarge", Memory: "8192", Cpu: "4096"},
@@ -294,10 +294,7 @@ func (variablesSchema *VariablesSchema) mapAwsInstanceMemoryAndCpu() (err error)
 	desiredInstance := ValidInstances[desiredInstanceType]
 	if desiredInstance.Memory == "" || desiredInstance.Cpu == "" {
 		// FIXME
-		// errorMessage := fmt.Sprintf("Missing memory and/or CPU information for instance type %v",
-		// 	desiredInstanceType,
-		// )
-		// return ClientError{Message: errorMessage}
+		// Return a ClientError instead of silently using defaults
 		return nil
 	}
 

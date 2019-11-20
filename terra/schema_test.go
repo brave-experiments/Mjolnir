@@ -302,6 +302,24 @@ func TestVariablesSchema_Readv03Failure(t *testing.T) {
 	RemoveDummyFile(t, dummyFilePath)
 }
 
+func TestMapAwsInstanceMemroyAndCpu(t *testing.T) {
+	variablesSchema := VariablesSchema{}
+	dummyFilePath := "dummy.yml"
+	PrepareDummyFile(t, dummyFilePath, YamlFixtureAwsInstanceTypeSet)
+	variablesSchema.Location = dummyFilePath
+	err := variablesSchema.Read()
+	assert.Nil(t, err)
+	err = variablesSchema.ValidateSchemaVariables()
+	assert.Nil(t, err)
+	assert.Equal(
+		t,
+		variablesSchema.Variables["ecs_memory"],
+		ValidInstances["t2.xlarge"].Memory,
+	)
+
+	RemoveDummyFile(t, dummyFilePath)
+}
+
 func configureYaml(version float64, resourceType string) (fileBody string) {
 	return fmt.Sprintf(
 		YamlFixtureConfigurable,
