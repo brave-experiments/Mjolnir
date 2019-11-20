@@ -21,6 +21,6 @@ variables:
   # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2", "--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-pantheon*"]   #pantheon
   # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2", "--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-parity*"]     #parity
   # faketime:                     ["+2d", "-3h", "+120", "+0", "-0"]  ## All values should start from -/+ signs, allowed time units  s, m, h, d, y ( seconds are default if no unit provided)
-  asg_instance_type:            "t2.xlarge" ## instance type user for ethereum nodes
+  # asg_instance_type:            "t2.xlarge" ## instance type user for ethereum nodes
   chainhammer_repo_url:         'https://github.com/drandreaskrueger/chainhammer.git'
   tf_log:                       "y" ## If other than empty string, tf output is enabled
