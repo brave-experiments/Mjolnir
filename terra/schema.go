@@ -117,7 +117,7 @@ var (
 
 func init() {
 	// Initialize the list of valid instance types by taking the keys
-  // from the list of valid instances
+	// from the list of valid instances
 	ValidInstanceTypes = make([]string, len(ValidInstances))
 	i := 0
 	for key := range ValidInstances {
