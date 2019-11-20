@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"path"
+	"strconv"
 	"testing"
-  "strconv"
 )
 
 func TestValidInstanceTypes(t *testing.T) {
