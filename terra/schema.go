@@ -116,8 +116,8 @@ var (
 )
 
 func init() {
-	// Initialize the list of Valid instance types from list of
-	// valid instances
+	// Initialize the list of valid instance types by taking the keys
+  // from the list of valid instances
 	ValidInstanceTypes = make([]string, len(ValidInstances))
 	i := 0
 	for key := range ValidInstances {
@@ -670,7 +670,6 @@ func validateAwsInstanceType(key string, variable interface{}) (err error) {
 	}
 
 	stringVariable := fmt.Sprintf("%v", variable)
-	fmt.Println(ValidInstanceTypes)
 	if contains(ValidInstanceTypes, stringVariable) {
 		return nil
 	}
