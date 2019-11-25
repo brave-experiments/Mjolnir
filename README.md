@@ -72,8 +72,8 @@ At this moment, Mjolnir supports the following clients:
 - **{binaryName}**: `mjolnir`
 - **{client}**: The Ethereum client been tested. Currently supported are:
    - `quorum`
-   - `pantheon`
    - `parity`
+   -  Support for Hyperlegder Besu is WIP. 
 - **{cmdName}**: Binary's sub command. 
 
 ## Requirements
