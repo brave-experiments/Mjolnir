@@ -4427,4 +4427,9 @@ variables:
     "outputs": {},
     "resources": []
 }`
+
+	YamlFixtureAwsInstanceTypeSet = `version: 0.3
+resourceType: variables
+variables: 
+  asg_instance_type: 't2.xlarge'`
 )
