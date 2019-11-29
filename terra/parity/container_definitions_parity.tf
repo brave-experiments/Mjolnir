@@ -1,11 +1,9 @@
 locals {
   parity_rpc_port                = 8545
   parity_p2p_port                = 30303
-  parity_data_dir                = "${local.shared_volume_container_path}/dd"
-  parity_password_file           = "${local.shared_volume_container_path}/passwords.txt"
-  parity_static_nodes_file       = "${local.parity_data_dir}/static-nodes.json"
-  parity_permissioned_nodes_file = "${local.parity_data_dir}/permissioned-nodes.json"
-  config_file                    = "${local.config_folder}/node.toml"
+  parity_data_dir                = "${local.shared_volume_container_path}/data"
+  parity_password_file           = "${local.shared_volume_container_path}/password.txt"
+  config_file                    = "${local.shared_volume_container_path}/node.toml"
   genesis_file                   = "${local.shared_volume_container_path}/spec.json"
   node_id_file                   = "${local.shared_volume_container_path}/node_id"
   keys_folder                    = "${local.shared_volume_container_path}/keys"
@@ -16,14 +14,14 @@ locals {
 
   parity_config_commands = [
     "mkdir -p ${local.parity_data_dir}/parity",
-    "echo \"\" > ${local.parity_password_file}",
+    "echo \"test\" > ${local.parity_password_file}",
     "export FAKETIME_DONT_FAKE_MONOTONIC=1",
-    "ls /node",
-    "ls /node/config",
-    "cp /node/spec.json /node/data/spec.json",
-  ]
+    ]
   parity_args = [
     "--config ${local.config_file}",
+    "--interface 0.0.0.0",
+    "--jsonrpc-interface 0.0.0.0",
+    "--unsafe-expose",
   ]
   parity_args_combined = "${join(" ", local.parity_args)}"
   parity_run_commands = [
