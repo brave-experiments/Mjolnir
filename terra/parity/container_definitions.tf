@@ -1,6 +1,6 @@
 locals {
   shared_volume_name             = "parity_shared_volume"
-  shared_volume_container_path   = "/qdata"
+  shared_volume_container_path   = "/node"
 
   node_key_bootstrap_container_name           = "node-key-bootstrap"
   metadata_bootstrap_container_name           = "metamain-bootstrap"
