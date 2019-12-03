@@ -25,4 +25,4 @@ out.log
 node_modules/
 node_modules
 scripts/node_modules/
-package-lock.json
+scripts/package-lock.json
