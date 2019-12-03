@@ -48,7 +48,20 @@ docker run --rm -d -e FAKETIME=+0 \
     --tx-queue-per-sender 25000 --tx-queue-size 25000 \
     --jsonrpc-server-threads 32 --jsonrpc-threads=0
 
+## Running Config 
+
 p 172.17.0.1:$PORT:$PORT/tcp -p 172.17.0.1:$PORT:$PORT/udp
+
+## Running local hhbft confi intot he bastion 
+
+docker run --rm  --name=honey-badger-config \
+    -v /home/admin:/dir brave/honey-badger-config-generator \
+    4 Docker 
+
+
+docker run --rm  --name=honey-badger-config -v /Users/samueldare/Documents/Code/brave/honey-badger/Dockerfiles:/home brave/honey-badger-config-generator 4 Docker 
+
+./run_docker.sh 1 2 3 4
 
 
 docker build -t 
@@ -152,3 +165,9 @@ https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-46637393
 
 ./dist/v0.1.0-alpha/osx/mjolnir destroy  examples/values-local.yml \
  &&  ./dist/v0.1.0-alpha/osx/mjolnir destroy  examples/values-local.yml  
+
+
+ ## clock skew:
+
+ - adding any clock skew breaks quroum cluster 
+ - 
