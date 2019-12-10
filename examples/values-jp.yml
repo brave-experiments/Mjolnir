@@ -1,0 +1,27 @@
+
+version: 0.2
+resourceType: variables
+variables:
+  simpleKey: variable
+  region:                       'us-east-2'     ## You can set region for deployment here
+  default_region:               'us-east-2'     ## If key region is not present it is default region setter
+  # profile:                      'npd'       ## It chooses profile from your ~/.aws config. If not present, profile is "default"
+  network_name:                 'jpm-test'
+  number_of_nodes:              '4'
+  quorum_docker_image_tag:      '2.2.5'
+  # aws_access_key_id:            'xxx'    ## It overrides access key id env variable. If omitted system env is used
+  # aws_secret_access_key:        'yyy'    ## It overrides secret access key env variable. If omitted system env is used
+  genesis_gas_limit:            "0x2faf0800" ## = 800,000,000
+  # genesis_timestamp:            "30"         ## Used to set genesis timestamp
+  # genesis_difficulty:           "0"          ## Used to set genesis difficulty
+  # genesis_nonce:                "0"          ## Used to set genesis nonce
+  # genesis_blocktime:            "5"          ## Used to set Quorum --istanbul.blockperiod  (cli option), Patheon: blockperiodseconds (genesis ), Parity : stepDuration (genesis )
+  # genesis_min_gas_limit:        "5000"       ## Used to set parity genesis minGasLimit
+  #consensus_mechanism:          "instanbul"    ## Used to set consensus mechanism
+  # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2","--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-quorum*"]     #quorum
+  # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2", "--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-pantheon*"]   #pantheon
+  # chaos_testing_run_command:    ["netem", "--tc-image=gaiadocker/iproute2", "--duration=5m", "--interface=eth0", "delay", "--time=300000", "--jitter=30", "--correlation=20", "re2:^ecs-parity*"]     #parity
+  # faketime:                     ["+2d", "-3h", "+120", "+0", "-0"]  ## All values should start from -/+ signs, allowed time units  s, m, h, d, y ( seconds are default if no unit provided)
+  asg_instance_type:            "t2.xlarge" ## instance type user for ethereum nodes
+  chainhammer_repo_url:         'https://github.com/brave-experiments/chainhammer.git'
+  tf_log:                       "n" ## If other than empty string, tf output is enabled
