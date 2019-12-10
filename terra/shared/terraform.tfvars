@@ -38,7 +38,7 @@ number_of_nodes = 0
 
 # EC2 based quorum
 ecs_mode = "EC2"   # EC2, FARGATE 
-ecs_network_mode = "bridge" # bgidge, awsvpc
+ecs_network_mode = "awsvpc" # bgidge, awsvpc
 asg_instance_type = "t2.xlarge"
 ecs_memory = "8192"
 ecs_cpu = "4096"
