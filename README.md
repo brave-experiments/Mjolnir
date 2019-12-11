@@ -102,6 +102,10 @@ At this moment, Mjolnir supports the following clients:
       - ..reader/img/{TESTNAME}-{date}-{time}_blks.pgn
 
 
+### Build
+To build from source:
+`bin/run ci`
+
 ### Development Mode
 To run project locally type:
 
@@ -117,9 +121,6 @@ To run test watcher type:
 
 `bin/run test-watch`
 
-### Build
-To build from source:
-`bin/run ci`
 
 After success built files will lay within `./dist/{cli-version}/{arch}/{binaryName}`
 

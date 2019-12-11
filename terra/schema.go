@@ -2,12 +2,13 @@ package terra
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"path"
 	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
+
+	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -107,7 +108,7 @@ var (
 		"m4.16xlarge":   awsInstance{Type: "m4.16xlarge", Memory: "262144", Cpu: "65536"},
 	}
 	ValidInstanceTypes         []string
-	ValidConsensusMechanisms   = []string{"raft", "instanbul"}
+	ValidConsensusMechanisms   = []string{"raft", "istanbul"}
 	SupportedFileTypes         = []string{".yml", ".yaml"}
 	SupportedResourceTypes     = []string{"variables"}
 	SupportedClockSkewSigns    = []string{"+", "-"}

@@ -2,10 +2,11 @@ package terra
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"path"
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestValidInstanceTypes(t *testing.T) {
