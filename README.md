@@ -34,7 +34,7 @@ At this moment, Mjolnir supports the following clients:
 
 
 ## Table of Contents
-- [Architecture](tbd)
+- [Architecture](https://github.com/brave-experiments/Mjolnir#architecture)
 - [Terminology](https://github.com/brave-experiments/Mjolnir#terminology)
 - [Requirements](https://github.com/brave-experiments/Mjolnir#requirements)
 - [Getting-Started](https://github.com/brave-experiments/Mjolnir#requirements)
