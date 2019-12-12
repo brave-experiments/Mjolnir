@@ -149,7 +149,7 @@ After execution of `apply` command certain files will be created on your host:
 
 To manually test build run 
 
-`bin/run`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
+`bin/run ci`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
 
 To execute mjolnir CLI run:
 
