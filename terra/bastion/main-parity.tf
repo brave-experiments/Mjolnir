@@ -443,6 +443,7 @@ done
 
 sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d --force-recreate gethexporter monitor dashboard
 
+
 cat <<SS | sudo tee ${local.shared_volume_container_path}/parity_metadata
 parity:
   nodes:
@@ -474,6 +475,34 @@ ssh ec2-user@$ip -A -t
 SS
   sudo chmod +x $sshScript
 done
+# Chainhammer ==================================================
+WORKDIR=/home/admin/chainhammer
+rm -rf $WORKDIR
+git clone ${var.chainhammer_repo_url} $WORKDIR
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install-{solc,geth,virtualenv}.sh
+sed -i '/install_chapter.*scripts\/install-initialize.sh/ s/^/#/' $WORKDIR/scripts/install.sh
+
+count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
+i=0
+for idx in "$${!nodes[@]}"
+do
+  f=$(grep -l $${nodes[$idx]} *)
+  ip=$(cat ${local.hosts_folder}/$f)
+  i=$(($i+1))
+    if [ $i -eq 1 ]; then
+      sed -i s"/^RPCaddress=.*/RPCaddress=\'http:\/\/$ip:${local.parity_rpc_port}\'/"   $WORKDIR/hammer/config.py
+    elif [ $i -eq 2 ]; then
+      sed -i s"/^RPCaddress2=.*/RPCaddress2=\'http:\/\/$ip:${local.parity_rpc_port}\'/" $WORKDIR/hammer/config.py
+    elif [ $i -gt 2 ]; then
+      continue
+    fi
+done
+TMPDIR=$PWD
+cd $WORKDIR
+$WORKDIR/scripts/install.sh nodocker
+$WORKDIR/scripts/install-initialize.sh 
+cd $TMPDIR
 
 EOF
 }

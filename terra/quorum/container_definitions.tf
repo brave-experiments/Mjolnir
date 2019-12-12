@@ -33,8 +33,6 @@ locals {
       geth_args = [
         "--istanbul.blockperiod ${var.genesis_blocktime}",
         "--emitcheckpoints",
-        "--txpool.globalslots 12000",
-        "--txpool.globalqueue 1200",
         "--syncmode full",
         "--mine",
         "--minerthreads 1",

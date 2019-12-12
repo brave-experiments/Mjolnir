@@ -38,7 +38,7 @@ locals {
     "--password ${local.quorum_password_file}",
     "--nodiscover",
     "--networkid ${random_integer.network_id.result}",
-    "--verbosity 5",
+    "--verbosity 0",
     "--debug",
     "--identity $IDENTITY",
     "--miner.gastarget ${var.genesis_gas_limit}",
