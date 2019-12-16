@@ -35,6 +35,6 @@ locals {
     entrypoint = "${concat(list("/pumba"), local.chaos_testing_run_commands)}"
     dockerLabels = "${local.common_tags}"
 
-    cpu = 0
+    cpu = 512
   }
 }

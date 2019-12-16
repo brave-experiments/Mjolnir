@@ -27,3 +27,7 @@ node_modules
 scripts/node_modules/
 scripts/package-lock.json
 **/symlink*
+*.pem
+*.info
+current.plan
+generated-bootstrap.sh

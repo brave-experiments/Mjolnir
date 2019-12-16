@@ -70,7 +70,7 @@ locals {
 
     dockerLabels = "${local.common_tags}"
 
-    cpu = 0
+    cpu = 512
   }
 
   metadata_bootstrap_commands = [
@@ -205,6 +205,6 @@ locals {
 
     dockerLabels = "${local.common_tags}"
 
-    cpu = 0
+    cpu = 512
   }
 }

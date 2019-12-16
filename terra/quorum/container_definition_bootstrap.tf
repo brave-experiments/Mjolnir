@@ -76,7 +76,7 @@ locals {
 
     dockerLabels = "${local.common_tags}"
 
-    cpu = 0
+    cpu = 512
   }
 
   // this is very BADDDDDD but for now i don't have any other better option
@@ -243,6 +243,6 @@ EOP
 
     dockerLabels = "${local.common_tags}"
 
-    cpu = 0
+    cpu = 512
   }
 }
