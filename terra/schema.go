@@ -199,7 +199,7 @@ variables:
   genesis_timestamp:      38	         ## Used to set genesis timestamp it converts to hex
   genesis_difficulty:     12             ## Used to set genesis difficulty it converts to hex
   genesis_nonce:          0              ## Used to set genesis nonce it converts to hex
-  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
+  consensus_mechanism:    "istanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 )
 
