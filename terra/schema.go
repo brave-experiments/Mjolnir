@@ -180,7 +180,7 @@ variables:
   is_timestamp:               "30"            ## Used to set genesis timestamp
   genesis_difficulty:         "12"            ## Used to set genesis difficulty
   genesis_nonce:              "0"             ## Used to set genesis nonce
-  consensus_mechanism:        "instanbul"     ## Used to set consensus mechanism
+  consensus_mechanism:        "istanbul"     ## Used to set consensus mechanism
   chaos_testing_run_command:  ["netem", "--duration", "5m", "--interface", "eth0", "delay", "--time", "3000", "--jitter", "30", "--correlation", "20", "re2:^ecs-quorum*"]
   faketime:                   ["+2d", "-3h", "+120", "0", "0"]  ## You need to fill all values for existing number of nodes for now.
   tf_log:                     "" ## Used to enable/disable or point logs type that Terraform outputs to console
