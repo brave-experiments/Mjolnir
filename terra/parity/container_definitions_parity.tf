@@ -106,7 +106,7 @@ locals {
 
     dockerLabels = "${local.common_tags}"
 
-    cpu = 0
+    cpu = 512
   }
 
 

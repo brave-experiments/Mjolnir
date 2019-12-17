@@ -4380,7 +4380,7 @@ variables:
   genesis_timestamp:      38	         ## Used to set genesis timestamp
   genesis_difficulty:     12             ## Used to set genesis difficulty
   genesis_nonce:          0              ## Used to set genesis nonce
-  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
+  consensus_mechanism:    "istanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 
 	YamlFixtureWithInvalidHexUtils = `version: 0.3
@@ -4396,7 +4396,7 @@ variables:
   genesis_timestamp:     '3n8'	         ## Used to set genesis timestamp
   genesis_difficulty:     ['12']         ## Used to set genesis difficulty
   genesis_nonce:          {}	         ## Used to set genesis nonce
-  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
+  consensus_mechanism:    "istanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 
 	NoSuchFileOrDirectoryMsg = "\n[ERR] Yaml Validation error: open %s: no such file or directory"

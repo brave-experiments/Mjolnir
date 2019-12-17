@@ -106,6 +106,14 @@ var (
 		"m4.4xlarge":    awsInstance{Type: "m4.4xlarge", Memory: "65536", Cpu: "16384"},
 		"m4.10xlarge":   awsInstance{Type: "m4.10xlarge", Memory: "164840", Cpu: "40960"},
 		"m4.16xlarge":   awsInstance{Type: "m4.16xlarge", Memory: "262144", Cpu: "65536"},
+		"c5.large":      awsInstance{Type: "c5.large", Memory: "8192", Cpu: "2048"},
+		"c5.xlarge":     awsInstance{Type: "c5.xlarge", Memory: "16384", Cpu: "4096"},
+		"c5.2xlarge":    awsInstance{Type: "c5.2xlarge", Memory: "16384", Cpu: "8192"},
+		"c5.4xlarge":    awsInstance{Type: "c5.4xlarge", Memory: "32768", Cpu: "16384"},
+		"c5.9xlarge":    awsInstance{Type: "c5.9xlarge", Memory: "73728", Cpu: "36864"},
+		"c5.12xlarge":   awsInstance{Type: "c5.12xlarge", Memory: "98304", Cpu: "49152"},
+		"c5.18xlarge":   awsInstance{Type: "c5.18xlarge", Memory: "147456", Cpu: "73728"},
+		"c5.24xlarge":   awsInstance{Type: "c5.24xlarge", Memory: "196608", Cpu: "98304"},
 	}
 	ValidInstanceTypes         []string
 	ValidConsensusMechanisms   = []string{"raft", "istanbul"}
@@ -172,7 +180,7 @@ variables:
   is_timestamp:               "30"            ## Used to set genesis timestamp
   genesis_difficulty:         "12"            ## Used to set genesis difficulty
   genesis_nonce:              "0"             ## Used to set genesis nonce
-  consensus_mechanism:        "instanbul"     ## Used to set consensus mechanism
+  consensus_mechanism:        "istanbul"     ## Used to set consensus mechanism
   chaos_testing_run_command:  ["netem", "--duration", "5m", "--interface", "eth0", "delay", "--time", "3000", "--jitter", "30", "--correlation", "20", "re2:^ecs-quorum*"]
   faketime:                   ["+2d", "-3h", "+120", "0", "0"]  ## You need to fill all values for existing number of nodes for now.
   tf_log:                     "" ## Used to enable/disable or point logs type that Terraform outputs to console
@@ -191,7 +199,7 @@ variables:
   genesis_timestamp:      38	         ## Used to set genesis timestamp it converts to hex
   genesis_difficulty:     12             ## Used to set genesis difficulty it converts to hex
   genesis_nonce:          0              ## Used to set genesis nonce it converts to hex
-  consensus_mechanism:    "instanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
+  consensus_mechanism:    "istanbul"    ## Used to set consensus mechanism supported values are raft/istanbul
 `
 )
 
