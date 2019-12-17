@@ -1,1 +1,0 @@
-symlink_bastion_iam-quorum.tf
