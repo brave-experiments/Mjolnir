@@ -41,6 +41,10 @@ dev: copy restart
 	docker-compose exec cli sh
 
 TARGET := $(shell uname)
+FILES := mjolnir
+SUCCESS := $(shell if [ -f "$$FILE" ]; then echo "Installation is succesfull" else echo "Installation not successful"; fi ) 
+# RESULT := $(shell python --version >/dev/null 2>&1 || (echo "Your command failed with $$?"))
+
 
 create: create-$(TARGET)
 
@@ -52,7 +56,7 @@ create-Linux: generate clean-build
 
 build: copy restart 
 	docker-compose exec -T cli make create TARGET=$(TARGET)
-	echo "Build Done!"
+	$(SUCCESS)
 
 quorum: 
 	./mjolnir apply quorum examples/values-local.yml
@@ -66,7 +70,7 @@ pantheon:
 destroy:
 	./mjolnir destroy examples/values-local.yml
 
-test-ci: 
+test: 
 	cp docker-compose.override.test.yml.dist docker-compose.override.yml
 	docker-compose up -d --no-deps cli-test
 	sleep 2
