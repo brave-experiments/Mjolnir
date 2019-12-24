@@ -21,11 +21,11 @@
          
 We needed DevOps tooling to enable the Brave team rapidly deploy Ethereum Proof of Authority (PoA) clusters across different Ethereum Clients for benchmarking.
 
-As there was no tool out there that fulfilled this requirement,this gap gave birth to Mjolnir ...  a tool for rapidly deploying and testing Ethereum Clients. 
+As there was no tool out there that fulfilled this requirement, this vacuum  gave birth to Mjolnir ...  a tool for rapidly deploying and testing Ethereum Clients. 
 
-The tool currently allows users to test the through put of Ethereum Clients both on its own, and under adverse network conditions (i.e. Clock Skew , dropped tcp packets, jitters, etc.)
+Mjolnir allows users to test the through put of Ethereum Clients both on its own, and under adverse network conditions (i.e. Clock Skew , dropped tcp packets, jitters, etc.)
 
-At this moment, Mjolnir supports the following clients:
+Mjolnir supports the following clients:
 
 - [Quorum](https://github.com/jpmorganchase/quorum)
 - [Patheon](https://github.com/hyperledger/besu) (now Hyperledger Besu)
@@ -65,10 +65,6 @@ At this moment, Mjolnir supports the following clients:
 
 ## Terminology
 
-- **{cli-version}**: Semantic version of binary 
-- **{arch}**: The OS architecture. Currently supported are 
-   - `osx` 
-   - `unix`
 - **{binaryName}**: `mjolnir`
 - **{client}**: The Ethereum client been tested. Currently supported are:
    - `quorum`
@@ -84,18 +80,35 @@ At this moment, Mjolnir supports the following clients:
 
 
 ## Getting started
+
+**Before proceeding, it is important to ensure that your AWS user has the right permissions for creating IAM roles / policies, EC2 , ECS, s3 and Cloudwatch**. 
+
 - **Step 1: Deploy Infrastructure**
    - Clone this repo - ` git clone git@github.com:brave-experiments/Mjolnir.git`
-   - Enter `bin/run` to run locally. This will create a local docker container and ssh into it. 
-   - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml`
-   - Update `examples/values-local.yaml`
-   - enter `./dist/{cli-version}/{arch}/mjolnir apply {client} examples/values-local.yml `. This will deploy the requsite infrastrucure on your AWS account.
+   - Run `make build` from in root folder. This will build compile the terraform and go modules, creating a `mjolnir` binary in the root folder.  
+   - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml` i.e.
+
+      `cp examples/values.yaml examples/values-local.yaml` . This is important as this file is added to the .gitignore file and protects the user from accidentally commiting secrets to their online repository.
+
+   - Update `examples/values-local.yaml` with your desired configuration. 
+   - The user can either deploy their cluster by either of the following commands
+
+      `make {client}` 
+
+      OR
+
+      `./mjolnir apply examples/values-local.yml`.
+
+       This will deploy the requisite infrastrucure in the user's AWS account.
+      For a 4 node cluster, this takes about 15 minutes. 
+
 
 - **Step 2: Fire Transactions**
-   - Once this is complete, enter `./dist/{cli-version}/{arch}/mjolnir bastion` to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
+   - Once this is complete, enter `mjolnir bastion`
+    to tunnel into the bastion host. It is from here, we are able to access chainhamer for sending transactions to the clients. 
    - Move in the `chainhammer` directory by entering `cd chainhammer`
    - Run `scripts/install-initialize.sh` to intialize chainhammer. 
-   - To send transactions, ` CH_TXS=40000 CH_THREADING="threaded2 300" ./run.sh "{TESTNAME}"`; Where `CH_TXS` is the number of transactions to be send, `CH_THREADING` is the threading algorithm, and `{TESTNAME}` is the name that the run will be save under.
+   - To send transactions, ` CH_TXS=25000 CH_THREADING="threaded2 300" ./run.sh "{TESTNAME}"`; Where `CH_TXS` is the number of transactions to be send, `CH_THREADING` is the threading algorithm, and `{TESTNAME}` is the name that the run will be save under.
    - If all goes well, files will be saved under:
       - ../results/runs/{client}_{date}-{time}_{no_of_transactions_sent}.md
       - ../results/runs/{client}_{date}-{time}_{no_of_transactions_sent}.html
@@ -104,29 +117,24 @@ At this moment, Mjolnir supports the following clients:
 
 ### Build
 To build from source:
-`bin/run ci`
-
-### Development Mode
-To run project locally type:
-
-`bin/run`
+`make build`
 
 ### Test
 To run tests without watcher:
 
-`bin/run test`
+`make test`
 
 ### Test-watch
 To run test watcher type:
 
-`bin/run test-watch`
+`make test-watch`
 
 
-After success built files will lay within `./dist/{cli-version}/{arch}/{binaryName}`
+After a successful build , the binary `mjolnir` will be in the root folder. 
 
 To execute mjolnir binary file:
-try `./dist/{cli-version}/{arch}/mjolnir` to see all commands that are registered
-try `./dist/{cli-version}/{arch}/mjolnir {cmdName} --help` to see help from command
+try `./mjolnir` to see all commands that are registered
+try `./mjolnir {cmdName} --help` to see help from command
 
 ### Providing values
 See `example/values.yml` that shows how to attach values to apply execution. 
@@ -192,30 +200,35 @@ Restoring env variables.
 
 - SSH into the bastion:
    
-   `./dist/{cli-version}/{arch}/mjolnir bastion`
+   `./mjolnir bastion`
 
 - SSH into an Ethereum node:
 
-   `./dist/{cli-version}/{arch}/mjolnir node n`
+   `./mjolnir node n`
 
     where `n` is the node number. 
 
 
 - To attach an interactive geth console to any node: 
 
-   `./dist/{cli-version}/{arch}/mjolnir geth n` 
+   `./mjolnir geth n` 
 
    where `n` is the node number. 
 
 
 - Get information on currently deployed nodes
 
-   `./dist/{cli-version}/{arch}/mjolnir node-info` 
+   `./mjolnir node-info` 
 
 ## Cleaning Up
 
 to destroy run:
-`./dist/{cli-version}/{arch}/mjolnir destroy {values-local.yml}`
+
+`./mjolnir destroy {values-local.yml}`
+
+or
+
+`make destroy`
 
 Current success output looks like this ( will be correted in next release ):
 ```Deploy Name not present

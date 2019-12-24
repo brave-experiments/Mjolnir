@@ -31,3 +31,4 @@ scripts/package-lock.json
 *.info
 current.plan
 generated-bootstrap.sh
+bin/run

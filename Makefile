@@ -1,4 +1,8 @@
-default: test
+.PHONY: default static-switch generate docker-test docker-test-silent test-silent-connection \
+		clean-build test-and-build restart copy dev build create create-Darwin create-Linux \
+		quorum pantheon parity destroy test-ci tests-watch tests-silent
+
+default: docker-test
 
 static-switch:
 	cp terra/static.go.dist terra/static.go
@@ -6,36 +10,78 @@ static-switch:
 generate: static-switch
 	go run builder/main.go
 
-test: clean generate
+docker-test: clean generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
 
-test-silent: clean-build generate
-	go test -cover -covermode=count -coverprofile=coverage.out ./... > dist/${CLI_VERSION}/unit.log
+docker-test-silent: clean-build generate
+	go test -cover -covermode=count -coverprofile=coverage.out ./... > dist/unit.log
 
 test-silent-connection: clean-build
-	go test -cover -covermode=count -coverprofile=coverage.out ./connect/... > dist/${CLI_VERSION}/unit.log
+	go test -cover -covermode=count -coverprofile=coverage.out ./connect/... > dist/unit.log
 
 clean-build: clean
-	rm -rf dist/${CLI_VERSION}/unix
-	mkdir -p dist/${CLI_VERSION}/unix
-
-clean-build-mac: clean
-	rm -rf dist/${CLI_VERSION}/osx
-	mkdir -p dist/${CLI_VERSION}/osx
+	rm -rf  mjolnir
 
 clean:
 	rm -rf coverage.out
 
-build: build-unix build-mac
-	ls -la dist/${CLI_VERSION}/
-
-build-unix: generate clean-build
-	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir
-
-build-mac: generate clean-build-mac
-	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/mjolnir
-	ls -la dist/${CLI_VERSION}/osx/mjolnir
-
 test-and-build: clean clean-build generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
-	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir
+	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
+
+restart:
+	docker-compose down --remove-orphans
+	docker-compose up -d
+
+copy:
+	cp docker-compose.override.yml.dist docker-compose.override.yml
+	cp .env.dist .env
+
+dev: copy restart
+	docker-compose exec cli sh
+
+TARGET := $(shell uname)
+FILES := mjolnir
+SUCCESS := $(shell if [ -f "$$FILE" ]; then echo "Installation is succesfull" else echo "Installation not successful"; fi ) 
+# RESULT := $(shell python --version >/dev/null 2>&1 || (echo "Your command failed with $$?"))
+
+
+create: create-$(TARGET)
+
+create-Darwin: generate clean-build
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
+
+create-Linux: generate clean-build
+	CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
+
+build: copy restart 
+	docker-compose exec -T cli make create TARGET=$(TARGET)
+	$(SUCCESS)
+
+quorum: 
+	./mjolnir apply quorum examples/values-local.yml
+
+parity: 
+	./mjolnir apply parity examples/values-local.yml
+
+pantheon:
+	./mjolnir apply pantheon examples/values-local.yml
+
+destroy:
+	./mjolnir destroy examples/values-local.yml
+
+test: 
+	cp docker-compose.override.test.yml.dist docker-compose.override.yml
+	docker-compose up -d --no-deps cli-test
+	sleep 2
+	docker-compose exec -T cli-test make docker-test
+
+tests-watch:
+	cp docker-compose.override.test.yml.dist docker-compose.override.yml
+	docker-compose up --no-deps cli-test
+
+tests-silent:
+	cp docker-compose.override.test.yml.dist docker-compose.override.yml
+	docker-compose up -d --no-deps cli-test
+	sleep 2
+	docker-compose exec -T cli-test make docker-test-silent
