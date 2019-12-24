@@ -10,25 +10,20 @@ docker-test: clean generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
 
 docker-test-silent: clean-build generate
-	go test -cover -covermode=count -coverprofile=coverage.out ./... > dist/${CLI_VERSION}/unit.log
+	go test -cover -covermode=count -coverprofile=coverage.out ./... > dist/unit.log
 
 test-silent-connection: clean-build
-	go test -cover -covermode=count -coverprofile=coverage.out ./connect/... > dist/${CLI_VERSION}/unit.log
+	go test -cover -covermode=count -coverprofile=coverage.out ./connect/... > dist/unit.log
 
 clean-build: clean
-	rm -rf dist/${CLI_VERSION}/unix
-	mkdir -p dist/${CLI_VERSION}/unix
-
-clean-build-mac: clean
-	rm -rf dist/${CLI_VERSION}/osx
-	mkdir -p dist/${CLI_VERSION}/osx
+	rm -rf  mjolnir
 
 clean:
 	rm -rf coverage.out
 
 test-and-build: clean clean-build generate
 	go test -cover -covermode=count -coverprofile=coverage.out ./...
-	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir
+	GOPROXY=https://proxy.golang.org CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
 
 restart:
 	docker-compose down --remove-orphans
@@ -45,23 +40,24 @@ TARGET := $(shell uname)
 
 create: create-$(TARGET)
 
-create-Darwin: generate clean-build-mac
-	# GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/mjolnir
+create-Darwin: generate clean-build
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
-	# cp dist/${CLI_VERSION}/osx/mjolnir . 
-	# ls -la dist/${CLI_VERSION}/osx/mjolnir
 
 create-linux: generate clean-build
-	# CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir
 	CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
-	# cp dist/${CLI_VERSION}/unix/mjolnir . 
-	# ls -la dist/${CLI_VERSION}/unix/mjolnir
 
 build: copy restart 
 	docker-compose exec -T cli make create TARGET=$(TARGET)
+	echo "Build Done!"
 
 quorum: 
 	./mjolnir apply quorum examples/values-local.yml
+
+parity: 
+	./mjolnir apply parity examples/values-local.yml
+
+pantheon:
+	./mjolnir apply pantheon examples/values-local.yml
 
 destroy:
 	./mjolnir destroy examples/values-local.yml
