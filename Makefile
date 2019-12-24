@@ -1,3 +1,7 @@
+.PHONY: default static-switch generate docker-test docker-test-silent test-silent-connection \
+		clean-build test-and-build restart copy dev build create create-Darwin create-Linux \
+		quorum pantheon parity destroy test-ci tests-watch tests-silent
+
 default: docker-test
 
 static-switch:
@@ -43,7 +47,7 @@ create: create-$(TARGET)
 create-Darwin: generate clean-build
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
 
-create-linux: generate clean-build
+create-Linux: generate clean-build
 	CGO_ENABLED=0 go build -a -installsuffix cgo -o mjolnir
 
 build: copy restart 
