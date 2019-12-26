@@ -2,6 +2,10 @@
 		clean-build test-and-build restart copy dev build create create-Darwin create-Linux \
 		quorum pantheon parity destroy test-ci tests-watch tests-silent
 
+################
+# Main targets #
+################
+
 default: docker-test
 
 static-switch:
@@ -43,7 +47,6 @@ dev: copy restart
 TARGET := $(shell uname)
 FILES := mjolnir
 SUCCESS := $(shell if [ -f "$$FILE" ]; then echo "Installation is succesfull" else echo "Installation not successful"; fi ) 
-# RESULT := $(shell python --version >/dev/null 2>&1 || (echo "Your command failed with $$?"))
 
 
 create: create-$(TARGET)
@@ -85,3 +88,14 @@ tests-silent:
 	docker-compose up -d --no-deps cli-test
 	sleep 2
 	docker-compose exec -T cli-test make docker-test-silent
+
+##################
+# Travis targets #
+##################
+
+build-mac: generate 
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/apollo
+	ls -la dist/${CLI_VERSION}/osx/apollo
+
+build-unix: generate 
+	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo
