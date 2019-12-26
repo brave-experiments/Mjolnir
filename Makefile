@@ -93,9 +93,14 @@ tests-silent:
 # Travis targets #
 ##################
 
-build-mac: generate 
+create-darwin-travis: generate clean-build
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/mjolnir-osx
-	ls -la dist/${CLI_VERSION}/osx/apollo
 
-build-unix: generate 
-	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo-unix
+build-mac: copy restart 
+	docker-compose exec -T cli make create-darwin-travis
+	
+create-unix-travis: generate clean-build
+	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir-osx
+
+build-unix: copy restart 
+	docker-compose exec -T cli make create-unix-travis
