@@ -31,7 +31,7 @@ deploy:
     secure: HMuSUqu0OQYwZpLn3c1jq5QzKk4GA1VQewfJCR3as4ljUvlf+ZwqzQ/7GBM26ncGfMmIGdUGBQh+wfUr9kZ06xAaCYIbruYspQWdKaE05vPD7EWljTN9FtjP5/hBUunJRlJL1/HuTjKW1UYVzW7uJX0LOFylMd06YnSkUNlO+C4qFMg1rhkXmo1fJ03iakDiqAMsMrVblEhKp9IODknq1rAtcAZYErZcZgvs9muEscY/M4vWwtXX/tZIkSllU4a4PPqxbLsPhmRoakrWjlAVXOCXY/Dr5NIz0VVNAnSVeoLWm4hE3UXcAV1nhNQjnqMg6HJi3AmYkhBJ4HfwsF4bqsWoptt2Og5MPuTnthe5Vo44GsAwB3AxYWSkyOjarbMcwXyl3vHWY2HXC5Hm3zxEcPjeZMjokzPodDpzBhuTg0co+xho+diG6DNWQwpSTtDcRvaxUFOiZ6RjKO03TRa9S7FHhKAX+19F/5toWtCYN3slWRxJ5tq7qFYqKI7C9ZV61yQ0rkk6KrIMkbedPttPkalEZwBt+iEtmUKPr3rOKIc7MTj211fdLKMACAfnGa3yj0J+SwNSZthGMCeAFL3IzBw4RjULUawJMzl7Hllgvm/HBsjxr+4eGMPzDYWcAdYW9u/K2hHsGI9wTVolGNSCxj0RwfWEe4RfKEfSquEXVT8=
   file:
     - dist/${CLI_VERSION}/osx/mjolnir-osx
-    - dist/${CLI_VERSION}/unix/apollo-unix
+    - dist/${CLI_VERSION}/unix/mjolnir-unix
   on:
     repo: brave-experiments/Mjolnir
     branch: master
