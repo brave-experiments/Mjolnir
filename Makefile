@@ -62,15 +62,6 @@ build: copy restart
 	docker-compose exec -T cli make create TARGET=$(TARGET)
 	$(SUCCESS)
 
-quorum: 
-	./mjolnir apply quorum examples/values-local.yml
-
-parity: 
-	./mjolnir apply parity examples/values-local.yml
-
-pantheon:
-	./mjolnir apply pantheon examples/values-local.yml
-
 destroy:
 	./mjolnir destroy examples/values-local.yml
 
@@ -94,7 +85,7 @@ tests-silent:
 # Deployment  targets #
 #######################
 
-test: 
+test-tps: 
 	./scripts/automate_tps.sh 
 
 quorum: 
@@ -106,11 +97,11 @@ parity:
 pantheon:
 	./mjolnir apply pantheon examples/values-local.yml
 
-quorum-test: quorum test 
+quorum-test: quorum test-tps
 
-parity-test: parity test 
+parity-test: parity test-tps
 
-pantheon-test: pantheon test 
+pantheon-test: pantheon test-tps
 
 #########################
 # "End to End"  targets #
@@ -132,3 +123,5 @@ build-mac: generate
 
 build-unix: generate 
 	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo-unix
+
+
