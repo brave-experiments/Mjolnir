@@ -1,10 +1,11 @@
 .PHONY: default static-switch generate docker-test docker-test-silent test-silent-connection \
 		clean-build test-and-build restart copy dev build create create-Darwin create-Linux \
-		quorum pantheon parity destroy test-ci tests-watch tests-silent
+		quorum pantheon parity destroy test-ci tests-watch tests-silent quorum-test pantheon-test \
+		parity-test hammer-parity hammer-pantheon
 
-################
-# Main targets #
-################
+##################
+# Build  targets #
+##################
 
 default: docker-test
 
@@ -89,13 +90,45 @@ tests-silent:
 	sleep 2
 	docker-compose exec -T cli-test make docker-test-silent
 
+#######################
+# Deployment  targets #
+#######################
+
+test: 
+	./scripts/automate_tps.sh 
+
+quorum: 
+	./mjolnir apply quorum examples/values-local.yml
+
+parity: 
+	./mjolnir apply parity examples/values-local.yml
+
+pantheon:
+	./mjolnir apply pantheon examples/values-local.yml
+
+quorum-test: quorum test 
+
+parity-test: parity test 
+
+pantheon-test: pantheon test 
+
+#########################
+# "End to End"  targets #
+#########################
+
+hammer-quorum: build quorum-test 
+
+hammer-parity: build parity-test
+
+hammer-pantheon: build pantheon-test
+
+
 ##################
 # Travis targets #
 ##################
 
 build-mac: generate 
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/mjolnir-osx
-	ls -la dist/${CLI_VERSION}/osx/apollo
 
 build-unix: generate 
 	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo-unix
