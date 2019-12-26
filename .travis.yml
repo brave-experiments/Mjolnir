@@ -20,8 +20,8 @@ after_script:
 
 before_deploy:
 - source ./.env.dist
-- build-mac
-- build-unix
+- make build-mac
+- make build-unix
 - git tag $CLI_VERSION
 deploy:
   provider: releases
