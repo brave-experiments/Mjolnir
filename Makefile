@@ -1,10 +1,11 @@
 .PHONY: default static-switch generate docker-test docker-test-silent test-silent-connection \
 		clean-build test-and-build restart copy dev build create create-Darwin create-Linux \
-		quorum pantheon parity destroy test-ci tests-watch tests-silent
+		quorum pantheon parity destroy test-ci tests-watch tests-silent quorum-test pantheon-test \
+		parity-test hammer-parity hammer-pantheon
 
-################
-# Main targets #
-################
+##################
+# Build  targets #
+##################
 
 default: docker-test
 
@@ -61,15 +62,6 @@ build: copy restart
 	docker-compose exec -T cli make create TARGET=$(TARGET)
 	$(SUCCESS)
 
-quorum: 
-	./mjolnir apply quorum examples/values-local.yml
-
-parity: 
-	./mjolnir apply parity examples/values-local.yml
-
-pantheon:
-	./mjolnir apply pantheon examples/values-local.yml
-
 destroy:
 	./mjolnir destroy examples/values-local.yml
 
@@ -89,6 +81,39 @@ tests-silent:
 	sleep 2
 	docker-compose exec -T cli-test make docker-test-silent
 
+#######################
+# Deployment  targets #
+#######################
+
+test-tps: 
+	./scripts/automate_tps.sh 
+
+quorum: 
+	./mjolnir apply quorum examples/values-local.yml
+
+parity: 
+	./mjolnir apply parity examples/values-local.yml
+
+pantheon:
+	./mjolnir apply pantheon examples/values-local.yml
+
+quorum-test: quorum test-tps
+
+parity-test: parity test-tps
+
+pantheon-test: pantheon test-tps
+
+#########################
+# "End to End"  targets #
+#########################
+
+hammer-quorum: build quorum-test 
+
+hammer-parity: build parity-test
+
+hammer-pantheon: build pantheon-test
+
+
 ##################
 # Travis targets #
 ##################
@@ -96,11 +121,14 @@ tests-silent:
 create-darwin-travis: generate clean-build
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/osx/mjolnir-osx
 
+
+build-unix: generate 
+	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/apollo-unix
+
 build-mac: copy restart 
 	docker-compose exec -T cli make create-darwin-travis
 	
 create-unix-travis: generate clean-build
 	CGO_ENABLED=0 go build -a -installsuffix cgo -o dist/${CLI_VERSION}/unix/mjolnir-osx
 
-build-unix: copy restart 
-	docker-compose exec -T cli make create-unix-travis
+
