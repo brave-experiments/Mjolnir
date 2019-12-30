@@ -107,12 +107,30 @@ pantheon-test: pantheon test-tps
 # "End to End"  targets #
 #########################
 
-hammer-quorum: build quorum-test 
+quorum-hammer: build quorum-test 
 
-hammer-parity: build parity-test
+parity-hammer: build parity-test
 
-hammer-pantheon: build pantheon-test
+pantheon-hammer: build pantheon-test
 
+deployment-test: 
+	./scripts/deployment_time.sh 
+
+#######################
+# Subcommand  targets #
+#######################
+
+bastion:
+	./mjolnir bastion
+
+ssh:
+	./mjolnir node 
+
+geth:
+	./mjolnir geth
+
+node-info:
+	./mjolnir node-info
 
 ##################
 # Travis targets #
