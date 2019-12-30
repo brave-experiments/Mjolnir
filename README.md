@@ -73,19 +73,31 @@ Mjolnir supports the following clients:
 - **{cmdName}**: Binary's sub command. 
 
 ## Requirements
+- GNU Make (>= v3.81)
 - A UNIX based machine.
 - Go (>= v 1.12.7)
 - Docker Engine Community (>= v 19.03.1)
 - Terraform (>= v0.12.5)
+- An AWS subscription with the permissions to create IAM roles, policies, EC2 instances, s3 and Cloud watch. 
 
+## In a rush?
+
+To rapidly build , deploy and test a chain in one command, from the root folder the user should:
+- Make a copy of the `yaml file` i.e. `cp examples/values.yml examples/values-local.yaml`
+- Set the parameter for your chain and infrastructure (i.e gas limit, block time, vm type and so on)
+- From the root folder, enter `make quorum-hammer`
+- This should take about 20 minutes.
+- After this is done, a results folder will be created the user's root directory with the test results in it. 
 
 ## Getting started
 
-**Before proceeding, it is important to ensure that your AWS user has the right permissions for creating IAM roles / policies, EC2 , ECS, s3 and Cloudwatch**. 
-
 - **Step 1: Deploy Infrastructure**
    - Clone this repo - ` git clone git@github.com:brave-experiments/Mjolnir.git`
-   - Run `make build` from in root folder. This will build compile the terraform and go modules, creating a `mjolnir` binary in the root folder.  
+   - Run 
+
+      `make build` 
+
+   from in root folder. This will build compile the terraform and go modules, creating a `mjolnir` binary in the root folder.  
    - Create a copy of the configuration files in `examples/values.yaml` to  `examples/values-local.yaml` i.e.
 
       `cp examples/values.yaml examples/values-local.yaml` . This is important as this file is added to the .gitignore file and protects the user from accidentally commiting secrets to their online repository.
@@ -157,11 +169,11 @@ After execution of `apply` command certain files will be created on your host:
 
 To manually test build run 
 
-`bin/run ci`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
+`make build`  - or get latest binary release from here: https://github.com/brave-experiments/Mjolnir/releases 
 
 To execute mjolnir CLI run:
 
-`./mjolnir apply quorum values.yml`  - with previosly prepared values.yml taken from `examples/` folder in repo
+`./mjolnir apply quorum values.yml` or `make quorum`  - with previosly prepared values.yml taken from `examples/` folder in repo
 
 After successful you will find following files in your working directory:
 * terraform.tfstate   - current terraform object state
@@ -200,25 +212,25 @@ Restoring env variables.
 
 - SSH into the bastion:
    
-   `./mjolnir bastion`
+   `./mjolnir bastion` or `make bastion`
 
 - SSH into an Ethereum node:
 
-   `./mjolnir node n`
+   `./mjolnir node n` or `make node n`
 
     where `n` is the node number. 
 
 
 - To attach an interactive geth console to any node: 
 
-   `./mjolnir geth n` 
+   `./mjolnir geth n` or `make geth n`
 
    where `n` is the node number. 
 
 
 - Get information on currently deployed nodes
 
-   `./mjolnir node-info` 
+   `./mjolnir node-info`  or `make node-info`
 
 ## Cleaning Up
 
@@ -336,10 +348,6 @@ This project is licensed under the Mozilla Public License 2.0- see the [LICENSE]
    - After doing this, you should be able to log into the bastion. 
 
 
-
-
-
-
 ## Acknowledgements
 
 We would like to thank the following teams for their contributions to the project:
@@ -347,3 +355,5 @@ We would like to thank the following teams for their contributions to the projec
 - [binarapps](https://binarapps.com) for their ability to dive into both the infrastructure and software and deliver on our requirements. 
 - Dr Andreas Krueger for [chainhammer](https://github.com/drandreaskrueger/chainhammer/tree/master/hammer). Mjolnir inspired by his project, and much of the code for firing the transactions is mostly his.
 - The JP Morgan Team for [quorum-cloud](https://github.com/jpmorganchase/quorum-cloud). This was the boiler plate for the deployments of other clients. 
+
+
