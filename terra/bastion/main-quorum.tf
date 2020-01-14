@@ -462,7 +462,7 @@ done
 TMPDIR=$PWD
 cd $WORKDIR
 $WORKDIR/scripts/install.sh nodocker
-$WORKDIR/scripts/install-initialise.sh
+$WORKDIR/scripts/install-initialize.sh
 cd $TMPDIR
 cd ~/
 
