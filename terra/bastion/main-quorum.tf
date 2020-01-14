@@ -467,13 +467,12 @@ cd $TMPDIR
 cd ~/
 
 # Jmeter
-
-mkdir jmeter 
 WORDIR=jmeter 
+mkdir $WORKDIR
 cd $WORKDIR
 wget -c https://www-eu.apache.org/dist//jmeter/binaries/apache-jmeter-5.2.1.tgz
 tar -xf apache-jmeter-5.2.1.tgz
-cp apache-jmeter-5.2.1/bin/./jmeter . 
+# cp apache-jmeter-5.2.1/bin/./jmeter . 
 
 EOF
 }

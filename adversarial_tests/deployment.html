@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--  Error1: When no x: attribute explicitly defined, it doesn't know where to position labels.
+Error2: Axes not showing for some reason. Maybe I'll just move them to the front-->
+<head>
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/rough-viz@1.0.4"></script>
+  <style>
+	    .wrapper {
+	      display: flex;
+	      flex: wrap;
+        order: row;
+	    }
+  </style>
+</head>
+ 
+<body>
+  <br><br>
+  <div class="wrapper">
+    <div id="vis0"></div>
+    <div id="vis1"></div>
+    </div>
+  <script> 
+    let ttop = 50;
+    let rright = 20;
+    let bbottom = 45;
+    let width = 300;
+    
+    
+new roughViz.Line(
+  {
+    element: '#vis0',
+    // data: 'https://raw.githubusercontent.com/jwilber/random_data/master/tweets.csv',
+    data: 'https://raw.githubusercontent.com/brave-experiments/Mjolnir/master/adversarial_tests/deploy_now.csv',
+    title: 'Memory Consumption',
+    // x: 'Nodes',
+    // y: 'ACK-H',
+    y2: 'Deploy',
+    y3: 'Decomission',
+    yLabel: 'Memory',
+    colorVar: 'continent',
+    axisFontSize: '1rem',
+    highlightLabel: 'country',
+    highlight: 'blue',
+    fillWeight: 2,
+    roughness: 3.5,
+    labelFontSize: 2,
+    width: window.innerWidth / 1.2,
+    height: 500,
+    legendPosition: 'left',
+    xLabel: 'NumberofNodes',
+    titleFontSize: '3rem'
+  }
+);
+
+
+  </script>
+</body>
+   

@@ -88,13 +88,13 @@ tests-silent:
 test-tps: 
 	./scripts/automate_tps.sh 
 
-quorum: 
+quorum: build
 	./mjolnir apply quorum examples/values-local.yml
 
-parity: 
+parity: build
 	./mjolnir apply parity examples/values-local.yml
 
-pantheon:
+pantheon: build
 	./mjolnir apply pantheon examples/values-local.yml
 
 quorum-test: quorum test-tps
