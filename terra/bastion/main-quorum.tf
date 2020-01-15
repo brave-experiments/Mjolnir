@@ -93,7 +93,7 @@ EOF
       "sudo curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -",
       "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable\"",
       "sudo apt-get update",
-      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io jq python3-pip",
+      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io jq python3-pip default-jre",
       "sudo pip3 install awscli --upgrade > /dev/null",
       "sudo systemctl start docker",
       "sudo gpasswd -a admin docker",
@@ -467,7 +467,7 @@ cd $TMPDIR
 cd ~/
 
 # Jmeter
-WORDIR=jmeter 
+WORKDIR=jmeter 
 mkdir $WORKDIR
 cd $WORKDIR
 wget -c https://www-eu.apache.org/dist//jmeter/binaries/apache-jmeter-5.2.1.tgz
