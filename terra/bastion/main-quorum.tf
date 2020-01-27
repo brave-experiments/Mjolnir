@@ -439,10 +439,16 @@ sudo /usr/local/bin/docker-compose -f /opt/prometheus/docker-compose.yml up -d -
 # Chainhammer ==================================================
 WORKDIR=/home/admin/chainhammer
 rm -rf $WORKDIR
-git clone ${var.chainhammer_repo_url} $WORKDIR
+# git clone ${var.chainhammer_repo_url} $WORKDIR
+# Cloning Jmeter integration branch 
+git clone ${var.chainhammer_repo_url} --branch jmeter_integration --single-branch $WORKDIR
+sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
 sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install.sh
 sed -i s'/^read -p/#read -p/' $WORKDIR/scripts/install-{solc,geth,virtualenv}.sh
 sed -i '/install_chapter.*scripts\/install-initialize.sh/ s/^/#/' $WORKDIR/scripts/install.sh
+sed -i 's/loopUntil_NewContract()/#loopUntil_NewContract()/g' $WORKDIR/hammer/tps.py
+
+
 
 count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
 i=0
@@ -472,7 +478,7 @@ mkdir $WORKDIR
 cd $WORKDIR
 wget -c https://www-eu.apache.org/dist//jmeter/binaries/apache-jmeter-5.2.1.tgz
 tar -xf apache-jmeter-5.2.1.tgz
-# cp apache-jmeter-5.2.1/bin/./jmeter . 
+
 
 EOF
 }
