@@ -224,7 +224,7 @@ SCRIPT
     image     = "${local.tx_privacy_engine_docker_image}"
     essential = "false"
 
-    logConfiguration = {
+      logConfiguration = {
       logDriver = "fluentd"
 
       options = {

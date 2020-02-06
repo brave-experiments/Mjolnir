@@ -50,7 +50,7 @@ variable "quorum_docker_image" {
 
 variable "quorum_docker_image_tag" {
   description = "Quorum Docker image tag to be used"
-  default     = "latest"
+  default     = "2.2.5"
 }
 
 variable "pantheon_docker_image" {
@@ -95,7 +95,7 @@ variable "tessera_docker_image" {
 
 variable "tessera_docker_image_tag" {
   description = "Tessera Docker image tag to be used"
-  default     = "latest"
+  default     = "0.10.1"
 }
 
 variable "aws_cli_docker_image" {
@@ -115,7 +115,7 @@ variable "chaos_testing_docker_image" {
 
 variable "chaos_testing_docker_image_tag" {
   description = "Chaos testing tool Docker image tag to be used"
-  default     = "latest"
+  default     = "0.6.7"
 }
 
 variable "chaos_testing_run_command" {

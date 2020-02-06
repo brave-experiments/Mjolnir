@@ -197,7 +197,7 @@ EOP
     image     = "${local.aws_cli_docker_image}"
     essential = "false"
 
-    logConfiguration = {
+     logConfiguration = {
       logDriver = "fluentd"
 
       options = {

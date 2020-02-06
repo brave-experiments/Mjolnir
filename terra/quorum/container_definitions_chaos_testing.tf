@@ -7,7 +7,7 @@ locals {
     image     = "${local.chaos_testing_docker_image}"
     essential = "false"
 
-    logConfiguration = {
+     logConfiguration = {
       logDriver = "fluentd"
 
       options = {
