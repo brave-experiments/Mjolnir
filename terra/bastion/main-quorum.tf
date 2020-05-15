@@ -138,7 +138,7 @@ sudo curl -Ls "https://github.com/docker/compose/releases/download/1.24.1/docker
 sudo chmod +x /usr/local/bin/docker-compose
 echo "Pull docker images ..."
 sudo docker pull grafana/loki:latest > /dev/null
-sudo docker pull grafana/fluent-plugin-grafana-loki:master > /dev/null
+sudo docker pull brave/fluent-plugin-grafana-loki:latest > /dev/null
 echo "Done"
 sudo mkdir -p /opt/prometheus
 sudo mkdir -p /opt/grafana/dashboards

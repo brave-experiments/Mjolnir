@@ -34,3 +34,4 @@ generated-bootstrap.sh
 bin/run
 results/
 values-local.yml.bak 
+notes.md
