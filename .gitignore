@@ -35,3 +35,5 @@ bin/run
 results/
 values-local.yml.bak 
 notes.md
+adversarial_tests/
+adversarial_tests/*
