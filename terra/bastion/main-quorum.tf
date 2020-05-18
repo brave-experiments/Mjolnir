@@ -268,7 +268,7 @@ services:
       - /opt/loki/storage/:/tmp/loki/chunks/
     command: -config.file=/etc/loki/local-config.yaml
   fluentd:
-    image: grafana/fluent-plugin-grafana-loki:master
+    image: brave/fluent-plugin-grafana-loki:latest
     environment:
       LOKI_URL: http://loki:3100
       LOKI_USERNAME:
@@ -326,7 +326,7 @@ count=0
 while [ $count -lt ${var.number_of_nodes} ]
 do
   count=$(ls ${local.hosts_folder} | grep ^ip | wc -l)
-  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
     | echo Wait for nodes IP being up ... $count/${var.number_of_nodes}
   sleep 1
 done
@@ -343,7 +343,7 @@ count=0
 while [ $count -lt ${var.number_of_nodes} ]
 do
   count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
-  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
     | echo Wait for nodes in Quorum network being up ... $count/${var.number_of_nodes}
   sleep 1
 done
