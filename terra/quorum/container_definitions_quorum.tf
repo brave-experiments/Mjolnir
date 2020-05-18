@@ -62,12 +62,19 @@ locals {
     essential = "true"
 
     logConfiguration = {
-      logDriver = "fluentd"
+      logDriver = "awslogs"
 
-      options = {
-        fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
+    #   options = {
+    #     fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
+    #   }
+    # }
+        options = {
+         awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+         awslogs-region        = "${var.region}"
+         awslogs-stream-prefix = "logs"
       }
     }
+
 
     mountPoints = [
       {

@@ -138,7 +138,7 @@ sudo curl -Ls "https://github.com/docker/compose/releases/download/1.24.1/docker
 sudo chmod +x /usr/local/bin/docker-compose
 echo "Pull docker images ..."
 sudo docker pull grafana/loki:latest > /dev/null
-sudo docker pull grafana/fluent-plugin-grafana-loki:master > /dev/null
+sudo docker pull brave/fluent-plugin-grafana-loki:latest > /dev/null
 echo "Done"
 sudo mkdir -p /opt/prometheus
 sudo mkdir -p /opt/grafana/dashboards
@@ -268,7 +268,7 @@ services:
       - /opt/loki/storage/:/tmp/loki/chunks/
     command: -config.file=/etc/loki/local-config.yaml
   fluentd:
-    image: grafana/fluent-plugin-grafana-loki:master
+    image: brave/fluent-plugin-grafana-loki:latest
     environment:
       LOKI_URL: http://loki:3100
       LOKI_USERNAME:
@@ -485,6 +485,18 @@ resource "null_resource" "bastion_remote_exec" {
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
+    #  logConfiguration = {
+    #   logDriver = "awslogs"
+
+    # #   options = {
+    # #     fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
+    # #   }
+    #     options = {
+    #      awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+    #      awslogs-region        = "${var.region}"
+    #      awslogs-stream-prefix = "logs"
+    #   }
+    # }
   }
 }
 
