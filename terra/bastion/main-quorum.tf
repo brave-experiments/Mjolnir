@@ -326,7 +326,7 @@ count=0
 while [ $count -lt ${var.number_of_nodes} ]
 do
   count=$(ls ${local.hosts_folder} | grep ^ip | wc -l)
-  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/${local.shared_volume_container_path}/ > /dev/null 2>&1 \
     | echo Wait for nodes IP being up ... $count/${var.number_of_nodes}
   sleep 1
 done
@@ -343,7 +343,7 @@ count=0
 while [ $count -lt ${var.number_of_nodes} ]
 do
   count=$(ls ${local.privacy_addresses_folder} | grep ^ip | wc -l)
-  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/ ${local.shared_volume_container_path}/ > /dev/null 2>&1 \
+  sudo aws --region ${var.region} s3 cp --recursive s3://${local.s3_revision_folder}/${local.shared_volume_container_path}/ > /dev/null 2>&1 \
     | echo Wait for nodes in Quorum network being up ... $count/${var.number_of_nodes}
   sleep 1
 done
@@ -485,6 +485,18 @@ resource "null_resource" "bastion_remote_exec" {
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
+    #  logConfiguration = {
+    #   logDriver = "awslogs"
+
+    # #   options = {
+    # #     fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
+    # #   }
+    #     options = {
+    #      awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+    #      awslogs-region        = "${var.region}"
+    #      awslogs-stream-prefix = "logs"
+    #   }
+    # }
   }
 }
 
