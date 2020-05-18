@@ -36,7 +36,7 @@ locals {
     essential = "false"
 
     logConfiguration = {
-      logDriver = "fluentd"
+      logDriver = "awslogs"
 
       options = {
         fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
@@ -198,7 +198,7 @@ EOP
     essential = "false"
 
      logConfiguration = {
-      logDriver = "fluentd"
+      logDriver = "awslogs"
 
       options = {
         fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
