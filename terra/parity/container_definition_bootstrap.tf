@@ -162,7 +162,7 @@ locals {
       logDriver = "awslogs"
  
         options = {
-         awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+         awslogs-group         = "${aws_cloudwatch_log_group.parity.name}"
          awslogs-region        = "${var.region}"
          awslogs-stream-prefix = "logs"
       }

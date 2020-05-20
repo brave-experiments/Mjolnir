@@ -160,6 +160,7 @@ locals {
       "eip155Block"    = 0
       "eip150Hash"     = "0x0000000000000000000000000000000000000000000000000000000000000000"
       "eip158Block"    = 1
+      "constantinopleBlock" = 1
       "isQuorum"       = "true"
     }
 
