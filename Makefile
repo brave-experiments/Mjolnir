@@ -64,6 +64,7 @@ build: copy restart
 
 destroy:
 	./mjolnir destroy examples/values-local.yml
+	rm -rf terraform.tfstate
 
 test: 
 	cp docker-compose.override.test.yml.dist docker-compose.override.yml
