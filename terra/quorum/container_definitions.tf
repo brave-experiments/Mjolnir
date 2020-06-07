@@ -37,8 +37,11 @@ locals {
         "--txpool.globalqueue 25000",
         "--txpool.accountqueue 25000",
         "--syncmode full",
+        "--gcmode archive",
         "--mine",
         "--minerthreads 1",
+        "--ws",
+        "--wsport 22001",
       ]
 
       enode_params = []
