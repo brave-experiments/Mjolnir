@@ -485,18 +485,18 @@ resource "null_resource" "bastion_remote_exec" {
       private_key = "${tls_private_key.ssh.private_key_pem}"
       timeout     = "10m"
     }
-    #  logConfiguration = {
-    #   logDriver = "awslogs"
+     logConfiguration = {
+      logDriver = "awslogs"
 
-    # #   options = {
-    # #     fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
-    # #   }
-    #     options = {
-    #      awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
-    #      awslogs-region        = "${var.region}"
-    #      awslogs-stream-prefix = "logs"
+    #   options = {
+    #     fluentd-address  = "${aws_instance.bastion.public_ip}:24224"
     #   }
-    # }
+        options = {
+         awslogs-group         = "${aws_cloudwatch_log_group.quorum.name}"
+         awslogs-region        = "${var.region}"
+         awslogs-stream-prefix = "logs"
+      }
+    }
   }
 }
 
